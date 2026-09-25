@@ -134,15 +134,15 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-ppct{font-size:13px;font-weight:900;color:#2ff068}
 .pvp-pbet{font-size:10px;color:#7a8299;margin-top:2px}
 .pvp-join-wrap{padding:8px 16px 12px;flex-shrink:0}
-.pvp-bet-row{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.pvp-bet-row label{font-size:12px;color:#7a8299;white-space:nowrap;flex-shrink:0}
-.pvp-bet-input{flex:1;background:#1a1d2e;border:2px solid #2a2e42;color:#fff;padding:12px 14px;border-radius:12px;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0;transition:border-color .3s}
-.pvp-bet-input:focus{border-color:#7c3aed}
-.pvp-quick-btns{display:flex;gap:5px;flex-shrink:0}
-.pvp-quick-btn{background:linear-gradient(135deg,#2a2e42,#1a1d2e);border:1px solid #3a3e52;color:#fff;padding:11px 10px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;font-family:inherit;flex-shrink:0}
-.pvp-quick-btn:active{transform:scale(.95)}
-.pvp-quick-btn.all-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff;box-shadow:0 0 10px rgba(124,58,237,.4)}
-.pvp-quick-btn.half-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border-color:#0098ea;box-shadow:0 0 10px rgba(0,152,234,.3)}
+.pvp-bet-label{font-size:12px;color:#7a8299;margin-bottom:6px;display:block}
+.pvp-bet-input-wrap{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:#1a1d2e;border:2px solid #2a2e42;border-radius:12px;padding:0 12px;transition:border-color .3s}
+.pvp-bet-input{flex:1;background:transparent;border:none;color:#fff;padding:12px 0;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0}
+.pvp-bet-input-wrap:focus-within{border-color:#7c3aed}
+.pvp-quick-row{display:flex;gap:6px;margin-bottom:10px}
+.pvp-quick-btn{flex:1;background:linear-gradient(135deg,#2a2e42,#1a1d2e);border:1px solid #3a3e52;color:#fff;padding:11px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;font-family:inherit;letter-spacing:.5px}
+.pvp-quick-btn:active{transform:scale(.97)}
+.pvp-quick-btn.all-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff;box-shadow:0 0 12px rgba(124,58,237,.45)}
+.pvp-quick-btn.half-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border-color:#0098ea;box-shadow:0 0 12px rgba(0,152,234,.35)}
 .pvp-quick-btn:disabled{opacity:.4;cursor:not-allowed}
 .join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6;transition:all .2s;letter-spacing:.5px}
 .join-battle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;box-shadow:0 6px 25px rgba(124,58,237,.55)}
@@ -282,13 +282,14 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
     <div class="pvp-players-row" id="pvpPlayersRow"></div>
     <div class="pvp-join-wrap">
-        <div class="pvp-bet-row">
-            <label>مبلغ ورود:</label>
+        <label class="pvp-bet-label">مبلغ ورود (TON):</label>
+        <div class="pvp-bet-input-wrap">
+            <span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span>
             <input type="number" id="pvpBetInput" class="pvp-bet-input" value="10" min="1">
-            <div class="pvp-quick-btns">
-                <button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button>
-                <button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button>
-            </div>
+        </div>
+        <div class="pvp-quick-row">
+            <button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button>
+            <button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button>
         </div>
         <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
     </div>
@@ -564,38 +565,31 @@ function pvpJoinClick(){
     document.getElementById('pvpAllBtn').disabled=true;
     showToast('وارد شدی با '+amount+' TON');
 }
-// 🎯 PVP — ALL
 function pvpSetBetAll(){
     if(pvpState!=='waiting'||pvpUserJoined)return;
     const amount=Math.floor(balance*100)/100;
     if(amount<1){showToast('❌ موجودی کافی نیست');return}
     document.getElementById('pvpBetInput').value=amount.toFixed(2);
     localStorage.setItem('lastPvpBet',amount);
-    document.getElementById('pvpBetInput').style.borderColor='#9b5cff';
-    clearTimeout(window._pvpT);
-    window._pvpT=setTimeout(()=>document.getElementById('pvpBetInput').style.borderColor='#2a2e42',500);
+    document.getElementById('pvpBetInput-wrap-hl','');
+    document.getElementById('pvpBetInput').style.color='#c8b1ff';
+    setTimeout(()=>document.getElementById('pvpBetInput').style.color='#fff',500);
     showToast('🎯 همه موجودی: '+amount.toFixed(2)+' TON');
 }
-// 🎯 PVP — 50%
 function pvpSetBetHalf(){
     if(pvpState!=='waiting'||pvpUserJoined)return;
     const amount=Math.floor((balance/2)*100)/100;
     if(amount<1){showToast('❌ موجودی کافی نیست');return}
     document.getElementById('pvpBetInput').value=amount.toFixed(2);
     localStorage.setItem('lastPvpBet',amount);
-    document.getElementById('pvpBetInput').style.borderColor='#0098ea';
-    clearTimeout(window._pvpT);
-    window._pvpT=setTimeout(()=>document.getElementById('pvpBetInput').style.borderColor='#2a2e42',500);
+    document.getElementById('pvpBetInput').style.color='#7dc4ff';
+    setTimeout(()=>document.getElementById('pvpBetInput').style.color='#fff',500);
     showToast('⚡ نصف موجودی: '+amount.toFixed(2)+' TON');
 }
-// 💾 ذخیره خودکار مبلغ PVP
 document.getElementById('pvpBetInput').addEventListener('input',(e)=>{
     const v=parseFloat(e.target.value);
     if(!isNaN(v)&&v>0){
         localStorage.setItem('lastPvpBet',v);
-        e.target.style.borderColor='#2ff068';
-        clearTimeout(window._pvpT);
-        window._pvpT=setTimeout(()=>e.target.style.borderColor='#2a2e42',500);
     }
 });
 function pvpRenderPlayers(){
@@ -680,4 +674,4 @@ function pvpFinishSpin(){
 function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON شارژ شد')}
 </script>
 </body>
-</html>
+    </html>
