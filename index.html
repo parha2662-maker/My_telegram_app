@@ -24,15 +24,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .ton-icon{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:800;box-shadow:0 0 10px rgba(0,152,234,.5)}
 .deposit-btn{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:11px 18px;border-radius:14px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(124,58,237,.5)}
 
-.live-section{display:flex;align-items:center;gap:12px;padding:6px 16px 20px;overflow-x:auto;white-space:nowrap;direction:ltr}
-.live-label{display:flex;flex-direction:column;align-items:center;font-size:11px;color:#7a8299;gap:6px;flex-shrink:0}
-.live-dot{width:9px;height:9px;border-radius:50%;background:#2ff068;box-shadow:0 0 10px #2ff068;animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-.live-icons{display:flex;gap:10px}
-.live-icon{width:56px;height:56px;border-radius:16px;display:flex;justify-content:center;align-items:center;font-size:28px;position:relative;flex-shrink:0;background:linear-gradient(135deg,#4ecdc4,#2a9d8f);box-shadow:inset 0 -6px 12px rgba(0,0,0,.3),0 4px 10px rgba(0,0,0,.4)}
-.live-icon .badge{position:absolute;top:-4px;right:-4px;background:#ff3b5c;color:#fff;font-size:10px;width:20px;height:20px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:800;border:2px solid #0a0d14}
-
-.banners{padding:0 14px;display:flex;flex-direction:column;gap:14px}
+.banners{padding:20px 14px 0;display:flex;flex-direction:column;gap:14px}
 .banner{border-radius:22px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:110px;direction:ltr}
 .banner:active{transform:scale(.98)}
 .banner-badge{position:absolute;top:14px;left:16px;background:rgba(255,255,255,.95);color:#333;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:10}
@@ -132,19 +124,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             </div>
         </div>
         <button class="deposit-btn">💳 Deposit</button>
-    </div>
-
-    <!-- Live Section -->
-    <div class="live-section">
-        <div class="live-label"><div class="live-dot"></div><span>Live</span></div>
-        <div class="live-icons">
-            <div class="live-icon">💍</div>
-            <div class="live-icon">💙<div class="badge">1</div></div>
-            <div class="live-icon">🍪</div>
-            <div class="live-icon">◈</div>
-            <div class="live-icon">💩</div>
-            <div class="live-icon">🍄</div>
-        </div>
     </div>
 
     <!-- Banners -->
