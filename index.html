@@ -13,7 +13,6 @@
             font-family: sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             height: 100vh;
             overflow: hidden;
             user-select: none;
@@ -56,13 +55,6 @@
             white-space: nowrap;
             min-height: 45px;
         }
-        .multiplier-history::-webkit-scrollbar {
-            height: 4px;
-        }
-        .multiplier-history::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 4px;
-        }
         .history-badge {
             padding: 5px 12px;
             border-radius: 15px;
@@ -76,38 +68,48 @@
         .history-badge.loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
         .history-badge.high { background-color: rgba(255, 204, 0, 0.2); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); }
 
-        .game-container {
-            text-align: center;
+        /* نمودار گرافیکی */
+        .chart-container {
             width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            flex-grow: 1;
+            height: 200px;
+            background-color: #0a0a0a;
+            position: relative;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
-        .timer-box {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff9800;
-            margin-bottom: 10px;
-            min-height: 30px;
+        #chartCanvas {
+            width: 100%;
+            height: 100%;
         }
-        .multiplier {
-            font-size: 70px;
+        .multiplier-text {
+            position: absolute;
+            font-size: 60px;
             font-weight: bold;
             color: #ffcc00;
-            margin-bottom: 20px;
-            transition: color 0.3s;
+            z-index: 10;
+            text-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
-        .multiplier.crashed {
+        .multiplier-text.crashed {
             color: #ff4444;
         }
-        .bet-input-container {
+
+        /* بخش شرط‌بندی */
+        .bet-controls {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #1e1e1e;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+        .bet-input-row {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 10px;
-            margin-bottom: 15px;
         }
         .bet-input {
             background-color: #2a2a2a;
@@ -123,16 +125,15 @@
             -webkit-user-select: text !important;
         }
         .action-btn {
-            width: 90%;
-            padding: 18px;
-            font-size: 22px;
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
             font-weight: bold;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
             color: white;
-            margin: 0 auto;
         }
         .action-btn:disabled {
             opacity: 0.5;
@@ -140,56 +141,40 @@
         }
         .btn-bet {
             background: linear-gradient(135deg, #1e90ff, #0056b3);
-            box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
         }
         .btn-cashout {
             background: linear-gradient(135deg, #00c853, #009624);
-            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
         }
-        .status {
-            margin-top: 15px;
-            font-size: 15px;
-            color: #aaaaaa;
-            min-height: 20px;
-        }
+
+        /* لیست شرط‌بندی‌ها */
         .history-container {
-            width: 95%;
-            height: 28%;
-            background-color: #1e1e1e;
-            border-radius: 15px;
-            padding: 10px;
-            box-sizing: border-box;
+            flex-grow: 1;
             overflow-y: auto;
-            margin: 0 auto 10px auto;
-        }
-        .history-title {
-            font-size: 13px;
-            color: #888;
-            margin-bottom: 10px;
-            text-align: right;
-            padding-right: 10px;
+            padding: 10px;
         }
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 8px 10px;
-            background-color: #2a2a2a;
+            background-color: #1e1e1e;
             border-radius: 10px;
             margin-bottom: 5px;
             font-size: 13px;
-            animation: fadeIn 0.3s ease-in-out;
+            border: 1px solid #2a2a2a;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .user-name { color: #ccc; width: 30%; text-align: right; }
-        .bet-amount { color: #ffcc00; width: 20%; text-align: center; }
-        .multiplier-badge { padding: 3px 6px; border-radius: 5px; font-weight: bold; width: 22%; text-align: center; }
+        .avatar { width: 30px; height: 30px; border-radius: 50%; margin-left: 10px; }
+        .user-info { display: flex; align-items: center; flex-grow: 1; }
+        .user-name { color: #ccc; font-weight: bold; }
+        .bet-amount { color: #ffcc00; margin-left: auto; }
+        .multiplier-badge { padding: 3px 8px; border-radius: 5px; font-weight: bold; margin: 0 10px; min-width: 50px; text-align: center; }
         .win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; }
         .loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; }
-        .profit { width: 23%; text-align: left; font-weight: bold; }
+        .profit { width: 60px; text-align: left; font-weight: bold; }
+        
+        /* انیمیشن */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
     </style>
 </head>
 <body>
@@ -199,40 +184,39 @@
         <button class="reset-btn" onclick="resetBalance()">🔄 شارژ مجدد</button>
     </div>
 
-    <!-- نوار تاریخچه ضریب‌های قبلی -->
     <div class="multiplier-history" id="multiplierHistory">
         <div style="font-size:12px; color:#666; padding-left:10px;">تاریخچه:</div>
     </div>
 
-    <div class="game-container">
-        <div class="timer-box" id="timerDisplay">⏳ منتظر شروع دور...</div>
-        <div class="multiplier" id="multiplierDisplay">1.00x</div>
-        
-        <div class="bet-input-container">
-            <input type="number" id="betInput" class="bet-input" placeholder="مبلغ شرط" value="10" min="1">
-            <span style="padding-top:10px; color:#888;">TON</span>
-        </div>
-
-        <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
-        <div class="status" id="statusText">برای شروع، مبلغ را وارد کنید</div>
+    <div class="chart-container">
+        <div class="multiplier-text" id="multiplierDisplay">1.00x</div>
+        <canvas id="chartCanvas"></canvas>
     </div>
 
-    <div class="history-container">
-        <div class="history-title">📊 شرط‌بندی‌های زنده (شبیه‌سازی)</div>
-        <div id="historyList"></div>
+    <div class="bet-controls">
+        <div class="bet-input-row">
+            <input type="number" id="betInput" class="bet-input" placeholder="مبلغ شرط" value="10" min="1">
+            <span style="color:#888;">TON</span>
+        </div>
+        <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
+        <div style="text-align: center; font-size: 14px; color: #aaa; min-height: 20px;" id="statusText">برای شروع، مبلغ را وارد کنید</div>
+    </div>
+
+    <div class="history-container" id="historyList">
+        <!-- لیست شرط‌بندی‌ها اینجا قرار می‌گیرد -->
     </div>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('crashBalance_v5')) || 100.00;
+        let balance = parseFloat(localStorage.getItem('crashBalance_v6')) || 100.00;
         let gameState = 'waiting'; 
-        let countdown = 5;
         let multiplier = 1.00;
         let crashPoint = 0;
         let myBet = 0;
         let hasJoined = false;
         let gameInterval;
         let countdownInterval;
-        let roundHistory = []; // آرایه‌ای برای ذخیره ضریب‌های قبلی
+        let roundHistory = [];
+        let players = []; // لیست بازیکنان فعال
 
         const multiplierDisplay = document.getElementById('multiplierDisplay');
         const actionButton = document.getElementById('actionButton');
@@ -240,12 +224,21 @@
         const historyList = document.getElementById('historyList');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const betInput = document.getElementById('betInput');
-        const timerDisplay = document.getElementById('timerDisplay');
         const multiplierHistoryContainer = document.getElementById('multiplierHistory');
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // تنظیم ابعاد canvas
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance_v5', balance);
+            localStorage.setItem('crashBalance_v6', balance);
         }
         updateBalanceUI();
 
@@ -257,8 +250,8 @@
 
         // --- مدیریت نوار تاریخچه ضریب‌ها ---
         function addRoundToHistory(crashMultiplier) {
-            roundHistory.unshift(crashMultiplier); // اضافه کردن به اول لیست
-            if (roundHistory.length > 15) roundHistory.pop(); // فقط 15 مورد آخر نگه داشته بشه
+            roundHistory.unshift(crashMultiplier);
+            if (roundHistory.length > 15) roundHistory.pop();
             renderRoundHistory();
         }
 
@@ -274,44 +267,146 @@
                 multiplierHistoryContainer.appendChild(badge);
             });
         }
-        // -----------------------------------
 
-        const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika'];
+        // --- مدیریت Canvas (نمودار) ---
+        function drawChart(currentMultiplier) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // نسبت ضریب به ارتفاع
+            const maxMultiplier = Math.max(crashPoint, currentMultiplier, 2); 
+            const startX = 20;
+            const startY = canvas.height - 20;
+            const endX = canvas.width - 20;
+            
+            // محاسبه نقطه انتهایی
+            const progress = currentMultiplier / maxMultiplier;
+            const currentX = startX + (endX - startX) * progress;
+            const currentY = startY - (startY - 20) * (currentMultiplier / maxMultiplier);
 
-        function createFakeBet() {
-            const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
-            const amount = (Math.random() * 50 + 1).toFixed(2); 
-            const multiplierValue = (Math.random() * 5 + 1).toFixed(2); 
-            const isWin = Math.random() > 0.4; 
+            // کشیدن خط منحنی
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            
+            // نقطه کنترل برای منحنی
+            const ctrlX = startX + (currentX - startX) * 0.5;
+            const ctrlY = startY;
+            
+            ctx.quadraticCurveTo(ctrlX, ctrlY, currentX, currentY);
+            ctx.strokeStyle = '#ffcc00';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.stroke();
 
-            let multiplierClass = isWin ? 'win' : 'loss';
-            let multiplierText = isWin ? multiplierValue + 'x' : 'سقوط';
-            let profit = isWin ? (amount * multiplierValue).toFixed(2) : '-' + amount;
+            // اضافه کردن درخشش به خط
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#ffcc00';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
 
-            if (!isWin) multiplierText = '1.00x';
-
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = `
-                <div class="user-name">${name}</div>
-                <div class="bet-amount">${amount} TON</div>
-                <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
-                <div class="profit" style="color: ${isWin ? '#00c853' : '#ff4444'}">${profit}</div>
-            `;
-            historyList.prepend(item);
-            if (historyList.children.length > 20) historyList.removeChild(historyList.lastChild);
+            // کشیدن نقطه انتهایی (موشک)
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
         }
 
-        setInterval(() => {
-            if (gameState === 'playing' && Math.random() > 0.5) createFakeBet();
-        }, 1500);
+        function clearChart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawChart(1.00);
+        }
 
+        // --- لیست شرط‌بندی زنده ---
+        const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika', 'Kian', 'Matin', 'Yasin', 'Arya'];
+        const fakeAvatars = ['🐸', '🐱', '⚽', '🦊', '🐻', '🐼', '🦁', '🐯', '🐨', '🐵'];
+
+        function addPlayer(name, amount, isMe = false) {
+            const avatar = isMe ? '👤' : fakeAvatars[Math.floor(Math.random() * fakeAvatars.length)];
+            const player = {
+                id: Date.now() + Math.random(),
+                name: name,
+                amount: amount,
+                avatar: avatar,
+                isMe: isMe,
+                cashedOut: false
+            };
+            players.push(player);
+            renderPlayers();
+            return player.id;
+        }
+
+        function renderPlayers() {
+            historyList.innerHTML = '';
+            // نمایش از جدید به قدیم
+            const sortedPlayers = [...players].reverse();
+            sortedPlayers.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'history-item fade-in';
+                if (p.isMe) item.style.border = '1px solid #ffcc00';
+
+                let multiplierText = '-';
+                let multiplierClass = '';
+                let profitText = '-';
+                let profitColor = '#ccc';
+
+                if (p.cashedOut) {
+                    multiplierText = p.cashoutMultiplier.toFixed(2) + 'x';
+                    multiplierClass = 'win';
+                    profitText = '+' + (p.amount * p.cashoutMultiplier).toFixed(2);
+                    profitColor = '#00c853';
+                }
+
+                item.innerHTML = `
+                    <div class="user-info">
+                        <span style="font-size:20px; margin-left:5px;">${p.avatar}</span>
+                        <span class="user-name">${p.name}</span>
+                    </div>
+                    <div class="bet-amount">${p.amount.toFixed(2)} TON</div>
+                    <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
+                    <div class="profit" style="color: ${profitColor}">${profitText}</div>
+                `;
+                historyList.appendChild(item);
+            });
+        }
+
+        function updatePlayersOnCrash() {
+            players.forEach(p => {
+                if (!p.cashedOut) {
+                    p.cashedOut = true; // علامت‌گذاری برای اینکه دیگه ادامه نده
+                    p.cashoutMultiplier = 1.00; // باخت (ضریب 1.00)
+                    p.lost = true;
+                }
+            });
+            renderPlayers();
+        }
+
+        function addFakeBets() {
+            if (gameState !== 'playing') return;
+            if (Math.random() > 0.4) {
+                const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
+                const amount = (Math.random() * 50 + 1);
+                addPlayer(name, amount);
+            }
+            
+            // شبیه‌سازی برداشت خودکار بازیکنان فیک
+            players.forEach(p => {
+                if (!p.isMe && !p.cashedOut && gameState === 'playing' && Math.random() > 0.95) {
+                    p.cashedOut = true;
+                    p.cashoutMultiplier = multiplier;
+                    renderPlayers();
+                }
+            });
+        }
+
+        // شروع بازی
         function startNewRound() {
             gameState = 'waiting';
             hasJoined = false;
             myBet = 0;
-            countdown = 5;
+            players = []; // پاک کردن لیست بازیکنان
+            renderPlayers();
+            
             multiplier = 1.00;
+            crashPoint = Math.random() * 8.9 + 1.1;
             
             multiplierDisplay.innerText = '1.00x';
             multiplierDisplay.classList.remove('crashed');
@@ -323,12 +418,15 @@
             actionButton.disabled = false;
             statusText.innerText = '⏳ برای ورود به بازی عجله کنید!';
             
-            timerDisplay.innerText = `⏳ زمان باقیمانده: 5 ثانیه`;
+            clearChart();
+            
+            let countdown = 5;
+            statusText.innerText = `⏳ زمان باقی‌مانده: ${countdown} ثانیه`;
             
             countdownInterval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
-                    timerDisplay.innerText = `⏳ زمان باقیمانده: ${countdown} ثانیه`;
+                    statusText.innerText = `⏳ زمان باقی‌مانده: ${countdown} ثانیه`;
                 } else {
                     clearInterval(countdownInterval);
                     startGameplay();
@@ -338,30 +436,35 @@
 
         function startGameplay() {
             gameState = 'playing';
-            timerDisplay.innerText = '';
-            crashPoint = Math.random() * 8.9 + 1.1; 
             betInput.disabled = true;
             
             if (hasJoined) {
                 statusText.innerText = `✅ شما با ${myBet} TON وارد شدید. ضریب در حال افزایش...`;
-            } else {
-                statusText.innerText = 'شما وارد بازی نشدید! تماشا کنید...';
-            }
-            
-            if (hasJoined) {
                 actionButton.innerText = 'برداشت (Cash Out)';
                 actionButton.className = 'action-btn btn-cashout';
                 actionButton.disabled = false;
             } else {
+                statusText.innerText = 'شما وارد بازی نشدید! تماشا کنید...';
                 actionButton.innerText = 'وارد نشدید';
                 actionButton.className = 'action-btn btn-bet';
                 actionButton.disabled = true;
             }
 
+            // اضافه کردن چند بازیکن فیک در شروع
+            for(let i=0; i<3; i++) addFakeBets();
+
             gameInterval = setInterval(() => {
                 multiplier += 0.05; 
+                multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
+                
+                // رسم نمودار
+                drawChart(multiplier);
+                
+                // اضافه کردن بازیکنان فیک جدید
+                addFakeBets();
                 
                 if (multiplier >= crashPoint) {
+                    // سقوط
                     clearInterval(gameInterval);
                     multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
                     multiplierDisplay.classList.add('crashed');
@@ -370,19 +473,17 @@
                     actionButton.innerText = 'دور بعد...';
                     actionButton.className = 'action-btn btn-bet';
                     
-                    // اضافه کردن ضریب سقوط به تاریخچه
                     addRoundToHistory(crashPoint);
-
+                    
                     if (hasJoined) {
                         statusText.innerText = `💥 سقوط کرد! شما ${myBet} TON باختید.`;
-                        addMyBetToHistory(false, 1.00);
                     } else {
                         statusText.innerText = `💥 سقوط در ${crashPoint.toFixed(2)}x!`;
                     }
                     
+                    updatePlayersOnCrash(); // اعلام باخت به همه
+                    
                     setTimeout(startNewRound, 2500);
-                } else {
-                    multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
                 }
             }, 50);
         }
@@ -406,11 +507,15 @@
             updateBalanceUI();
             betInput.disabled = true;
             
+            // اضافه کردن خودم به لیست
+            addPlayer('شما (You)', amount, true);
+            
             statusText.innerText = `✅ شما با ${amount} TON وارد بازی شدید! منتظر شروع...`;
             actionButton.innerText = 'منتظر شروع...';
             actionButton.disabled = true;
         }
 
+        // برداشت (Cash Out) - نکته: بازی رو متوقف نمی‌کنه
         function cashOut() {
             if (!hasJoined || gameState !== 'playing') return;
 
@@ -424,25 +529,16 @@
             actionButton.className = 'action-btn btn-bet';
             
             statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
-            addMyBetToHistory(true, multiplier.toFixed(2));
-        }
-
-        function addMyBetToHistory(isWin, multiplierValue) {
-            const amount = myBet;
-            const profit = isWin ? (amount * multiplierValue).toFixed(2) : '-' + amount;
-            let multiplierClass = isWin ? 'win' : 'loss';
-            let multiplierText = isWin ? multiplierValue + 'x' : '1.00x';
-
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            item.style.border = '1px solid #ffcc00'; 
-            item.innerHTML = `
-                <div class="user-name" style="color:#ffcc00; font-weight:bold;">شما (You)</div>
-                <div class="bet-amount">${amount.toFixed(2)} TON</div>
-                <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
-                <div class="profit" style="color: ${isWin ? '#00c853' : '#ff4444'}">${profit}</div>
-            `;
-            historyList.prepend(item);
+            
+            // پیدا کردن بازیکن خودم و آپدیت کردنش
+            const myPlayer = players.find(p => p.isMe);
+            if (myPlayer) {
+                myPlayer.cashedOut = true;
+                myPlayer.cashoutMultiplier = multiplier;
+                renderPlayers();
+            }
+            
+            // ⚠️ نکته مهم: اینجا clearInterval نمیکنیم تا بازی ادامه پیدا کنه و به سقوط برسه!
         }
 
         actionButton.addEventListener('click', () => {
