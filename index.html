@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crash Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: white;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+        .game-container {
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .multiplier {
+            font-size: 80px;
+            font-weight: bold;
+            color: #ffcc00;
+            margin-bottom: 50px;
+            transition: color 0.3s;
+        }
+        .multiplier.crashed {
+            color: #ff4444;
+        }
+        .action-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            margin-top: 20px;
+        }
+        .btn-bet {
+            background: linear-gradient(135deg, #1e90ff, #0056b3);
+            box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
+        }
+        .btn-cashout {
+            background: linear-gradient(135deg, #00c853, #009624);
+            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #aaaaaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="multiplier" id="multiplierDisplay">1.00x</div>
+        <button class="action-btn btn-bet" id="actionButton">شروع شرط‌بندی (Place Bet)</button>
+        <div class="status" id="statusText">برای شروع کلیک کنید</div>
+    </div>
+
+    <script>
+        let multiplier = 1.00;
+        let isPlaying = false;
+        let interval;
+        let crashPoint = 0;
+        let balance = 100; // موجودی فیک برای تست
+
+        const multiplierDisplay = document.getElementById('multiplierDisplay');
+        const actionButton = document.getElementById('actionButton');
+        const statusText = document.getElementById('statusText');
+
+        actionButton.addEventListener('click', () => {
+            if (!isPlaying) {
+                startGame();
+            } else {
+                cashOut();
+            }
+        });
+
+        function startGame() {
+            if (balance <= 0) {
+                statusText.innerText = "موجودی شما تمام شده!";
+                return;
+            }
+            
+            isPlaying = true;
+            multiplier = 1.00;
+            // تعیین نقطه سقوط به صورت تصادفی بین 1.1x تا 10x
+            crashPoint = Math.random() * 8.9 + 1.1; 
+            
+            multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
+            multiplierDisplay.classList.remove('crashed');
+            actionButton.innerText = 'برداشت (Cash Out)';
+            actionButton.className = 'action-btn btn-cashout';
+            statusText.innerText = 'بازی در جریان است...';
+
+            interval = setInterval(() => {
+                multiplier += 0.05; // سرعت افزایش ضریب
+                
+                // اگر از نقطه سقوط عبور کرد، بازی باخت
+                if (multiplier >= crashPoint) {
+                    clearInterval(interval);
+                    multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
+                    multiplierDisplay.classList.add('crashed');
+                    isPlaying = false;
+                    actionButton.innerText = 'شروع مجدد (Place Bet)';
+                    actionButton.className = 'action-btn btn-bet';
+                    statusText.innerText = '💥 سقوط کرد! شما باختید.';
+                    balance -= 10; // کم کردن شرط
+                } else {
+                    multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
+                }
+            }, 50);
+        }
+
+        function cashOut() {
+            clearInterval(interval);
+            isPlaying = false;
+            actionButton.innerText = 'شروع مجدد (Place Bet)';
+            actionButton.className = 'action-btn btn-bet';
+            statusText.innerText = '✅ بردید! ضریب: ' + multiplier.toFixed(2) + 'x';
+            balance += 10; // اضافه کردن سود (ساده شده)
+        }
+    </script>
+</body>
+</html>
