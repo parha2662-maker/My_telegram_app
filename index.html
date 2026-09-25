@@ -13,18 +13,33 @@
             font-family: sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
             height: 100vh;
             overflow: hidden;
             user-select: none;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+        .balance-box {
+            background-color: #2a2a2a;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #00c853;
+            font-size: 18px;
         }
         .game-container {
             text-align: center;
             width: 100%;
             padding: 10px;
             box-sizing: border-box;
-            height: 60%;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,11 +48,28 @@
             font-size: 70px;
             font-weight: bold;
             color: #ffcc00;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             transition: color 0.3s;
         }
         .multiplier.crashed {
             color: #ff4444;
+        }
+        .bet-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .bet-input {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 120px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
         }
         .action-btn {
             width: 90%;
@@ -67,13 +99,13 @@
         /* استایل لیست شرط‌بندی‌ها */
         .history-container {
             width: 95%;
-            height: 35%;
+            height: 30%;
             background-color: #1e1e1e;
             border-radius: 15px;
             padding: 10px;
             box-sizing: border-box;
             overflow-y: auto;
-            margin-bottom: 10px;
+            margin: 0 auto 10px auto;
         }
         .history-title {
             font-size: 14px;
@@ -99,59 +131,70 @@
         }
         .user-name { color: #ccc; width: 30%; text-align: right; }
         .bet-amount { color: #ffcc00; width: 20%; text-align: center; }
-        .multiplier-badge { 
-            padding: 3px 8px; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            width: 20%;
-            text-align: center;
-        }
+        .multiplier-badge { padding: 3px 8px; border-radius: 5px; font-weight: bold; width: 20%; text-align: center; }
         .win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; }
         .loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; }
         .profit { width: 25%; text-align: left; font-weight: bold; }
     </style>
 </head>
 <body>
+    <div class="top-bar">
+        <div>💰 موجودی شما:</div>
+        <div class="balance-box" id="balanceDisplay">1000.00 TON</div>
+    </div>
+
     <div class="game-container">
         <div class="multiplier" id="multiplierDisplay">1.00x</div>
+        
+        <div class="bet-input-container">
+            <input type="number" id="betInput" class="bet-input" placeholder="مبلغ شرط" value="10" min="1">
+            <span style="padding-top:10px; color:#888;">TON</span>
+        </div>
+
         <button class="action-btn btn-bet" id="actionButton">شروع شرط‌بندی (Place Bet)</button>
-        <div class="status" id="statusText">برای شروع کلیک کنید</div>
+        <div class="status" id="statusText">مبلغ شرط رو وارد کنید و شروع کنید</div>
     </div>
 
     <div class="history-container">
         <div class="history-title">📊 شرط‌بندی‌های زنده (شبیه‌سازی)</div>
-        <div id="historyList">
-            <!-- آیتم‌های شرط بندی اینجا اضافه میشن -->
-        </div>
+        <div id="historyList"></div>
     </div>
 
     <script>
+        // لود کردن موجودی از حافظه مرورگر یا مقدار پیش‌فرض 1000
+        let balance = parseFloat(localStorage.getItem('crashBalance')) || 1000.00;
         let multiplier = 1.00;
         let isPlaying = false;
         let interval;
         let crashPoint = 0;
-        let balance = 100; 
+        let currentBet = 0;
 
         const multiplierDisplay = document.getElementById('multiplierDisplay');
         const actionButton = document.getElementById('actionButton');
         const statusText = document.getElementById('statusText');
         const historyList = document.getElementById('historyList');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const betInput = document.getElementById('betInput');
 
-        // لیست اسم‌های فیک برای شبیه‌سازی
+        // آپدیت کردن نمایش موجودی
+        function updateBalanceUI() {
+            balanceDisplay.innerText = balance.toFixed(2) + ' TON';
+            localStorage.setItem('crashBalance', balance); // ذخیره در حافظه
+        }
+        updateBalanceUI(); // اجرا در شروع
+
         const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika'];
 
-        // تابع ساخت شرط بندی فیک
         function createFakeBet() {
             const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
-            const amount = (Math.random() * 50 + 1).toFixed(2); // بین 1 تا 50
-            const multiplierValue = (Math.random() * 5 + 1).toFixed(2); // بین 1 تا 6
-            const isWin = Math.random() > 0.4; // 60% شانس برد
+            const amount = (Math.random() * 50 + 1).toFixed(2); 
+            const multiplierValue = (Math.random() * 5 + 1).toFixed(2); 
+            const isWin = Math.random() > 0.4; 
 
             let multiplierClass = isWin ? 'win' : 'loss';
             let multiplierText = isWin ? multiplierValue + 'x' : 'سقوط';
             let profit = isWin ? (amount * multiplierValue).toFixed(2) : '-' + amount;
 
-            // اگر باخت بود، ضریب رو 1.00 نشون بده
             if (!isWin) multiplierText = '1.00x';
 
             const item = document.createElement('div');
@@ -162,20 +205,12 @@
                 <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
                 <div class="profit" style="color: ${isWin ? '#00c853' : '#ff4444'}">${profit}</div>
             `;
-            
-            historyList.prepend(item); // اضافه کردن به بالای لیست
-
-            // حذف آیتم‌های اضافی برای جلوگیری از سنگین شدن
-            if (historyList.children.length > 20) {
-                historyList.removeChild(historyList.lastChild);
-            }
+            historyList.prepend(item);
+            if (historyList.children.length > 20) historyList.removeChild(historyList.lastChild);
         }
 
-        // هر ۲ تا ۴ ثانیه یک شرط بندی فیک جدید بساز
         setInterval(() => {
-            if (Math.random() > 0.3) { // 70% احتمال ساخت شرط جدید
-                createFakeBet();
-            }
+            if (Math.random() > 0.3) createFakeBet();
         }, Math.random() * 2000 + 2000);
 
         actionButton.addEventListener('click', () => {
@@ -187,25 +222,39 @@
         });
 
         function startGame() {
-            if (balance <= 0) {
-                statusText.innerText = "موجودی شما تمام شده!";
+            // خواندن مبلغ شرط از اینپوت
+            currentBet = parseFloat(betInput.value);
+            
+            // اعتبارسنجی شرط
+            if (isNaN(currentBet) || currentBet < 1) {
+                statusText.innerText = "❌ لطفاً یک مبلغ معتبر وارد کنید!";
+                return;
+            }
+            if (currentBet > balance) {
+                statusText.innerText = "❌ موجودی کافی نیست!";
                 return;
             }
             
+            // کم کردن شرط از موجودی
+            balance -= currentBet;
+            updateBalanceUI();
+            betInput.disabled = true; // قفل کردن اینپوت در حین بازی
+
             isPlaying = true;
             multiplier = 1.00;
-            crashPoint = Math.random() * 8.9 + 1.1; 
+            crashPoint = Math.random() * 8.9 + 1.1; // نقطه سقوط تصادفی
             
             multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
             multiplierDisplay.classList.remove('crashed');
             actionButton.innerText = 'برداشت (Cash Out)';
             actionButton.className = 'action-btn btn-cashout';
-            statusText.innerText = 'بازی در جریان است...';
+            statusText.innerText = `شرط شما: ${currentBet} TON. منتظر بمانید...`;
 
             interval = setInterval(() => {
                 multiplier += 0.05; 
                 
                 if (multiplier >= crashPoint) {
+                    // باخت
                     clearInterval(interval);
                     multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
                     multiplierDisplay.classList.add('crashed');
@@ -213,8 +262,8 @@
                     actionButton.innerText = 'شروع مجدد (Place Bet)';
                     actionButton.className = 'action-btn btn-bet';
                     statusText.innerText = '💥 سقوط کرد! شما باختید.';
-                    balance -= 10;
-                    addMyBetToHistory(false, crashPoint.toFixed(2)); // اضافه کردن باخت من به تاریخچه
+                    betInput.disabled = false; // باز کردن اینپوت
+                    addMyBetToHistory(false, 1.00); 
                 } else {
                     multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
                 }
@@ -222,28 +271,33 @@
         }
 
         function cashOut() {
+            // برد
             clearInterval(interval);
             isPlaying = false;
+            betInput.disabled = false; // باز کردن اینپوت
+
+            const profit = currentBet * multiplier;
+            balance += profit; // اضافه کردن سود به موجودی
+            updateBalanceUI();
+
             actionButton.innerText = 'شروع مجدد (Place Bet)';
             actionButton.className = 'action-btn btn-bet';
-            statusText.innerText = '✅ بردید! ضریب: ' + multiplier.toFixed(2) + 'x';
-            balance += 10;
-            addMyBetToHistory(true, multiplier.toFixed(2)); // اضافه کردن برد من به تاریخچه
+            statusText.innerText = `✅ بردید! ضریب: ${multiplier.toFixed(2)}x - سود: ${profit.toFixed(2)} TON`;
+            addMyBetToHistory(true, multiplier.toFixed(2)); 
         }
 
-        // تابعی برای اضافه کردن شرط‌بندی خود بازیکن به لیست
         function addMyBetToHistory(isWin, multiplierValue) {
-            const amount = 10;
+            const amount = currentBet;
             const profit = isWin ? (amount * multiplierValue).toFixed(2) : '-' + amount;
             let multiplierClass = isWin ? 'win' : 'loss';
             let multiplierText = isWin ? multiplierValue + 'x' : '1.00x';
 
             const item = document.createElement('div');
             item.className = 'history-item';
-            item.style.border = '1px solid #ffcc00'; // تمایز دادن شرط خودمون
+            item.style.border = '1px solid #ffcc00'; 
             item.innerHTML = `
                 <div class="user-name" style="color:#ffcc00; font-weight:bold;">شما (You)</div>
-                <div class="bet-amount">${amount} TON</div>
+                <div class="bet-amount">${amount.toFixed(2)} TON</div>
                 <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
                 <div class="profit" style="color: ${isWin ? '#00c853' : '#ff4444'}">${profit}</div>
             `;
