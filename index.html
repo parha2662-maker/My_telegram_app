@@ -283,6 +283,14 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div class="toast" id="toast"></div>
 
 <script>
+/* ⚙️⚙️⚙️ تنظیم سرعت بازی — عدد رو کم/زیاد کن ⚙️⚙️⚙️
+   1.00005 = خیلی کند (30 ثانیه تا 2x)
+   1.0001  = کند (7 ثانیه تا 2x) ← الان همین
+   1.0002  = متوسط (3.5 ثانیه تا 2x)
+   1.0003  = تند (2.3 ثانیه تا 2x)
+   1.0007  = خیلی تند (1 ثانیه تا 2x) */
+const SPEED = 1.0001;
+
 function openGame(){
     document.getElementById('homeScreen').classList.add('hidden');
     document.getElementById('gameScreen').classList.remove('hidden');
@@ -362,7 +370,6 @@ function startNewRound(){
     clearChart();
     multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');
     betInput.disabled=false;autoCashoutInput.disabled=false;
-    // 💾 مبلغ ذخیره‌شده رو بازیابی کن (اگه نبود پیش‌فرض)
     betInput.value=localStorage.getItem('lastBet')||10;
     autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;
     actionButton.innerText='ورود به بازی (Join)';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
@@ -378,8 +385,7 @@ function startGameplay(){
     let elapsed=0;
     gameInterval=setInterval(()=>{
         elapsed+=80;
-        // ⚡ سرعت ضریب پایین‌تر شد (قبلاً 1.0007 بود)
-        multiplier=Math.pow(1.0002,elapsed);
+        multiplier=Math.pow(SPEED,elapsed);
         multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);
         if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
         players.forEach(p=>{if(!p.isMe&&!p.cashedOut&&!p.lost&&Math.random()>0.97){p.cashedOut=true;p.cashoutMultiplier=multiplier;renderPlayers()}});
@@ -414,7 +420,6 @@ function cashOut(isAuto=false){
 }
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false)});
 
-// 💾 ذخیره خودکار مبلغ شرط موقع تایپ (فقط اگه خالی نباشه)
 betInput.addEventListener('input',()=>{
     const v=parseFloat(betInput.value);
     if(!isNaN(v)&&v>0){
