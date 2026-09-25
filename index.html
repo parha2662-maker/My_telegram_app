@@ -103,7 +103,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-balance-pill .ton-icon{width:22px;height:22px;font-size:12px}
 .pvp-balance-pill .val{font-weight:800;font-size:15px}
 .pvp-plus{background:#2a2e42;border:none;color:#fff;width:26px;height:26px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
-
 .pvp-stats{display:flex;gap:8px;padding:4px 16px 12px;flex-shrink:0}
 .stat-block{flex:1;text-align:center;padding:10px 6px}
 .stat-block+.stat-block{border-right:1px solid #2a2e42}
@@ -111,7 +110,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .stat-value-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .stat-value{font-size:15px;font-weight:800;color:#0098ea}
 .stat-pct{font-size:12px;color:#7a8299;text-align:left}
-
 .pvp-wheel-wrap{position:relative;flex:1;min-height:280px;display:flex;justify-content:center;align-items:center;padding:8px 0}
 #pvpCanvas{display:block}
 .pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:130px}
@@ -120,7 +118,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-pool{display:flex;justify-content:center;align-items:center;gap:5px;font-size:18px;font-weight:900;color:#fff}
 .pvp-pool .ton-icon{width:18px;height:18px;font-size:10px}
 .pvp-game-num{font-size:10px;color:#5a6278;margin-top:6px}
-
 .pvp-players-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;flex-shrink:0}
 .pvp-pcard{min-width:96px;padding:14px 10px;border-radius:16px;background:linear-gradient(180deg,#1a1d2e 0%,#14161f 100%);border:1px solid #2a2e42;text-align:center;flex-shrink:0;position:relative;transition:transform .2s}
 .pvp-pcard.isMe{border-color:#ffcc00;box-shadow:0 0 15px rgba(255,204,0,.25)}
@@ -130,7 +127,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-pname{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
 .pvp-ppct{font-size:13px;font-weight:900;color:#2ff068}
 .pvp-pbet{font-size:10px;color:#7a8299;margin-top:2px}
-
 .pvp-join-wrap{padding:8px 16px 12px;flex-shrink:0}
 .pvp-bet-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .pvp-bet-row label{font-size:12px;color:#7a8299;white-space:nowrap}
@@ -139,7 +135,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6;transition:all .2s;letter-spacing:.5px}
 .join-battle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;box-shadow:0 6px 25px rgba(124,58,237,.55)}
 .join-battle-btn:disabled{cursor:not-allowed}
-
 .pvp-players-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid #1a1d2e;flex-shrink:0}
 .pvp-players-header span{font-size:13px;font-weight:700;color:#8a90a6}
 .pvp-players-count{background:#1a1d2e;padding:4px 12px;border-radius:12px;font-size:12px!important}
@@ -298,6 +293,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div class="toast" id="toast"></div>
 
 <script>
+/* ================= NAVIGATION ================= */
 function openGame(){
     document.getElementById('homeScreen').classList.add('hidden');
     document.getElementById('gameScreen').classList.remove('hidden');
@@ -313,6 +309,7 @@ function goHome(){
     document.getElementById('homeScreen').classList.remove('hidden');
 }
 
+/* ================= SHARED BALANCE ================= */
 let balance = parseFloat(localStorage.getItem('crashBalance_home')) || 100.00;
 function updateGlobalBalanceUI() {
     const hb = document.getElementById('homeBalance');
@@ -333,9 +330,10 @@ function showToast(msg, type='') {
     t._tid = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-/* ================= CRASH ================= */
+/* ================= CRASH GAME ================= */
 let gameState='waiting', multiplier=1.00, crashPoint=0, myBet=0, myAutoCashout=0, hasJoined=false;
 let gameInterval, countdownInterval, roundHistory=[], players=[];
+let myPlayerId = null; // شناسه بازیکن خودمون که بین دورها حفظ می‌شه
 
 const multiplierDisplay=document.getElementById('multiplierDisplay');
 const actionButton=document.getElementById('actionButton');
@@ -352,6 +350,17 @@ window.addEventListener('resize',resizeCanvas);resizeCanvas();
 
 function resetBalance(){balance=100.00;updateGlobalBalanceUI();statusText.innerText='✅ موجودی شما به 100 TON شارژ شد!'}
 
+// ===== ذخیره خودکار مبلغ و برداشت =====
+betInput.value = localStorage.getItem('lastBet') || '10';
+autoCashoutInput.value = localStorage.getItem('lastAuto') || '2.00';
+
+betInput.addEventListener('input', () => {
+    if (betInput.value !== '') localStorage.setItem('lastBet', betInput.value);
+});
+autoCashoutInput.addEventListener('input', () => {
+    if (autoCashoutInput.value !== '') localStorage.setItem('lastAuto', autoCashoutInput.value);
+});
+
 let multiplierBag=[];const bagCounts={yellow:3,purple:4,blue:8,green:12,red:4};
 function fillBag(){multiplierBag=[];for(let t in bagCounts)for(let i=0;i<bagCounts[t];i++)multiplierBag.push(t);for(let i=multiplierBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[multiplierBag[i],multiplierBag[j]]=[multiplierBag[j],multiplierBag[i]]}}
 function getNextMultiplierType(){if(multiplierBag.length===0)fillBag();return multiplierBag.pop()}
@@ -364,71 +373,167 @@ function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);drawChart(1)
 
 const fakeNames=['Ali','Reza','Sara','Mmd','Hossein','Zahra','Amir','Nima','Erfan','Melika','Kian','Matin','Yasin','Arya'];
 const fakeAvatars=['🐸','🐱','⚽','🦊','🐻','🐼','🦁','🐯','🐨','🐵'];
-function addPlayer(name,amount,isMe=false){const avatar=isMe?'👤':fakeAvatars[Math.floor(Math.random()*fakeAvatars.length)];players.push({id:Date.now()+Math.random(),name,amount,avatar,isMe,cashedOut:false,lost:false});if(players.length>15){const idx=players.findIndex(p=>!p.isMe);if(idx!==-1)players.splice(idx,1)}renderPlayers()}
-function renderPlayers(){historyList.innerHTML='';if(players.length===0){historyList.innerHTML='<div style="text-align:center;color:#666;padding:20px;font-size:13px">در انتظار ورود بازیکنان...</div>';return}[...players].reverse().forEach(p=>{const item=document.createElement('div');item.className='history-item fade-in';if(p.isMe)item.style.border='1px solid #ffcc00';let mT='-',mC='',pT='-',pC='#ccc';if(p.cashedOut){mT=p.cashoutMultiplier.toFixed(2)+'x';mC='win';pT='+'+(p.amount*p.cashoutMultiplier).toFixed(2);pC='#00c853'}else if(p.lost){mT='باخت';mC='loss';pT='-'+p.amount.toFixed(2);pC='#ff4444'}item.innerHTML=`<div class="user-info"><span class="avatar-small">${p.avatar}</span><span class="user-name">${p.name}</span></div><div class="bet-amount">${p.amount.toFixed(2)} TON</div><div class="multiplier-badge ${mC}">${mT}</div><div class="profit" style="color:${pC}">${pT}</div>`;historyList.appendChild(item)})}
+
+function addPlayer(name,amount,isMe=false){
+    const avatar=isMe?'👤':fakeAvatars[Math.floor(Math.random()*fakeAvatars.length)];
+    const id = isMe ? 'ME_' + Date.now() : 'BOT_' + Date.now() + Math.random();
+    players.push({id, name, amount, avatar, isMe, cashedOut:false, lost:false});
+    if(players.length>15){
+        const idx=players.findIndex(p=>!p.isMe);
+        if(idx!==-1)players.splice(idx,1);
+    }
+    renderPlayers();
+}
+
+function renderPlayers(){
+    historyList.innerHTML='';
+    if(players.length===0){historyList.innerHTML='<div style="text-align:center;color:#666;padding:20px;font-size:13px">در انتظار ورود بازیکنان...</div>';return}
+    [...players].reverse().forEach(p=>{
+        const item=document.createElement('div');
+        item.className='history-item fade-in';
+        if(p.isMe)item.style.border='1px solid #ffcc00';
+        let mT='-',mC='',pT='-',pC='#ccc';
+        if(p.cashedOut){mT=p.cashoutMultiplier.toFixed(2)+'x';mC='win';pT='+'+(p.amount*p.cashoutMultiplier).toFixed(2);pC='#00c853'}
+        else if(p.lost){mT='باخت';mC='loss';pT='-'+p.amount.toFixed(2);pC='#ff4444'}
+        item.innerHTML=`<div class="user-info"><span class="avatar-small">${p.avatar}</span><span class="user-name">${p.name}</span></div><div class="bet-amount">${p.amount.toFixed(2)} TON</div><div class="multiplier-badge ${mC}">${mT}</div><div class="profit" style="color:${pC}">${pT}</div>`;
+        historyList.appendChild(item);
+    });
+}
 function updatePlayersOnCrash(){players.forEach(p=>{if(!p.cashedOut)p.lost=true});renderPlayers()}
 
 setInterval(()=>{if(gameState==='playing'&&Math.random()>0.85){addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1)}},1200);
 
 function startNewRound(){
-    gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;players=[];
-    addPlayer('ربات پشتیبان',10.00);
-    multiplier=1.00;crashPoint=getRandomCrashPoint();
+    gameState='waiting';
+    hasJoined=false;
+    myBet=0;
+    myAutoCashout=0;
+
+    // بازیکنان رو حفظ کن (فقط وضعیت‌شون رو ریست کن) - ولی ردیف خودمون رو حذف کن چون دور جدید باید از نو وارد بشه
+    players = players.filter(p => !p.isMe).map(p => ({...p, cashedOut:false, lost:false}));
+    // اگه کمتر از 1 بازیکن داره، یه بات اضافه کن
+    if (players.length < 1) {
+        addPlayer('ربات پشتیبان',10.00);
+    }
+
+    multiplier=1.00;
+    crashPoint=getRandomCrashPoint();
     clearChart();
-    multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');
-    betInput.disabled=false;autoCashoutInput.disabled=false;
-    betInput.value=parseFloat(localStorage.getItem('lastBet'))||10;
-    autoCashoutInput.value=parseFloat(localStorage.getItem('lastAuto'))||2.00;
-    actionButton.innerText='ورود به بازی (Join)';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
+    multiplierDisplay.classList.remove('crashed');
+    multiplierDisplay.classList.add('counting');
+
+    betInput.disabled=false;
+    autoCashoutInput.disabled=false;
+
+    // مبلغ شرط از قبل توسط event listener ذخیره شده، پس اینجا دست نمی‌زنیم
+    // فقط اگه خالی بود، مقدار پیش‌فرض بذار
+    if (!betInput.value || isNaN(parseFloat(betInput.value))) betInput.value = localStorage.getItem('lastBet') || '10';
+    if (!autoCashoutInput.value || isNaN(parseFloat(autoCashoutInput.value))) autoCashoutInput.value = localStorage.getItem('lastAuto') || '2.00';
+
+    actionButton.innerText='ورود به بازی (Join)';
+    actionButton.className='action-btn btn-bet';
+    actionButton.disabled=false;
     statusText.innerText='برای ورود به بازی عجله کنید!';
-    let countdown=5;multiplierDisplay.innerText=countdown;
-    countdownInterval=setInterval(()=>{countdown--;if(countdown>0)multiplierDisplay.innerText=countdown;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay()}},1000);
+
+    let countdown=7;
+    multiplierDisplay.innerText=countdown;
+    countdownInterval=setInterval(()=>{
+        countdown--;
+        if(countdown>0) multiplierDisplay.innerText=countdown;
+        else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay()}
+    },1000);
 }
+
 function startGameplay(){
-    gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;
-    if(hasJoined){statusText.innerText=`✅ شما با ${myBet} TON وارد شدید.`;actionButton.innerText='برداشت دستی (Cash Out)';actionButton.className='action-btn btn-cashout';actionButton.disabled=false}
-    else{statusText.innerText='شما وارد بازی نشدید! تماشا کنید...';actionButton.innerText='وارد نشدید';actionButton.className='action-btn btn-bet';actionButton.disabled=true}
+    gameState='playing';
+    betInput.disabled=true;
+    autoCashoutInput.disabled=true;
+
+    if(hasJoined){
+        statusText.innerText=`✅ شما با ${myBet} TON وارد شدید.`;
+        actionButton.innerText='برداشت دستی (Cash Out)';
+        actionButton.className='action-btn btn-cashout';
+        actionButton.disabled=false;
+    } else {
+        statusText.innerText='شما وارد بازی نشدید! تماشا کنید...';
+        actionButton.innerText='وارد نشدید';
+        actionButton.className='action-btn btn-bet';
+        actionButton.disabled=true;
+    }
+
     for(let i=0;i<2;i++)addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1);
+
     let elapsed=0;
     gameInterval=setInterval(()=>{
-        elapsed+=80;multiplier=Math.pow(1.0007,elapsed);
-        multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);
+        elapsed+=80;
+        // ===== سرعت کندتر =====
+        multiplier=Math.pow(1.0004,elapsed);
+        multiplierDisplay.innerText=multiplier.toFixed(2)+'x';
+        drawChart(multiplier);
+
         if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
+
         players.forEach(p=>{if(!p.isMe&&!p.cashedOut&&!p.lost&&Math.random()>0.97){p.cashedOut=true;p.cashoutMultiplier=multiplier;renderPlayers()}});
+
         if(multiplier>=crashPoint){
-            clearInterval(gameInterval);multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');
-            gameState='crashed';actionButton.disabled=true;actionButton.innerText='دور بعد...';actionButton.className='action-btn btn-bet';
+            clearInterval(gameInterval);
+            multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';
+            multiplierDisplay.classList.add('crashed');
+            gameState='crashed';
+            actionButton.disabled=true;
+            actionButton.innerText='دور بعد...';
+            actionButton.className='action-btn btn-bet';
+
             addRoundToHistory(crashPoint);
             statusText.innerText=hasJoined?`💥 سقوط کرد! شما ${myBet} TON باختید.`:`💥 سقوط در ${crashPoint.toFixed(2)}x!`;
-            updatePlayersOnCrash();setTimeout(startNewRound,2500);
+            updatePlayersOnCrash();
+            setTimeout(startNewRound,2500);
         }
     },80);
 }
+
 function joinGame(){
     if(gameState!=='waiting')return;
     const amount=parseFloat(betInput.value);
     if(isNaN(amount)||amount<1){statusText.innerText='❌ لطفاً یک مبلغ معتبر وارد کنید!';return}
     if(amount>balance){statusText.innerText='❌ موجودی کافی نیست!';return}
-    hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);
+    hasJoined=true;
+    myBet=amount;
+    myAutoCashout=parseFloat(autoCashoutInput.value);
     if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;
-    localStorage.setItem('lastBet',amount);localStorage.setItem('lastAuto',myAutoCashout||2.00);
-    balance-=amount;updateGlobalBalanceUI();
-    betInput.disabled=true;autoCashoutInput.disabled=true;
+
+    // سیو مقدار فعلی
+    localStorage.setItem('lastBet',amount);
+    localStorage.setItem('lastAuto',myAutoCashout||2.00);
+
+    balance-=amount;
+    updateGlobalBalanceUI();
+    betInput.disabled=true;
+    autoCashoutInput.disabled=true;
     addPlayer('شما (You)',amount,true);
     statusText.innerText=myAutoCashout>0?`✅ وارد شدید. برداشت خودکار در ${myAutoCashout.toFixed(2)}x`:`✅ وارد شدید! منتظر شروع...`;
-    actionButton.innerText='منتظر شروع...';actionButton.disabled=true;
+    actionButton.innerText='منتظر شروع...';
+    actionButton.disabled=true;
 }
+
 function cashOut(isAuto=false){
     if(!hasJoined||gameState!=='playing')return;
-    const winnings=myBet*multiplier;balance+=winnings;updateGlobalBalanceUI();
-    hasJoined=false;actionButton.disabled=true;actionButton.innerText='دور بعد...';actionButton.className='action-btn btn-bet';
+    const winnings=myBet*multiplier;
+    balance+=winnings;
+    updateGlobalBalanceUI();
+    hasJoined=false;
+    actionButton.disabled=true;
+    actionButton.innerText='دور بعد...';
+    actionButton.className='action-btn btn-bet';
     statusText.innerText=isAuto?`🤖 برداشت خودکار در ${multiplier.toFixed(2)}x! سود: ${winnings.toFixed(2)} TON`:`✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
-    const mp=players.find(p=>p.isMe);if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers()}
+    const mp=players.find(p=>p.isMe);
+    if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers()}
 }
+
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false)});
 startNewRound();
 
-/* ================= PVP ================= */
+/* ================= PVP ROULETTE ================= */
 window.pvpInitialized = false;
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a'];
 const PVP_BOTS=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro'];
@@ -487,13 +592,7 @@ function pvpStartRound(){
     const shuffled=[...PVP_BOTS].sort(()=>Math.random()-0.5);
     for(let i=0;i<botCount;i++){
         const bet=parseFloat((Math.random()*25+2).toFixed(2));
-        pvpPlayers.push({
-            name:shuffled[i],
-            avatar:PVP_AVATARS[i%PVP_AVATARS.length],
-            bet:bet,
-            color:PVP_COLORS[i%PVP_COLORS.length],
-            isMe:false
-        });
+        pvpPlayers.push({name:shuffled[i],avatar:PVP_AVATARS[i%PVP_AVATARS.length],bet:bet,color:PVP_COLORS[i%PVP_COLORS.length],isMe:false});
     }
     pvpRecalcPool();
     pvpRenderPlayers();
@@ -511,10 +610,7 @@ function pvpStartRound(){
         if(pvpState!=='waiting')return;
         pvpTimer--;
         pvpUpdateTimerUI();
-        if(pvpTimer<=0){
-            clearInterval(pvpTimerInterval);
-            pvpSpin();
-        }
+        if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpSpin();}
     },1000);
     pvpUpdateTimerUI();
 }
@@ -537,23 +633,14 @@ function pvpJoinClick(){
     const amount=parseFloat(document.getElementById('pvpBetInput').value);
     if(isNaN(amount)||amount<1){showToast('❌ مبلغ معتبر وارد کن');return}
     if(amount>balance){showToast('❌ موجودی کافی نیست');return}
-
     balance-=amount;updateGlobalBalanceUI();
     pvpUserJoined=true;
     pvpMyBet=amount;
     localStorage.setItem('lastPvpBet',amount);
-
-    pvpPlayers.push({
-        name:'You',
-        avatar:'👤',
-        bet:amount,
-        color:'#ffcc00',
-        isMe:true
-    });
+    pvpPlayers.push({name:'You',avatar:'👤',bet:amount,color:'#ffcc00',isMe:true});
     pvpRecalcPool();
     pvpRenderPlayers();
     pvpDraw();
-
     const btn=document.getElementById('joinBattleBtn');
     btn.innerText='✅ Joined ('+amount+' TON)';
     btn.className='join-battle-btn';
@@ -569,9 +656,7 @@ function pvpRenderPlayers(){
         const pct=((p.bet/pvpPool)*100).toFixed(1);
         const card=document.createElement('div');
         card.className='pvp-pcard'+(p.isMe?' isMe':'');
-        if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe){
-            card.classList.add('winner');
-        }
+        if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe) card.classList.add('winner');
         card.innerHTML=`
             <div class="pvp-pcard-top" style="background:${p.color}"></div>
             <div class="pvp-pav" style="border-color:${p.color}">${p.avatar}</div>
@@ -589,58 +674,37 @@ function pvpDraw(){
     const cx=size/2,cy=size/2;
     const R=size/2-6;
     const innerR=size*0.27;
-
     pvpCtx.clearRect(0,0,size,size);
-
     if(pvpPlayers.length===0){
-        pvpCtx.beginPath();
-        pvpCtx.arc(cx,cy,R,0,Math.PI*2);
+        pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);
         pvpCtx.strokeStyle='#2a2e42';pvpCtx.lineWidth=2;pvpCtx.stroke();
         return;
     }
-
     let angle=-Math.PI/2;
     pvpPlayers.forEach(p=>{
         const share=p.bet/pvpPool;
         const arc=share*Math.PI*2;
-        pvpCtx.beginPath();
-        pvpCtx.moveTo(cx,cy);
+        pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);
         pvpCtx.arc(cx,cy,R,angle,angle+arc);
         pvpCtx.closePath();
         pvpCtx.fillStyle=p.color;
         pvpCtx.fill();
         pvpCtx.strokeStyle='rgba(0,0,0,0.35)';
-        pvpCtx.lineWidth=2;
-        pvpCtx.stroke();
+        pvpCtx.lineWidth=2;pvpCtx.stroke();
         angle+=arc;
     });
-
-    pvpCtx.beginPath();
-    pvpCtx.arc(cx,cy,innerR,0,Math.PI*2);
-    pvpCtx.fillStyle='#1a1d2e';
-    pvpCtx.fill();
+    pvpCtx.beginPath();pvpCtx.arc(cx,cy,innerR,0,Math.PI*2);
+    pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();
     pvpCtx.strokeStyle='#0f1119';pvpCtx.lineWidth=3;pvpCtx.stroke();
-
     const px=cx+Math.cos(pvpPointerAngle)*R;
     const py=cy+Math.sin(pvpPointerAngle)*R;
     const sx=cx+Math.cos(pvpPointerAngle)*innerR;
     const sy=cy+Math.sin(pvpPointerAngle)*innerR;
-
-    pvpCtx.beginPath();
-    pvpCtx.moveTo(sx,sy);
-    pvpCtx.lineTo(px,py);
-    pvpCtx.strokeStyle='#ffcc00';
-    pvpCtx.lineWidth=5;
-    pvpCtx.lineCap='round';
-    pvpCtx.shadowBlur=18;
-    pvpCtx.shadowColor='#ffcc00';
-    pvpCtx.stroke();
-    pvpCtx.shadowBlur=0;
-
-    pvpCtx.beginPath();
-    pvpCtx.arc(px,py,7,0,Math.PI*2);
-    pvpCtx.fillStyle='#fff';
-    pvpCtx.fill();
+    pvpCtx.beginPath();pvpCtx.moveTo(sx,sy);pvpCtx.lineTo(px,py);
+    pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';
+    pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;
+    pvpCtx.beginPath();pvpCtx.arc(px,py,7,0,Math.PI*2);
+    pvpCtx.fillStyle='#fff';pvpCtx.fill();
     pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=3;pvpCtx.stroke();
 }
 
@@ -682,7 +746,6 @@ function pvpFinishSpin(){
     const winner=pvpDetermineWinner();
     pvpLastResult=winner;
     pvpRenderPlayers();
-
     if(winner.isMe){
         const winnings=pvpPool;
         balance+=winnings;updateGlobalBalanceUI();
@@ -699,14 +762,10 @@ function pvpFinishSpin(){
             document.getElementById('pvpLastPct').innerText='100%';
         }
     }
-
     setTimeout(()=>{pvpStartRound();},3200);
 }
 
-function pvpAddFunds(){
-    balance+=100;updateGlobalBalanceUI();
-    showToast('+100 TON شارژ شد');
-}
+function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON شارژ شد');}
 </script>
 </body>
 </html>
