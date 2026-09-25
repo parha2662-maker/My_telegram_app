@@ -110,13 +110,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .ph-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
 .ph-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
 .ph-balance-pill .val{font-weight:800;font-size:14px}
-.ph-live-row{display:flex;gap:10px;padding:10px 16px;overflow-x:auto;flex-shrink:0}
-.ph-live-icon{width:56px;height:56px;border-radius:16px;display:flex;justify-content:center;align-items:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.4);position:relative}
-.ph-live-icon.purple{background:linear-gradient(135deg,#9c27b0,#6a1b9a)}
-.ph-live-icon.blue{background:linear-gradient(135deg,#2196f3,#0d47a1)}
-.ph-live-icon.pink{background:linear-gradient(135deg,#e91e63,#880e4f)}
-.ph-live-icon.green{background:linear-gradient(135deg,#00c853,#009624)}
-.ph-upgrade{margin:10px 16px;border-radius:22px;padding:20px;position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#00e676,#00a838);min-height:130px;box-shadow:0 8px 25px rgba(0,230,118,.3)}
+.ph-upgrade{margin:20px 16px 10px;border-radius:22px;padding:20px;position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#00e676,#00a838);min-height:130px;box-shadow:0 8px 25px rgba(0,230,118,.3)}
 .ph-upgrade-badge{position:absolute;top:14px;left:16px;background:#fff;color:#00a838;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;z-index:5}
 .ph-upgrade-title{font-size:28px;font-weight:900;margin-top:28px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.2)}
 .ph-upgrade-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:4px;font-weight:600}
@@ -136,6 +130,44 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .ph-card-crafts{background:linear-gradient(135deg,#ff5722,#bf360c)}
 .ph-card-dice{background:linear-gradient(135deg,#03a9f4,#01579b)}
 .mines-mini{position:absolute;top:14px;right:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:15px}
+
+/* ============ UPGRADE SCREEN ============ */
+#upgradeScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:250;overflow-y:auto;padding-bottom:30px}
+.up-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;position:sticky;top:0;background:rgba(10,14,23,.95);backdrop-filter:blur(10px);z-index:100}
+.up-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
+.up-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
+.up-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
+.up-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
+.up-balance-pill .val{font-weight:800;font-size:14px}
+.up-head{margin:8px 16px 0;background:rgba(47,240,104,.06);border:1px solid rgba(47,240,104,.2);border-radius:20px;padding:18px}
+.up-head-title{font-size:24px;font-weight:900;color:#fff}
+.up-head-sub{font-size:13px;color:#2ff068;margin-top:6px;font-weight:600}
+.up-cards-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:18px 16px 0}
+.up-card{background:#131824;border:1px solid #2a2e42;border-radius:18px;padding:14px 10px;text-align:center}
+.up-card-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#2ff068;color:#0a0d14;font-size:12px;font-weight:900;margin-bottom:6px}
+.up-card-title{font-size:13px;font-weight:800;color:#fff;margin-bottom:12px}
+.up-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;text-align:center;font-size:16px;font-weight:800;padding:10px 4px;outline:none;font-family:inherit;transition:border-color .3s}
+.up-input:focus{border-color:#2ff068}
+.up-card-lbl{font-size:10px;color:#7a8299;margin-top:6px}
+.up-swap-icon{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2ff068,#00a838);display:flex;justify-content:center;align-items:center;font-size:20px;box-shadow:0 0 20px rgba(47,240,104,.5);flex-shrink:0}
+.up-wheel-wrap{position:relative;display:flex;justify-content:center;align-items:center;margin:18px 0;min-height:280px}
+#upCanvas{display:block}
+.up-wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:130px}
+.up-chance{font-size:34px;font-weight:900;color:#2ff068;text-shadow:0 0 20px rgba(47,240,104,.5);font-variant-numeric:tabular-nums}
+.up-chance.low{color:#ff4444;text-shadow:0 0 20px rgba(255,68,68,.5)}
+.up-chance.mid{color:#ffcc00;text-shadow:0 0 20px rgba(255,204,0,.5)}
+.up-chance-lbl{font-size:10px;color:#7a8299;letter-spacing:2px;font-weight:800;margin-top:4px}
+.up-stats{display:flex;justify-content:space-around;margin:0 16px 12px;background:#131824;border:1px solid #2a2e42;border-radius:14px;padding:12px}
+.up-stat{text-align:center}
+.up-stat-lbl{font-size:10px;color:#7a8299;margin-bottom:4px}
+.up-stat-val{font-size:16px;font-weight:900;color:#fff}
+.up-btn{margin:0 16px;width:calc(100% - 32px);padding:18px;font-size:18px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;letter-spacing:1px;box-shadow:0 8px 25px rgba(47,240,104,.4);transition:transform .15s}
+.up-btn:active{transform:scale(.98)}
+.up-btn:disabled{opacity:.6;cursor:not-allowed;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6;box-shadow:none}
+.up-result{margin:14px 16px 0;padding:14px;border-radius:14px;text-align:center;font-size:15px;font-weight:800;opacity:0;transition:opacity .3s}
+.up-result.show{opacity:1}
+.up-result.win{background:linear-gradient(135deg,rgba(47,240,104,.2),rgba(0,168,56,.2));color:#2ff068;border:1px solid rgba(47,240,104,.4)}
+.up-result.lose{background:linear-gradient(135deg,rgba(255,68,68,.2),rgba(200,30,30,.2));color:#ff4444;border:1px solid rgba(255,68,68,.4)}
 
 /* PVP */
 #pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
@@ -258,16 +290,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         </div>
     </div>
 
-    <div class="ph-live-row">
-        <div class="ph-live-icon green">🐸</div>
-        <div class="ph-live-icon purple">💖</div>
-        <div class="ph-live-icon blue">🐸</div>
-        <div class="ph-live-icon blue">🦋</div>
-        <div class="ph-live-icon pink">💖</div>
-        <div class="ph-live-icon pink">🧸</div>
-    </div>
-
-    <div class="ph-upgrade" onclick="playhubCardClick('Upgrade')">
+    <div class="ph-upgrade" onclick="openUpgrade()">
         <div class="ph-upgrade-badge">🔥 HOT</div>
         <div class="ph-upgrade-title">Upgrade</div>
         <div class="ph-upgrade-sub">Choose a dream gift</div>
@@ -311,6 +334,61 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
         <div class="nav-item"><div class="nav-icon">🔄</div><span>P2P</span></div>
     </div>
+</div>
+
+<div id="upgradeScreen" class="screen hidden">
+    <div class="up-top-bar">
+        <button class="up-back" onclick="closeUpgrade()">⬅ بازگشت</button>
+        <div class="up-title">🎁 Epic Gift</div>
+        <div class="up-balance-pill">
+            <span class="ton-icon">◈</span>
+            <span class="val" id="upBalanceDisplay">100.00</span>
+        </div>
+    </div>
+
+    <div class="up-head">
+        <div class="up-head-title">Gift Upgrade</div>
+        <div class="up-head-sub">✨ Transform your gift into something better</div>
+    </div>
+
+    <div class="up-cards-row">
+        <div class="up-card">
+            <div class="up-card-num">1</div>
+            <div class="up-card-title">Your Gift</div>
+            <input type="number" id="upBetInput" class="up-input" value="10" min="1" step="0.1">
+            <div class="up-card-lbl">مبلغ ورودی (TON)</div>
+        </div>
+        <div class="up-swap-icon">⚡</div>
+        <div class="up-card">
+            <div class="up-card-num" style="background:#ffcc00;">2</div>
+            <div class="up-card-title">Target Gift</div>
+            <input type="number" id="upTargetInput" class="up-input" value="50" min="2" step="0.1">
+            <div class="up-card-lbl">مبلغ هدف (TON)</div>
+        </div>
+    </div>
+
+    <div class="up-wheel-wrap">
+        <canvas id="upCanvas"></canvas>
+        <div class="up-wheel-center">
+            <div class="up-chance" id="upChanceDisplay">20.0%</div>
+            <div class="up-chance-lbl" id="upChanceLabel">VERY LOW</div>
+        </div>
+    </div>
+
+    <div class="up-stats">
+        <div class="up-stat">
+            <div class="up-stat-lbl">🎯 شانس برد</div>
+            <div class="up-stat-val" id="upChanceText">20.0%</div>
+        </div>
+        <div class="up-stat">
+            <div class="up-stat-lbl">💰 سود در صورت برد</div>
+            <div class="up-stat-val" id="upProfitText">+40.00</div>
+        </div>
+    </div>
+
+    <button class="up-btn" id="upBtn" onclick="upStart()">🚀 UPGRADE</button>
+
+    <div class="up-result" id="upResult"></div>
 </div>
 
 <div id="gameScreen" class="screen hidden">
@@ -403,11 +481,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div class="toast" id="toast"></div>
 
 <script>
-/* ⚙️ تنظیم سرعت بازی */
 const SPEED = 1.0001;
-/* ⏱️ زمان شمارش معکوس CRASH (ثانیه) */
 const COUNTDOWN_SECONDS = 8;
-/* ⏱️ زمان شمارش معکوس PVP (ثانیه) */
 const PVP_COUNTDOWN_SECONDS = 10;
 
 function openGame(){
@@ -422,6 +497,16 @@ function openPvp(){
 }
 function openPlayHub(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('playhubScreen').classList.remove('hidden');
+}
+function openUpgrade(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('upgradeScreen').classList.remove('hidden');
+    if (!window.upInitialized) { upInit(); window.upInitialized = true; }
+    setTimeout(()=>{ upResize(); upUpdateChance(); }, 100);
+}
+function closeUpgrade(){
+    document.getElementById('upgradeScreen').classList.add('hidden');
     document.getElementById('playhubScreen').classList.remove('hidden');
 }
 function goHome(){
@@ -442,6 +527,8 @@ function updateGlobalBalanceUI() {
     if (pb) pb.innerText = balance.toFixed(2);
     const phb = document.getElementById('phBalanceDisplay');
     if (phb) phb.innerText = balance.toFixed(3);
+    const ub = document.getElementById('upBalanceDisplay');
+    if (ub) ub.innerText = balance.toFixed(2);
     localStorage.setItem('crashBalance_home', balance);
 }
 updateGlobalBalanceUI();
@@ -452,6 +539,240 @@ function showToast(msg, type='') {
     t.innerText = msg;
     clearTimeout(t._tid);
     t._tid = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ================= UPGRADE GAME ================= */
+window.upInitialized = false;
+let upCanvas, upCtx, upSize = 280;
+let upWheelAngle = 0;
+let upState = 'idle';
+let upChance = 20;
+let upBetVal = 0;
+let upTargetVal = 0;
+let upIsWin = false;
+
+function upInit(){
+    upCanvas = document.getElementById('upCanvas');
+    upCtx = upCanvas.getContext('2d');
+    window.addEventListener('resize', ()=>{ if(upCanvas) upResize(); });
+    upResize();
+    upDrawWheel();
+    document.getElementById('upBetInput').addEventListener('input', upUpdateChance);
+    document.getElementById('upTargetInput').addEventListener('input', upUpdateChance);
+    upUpdateChance();
+}
+function upResize(){
+    if(!upCanvas) return;
+    const wrap = upCanvas.parentElement;
+    const availW = wrap.clientWidth - 40;
+    const availH = wrap.clientHeight - 20;
+    const size = Math.max(200, Math.min(availW, availH, 300));
+    const dpr = window.devicePixelRatio || 1;
+    upSize = size;
+    upCanvas.width = size * dpr;
+    upCanvas.height = size * dpr;
+    upCanvas.style.width = size + 'px';
+    upCanvas.style.height = size + 'px';
+    upCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    upDrawWheel();
+}
+function upUpdateChance(){
+    const bet = parseFloat(document.getElementById('upBetInput').value) || 0;
+    const target = parseFloat(document.getElementById('upTargetInput').value) || 0;
+    if (bet > 0 && target > bet) {
+        // chance with 3% house edge
+        const raw = (bet / target) * 100;
+        upChance = Math.max(1, Math.min(96, raw * 0.97));
+    } else {
+        upChance = 0;
+    }
+    // Update UI
+    const chanceEl = document.getElementById('upChanceDisplay');
+    const chanceLbl = document.getElementById('upChanceLabel');
+    if (chanceEl) {
+        chanceEl.innerText = upChance.toFixed(1) + '%';
+        chanceEl.classList.remove('low','mid');
+        if (upChance < 25) chanceEl.classList.add('low');
+        else if (upChance < 55) chanceEl.classList.add('mid');
+    }
+    if (chanceLbl) {
+        let lbl = 'VERY LOW';
+        if (upChance >= 90) lbl = 'EXTREME';
+        else if (upChance >= 70) lbl = 'VERY HIGH';
+        else if (upChance >= 50) lbl = 'HIGH';
+        else if (upChance >= 30) lbl = 'MEDIUM';
+        else if (upChance >= 15) lbl = 'LOW';
+        chanceLbl.innerText = lbl;
+    }
+    const chanceText = document.getElementById('upChanceText');
+    if (chanceText) chanceText.innerText = upChance.toFixed(1) + '%';
+    const profitText = document.getElementById('upProfitText');
+    if (profitText) {
+        const profit = target > bet ? (target - bet) : 0;
+        profitText.innerText = '+' + profit.toFixed(2);
+    }
+    upDrawWheel();
+}
+function upDrawWheel(){
+    if(!upCtx) return;
+    const size = upSize, cx = size/2, cy = size/2;
+    const R = size/2 - 8;
+    upCtx.clearRect(0, 0, size, size);
+    
+    const greenAngle = (upChance / 100) * Math.PI * 2;
+    const startA = upWheelAngle - Math.PI/2;
+    
+    // Green sector (win)
+    if (greenAngle > 0) {
+        upCtx.beginPath();
+        upCtx.moveTo(cx, cy);
+        upCtx.arc(cx, cy, R, startA, startA + greenAngle);
+        upCtx.closePath();
+        upCtx.fillStyle = '#2ff068';
+        upCtx.fill();
+        // lines
+        upCtx.save();
+        upCtx.beginPath(); upCtx.moveTo(cx,cy); upCtx.arc(cx,cy,R,startA,startA+greenAngle); upCtx.closePath();
+        upCtx.clip();
+        for (let i=0; i<40; i++){
+            const a = startA + (i/40) * greenAngle;
+            upCtx.beginPath();
+            upCtx.moveTo(cx, cy);
+            upCtx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);
+            upCtx.strokeStyle = 'rgba(0,0,0,.15)';
+            upCtx.lineWidth = 1;
+            upCtx.stroke();
+        }
+        upCtx.restore();
+    }
+    // Red sector (lose)
+    if (greenAngle < Math.PI * 2) {
+        upCtx.beginPath();
+        upCtx.moveTo(cx, cy);
+        upCtx.arc(cx, cy, R, startA + greenAngle, startA + Math.PI*2);
+        upCtx.closePath();
+        upCtx.fillStyle = '#ff4444';
+        upCtx.fill();
+        upCtx.save();
+        upCtx.beginPath(); upCtx.moveTo(cx,cy); upCtx.arc(cx,cy,R,startA+greenAngle,startA+Math.PI*2); upCtx.closePath();
+        upCtx.clip();
+        for (let i=0; i<40; i++){
+            const a = startA + greenAngle + (i/40) * (Math.PI*2 - greenAngle);
+            upCtx.beginPath();
+            upCtx.moveTo(cx, cy);
+            upCtx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);
+            upCtx.strokeStyle = 'rgba(0,0,0,.15)';
+            upCtx.lineWidth = 1;
+            upCtx.stroke();
+        }
+        upCtx.restore();
+    }
+    // Inner circle
+    upCtx.beginPath();
+    upCtx.arc(cx, cy, size*0.22, 0, Math.PI*2);
+    upCtx.fillStyle = '#1a1d2e';
+    upCtx.fill();
+    upCtx.strokeStyle = '#2a2e42';
+    upCtx.lineWidth = 3;
+    upCtx.stroke();
+    
+    // Outer ring
+    upCtx.beginPath();
+    upCtx.arc(cx, cy, R+3, 0, Math.PI*2);
+    upCtx.strokeStyle = '#2a2e42';
+    upCtx.lineWidth = 6;
+    upCtx.stroke();
+    
+    // Pointer at top
+    upCtx.beginPath();
+    upCtx.moveTo(cx - 10, 4);
+    upCtx.lineTo(cx + 10, 4);
+    upCtx.lineTo(cx, 24);
+    upCtx.closePath();
+    upCtx.fillStyle = '#ffcc00';
+    upCtx.shadowBlur = 15;
+    upCtx.shadowColor = '#ffcc00';
+    upCtx.fill();
+    upCtx.shadowBlur = 0;
+    upCtx.strokeStyle = '#fff';
+    upCtx.lineWidth = 1.5;
+    upCtx.stroke();
+}
+function upStart(){
+    if (upState !== 'idle') return;
+    const bet = parseFloat(document.getElementById('upBetInput').value);
+    const target = parseFloat(document.getElementById('upTargetInput').value);
+    if (isNaN(bet) || bet < 1) { showToast('❌ مبلغ ورودی نامعتبر'); return; }
+    if (isNaN(target) || target <= bet) { showToast('❌ مبلغ هدف باید بیشتر از ورودی باشه'); return; }
+    if (bet > balance) { showToast('❌ موجودی کافی نیست'); return; }
+    
+    upBetVal = bet;
+    upTargetVal = target;
+    balance -= bet;
+    updateGlobalBalanceUI();
+    
+    // Result based on chance
+    upIsWin = Math.random() * 100 < upChance;
+    
+    upState = 'spinning';
+    const btn = document.getElementById('upBtn');
+    btn.disabled = true;
+    btn.innerText = '⏳ در حال چرخش...';
+    const res = document.getElementById('upResult');
+    res.className = 'up-result';
+    res.innerText = '';
+    
+    // Determine target angle
+    const greenAngle = (upChance / 100) * Math.PI * 2;
+    let finalLocal;
+    if (upIsWin) {
+        finalLocal = Math.random() * greenAngle;
+    } else {
+        finalLocal = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
+    }
+    // Pointer at canvas angle -π/2 (top)
+    // Local pointer angle = -π/2 - upWheelAngle (mod 2π)
+    // We want local pointer angle = finalLocal
+    // So upWheelAngle = -π/2 - finalLocal (mod 2π)
+    const targetAngleBase = -Math.PI/2 - finalLocal;
+    const fullSpins = 6 + Math.floor(Math.random() * 3);
+    const startAngle = upWheelAngle;
+    const endAngle = targetAngleBase + fullSpins * Math.PI * 2;
+    
+    // Ensure endAngle > startAngle for smooth animation
+    const finalEnd = endAngle > startAngle ? endAngle : endAngle + Math.PI*2*10;
+    
+    const duration = 4000;
+    const startTime = performance.now();
+    function frame(now){
+        const t = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - Math.pow(1 - t, 3.2);
+        upWheelAngle = startAngle + (finalEnd - startAngle) * eased;
+        upDrawWheel();
+        if (t < 1) requestAnimationFrame(frame);
+        else upFinish();
+    }
+    requestAnimationFrame(frame);
+}
+function upFinish(){
+    upState = 'idle';
+    const btn = document.getElementById('upBtn');
+    btn.disabled = false;
+    btn.innerText = '🚀 UPGRADE';
+    const res = document.getElementById('upResult');
+    if (upIsWin){
+        balance += upTargetVal;
+        updateGlobalBalanceUI();
+        res.className = 'up-result win show';
+        res.innerText = '🏆 بردی! +' + upTargetVal.toFixed(2) + ' TON';
+        showToast('🏆 بردی! +' + upTargetVal.toFixed(2) + ' TON', 'win');
+    } else {
+        res.className = 'up-result lose show';
+        res.innerText = '😔 باختی! -' + upBetVal.toFixed(2) + ' TON';
+        showToast('😔 باختی! -' + upBetVal.toFixed(2) + ' TON', 'lose');
+    }
+    // reset wheel angle for next round (keep it visually wherever it is)
+    upWheelAngle = upWheelAngle % (Math.PI * 2);
 }
 
 /* ================= CRASH ================= */
@@ -781,4 +1102,4 @@ function pvpFinishSpin(){
 function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON شارژ شد')}
 </script>
 </body>
-</html>
+                </html>
