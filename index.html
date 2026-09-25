@@ -134,10 +134,16 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-ppct{font-size:13px;font-weight:900;color:#2ff068}
 .pvp-pbet{font-size:10px;color:#7a8299;margin-top:2px}
 .pvp-join-wrap{padding:8px 16px 12px;flex-shrink:0}
-.pvp-bet-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.pvp-bet-row label{font-size:12px;color:#7a8299;white-space:nowrap}
-.pvp-bet-input{flex:1;background:#1a1d2e;border:1px solid #2a2e42;color:#fff;padding:12px 14px;border-radius:12px;font-size:15px;font-weight:700;text-align:center;outline:none}
+.pvp-bet-row{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.pvp-bet-row label{font-size:12px;color:#7a8299;white-space:nowrap;flex-shrink:0}
+.pvp-bet-input{flex:1;background:#1a1d2e;border:2px solid #2a2e42;color:#fff;padding:12px 14px;border-radius:12px;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0;transition:border-color .3s}
 .pvp-bet-input:focus{border-color:#7c3aed}
+.pvp-quick-btns{display:flex;gap:5px;flex-shrink:0}
+.pvp-quick-btn{background:linear-gradient(135deg,#2a2e42,#1a1d2e);border:1px solid #3a3e52;color:#fff;padding:11px 10px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;font-family:inherit;flex-shrink:0}
+.pvp-quick-btn:active{transform:scale(.95)}
+.pvp-quick-btn.all-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff;box-shadow:0 0 10px rgba(124,58,237,.4)}
+.pvp-quick-btn.half-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border-color:#0098ea;box-shadow:0 0 10px rgba(0,152,234,.3)}
+.pvp-quick-btn:disabled{opacity:.4;cursor:not-allowed}
 .join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6;transition:all .2s;letter-spacing:.5px}
 .join-battle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;box-shadow:0 6px 25px rgba(124,58,237,.55)}
 .join-battle-btn:disabled{cursor:not-allowed}
@@ -265,7 +271,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="pvp-wheel-wrap">
         <canvas id="pvpCanvas"></canvas>
         <div class="pvp-center">
-            <div class="pvp-timer" id="pvpTimer">00:08</div>
+            <div class="pvp-timer" id="pvpTimer">00:10</div>
             <div class="pvp-pool-label">TOTAL POOL</div>
             <div class="pvp-pool">
                 <span class="ton-icon">◈</span>
@@ -279,7 +285,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="pvp-bet-row">
             <label>مبلغ ورود:</label>
             <input type="number" id="pvpBetInput" class="pvp-bet-input" value="10" min="1">
-            <span style="color:#7a8299;font-size:12px">TON</span>
+            <div class="pvp-quick-btns">
+                <button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button>
+                <button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button>
+            </div>
         </div>
         <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
     </div>
@@ -294,8 +303,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <script>
 /* ⚙️ تنظیم سرعت بازی */
 const SPEED = 1.0001;
-/* ⏱️ زمان شمارش معکوس (ثانیه) */
+/* ⏱️ زمان شمارش معکوس CRASH (ثانیه) */
 const COUNTDOWN_SECONDS = 8;
+/* ⏱️ زمان شمارش معکوس PVP (ثانیه) */
+const PVP_COUNTDOWN_SECONDS = 10;
 
 function openGame(){
     document.getElementById('homeScreen').classList.add('hidden');
@@ -482,7 +493,7 @@ const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#
 const PVP_BOTS=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro'];
 const PVP_AVATARS=['🦁','🧔','👨','🐸','🐱','🐻','🤖','🐼','🦊','🐯'];
 
-let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=8,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
+let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
 
 function pvpInit(){
@@ -508,7 +519,7 @@ function resizePvpCanvas(){
     pvpDraw();
 }
 function pvpStartRound(){
-    pvpState='waiting';pvpTimer=8;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
+    pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
     pvpPointerAngle=-Math.PI/2;pvpLastResult=null;
     pvpGameNum=Math.floor(60000+Math.random()*10000);
     document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;
@@ -524,6 +535,8 @@ function pvpStartRound(){
     btn.innerText='Join the Battle';btn.className='join-battle-btn active';btn.disabled=false;
     document.getElementById('pvpBetInput').disabled=false;
     document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||10;
+    document.getElementById('pvpHalfBtn').disabled=false;
+    document.getElementById('pvpAllBtn').disabled=false;
     clearInterval(pvpTimerInterval);
     pvpTimerInterval=setInterval(()=>{
         if(pvpState!=='waiting')return;
@@ -547,8 +560,44 @@ function pvpJoinClick(){
     const btn=document.getElementById('joinBattleBtn');
     btn.innerText='✅ Joined ('+amount+' TON)';btn.className='join-battle-btn';btn.disabled=true;
     document.getElementById('pvpBetInput').disabled=true;
+    document.getElementById('pvpHalfBtn').disabled=true;
+    document.getElementById('pvpAllBtn').disabled=true;
     showToast('وارد شدی با '+amount+' TON');
 }
+// 🎯 PVP — ALL
+function pvpSetBetAll(){
+    if(pvpState!=='waiting'||pvpUserJoined)return;
+    const amount=Math.floor(balance*100)/100;
+    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    document.getElementById('pvpBetInput').value=amount.toFixed(2);
+    localStorage.setItem('lastPvpBet',amount);
+    document.getElementById('pvpBetInput').style.borderColor='#9b5cff';
+    clearTimeout(window._pvpT);
+    window._pvpT=setTimeout(()=>document.getElementById('pvpBetInput').style.borderColor='#2a2e42',500);
+    showToast('🎯 همه موجودی: '+amount.toFixed(2)+' TON');
+}
+// 🎯 PVP — 50%
+function pvpSetBetHalf(){
+    if(pvpState!=='waiting'||pvpUserJoined)return;
+    const amount=Math.floor((balance/2)*100)/100;
+    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    document.getElementById('pvpBetInput').value=amount.toFixed(2);
+    localStorage.setItem('lastPvpBet',amount);
+    document.getElementById('pvpBetInput').style.borderColor='#0098ea';
+    clearTimeout(window._pvpT);
+    window._pvpT=setTimeout(()=>document.getElementById('pvpBetInput').style.borderColor='#2a2e42',500);
+    showToast('⚡ نصف موجودی: '+amount.toFixed(2)+' TON');
+}
+// 💾 ذخیره خودکار مبلغ PVP
+document.getElementById('pvpBetInput').addEventListener('input',(e)=>{
+    const v=parseFloat(e.target.value);
+    if(!isNaN(v)&&v>0){
+        localStorage.setItem('lastPvpBet',v);
+        e.target.style.borderColor='#2ff068';
+        clearTimeout(window._pvpT);
+        window._pvpT=setTimeout(()=>e.target.style.borderColor='#2a2e42',500);
+    }
+});
 function pvpRenderPlayers(){
     const row=document.getElementById('pvpPlayersRow');
     row.innerHTML='';
