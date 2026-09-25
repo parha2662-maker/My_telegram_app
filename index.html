@@ -1,1 +1,815 @@
-.
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ebic Gift</title>
+    <style>
+        /* ===== تنظیمات کلی ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            height: 100%; width: 100%; overflow: hidden;
+            background-color: #0b0e14; color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            user-select: none;
+        }
+        /* مخفی کردن اسکرول‌بار */
+        ::-webkit-scrollbar { display: none; }
+
+        /* ===== مدیریت صفحه‌ها ===== */
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+        }
+        .screen.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           صفحه اصلی (HOME SCREEN)
+           ========================================= */
+        #homeScreen {
+            background: linear-gradient(180deg, #0f111a 0%, #161a29 100%);
+            overflow-y: auto;
+            padding-bottom: 80px; /* فضای زیر برای نوار پایین */
+        }
+
+        /* نوار بالا */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background-color: rgba(15, 17, 26, 0.9);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .gift-title {
+            font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 8px;
+        }
+        .menu-btn { font-size: 24px; color: #aaa; cursor: pointer; }
+
+        /* بخش موجودی */
+        .balance-section {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px; margin-top: 5px;
+        }
+        .avatar {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 20px; font-weight: bold; color: #000;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+        .balance-info { flex-grow: 1; margin-right: 12px; }
+        .balance-label { font-size: 12px; color: #888; margin-bottom: 2px; }
+        .balance-value { font-size: 20px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .balance-value span { font-size: 14px; color: #aaa; }
+        .deposit-btn {
+            background: linear-gradient(135deg, #8a2be2, #6a1b9a);
+            color: white; border: none; padding: 10px 18px;
+            border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer;
+        }
+
+        /* آیکون‌های Live */
+        .live-section {
+            display: flex; align-items: center; padding: 15px 20px; gap: 10px;
+            overflow-x: auto; white-space: nowrap;
+        }
+        .live-label {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 11px; color: #aaa; gap: 4px;
+        }
+        .live-dot { width: 8px; height: 8px; background-color: #00c853; border-radius: 50%; box-shadow: 0 0 10px #00c853; }
+        .live-icons { display: flex; gap: 10px; }
+        .live-icon {
+            width: 50px; height: 50px; border-radius: 12px;
+            background: linear-gradient(135deg, #00c853, #009624);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .live-icon .badge {
+            position: absolute; top: -5px; right: -5px;
+            background-color: #ff4444; color: white; font-size: 10px;
+            width: 18px; height: 18px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-weight: bold;
+        }
+
+        /* بنرها (Banners) */
+        .banners-container {
+            padding: 10px 15px; display: flex; flex-direction: column; gap: 15px;
+        }
+        .banner {
+            border-radius: 20px; padding: 20px;
+            position: relative; overflow: hidden;
+            cursor: pointer; transition: transform 0.1s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .banner:active { transform: scale(0.98); }
+
+        /* بنر Rocket (آبی) */
+        .banner-rocket {
+            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            height: 100px;
+            display: flex; align-items: center;
+        }
+        .banner-rocket .title { font-size: 26px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .banner-rocket .hot-badge {
+            position: absolute; top: 15px; left: 20px;
+            background-color: white; color: #1e90ff; padding: 4px 12px;
+            border-radius: 10px; font-size: 12px; font-weight: bold;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .rocket-visual {
+            position: absolute; right: 20px; bottom: 10px; font-size: 60px;
+            transform: rotate(-30deg);
+            animation: float 2s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-30deg); }
+            50% { transform: translateY(-10px) rotate(-30deg); }
+        }
+        /* ضریب‌های شناور روی بنر راکت */
+        .floating-mult {
+            position: absolute; padding: 3px 8px; border-radius: 6px;
+            font-size: 11px; font-weight: bold; color: #000;
+            animation: floatMulti 3s infinite ease-in-out;
+        }
+        .fm-1 { top: 15px; right: 80px; background-color: #00ff88; animation-delay: 0s; }
+        .fm-2 { top: 45px; right: 120px; background-color: #ffcc00; animation-delay: 0.5s; }
+        .fm-3 { bottom: 15px; right: 50px; background-color: #ff4444; animation-delay: 1s; }
+        @keyframes floatMulti {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+
+        /* بنر PVP (نارنجی) */
+        .banner-pvp {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            height: 90px;
+            display: flex; align-items: center;
+        }
+        .banner-pvp .title { font-size: 24px; font-weight: 900; color: #333; display: flex; align-items: center; gap: 10px; }
+        .banner-pvp .new-badge {
+            position: absolute; top: 15px; left: 20px;
+            background-color: white; color: #fda085; padding: 4px 12px;
+            border-radius: 10px; font-size: 12px; font-weight: bold;
+        }
+        .pvp-avatars {
+            position: absolute; right: 15px; bottom: 10px;
+            display: flex; gap: 5px;
+        }
+        .pvp-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background-color: rgba(0,0,0,0.2); border: 2px solid white;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 18px; font-weight: bold;
+        }
+
+        /* بنر PLAY HUB (بنفش) */
+        .banner-playhub {
+            background: linear-gradient(135deg, #8a2be2, #4b0082);
+            height: 90px;
+            display: flex; align-items: center;
+        }
+        .banner-playhub .title { font-size: 24px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .banner-playhub .hot-badge {
+            position: absolute; top: 15px; left: 20px;
+            background-color: white; color: #8a2be2; padding: 4px 12px;
+            border-radius: 10px; font-size: 12px; font-weight: bold;
+        }
+
+        /* نوار پایین (Bottom Nav) */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: 70px; background-color: #161a29;
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid #2a2a3a; z-index: 100;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: #666; font-size: 11px; cursor: pointer; transition: color 0.2s;
+        }
+        .nav-item.active { color: #fff; }
+        .nav-item.active .nav-icon {
+            background: linear-gradient(135deg, #8a2be2, #6a1b9a);
+            padding: 8px; border-radius: 12px;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+        .nav-icon { font-size: 22px; }
+
+        /* =========================================
+           صفحه بازی (GAME SCREEN)
+           ========================================= */
+        #gameScreen {
+            background-color: #121212;
+            z-index: 200;
+        }
+        /* نوار بالای بازی */
+        .game-top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 15px; background-color: #1e1e1e;
+            border-bottom: 1px solid #333; flex-shrink: 0; z-index: 10;
+        }
+        .back-btn {
+            background-color: #333; color: white; border: none;
+            padding: 8px 15px; border-radius: 8px; font-size: 14px; cursor: pointer;
+        }
+        .game-balance {
+            background-color: #2a2a2a; padding: 8px 15px; border-radius: 10px;
+            font-weight: bold; color: #00c853; font-size: 16px;
+        }
+        .reset-btn {
+            background-color: #444; color: white; border: none;
+            padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer;
+        }
+
+        /* نمودار */
+        .chart-container {
+            width: 100%; height: 180px; background-color: #0a0a0a;
+            position: relative; display: flex; justify-content: center;
+            align-items: center; overflow: hidden; flex-shrink: 0;
+        }
+        #chartCanvas { width: 100%; height: 100%; }
+        .multiplier-text {
+            position: absolute; font-size: 60px; font-weight: bold;
+            color: #ffcc00; z-index: 10; text-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
+        }
+        .multiplier-text.crashed { color: #ff4444; }
+        .multiplier-text.counting {
+            color: #ff9800; font-size: 100px;
+            text-shadow: 0 0 30px rgba(255, 152, 0, 0.8);
+        }
+
+        /* بخش شرط‌بندی */
+        .bet-controls {
+            padding: 12px 15px; display: flex; flex-direction: column;
+            gap: 8px; background-color: #1e1e1e;
+            border-top: 1px solid #333; border-bottom: 1px solid #333;
+            flex-shrink: 0; z-index: 10;
+        }
+        .bet-input-row {
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .input-label { font-size: 13px; color: #aaa; width: 75px; text-align: right; }
+        .bet-input {
+            background-color: #2a2a2a; border: 1px solid #444; color: white;
+            padding: 10px; border-radius: 10px; width: 130px;
+            text-align: center; font-size: 15px; font-weight: bold;
+            user-select: text !important; -webkit-user-select: text !important;
+        }
+        .auto-cashout-input {
+            border: 2px solid #00c853 !important;
+            background-color: #0d1f0d !important;
+            color: #00c853 !important;
+        }
+        .action-btn {
+            width: 100%; padding: 15px; font-size: 20px; font-weight: bold;
+            border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.2s; color: white; margin-top: 3px;
+        }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-bet { background: linear-gradient(135deg, #1e90ff, #0056b3); }
+        .btn-cashout { background: linear-gradient(135deg, #00c853, #009624); }
+
+        /* لیست شرط‌بندی‌ها */
+        .history-container {
+            height: 30vh; overflow-y: auto; padding: 10px;
+            background-color: #121212; flex-shrink: 0; z-index: 10;
+        }
+        .history-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 10px; background-color: #1e1e1e; border-radius: 10px;
+            margin-bottom: 5px; font-size: 13px; border: 1px solid #2a2a2a;
+        }
+        .user-info { display: flex; align-items: center; gap: 8px; flex-grow: 1; }
+        .avatar-small { font-size: 22px; }
+        .user-name { color: #ccc; font-weight: bold; font-size: 13px; }
+        .bet-amount { color: #ffcc00; margin-left: auto; padding-left: 10px; font-size: 13px; }
+        .multiplier-badge { padding: 4px 8px; border-radius: 5px; font-weight: bold; min-width: 55px; text-align: center; font-size: 12px; }
+        .win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; }
+        .loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; }
+        .profit { width: 65px; text-align: left; font-weight: bold; font-size: 13px; }
+        
+        /* نوار تاریخچه ضریب‌ها */
+        .multiplier-history {
+            display: flex; justify-content: flex-start; align-items: center;
+            overflow-x: auto; padding: 8px 10px; gap: 8px;
+            background-color: #1a1a1a; border-bottom: 1px solid #333;
+            white-space: nowrap; min-height: 45px; flex-shrink: 0; z-index: 10;
+        }
+        .history-badge {
+            padding: 5px 12px; border-radius: 15px; font-size: 13px;
+            font-weight: bold; background-color: #2a2a2a; color: #ccc; flex-shrink: 0;
+        }
+        .history-badge.red { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
+        .history-badge.green { background-color: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
+        .history-badge.blue { background-color: rgba(30, 144, 255, 0.2); color: #1e90ff; border: 1px solid rgba(30, 144, 255, 0.4); }
+        .history-badge.purple { background-color: rgba(156, 39, 176, 0.2); color: #9c27b0; border: 1px solid rgba(156, 39, 176, 0.4); }
+        .history-badge.yellow { background-color: rgba(255, 204, 0, 0.2); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================
+         صفحه اصلی (HOME SCREEN)
+         ========================================= -->
+    <div id="homeScreen" class="screen">
+        <!-- نوار بالا -->
+        <div class="top-nav">
+            <div class="gift-title">🎁 Ebic Gift</div>
+            <div class="menu-btn">⋮</div>
+        </div>
+
+        <!-- بخش موجودی -->
+        <div class="balance-section">
+            <div class="avatar">M</div>
+            <div class="balance-info">
+                <div class="balance-label">Your balance</div>
+                <div class="balance-value">💎 238.470 <span>TON</span></div>
+            </div>
+            <button class="deposit-btn">Deposit</button>
+        </div>
+
+        <!-- آیکون‌های Live -->
+        <div class="live-section">
+            <div class="live-label">
+                <div class="live-dot"></div>
+                <span>Live</span>
+            </div>
+            <div class="live-icons">
+                <div class="live-icon">💍</div>
+                <div class="live-icon">💎<div class="badge">1</div></div>
+                <div class="live-icon">🍪</div>
+                <div class="live-icon">💠</div>
+                <div class="live-icon">💩</div>
+                <div class="live-icon">🍄</div>
+            </div>
+        </div>
+
+        <!-- بنرها -->
+        <div class="banners-container">
+            <!-- بنر ROCKET -->
+            <div class="banner banner-rocket" onclick="openGame()">
+                <div class="hot-badge">⚡ HOT!</div>
+                <div class="title">🚀 ROCKET</div>
+                <div class="rocket-visual">🚀</div>
+                <div class="floating-mult fm-1">x4.24</div>
+                <div class="floating-mult fm-2">x2.02</div>
+                <div class="floating-mult fm-3">x1.24</div>
+            </div>
+
+            <!-- بنر PVP -->
+            <div class="banner banner-pvp">
+                <div class="new-badge">🔥 NEW!</div>
+                <div class="title">⚔️ PVP</div>
+                <div class="pvp-avatars">
+                    <div class="pvp-avatar">😎</div>
+                    <div class="pvp-avatar">🤠</div>
+                    <div class="pvp-avatar">🤖</div>
+                </div>
+            </div>
+
+            <!-- بنر PLAY HUB -->
+            <div class="banner banner-playhub">
+                <div class="hot-badge">🔥 HOT</div>
+                <div class="title">🎮 PLAY HUB</div>
+            </div>
+        </div>
+
+        <!-- نوار پایین -->
+        <div class="bottom-nav">
+            <div class="nav-item">
+                <div class="nav-icon">🎒</div>
+                <span>Backpack</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">👥</div>
+                <span>Invite</span>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">🏆</div>
+                <span>Leaderboard</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">💰</div>
+                <span>Earn</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+         صفحه بازی (GAME SCREEN)
+         ========================================= -->
+    <div id="gameScreen" class="screen hidden">
+        <!-- نوار بالای بازی -->
+        <div class="game-top-bar">
+            <button class="back-btn" onclick="goHome()">⬅ بازگشت</button>
+            <div class="game-balance" id="balanceDisplay">100.00 TON</div>
+            <button class="reset-btn" onclick="resetBalance()">🔄 شارژ</button>
+        </div>
+
+        <!-- نوار تاریخچه ضریب‌ها -->
+        <div class="multiplier-history" id="multiplierHistory">
+            <div style="font-size:12px; color:#666; padding-left:10px;">تاریخچه:</div>
+        </div>
+
+        <!-- نمودار (Rocket) -->
+        <div class="chart-container">
+            <div class="multiplier-text" id="multiplierDisplay">1.00x</div>
+            <canvas id="chartCanvas"></canvas>
+        </div>
+
+        <!-- بخش شرط‌بندی -->
+        <div class="bet-controls">
+            <div class="bet-input-row">
+                <span class="input-label">مبلغ شرط:</span>
+                <input type="number" id="betInput" class="bet-input" placeholder="مبلغ شرط" value="10" min="1">
+                <span style="color:#888; font-size:13px;">TON</span>
+            </div>
+            <div class="bet-input-row">
+                <span class="input-label">برداشت خودکار:</span>
+                <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" placeholder="مثلا 2.00" value="2.00" min="1.01" step="0.1">
+                <span style="color:#00c853; font-weight:bold; font-size:13px;">x</span>
+            </div>
+            <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
+            <div style="text-align: center; font-size: 13px; color: #aaa; min-height: 18px;" id="statusText">برای شروع، مبلغ را وارد کنید</div>
+        </div>
+
+        <!-- لیست شرط‌بندی‌ها -->
+        <div class="history-container" id="historyList"></div>
+    </div>
+
+    <script>
+        // =========================================
+        // مدیریت صفحه‌ها (Navigation)
+        // =========================================
+        function openGame() {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+        }
+
+        function goHome() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('homeScreen').classList.remove('hidden');
+        }
+
+        // =========================================
+        // کدهای بازی کراش (Crash Game Logic)
+        // =========================================
+        let balance = parseFloat(localStorage.getItem('crashBalance_home')) || 100.00;
+        let gameState = 'waiting'; 
+        let multiplier = 1.00;
+        let crashPoint = 0;
+        let myBet = 0;
+        let myAutoCashout = 0;
+        let hasJoined = false;
+        let gameInterval;
+        let countdownInterval;
+        let roundHistory = [];
+        let players = []; 
+
+        const multiplierDisplay = document.getElementById('multiplierDisplay');
+        const actionButton = document.getElementById('actionButton');
+        const statusText = document.getElementById('statusText');
+        const historyList = document.getElementById('historyList');
+        const balanceDisplay = document.getElementById('balanceDisplay');
+        const betInput = document.getElementById('betInput');
+        const autoCashoutInput = document.getElementById('autoCashoutInput');
+        const multiplierHistoryContainer = document.getElementById('multiplierHistory');
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function updateBalanceUI() {
+            balanceDisplay.innerText = balance.toFixed(2) + ' TON';
+            localStorage.setItem('crashBalance_home', balance);
+        }
+        updateBalanceUI();
+
+        function resetBalance() {
+            balance = 100.00;
+            updateBalanceUI();
+            statusText.innerText = '✅ موجودی شما به 100 TON شارژ شد!';
+        }
+
+        // ===== سیستم توزیع ضریب (کیسه‌ای) =====
+        let multiplierBag = [];
+        const bagCounts = { 'yellow': 3, 'purple': 4, 'blue': 8, 'green': 12, 'red': 4 };
+
+        function fillBag() {
+            multiplierBag = [];
+            for (let type in bagCounts) {
+                for (let i = 0; i < bagCounts[type]; i++) multiplierBag.push(type);
+            }
+            for (let i = multiplierBag.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [multiplierBag[i], multiplierBag[j]] = [multiplierBag[j], multiplierBag[i]];
+            }
+        }
+
+        function getNextMultiplierType() {
+            if (multiplierBag.length === 0) fillBag();
+            return multiplierBag.pop();
+        }
+
+        function getRandomCrashPoint() {
+            const type = getNextMultiplierType();
+            if (type === 'yellow') return 10.00 + Math.random() * 40.00;
+            if (type === 'purple') return 5.00 + Math.random() * 4.99;
+            if (type === 'blue') return 2.00 + Math.random() * 2.99;
+            if (type === 'green') return 1.20 + Math.random() * 0.79;
+            if (type === 'red') return 1.01 + Math.random() * 0.18;
+            return 1.01;
+        }
+
+        function getBadgeColorClass(m) {
+            if (m >= 10.00) return 'yellow';
+            if (m >= 5.00) return 'purple';
+            if (m >= 2.00) return 'blue';
+            if (m >= 1.20) return 'green';
+            return 'red';
+        }
+
+        // ===== نوار تاریخچه =====
+        function addRoundToHistory(crashMultiplier) {
+            roundHistory.unshift(crashMultiplier);
+            if (roundHistory.length > 15) roundHistory.pop();
+            renderRoundHistory();
+        }
+
+        function renderRoundHistory() {
+            multiplierHistoryContainer.innerHTML = '<div style="font-size:12px; color:#666; padding-left:10px;">تاریخچه:</div>';
+            roundHistory.forEach(m => {
+                const badge = document.createElement('div');
+                badge.className = 'history-badge ' + getBadgeColorClass(m);
+                badge.innerText = m.toFixed(2) + 'x';
+                multiplierHistoryContainer.appendChild(badge);
+            });
+        }
+
+        // ===== رسم نمودار (Rocket) =====
+        function drawChart(currentMultiplier) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const maxMultiplier = Math.max(crashPoint, currentMultiplier, 2); 
+            const startX = 20, startY = canvas.height - 20, endX = canvas.width - 20;
+            const progress = currentMultiplier / maxMultiplier;
+            const currentX = startX + (endX - startX) * progress;
+            const currentY = startY - (startY - 20) * (currentMultiplier / maxMultiplier);
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            const ctrlX = startX + (currentX - startX) * 0.5;
+            const ctrlY = startY;
+            ctx.quadraticCurveTo(ctrlX, ctrlY, currentX, currentY);
+            ctx.strokeStyle = '#ffcc00'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.stroke();
+            ctx.shadowBlur = 15; ctx.shadowColor = '#ffcc00'; ctx.stroke(); ctx.shadowBlur = 0;
+
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff'; ctx.fill();
+        }
+
+        function clearChart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawChart(1.00);
+        }
+
+        // ===== بازیکنان فیک =====
+        const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika', 'Kian', 'Matin', 'Yasin', 'Arya'];
+        const fakeAvatars = ['🐸', '🐱', '⚽', '🦊', '🐻', '🐼', '🦁', '🐯', '🐨', '🐵'];
+
+        function addPlayer(name, amount, isMe = false) {
+            const avatar = isMe ? '👤' : fakeAvatars[Math.floor(Math.random() * fakeAvatars.length)];
+            const player = { id: Date.now() + Math.random(), name, amount, avatar, isMe, cashedOut: false, lost: false };
+            players.push(player);
+            if (players.length > 15) players.shift();
+            renderPlayers();
+        }
+
+        function renderPlayers() {
+            historyList.innerHTML = '';
+            if (players.length === 0) {
+                historyList.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">در انتظار ورود بازیکنان...</div>';
+                return;
+            }
+            const sortedPlayers = [...players].reverse();
+            sortedPlayers.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'history-item fade-in';
+                if (p.isMe) item.style.border = '1px solid #ffcc00';
+                let multiplierText = '-', multiplierClass = '', profitText = '-', profitColor = '#ccc';
+                if (p.cashedOut) {
+                    multiplierText = p.cashoutMultiplier.toFixed(2) + 'x';
+                    multiplierClass = 'win';
+                    profitText = '+' + (p.amount * p.cashoutMultiplier).toFixed(2);
+                    profitColor = '#00c853';
+                } else if (p.lost) {
+                    multiplierText = 'باخت';
+                    multiplierClass = 'loss';
+                    profitText = '-' + p.amount.toFixed(2);
+                    profitColor = '#ff4444';
+                }
+                item.innerHTML = `
+                    <div class="user-info"><span class="avatar-small">${p.avatar}</span><span class="user-name">${p.name}</span></div>
+                    <div class="bet-amount">${p.amount.toFixed(2)} TON</div>
+                    <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
+                    <div class="profit" style="color: ${profitColor}">${profitText}</div>
+                `;
+                historyList.appendChild(item);
+            });
+        }
+
+        function updatePlayersOnCrash() {
+            players.forEach(p => { if (!p.cashedOut) p.lost = true; });
+            renderPlayers();
+        }
+
+        setInterval(() => {
+            if (gameState === 'playing' && Math.random() > 0.85) {
+                const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
+                addPlayer(name, (Math.random() * 50 + 1));
+            }
+        }, 1200);
+
+        // ===== شروع دور جدید =====
+        function startNewRound() {
+            gameState = 'waiting';
+            hasJoined = false;
+            myBet = 0;
+            myAutoCashout = 0;
+            players = []; 
+            addPlayer('ربات پشتیبان', 10.00);
+            
+            multiplier = 1.00;
+            crashPoint = getRandomCrashPoint(); 
+            
+            clearChart();
+            multiplierDisplay.classList.remove('crashed');
+            multiplierDisplay.classList.add('counting'); 
+            
+            betInput.disabled = false;
+            autoCashoutInput.disabled = false;
+            betInput.value = 10;
+            autoCashoutInput.value = 2.00;
+            
+            actionButton.innerText = 'ورود به بازی (Join)';
+            actionButton.className = 'action-btn btn-bet';
+            actionButton.disabled = false;
+            statusText.innerText = 'برای ورود به بازی عجله کنید!';
+            
+            let countdown = 5;
+            multiplierDisplay.innerText = countdown;
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    multiplierDisplay.innerText = countdown;
+                } else {
+                    clearInterval(countdownInterval);
+                    multiplierDisplay.classList.remove('counting');
+                    multiplierDisplay.innerText = '1.00x';
+                    startGameplay();
+                }
+            }, 1000);
+        }
+
+        function startGameplay() {
+            gameState = 'playing';
+            betInput.disabled = true;
+            autoCashoutInput.disabled = true;
+            
+            if (hasJoined) {
+                statusText.innerText = `✅ شما با ${myBet} TON وارد شدید.`;
+                actionButton.innerText = 'برداشت دستی (Cash Out)';
+                actionButton.className = 'action-btn btn-cashout';
+                actionButton.disabled = false;
+            } else {
+                statusText.innerText = 'شما وارد بازی نشدید! تماشا کنید...';
+                actionButton.innerText = 'وارد نشدید';
+                actionButton.className = 'action-btn btn-bet';
+                actionButton.disabled = true;
+            }
+
+            for(let i=0; i<2; i++) {
+                const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
+                addPlayer(name, (Math.random() * 50 + 1));
+            }
+
+            gameInterval = setInterval(() => {
+                // سرعت کم ضریب
+                multiplier += 0.015; 
+                multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
+                drawChart(multiplier);
+                
+                // بررسی برداشت خودکار
+                if (hasJoined && myAutoCashout > 1.00 && multiplier >= myAutoCashout) {
+                    cashOut(true);
+                }
+
+                players.forEach(p => {
+                    if (!p.isMe && !p.cashedOut && !p.lost && Math.random() > 0.98) {
+                        p.cashedOut = true;
+                        p.cashoutMultiplier = multiplier;
+                        renderPlayers();
+                    }
+                });
+                
+                if (multiplier >= crashPoint) {
+                    clearInterval(gameInterval);
+                    multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
+                    multiplierDisplay.classList.add('crashed');
+                    gameState = 'crashed';
+                    actionButton.disabled = true;
+                    actionButton.innerText = 'دور بعد...';
+                    actionButton.className = 'action-btn btn-bet';
+                    
+                    addRoundToHistory(crashPoint);
+                    
+                    if (hasJoined) {
+                        statusText.innerText = `💥 سقوط کرد! شما ${myBet} TON باختید.`;
+                    } else {
+                        statusText.innerText = `💥 سقوط در ${crashPoint.toFixed(2)}x!`;
+                    }
+                    
+                    updatePlayersOnCrash(); 
+                    setTimeout(startNewRound, 2500);
+                }
+            }, 80);
+        }
+
+        function joinGame() {
+            if (gameState !== 'waiting') return;
+            const amount = parseFloat(betInput.value);
+            if (isNaN(amount) || amount < 1) { statusText.innerText = '❌ لطفاً یک مبلغ معتبر وارد کنید!'; return; }
+            if (amount > balance) { statusText.innerText = '❌ موجودی کافی نیست!'; return; }
+            
+            hasJoined = true;
+            myBet = amount;
+            myAutoCashout = parseFloat(autoCashoutInput.value);
+            if (isNaN(myAutoCashout) || myAutoCashout < 1.01) myAutoCashout = 0;
+            
+            balance -= amount;
+            updateBalanceUI();
+            betInput.disabled = true;
+            autoCashoutInput.disabled = true;
+            addPlayer('شما (You)', amount, true);
+            
+            if (myAutoCashout > 0) {
+                statusText.innerText = `✅ شما با ${amount} TON وارد شدید. برداشت خودکار در ${myAutoCashout.toFixed(2)}x`;
+            } else {
+                statusText.innerText = `✅ شما با ${amount} TON وارد شدید! منتظر شروع...`;
+            }
+            
+            actionButton.innerText = 'منتظر شروع...';
+            actionButton.disabled = true;
+        }
+
+        function cashOut(isAuto = false) {
+            if (!hasJoined || gameState !== 'playing') return;
+            const winnings = myBet * multiplier;
+            balance += winnings;
+            updateBalanceUI();
+            hasJoined = false; 
+            actionButton.disabled = true;
+            actionButton.innerText = 'دور بعد...';
+            actionButton.className = 'action-btn btn-bet';
+            
+            if (isAuto) {
+                statusText.innerText = `🤖 برداشت خودکار در ${multiplier.toFixed(2)}x! سود: ${winnings.toFixed(2)} TON`;
+            } else {
+                statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
+            }
+            
+            const myPlayer = players.find(p => p.isMe);
+            if (myPlayer) {
+                myPlayer.cashedOut = true;
+                myPlayer.cashoutMultiplier = multiplier;
+                renderPlayers();
+            }
+        }
+
+        actionButton.addEventListener('click', () => {
+            if (gameState === 'waiting') joinGame();
+            else if (gameState === 'playing' && hasJoined) cashOut(false);
+        });
+
+        // شروع اولین دور
+        startNewRound();
+    </script>
+</body>
+</html>
