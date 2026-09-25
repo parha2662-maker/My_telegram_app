@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Crash Game</title>
     <style>
-        body {
+        /* فیکس کردن کامل ارتفاع در موبایل و جلوگیری از اسکرول */
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden; /* جلوگیری از اسکرول کل صفحه */
             background-color: #121212;
             color: white;
             font-family: sans-serif;
+            user-select: none;
+        }
+        body {
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow: hidden; /* جلوگیری از اسکرول کل صفحه */
+            height: 100%;
         }
         .top-bar {
             display: flex;
@@ -23,7 +28,7 @@
             padding: 10px 15px;
             background-color: #1e1e1e;
             border-bottom: 1px solid #333;
-            flex-shrink: 0; /* فیکس شده */
+            flex-shrink: 0;
         }
         .balance-box {
             background-color: #2a2a2a;
@@ -54,8 +59,11 @@
             border-bottom: 1px solid #333;
             white-space: nowrap;
             min-height: 45px;
-            flex-shrink: 0; /* فیکس شده */
+            flex-shrink: 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
+        .multiplier-history::-webkit-scrollbar { display: none; }
         .history-badge {
             padding: 5px 12px;
             border-radius: 15px;
@@ -72,14 +80,14 @@
         /* نمودار گرافیکی */
         .chart-container {
             width: 100%;
-            height: 200px;
+            height: 180px;
             background-color: #0a0a0a;
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            flex-shrink: 0; /* فیکس شده */
+            flex-shrink: 0;
         }
         #chartCanvas {
             width: 100%;
@@ -93,9 +101,7 @@
             z-index: 10;
             text-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
-        .multiplier-text.crashed {
-            color: #ff4444;
-        }
+        .multiplier-text.crashed { color: #ff4444; }
 
         /* بخش شرط‌بندی */
         .bet-controls {
@@ -106,7 +112,7 @@
             background-color: #1e1e1e;
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
-            flex-shrink: 0; /* فیکس شده */
+            flex-shrink: 0;
         }
         .bet-input-row {
             display: flex;
@@ -138,23 +144,17 @@
             transition: all 0.2s;
             color: white;
         }
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .btn-bet {
-            background: linear-gradient(135deg, #1e90ff, #0056b3);
-        }
-        .btn-cashout {
-            background: linear-gradient(135deg, #00c853, #009624);
-        }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-bet { background: linear-gradient(135deg, #1e90ff, #0056b3); }
+        .btn-cashout { background: linear-gradient(135deg, #00c853, #009624); }
 
-        /* لیست شرط‌بندی‌ها */
+        /* لیست شرط‌بندی‌ها - ارتفاع ثابت و اسکرول داخلی */
         .history-container {
-            flex: 1; /* پر کردن فضای باقی‌مانده */
-            min-height: 0; /* بسیار مهم برای اسکرول داخلی */
-            overflow-y: auto; /* اسکرول فقط داخل این کادر */
+            height: 30vh; /* ارتفاع ثابت */
+            overflow-y: auto; /* اسکرول فقط داخلی */
             padding: 10px;
+            background-color: #121212;
+            flex-shrink: 0;
         }
         .history-item {
             display: flex;
@@ -167,16 +167,15 @@
             font-size: 13px;
             border: 1px solid #2a2a2a;
         }
-        .avatar { width: 30px; height: 30px; border-radius: 50%; margin-left: 10px; }
-        .user-info { display: flex; align-items: center; flex-grow: 1; }
-        .user-name { color: #ccc; font-weight: bold; }
-        .bet-amount { color: #ffcc00; margin-left: auto; }
-        .multiplier-badge { padding: 3px 8px; border-radius: 5px; font-weight: bold; margin: 0 10px; min-width: 50px; text-align: center; }
+        .user-info { display: flex; align-items: center; gap: 8px; flex-grow: 1; }
+        .avatar { font-size: 22px; }
+        .user-name { color: #ccc; font-weight: bold; font-size: 13px; }
+        .bet-amount { color: #ffcc00; margin-left: auto; padding-left: 10px; font-size: 13px; }
+        .multiplier-badge { padding: 4px 8px; border-radius: 5px; font-weight: bold; min-width: 55px; text-align: center; font-size: 12px; }
         .win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; }
         .loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; }
-        .profit { width: 60px; text-align: left; font-weight: bold; }
+        .profit { width: 65px; text-align: left; font-weight: bold; font-size: 13px; }
         
-        /* انیمیشن */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
     </style>
@@ -206,12 +205,10 @@
         <div style="text-align: center; font-size: 14px; color: #aaa; min-height: 20px;" id="statusText">برای شروع، مبلغ را وارد کنید</div>
     </div>
 
-    <div class="history-container" id="historyList">
-        <!-- لیست شرط‌بندی‌ها اینجا قرار می‌گیرد -->
-    </div>
+    <div class="history-container" id="historyList"></div>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('crashBalance_v7')) || 100.00;
+        let balance = parseFloat(localStorage.getItem('crashBalance_v9')) || 100.00;
         let gameState = 'waiting'; 
         let multiplier = 1.00;
         let crashPoint = 0;
@@ -241,7 +238,7 @@
 
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance_v7', balance);
+            localStorage.setItem('crashBalance_v9', balance);
         }
         updateBalanceUI();
 
@@ -251,17 +248,15 @@
             statusText.innerText = '✅ موجودی شما به 100 TON شارژ شد!';
         }
 
-        // --- توابع کمکی ---
-        
-        // ۱. تابع تولید ضریب سقوط با تمایل به اعداد پایین‌تر
+        // ۱. تابع تولید ضریب سقوط با تمایل شدید به اعداد پایین
         function getRandomCrashPoint() {
             const rand = Math.random();
-            // ۶۰٪ احتمال سقوط بین ۱.۰۱ تا ۲.۰۰
-            if (rand < 0.6) return 1.01 + Math.random() * 1.0; 
-            // ۳۰٪ احتمال سقوط بین ۲.۰۱ تا ۵.۰۰
-            if (rand < 0.9) return 2.01 + Math.random() * 3.0; 
-            // ۱۰٪ احتمال سقوط بالای ۵.۰۰
-            return 5.01 + Math.random() * 5.0; 
+            // ۸۰٪ احتمال سقوط بین ۱.۰۱ تا ۲.۰۰
+            if (rand < 0.8) return 1.01 + Math.random() * 1.0; 
+            // ۱۵٪ احتمال سقوط بین ۲.۰۱ تا ۴.۰۰
+            if (rand < 0.95) return 2.01 + Math.random() * 2.0; 
+            // فقط ۵٪ احتمال سقوط بالای ۴.۰۰
+            return 4.01 + Math.random() * 3.0; 
         }
 
         // ۲. مدیریت نوار تاریخچه ضریب‌ها
@@ -287,7 +282,6 @@
         // ۳. مدیریت Canvas (نمودار)
         function drawChart(currentMultiplier) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             const maxMultiplier = Math.max(crashPoint, currentMultiplier, 2); 
             const startX = 20;
             const startY = canvas.height - 20;
@@ -323,7 +317,7 @@
             drawChart(1.00);
         }
 
-        // ۴. مدیریت بازیکنان
+        // ۴. مدیریت بازیکنان (محدود به ۱۵ نفر آخر)
         const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika', 'Kian', 'Matin', 'Yasin', 'Arya'];
         const fakeAvatars = ['🐸', '🐱', '⚽', '🦊', '🐻', '🐼', '🦁', '🐯', '🐨', '🐵'];
 
@@ -335,21 +329,22 @@
                 amount: amount,
                 avatar: avatar,
                 isMe: isMe,
-                cashedOut: false
+                cashedOut: false,
+                lost: false
             };
             players.push(player);
-            
-            // محدود کردن تعداد بازیکنان به ۲۰ نفر
-            if (players.length > 20) {
-                players.splice(0, players.length - 20);
-            }
-            
+            // فقط ۱۵ نفر آخر رو نگه دار
+            if (players.length > 15) players.shift();
             renderPlayers();
-            return player.id;
         }
 
         function renderPlayers() {
             historyList.innerHTML = '';
+            if (players.length === 0) {
+                historyList.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">در انتظار ورود بازیکنان...</div>';
+                return;
+            }
+
             const sortedPlayers = [...players].reverse();
             sortedPlayers.forEach(p => {
                 const item = document.createElement('div');
@@ -375,7 +370,7 @@
 
                 item.innerHTML = `
                     <div class="user-info">
-                        <span style="font-size:20px; margin-left:5px;">${p.avatar}</span>
+                        <span class="avatar">${p.avatar}</span>
                         <span class="user-name">${p.name}</span>
                     </div>
                     <div class="bet-amount">${p.amount.toFixed(2)} TON</div>
@@ -388,32 +383,31 @@
 
         function updatePlayersOnCrash() {
             players.forEach(p => {
-                if (!p.cashedOut) {
-                    p.lost = true;
-                }
+                if (!p.cashedOut) p.lost = true;
             });
             renderPlayers();
         }
 
-        // تولید بازیکنان فیک به صورت کنترل‌شده (هر ۱ ثانیه یک نفر، شانس ۳۰٪)
-        let fakeUserInterval = setInterval(() => {
-            if (gameState === 'playing' && Math.random() > 0.7) {
+        // تایمر اضافه کردن بازیکن فیک (کمتر و کنترل شده - هر ۱ ثانیه ۲۰٪ شانس)
+        setInterval(() => {
+            if (gameState === 'playing' && Math.random() > 0.8) {
                 const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
-                const amount = (Math.random() * 50 + 1);
-                addPlayer(name, amount);
+                addPlayer(name, (Math.random() * 50 + 1));
             }
         }, 1000);
 
-        // شروع بازی
+        // شروع دور جدید
         function startNewRound() {
             gameState = 'waiting';
             hasJoined = false;
             myBet = 0;
             players = []; 
-            renderPlayers();
+            
+            // یک بازیکن فیک اولیه
+            addPlayer('ربات پشتیبان', 10.00);
             
             multiplier = 1.00;
-            crashPoint = getRandomCrashPoint(); // استفاده از تابع جدید
+            crashPoint = getRandomCrashPoint(); 
             
             multiplierDisplay.innerText = '1.00x';
             multiplierDisplay.classList.remove('crashed');
@@ -423,7 +417,6 @@
             actionButton.innerText = 'ورود به بازی (Join)';
             actionButton.className = 'action-btn btn-bet';
             actionButton.disabled = false;
-            statusText.innerText = '⏳ برای ورود به بازی عجله کنید!';
             
             clearChart();
             
@@ -457,7 +450,7 @@
                 actionButton.disabled = true;
             }
 
-            // شروع با ۲ بازیکن فیک
+            // اضافه کردن ۲ بازیکن فیک در شروع بازی
             for(let i=0; i<2; i++) {
                 const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
                 addPlayer(name, (Math.random() * 50 + 1));
@@ -468,7 +461,6 @@
                 multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
                 drawChart(multiplier);
                 
-                // برداشت خودکار بازیکنان فیک
                 players.forEach(p => {
                     if (!p.isMe && !p.cashedOut && !p.lost && Math.random() > 0.98) {
                         p.cashedOut = true;
