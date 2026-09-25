@@ -43,6 +43,39 @@
             font-size: 12px;
             cursor: pointer;
         }
+        /* نوار تاریخچه ضریب‌ها */
+        .multiplier-history {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            overflow-x: auto;
+            padding: 8px 10px;
+            gap: 8px;
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+            white-space: nowrap;
+            min-height: 45px;
+        }
+        .multiplier-history::-webkit-scrollbar {
+            height: 4px;
+        }
+        .multiplier-history::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        .history-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            background-color: #2a2a2a;
+            color: #ccc;
+            flex-shrink: 0;
+        }
+        .history-badge.win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
+        .history-badge.loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
+        .history-badge.high { background-color: rgba(255, 204, 0, 0.2); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); }
+
         .game-container {
             text-align: center;
             width: 100%;
@@ -166,6 +199,11 @@
         <button class="reset-btn" onclick="resetBalance()">🔄 شارژ مجدد</button>
     </div>
 
+    <!-- نوار تاریخچه ضریب‌های قبلی -->
+    <div class="multiplier-history" id="multiplierHistory">
+        <div style="font-size:12px; color:#666; padding-left:10px;">تاریخچه:</div>
+    </div>
+
     <div class="game-container">
         <div class="timer-box" id="timerDisplay">⏳ منتظر شروع دور...</div>
         <div class="multiplier" id="multiplierDisplay">1.00x</div>
@@ -185,9 +223,8 @@
     </div>
 
     <script>
-        // --- متغیرهای اصلی ---
-        let balance = parseFloat(localStorage.getItem('crashBalance_v3')) || 100.00;
-        let gameState = 'waiting'; // waiting, playing, crashed
+        let balance = parseFloat(localStorage.getItem('crashBalance_v5')) || 100.00;
+        let gameState = 'waiting'; 
         let countdown = 5;
         let multiplier = 1.00;
         let crashPoint = 0;
@@ -195,6 +232,7 @@
         let hasJoined = false;
         let gameInterval;
         let countdownInterval;
+        let roundHistory = []; // آرایه‌ای برای ذخیره ضریب‌های قبلی
 
         const multiplierDisplay = document.getElementById('multiplierDisplay');
         const actionButton = document.getElementById('actionButton');
@@ -203,11 +241,11 @@
         const balanceDisplay = document.getElementById('balanceDisplay');
         const betInput = document.getElementById('betInput');
         const timerDisplay = document.getElementById('timerDisplay');
+        const multiplierHistoryContainer = document.getElementById('multiplierHistory');
 
-        // --- مدیریت موجودی ---
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance_v3', balance);
+            localStorage.setItem('crashBalance_v5', balance);
         }
         updateBalanceUI();
 
@@ -217,7 +255,27 @@
             statusText.innerText = '✅ موجودی شما به 100 TON شارژ شد!';
         }
 
-        // --- لیست شرط‌بندی فیک ---
+        // --- مدیریت نوار تاریخچه ضریب‌ها ---
+        function addRoundToHistory(crashMultiplier) {
+            roundHistory.unshift(crashMultiplier); // اضافه کردن به اول لیست
+            if (roundHistory.length > 15) roundHistory.pop(); // فقط 15 مورد آخر نگه داشته بشه
+            renderRoundHistory();
+        }
+
+        function renderRoundHistory() {
+            multiplierHistoryContainer.innerHTML = '<div style="font-size:12px; color:#666; padding-left:10px;">تاریخچه:</div>';
+            roundHistory.forEach(m => {
+                const badge = document.createElement('div');
+                badge.className = 'history-badge';
+                if (m >= 10) badge.classList.add('high');
+                else if (m >= 1.5) badge.classList.add('win');
+                else badge.classList.add('loss');
+                badge.innerText = m.toFixed(2) + 'x';
+                multiplierHistoryContainer.appendChild(badge);
+            });
+        }
+        // -----------------------------------
+
         const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika'];
 
         function createFakeBet() {
@@ -244,14 +302,10 @@
             if (historyList.children.length > 20) historyList.removeChild(historyList.lastChild);
         }
 
-        // شرط‌بندی‌های فیک فقط در زمان بازی ساخته میشن
         setInterval(() => {
             if (gameState === 'playing' && Math.random() > 0.5) createFakeBet();
         }, 1500);
 
-        // --- منطق اصلی بازی ---
-
-        // شروع یک دور جدید
         function startNewRound() {
             gameState = 'waiting';
             hasJoined = false;
@@ -271,7 +325,6 @@
             
             timerDisplay.innerText = `⏳ زمان باقیمانده: 5 ثانیه`;
             
-            // شمارش معکوس
             countdownInterval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
@@ -283,7 +336,6 @@
             }, 1000);
         }
 
-        // شروع فاز بازی (بالا رفتن ضریب)
         function startGameplay() {
             gameState = 'playing';
             timerDisplay.innerText = '';
@@ -296,7 +348,6 @@
                 statusText.innerText = 'شما وارد بازی نشدید! تماشا کنید...';
             }
             
-            // دکمه فقط برای کسانی که وارد شدن فعاله
             if (hasJoined) {
                 actionButton.innerText = 'برداشت (Cash Out)';
                 actionButton.className = 'action-btn btn-cashout';
@@ -311,7 +362,6 @@
                 multiplier += 0.05; 
                 
                 if (multiplier >= crashPoint) {
-                    // سقوط
                     clearInterval(gameInterval);
                     multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
                     multiplierDisplay.classList.add('crashed');
@@ -320,6 +370,9 @@
                     actionButton.innerText = 'دور بعد...';
                     actionButton.className = 'action-btn btn-bet';
                     
+                    // اضافه کردن ضریب سقوط به تاریخچه
+                    addRoundToHistory(crashPoint);
+
                     if (hasJoined) {
                         statusText.innerText = `💥 سقوط کرد! شما ${myBet} TON باختید.`;
                         addMyBetToHistory(false, 1.00);
@@ -327,14 +380,13 @@
                         statusText.innerText = `💥 سقوط در ${crashPoint.toFixed(2)}x!`;
                     }
                     
-                    setTimeout(startNewRound, 2500); // دور بعدی بعد از 2.5 ثانیه
+                    setTimeout(startNewRound, 2500);
                 } else {
                     multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
                 }
             }, 50);
         }
 
-        // ورود به بازی (Join)
         function joinGame() {
             if (gameState !== 'waiting') return;
             
@@ -359,27 +411,22 @@
             actionButton.disabled = true;
         }
 
-        // برداشت (Cash Out)
         function cashOut() {
             if (!hasJoined || gameState !== 'playing') return;
-            
-            clearInterval(gameInterval);
+
             const winnings = myBet * multiplier;
             balance += winnings;
             updateBalanceUI();
-            
-            gameState = 'crashed'; // جلوگیری از برداشت دوباره
+
+            hasJoined = false; 
             actionButton.disabled = true;
             actionButton.innerText = 'دور بعد...';
             actionButton.className = 'action-btn btn-bet';
             
             statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
             addMyBetToHistory(true, multiplier.toFixed(2));
-            
-            // منتظر بمان تا سقوط اعلام شود
         }
 
-        // اضافه کردن شرط خودم به لیست
         function addMyBetToHistory(isWin, multiplierValue) {
             const amount = myBet;
             const profit = isWin ? (amount * multiplierValue).toFixed(2) : '-' + amount;
@@ -398,7 +445,6 @@
             historyList.prepend(item);
         }
 
-        // --- شنونده رویداد کلیک دکمه ---
         actionButton.addEventListener('click', () => {
             if (gameState === 'waiting') {
                 joinGame();
