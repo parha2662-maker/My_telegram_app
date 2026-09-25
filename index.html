@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Ebic Gift</title>
+<title>Gift Hub</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -23,7 +23,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .deposit-btn{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:11px 18px;border-radius:14px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(124,58,237,.5)}
 
 .banners{padding:20px 14px 0;display:flex;flex-direction:column;gap:14px}
-.banner{border-radius:22px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:110px;direction:ltr}
+.banner{border-radius:22px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:110px}
 .banner:active{transform:scale(.98)}
 .banner-badge{position:absolute;top:14px;left:16px;background:rgba(255,255,255,.95);color:#333;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:10}
 .banner-title{position:absolute;bottom:16px;left:20px;font-size:24px;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;text-shadow:0 2px 10px rgba(0,0,0,.4);z-index:10;letter-spacing:.5px}
@@ -76,7 +76,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .multiplier-text.counting{color:#ff9800;font-size:100px}
 .bet-controls{padding:12px 12px;display:flex;flex-direction:column;gap:8px;background:#1e1e1e;border-top:1px solid #333;border-bottom:1px solid #333;flex-shrink:0}
 .bet-input-row{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:nowrap}
-.input-label{font-size:12px;color:#aaa;width:60px;text-align:right;flex-shrink:0}
+.input-label{font-size:12px;color:#aaa;width:85px;text-align:right;flex-shrink:0}
 .bet-input{background:#2a2a2a;border:2px solid #444;color:#fff;padding:10px 6px;border-radius:10px;width:90px;text-align:center;font-size:15px;font-weight:bold;transition:border-color .3s;min-width:0}
 .auto-cashout-input{border:2px solid #00c853!important;background:#0d1f0d!important;color:#00c853!important}
 .quick-btns{display:flex;gap:5px;flex-shrink:0}
@@ -98,7 +98,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .multiplier-badge{padding:4px 8px;border-radius:5px;font-weight:bold;min-width:55px;text-align:center;font-size:12px}
 .win{background:rgba(0,200,83,.2);color:#00c853}
 .loss{background:rgba(255,68,68,.2);color:#ff4444}
-.profit{width:65px;text-align:left;font-weight:bold;font-size:13px}
+.profit{width:65px;text-align:right;font-weight:bold;font-size:13px}
 .fade-in{animation:fadeIn .3s ease-in-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
@@ -179,11 +179,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-plus{background:#2a2e42;border:none;color:#fff;width:26px;height:26px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .pvp-stats{display:flex;gap:8px;padding:4px 16px 12px;flex-shrink:0}
 .stat-block{flex:1;text-align:center;padding:10px 6px}
-.stat-block+.stat-block{border-right:1px solid #2a2e42}
+.stat-block+.stat-block{border-left:1px solid #2a2e42}
 .stat-label{font-size:11px;color:#7a8299;margin-bottom:6px}
 .stat-value-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .stat-value{font-size:15px;font-weight:800;color:#0098ea}
-.stat-pct{font-size:12px;color:#7a8299;text-align:left}
+.stat-pct{font-size:12px;color:#7a8299;text-align:right}
 .pvp-wheel-wrap{position:relative;flex:1;min-height:280px;display:flex;justify-content:center;align-items:center;padding:8px 0}
 #pvpCanvas{display:block}
 .pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:130px}
@@ -233,7 +233,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="avatar-badge">💎</div>
         </div>
         <div class="balance-info">
-            <div class="balance-label">Your balance</div>
+            <div class="balance-label">Your Balance</div>
             <div class="balance-value">
                 <span class="ton-icon">◈</span>
                 <span id="homeBalance">100.000</span>
@@ -282,8 +282,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <div id="playhubScreen" class="screen hidden">
     <div class="ph-top-bar">
-        <button class="ph-back" onclick="goHome()">⬅ بازگشت</button>
-        <div class="ph-title">🎁 Epic Gift</div>
+        <button class="ph-back" onclick="goHome()">⬅ Back</button>
+        <div class="ph-title">🎁 Gift Hub</div>
         <div class="ph-balance-pill">
             <span class="ton-icon">◈</span>
             <span class="val" id="phBalanceDisplay">0.008</span>
@@ -338,8 +338,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <div id="upgradeScreen" class="screen hidden">
     <div class="up-top-bar">
-        <button class="up-back" onclick="closeUpgrade()">⬅ بازگشت</button>
-        <div class="up-title">🎁 Epic Gift</div>
+        <button class="up-back" onclick="closeUpgrade()">⬅ Back</button>
+        <div class="up-title">🎁 Gift Hub</div>
         <div class="up-balance-pill">
             <span class="ton-icon">◈</span>
             <span class="val" id="upBalanceDisplay">100.00</span>
@@ -356,32 +356,32 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="up-card-num">1</div>
             <div class="up-card-title">Your Gift</div>
             <input type="number" id="upBetInput" class="up-input" value="10" min="1" step="0.1">
-            <div class="up-card-lbl">مبلغ ورودی (TON)</div>
+            <div class="up-card-lbl">Entry Amount (TON)</div>
         </div>
         <div class="up-swap-icon">⚡</div>
         <div class="up-card">
             <div class="up-card-num" style="background:#ffcc00;">2</div>
             <div class="up-card-title">Target Gift</div>
             <input type="number" id="upTargetInput" class="up-input" value="50" min="2" step="0.1">
-            <div class="up-card-lbl">مبلغ هدف (TON)</div>
+            <div class="up-card-lbl">Target Amount (TON)</div>
         </div>
     </div>
 
     <div class="up-wheel-wrap">
         <canvas id="upCanvas"></canvas>
         <div class="up-wheel-center">
-            <div class="up-chance" id="upChanceDisplay">20.0%</div>
-            <div class="up-chance-lbl" id="upChanceLabel">VERY LOW</div>
+            <div class="up-chance" id="upChanceDisplay">19.4%</div>
+            <div class="up-chance-lbl" id="upChanceLabel">LOW</div>
         </div>
     </div>
 
     <div class="up-stats">
         <div class="up-stat">
-            <div class="up-stat-lbl">🎯 شانس برد</div>
-            <div class="up-stat-val" id="upChanceText">20.0%</div>
+            <div class="up-stat-lbl">🎯 Win Chance</div>
+            <div class="up-stat-val" id="upChanceText">19.4%</div>
         </div>
         <div class="up-stat">
-            <div class="up-stat-lbl">💰 سود در صورت برد</div>
+            <div class="up-stat-lbl">💰 Profit if Win</div>
             <div class="up-stat-val" id="upProfitText">+40.00</div>
         </div>
     </div>
@@ -393,18 +393,18 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <div id="gameScreen" class="screen hidden">
     <div class="game-top-bar">
-        <button class="back-btn" onclick="goHome()">⬅ بازگشت</button>
+        <button class="back-btn" onclick="goHome()">⬅ Back</button>
         <div class="game-balance" id="balanceDisplay">100.00 TON</div>
-        <button class="reset-btn" onclick="resetBalance()">🔄 شارژ</button>
+        <button class="reset-btn" onclick="resetBalance()">🔄 Refill</button>
     </div>
-    <div class="multiplier-history" id="multiplierHistory"><div style="font-size:12px;color:#666;padding-left:10px">تاریخچه:</div></div>
+    <div class="multiplier-history" id="multiplierHistory"><div style="font-size:12px;color:#666;padding-left:10px">History:</div></div>
     <div class="chart-container">
         <div class="multiplier-text" id="multiplierDisplay">1.00x</div>
         <canvas id="chartCanvas"></canvas>
     </div>
     <div class="bet-controls">
         <div class="bet-input-row">
-            <span class="input-label">مبلغ شرط:</span>
+            <span class="input-label">Bet Amount:</span>
             <input type="number" id="betInput" class="bet-input" value="10" min="1">
             <div class="quick-btns">
                 <button class="quick-btn half-btn" id="halfBtn" onclick="setBetHalf()">50%</button>
@@ -412,19 +412,19 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             </div>
         </div>
         <div class="bet-input-row">
-            <span class="input-label">برداشت خودکار:</span>
+            <span class="input-label">Auto Cashout:</span>
             <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" value="2.00" min="1.01" step="0.1">
             <span style="color:#00c853;font-weight:bold;font-size:13px">x</span>
         </div>
-        <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
-        <div style="text-align:center;font-size:13px;color:#aaa;min-height:18px" id="statusText">برای شروع، مبلغ را وارد کنید</div>
+        <button class="action-btn btn-bet" id="actionButton">Join Game</button>
+        <div style="text-align:center;font-size:13px;color:#aaa;min-height:18px" id="statusText">Enter a bet amount to start</div>
     </div>
     <div class="history-container" id="historyList"></div>
 </div>
 
 <div id="pvpScreen" class="screen hidden">
     <div class="pvp-header">
-        <button class="pvp-back" onclick="goHome()">← بازگشت</button>
+        <button class="pvp-back" onclick="goHome()">← Back</button>
         <div class="pvp-balance-pill">
             <span class="ton-icon">◈</span>
             <span class="val" id="pvpBalanceDisplay">100.00</span>
@@ -461,7 +461,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
     <div class="pvp-players-row" id="pvpPlayersRow"></div>
     <div class="pvp-join-wrap">
-        <label class="pvp-bet-label">مبلغ ورود (TON):</label>
+        <label class="pvp-bet-label">Entry Amount (TON):</label>
         <div class="pvp-bet-input-wrap">
             <span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span>
             <input type="number" id="pvpBetInput" class="pvp-bet-input" value="10" min="1">
@@ -580,13 +580,11 @@ function upUpdateChance(){
     const bet = parseFloat(document.getElementById('upBetInput').value) || 0;
     const target = parseFloat(document.getElementById('upTargetInput').value) || 0;
     if (bet > 0 && target > bet) {
-        // chance with 3% house edge
         const raw = (bet / target) * 100;
         upChance = Math.max(1, Math.min(96, raw * 0.97));
     } else {
         upChance = 0;
     }
-    // Update UI
     const chanceEl = document.getElementById('upChanceDisplay');
     const chanceLbl = document.getElementById('upChanceLabel');
     if (chanceEl) {
@@ -618,11 +616,8 @@ function upDrawWheel(){
     const size = upSize, cx = size/2, cy = size/2;
     const R = size/2 - 8;
     upCtx.clearRect(0, 0, size, size);
-    
     const greenAngle = (upChance / 100) * Math.PI * 2;
     const startA = upWheelAngle - Math.PI/2;
-    
-    // Green sector (win)
     if (greenAngle > 0) {
         upCtx.beginPath();
         upCtx.moveTo(cx, cy);
@@ -630,7 +625,6 @@ function upDrawWheel(){
         upCtx.closePath();
         upCtx.fillStyle = '#2ff068';
         upCtx.fill();
-        // lines
         upCtx.save();
         upCtx.beginPath(); upCtx.moveTo(cx,cy); upCtx.arc(cx,cy,R,startA,startA+greenAngle); upCtx.closePath();
         upCtx.clip();
@@ -645,7 +639,6 @@ function upDrawWheel(){
         }
         upCtx.restore();
     }
-    // Red sector (lose)
     if (greenAngle < Math.PI * 2) {
         upCtx.beginPath();
         upCtx.moveTo(cx, cy);
@@ -667,7 +660,6 @@ function upDrawWheel(){
         }
         upCtx.restore();
     }
-    // Inner circle
     upCtx.beginPath();
     upCtx.arc(cx, cy, size*0.22, 0, Math.PI*2);
     upCtx.fillStyle = '#1a1d2e';
@@ -675,15 +667,11 @@ function upDrawWheel(){
     upCtx.strokeStyle = '#2a2e42';
     upCtx.lineWidth = 3;
     upCtx.stroke();
-    
-    // Outer ring
     upCtx.beginPath();
     upCtx.arc(cx, cy, R+3, 0, Math.PI*2);
     upCtx.strokeStyle = '#2a2e42';
     upCtx.lineWidth = 6;
     upCtx.stroke();
-    
-    // Pointer at top
     upCtx.beginPath();
     upCtx.moveTo(cx - 10, 4);
     upCtx.lineTo(cx + 10, 4);
@@ -702,52 +690,46 @@ function upStart(){
     if (upState !== 'idle') return;
     const bet = parseFloat(document.getElementById('upBetInput').value);
     const target = parseFloat(document.getElementById('upTargetInput').value);
-    if (isNaN(bet) || bet < 1) { showToast('❌ مبلغ ورودی نامعتبر'); return; }
-    if (isNaN(target) || target <= bet) { showToast('❌ مبلغ هدف باید بیشتر از ورودی باشه'); return; }
-    if (bet > balance) { showToast('❌ موجودی کافی نیست'); return; }
-    
+    if (isNaN(bet) || bet < 1) { showToast('❌ Invalid entry amount'); return; }
+    if (isNaN(target) || target <= bet) { showToast('❌ Target must be greater than entry'); return; }
+    if (bet > balance) { showToast('❌ Insufficient balance'); return; }
     upBetVal = bet;
     upTargetVal = target;
     balance -= bet;
     updateGlobalBalanceUI();
-    
-    // Result based on chance
     upIsWin = Math.random() * 100 < upChance;
-    
     upState = 'spinning';
     const btn = document.getElementById('upBtn');
     btn.disabled = true;
-    btn.innerText = '⏳ در حال چرخش...';
+    btn.innerText = '⏳ Spinning...';
     const res = document.getElementById('upResult');
     res.className = 'up-result';
     res.innerText = '';
-    
-    // Determine target angle
     const greenAngle = (upChance / 100) * Math.PI * 2;
     let finalLocal;
     if (upIsWin) {
+        // Land inside the green sector (local angle 0 to greenAngle)
         finalLocal = Math.random() * greenAngle;
     } else {
+        // Land inside the red sector (local angle greenAngle to 2π)
         finalLocal = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
     }
-    // Pointer at canvas angle -π/2 (top)
-    // Local pointer angle = -π/2 - upWheelAngle (mod 2π)
-    // We want local pointer angle = finalLocal
-    // So upWheelAngle = -π/2 - finalLocal (mod 2π)
-    const targetAngleBase = -Math.PI/2 - finalLocal;
+    // FIXED: pointer is at canvas angle -π/2 (top). We want:
+    // upWheelAngle - π/2 + finalLocal = -π/2  =>  upWheelAngle = -finalLocal
+    const targetAngleBase = -finalLocal;
     const fullSpins = 6 + Math.floor(Math.random() * 3);
     const startAngle = upWheelAngle;
-    const endAngle = targetAngleBase + fullSpins * Math.PI * 2;
-    
-    // Ensure endAngle > startAngle for smooth animation
-    const finalEnd = endAngle > startAngle ? endAngle : endAngle + Math.PI*2*10;
-    
+    // We need the animation to spin forward (increase), so we build endAngle > startAngle
+    let endAngle = targetAngleBase + fullSpins * Math.PI * 2;
+    while (endAngle < startAngle + Math.PI * 2 * 5) {
+        endAngle += Math.PI * 2;
+    }
     const duration = 4000;
     const startTime = performance.now();
     function frame(now){
         const t = Math.min(1, (now - startTime) / duration);
         const eased = 1 - Math.pow(1 - t, 3.2);
-        upWheelAngle = startAngle + (finalEnd - startAngle) * eased;
+        upWheelAngle = startAngle + (endAngle - startAngle) * eased;
         upDrawWheel();
         if (t < 1) requestAnimationFrame(frame);
         else upFinish();
@@ -764,14 +746,14 @@ function upFinish(){
         balance += upTargetVal;
         updateGlobalBalanceUI();
         res.className = 'up-result win show';
-        res.innerText = '🏆 بردی! +' + upTargetVal.toFixed(2) + ' TON';
-        showToast('🏆 بردی! +' + upTargetVal.toFixed(2) + ' TON', 'win');
+        res.innerText = '🏆 You won! +' + upTargetVal.toFixed(2) + ' TON';
+        showToast('🏆 You won! +' + upTargetVal.toFixed(2) + ' TON', 'win');
     } else {
         res.className = 'up-result lose show';
-        res.innerText = '😔 باختی! -' + upBetVal.toFixed(2) + ' TON';
-        showToast('😔 باختی! -' + upBetVal.toFixed(2) + ' TON', 'lose');
+        res.innerText = '😔 You lost! -' + upBetVal.toFixed(2) + ' TON';
+        showToast('😔 You lost! -' + upBetVal.toFixed(2) + ' TON', 'lose');
     }
-    // reset wheel angle for next round (keep it visually wherever it is)
+    // Normalize the angle so it doesn't grow infinitely
     upWheelAngle = upWheelAngle % (Math.PI * 2);
 }
 
@@ -794,7 +776,7 @@ const allBtn=document.getElementById('allBtn');
 function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
 
-function resetBalance(){balance=100.00;updateGlobalBalanceUI();statusText.innerText='✅ موجودی شما به 100 TON شارژ شد!'}
+function resetBalance(){balance=100.00;updateGlobalBalanceUI();statusText.innerText='✅ Balance recharged to 100 TON!'}
 
 let multiplierBag=[];const bagCounts={yellow:3,purple:4,blue:8,green:12,red:4};
 function fillBag(){multiplierBag=[];for(let t in bagCounts)for(let i=0;i<bagCounts[t];i++)multiplierBag.push(t);for(let i=multiplierBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[multiplierBag[i],multiplierBag[j]]=[multiplierBag[j],multiplierBag[i]]}}
@@ -802,21 +784,21 @@ function getNextMultiplierType(){if(multiplierBag.length===0)fillBag();return mu
 function getRandomCrashPoint(){const t=getNextMultiplierType();if(t==='yellow')return 10+Math.random()*40;if(t==='purple')return 5+Math.random()*4.99;if(t==='blue')return 2+Math.random()*2.99;if(t==='green')return 1.2+Math.random()*0.79;if(t==='red')return 1.01+Math.random()*0.18;return 1.01}
 function getBadgeColorClass(m){if(m>=10)return'yellow';if(m>=5)return'purple';if(m>=2)return'blue';if(m>=1.2)return'green';return'red'}
 function addRoundToHistory(c){roundHistory.unshift(c);if(roundHistory.length>15)roundHistory.pop();renderRoundHistory()}
-function renderRoundHistory(){multiplierHistoryContainer.innerHTML='<div style="font-size:12px;color:#666;padding-left:10px">تاریخچه:</div>';roundHistory.forEach(m=>{const b=document.createElement('div');b.className='history-badge '+getBadgeColorClass(m);b.innerText=m.toFixed(2)+'x';multiplierHistoryContainer.appendChild(b)})}
+function renderRoundHistory(){multiplierHistoryContainer.innerHTML='<div style="font-size:12px;color:#666;padding-left:10px">History:</div>';roundHistory.forEach(m=>{const b=document.createElement('div');b.className='history-badge '+getBadgeColorClass(m);b.innerText=m.toFixed(2)+'x';multiplierHistoryContainer.appendChild(b)})}
 function drawChart(cm){ctx.clearRect(0,0,canvas.width,canvas.height);const max=Math.max(crashPoint,cm,2);const sx=20,sy=canvas.height-20,ex=canvas.width-20;const p=cm/max;const cx=sx+(ex-sx)*p;const cy=sy-(sy-20)*(cm/max);ctx.beginPath();ctx.moveTo(sx,sy);ctx.quadraticCurveTo(sx+(cx-sx)*0.5,sy,cx,cy);ctx.strokeStyle='#ffcc00';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();ctx.shadowBlur=15;ctx.shadowColor='#ffcc00';ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill()}
 function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);drawChart(1)}
 
 const fakeNames=['Ali','Reza','Sara','Mmd','Hossein','Zahra','Amir','Nima','Erfan','Melika','Kian','Matin','Yasin','Arya'];
 const fakeAvatars=['🐸','🐱','⚽','🦊','🐻','🐼','🦁','🐯','🐨','🐵'];
 function addPlayer(name,amount,isMe=false){const avatar=isMe?'👤':fakeAvatars[Math.floor(Math.random()*fakeAvatars.length)];players.push({id:Date.now()+Math.random(),name,amount,avatar,isMe,cashedOut:false,lost:false});if(players.length>15){const idx=players.findIndex(p=>!p.isMe);if(idx!==-1)players.splice(idx,1)}renderPlayers()}
-function renderPlayers(){historyList.innerHTML='';if(players.length===0){historyList.innerHTML='<div style="text-align:center;color:#666;padding:20px;font-size:13px">در انتظار ورود بازیکنان...</div>';return}[...players].reverse().forEach(p=>{const item=document.createElement('div');item.className='history-item fade-in';if(p.isMe)item.style.border='1px solid #ffcc00';let mT='-',mC='',pT='-',pC='#ccc';if(p.cashedOut){mT=p.cashoutMultiplier.toFixed(2)+'x';mC='win';pT='+'+(p.amount*p.cashoutMultiplier).toFixed(2);pC='#00c853'}else if(p.lost){mT='باخت';mC='loss';pT='-'+p.amount.toFixed(2);pC='#ff4444'}item.innerHTML=`<div class="user-info"><span class="avatar-small">${p.avatar}</span><span class="user-name">${p.name}</span></div><div class="bet-amount">${p.amount.toFixed(2)} TON</div><div class="multiplier-badge ${mC}">${mT}</div><div class="profit" style="color:${pC}">${pT}</div>`;historyList.appendChild(item)})}
+function renderPlayers(){historyList.innerHTML='';if(players.length===0){historyList.innerHTML='<div style="text-align:center;color:#666;padding:20px;font-size:13px">Waiting for players...</div>';return}[...players].reverse().forEach(p=>{const item=document.createElement('div');item.className='history-item fade-in';if(p.isMe)item.style.border='1px solid #ffcc00';let mT='-',mC='',pT='-',pC='#ccc';if(p.cashedOut){mT=p.cashoutMultiplier.toFixed(2)+'x';mC='win';pT='+'+(p.amount*p.cashoutMultiplier).toFixed(2);pC='#00c853'}else if(p.lost){mT='Lost';mC='loss';pT='-'+p.amount.toFixed(2);pC='#ff4444'}item.innerHTML=`<div class="user-info"><span class="avatar-small">${p.avatar}</span><span class="user-name">${p.name}</span></div><div class="bet-amount">${p.amount.toFixed(2)} TON</div><div class="multiplier-badge ${mC}">${mT}</div><div class="profit" style="color:${pC}">${pT}</div>`;historyList.appendChild(item)})}
 function updatePlayersOnCrash(){players.forEach(p=>{if(!p.cashedOut)p.lost=true});renderPlayers()}
 
 setInterval(()=>{if(gameState==='playing'&&Math.random()>0.85){addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1)}},1200);
 
 function startNewRound(){
     gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;players=[];
-    addPlayer('ربات پشتیبان',10.00);
+    addPlayer('Backup Bot',10.00);
     multiplier=1.00;crashPoint=getRandomCrashPoint();
     clearChart();
     multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');
@@ -824,8 +806,8 @@ function startNewRound(){
     halfBtn.disabled=false;allBtn.disabled=false;
     betInput.value=localStorage.getItem('lastBet')||10;
     autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;
-    actionButton.innerText='ورود به بازی (Join)';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
-    statusText.innerText='برای ورود به بازی عجله کنید!';
+    actionButton.innerText='Join Game';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
+    statusText.innerText='Hurry up to join the game!';
     let countdown=COUNTDOWN_SECONDS;
     multiplierDisplay.innerText=countdown;
     countdownInterval=setInterval(()=>{countdown--;if(countdown>0)multiplierDisplay.innerText=countdown;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay()}},1000);
@@ -833,8 +815,8 @@ function startNewRound(){
 function startGameplay(){
     gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;
     halfBtn.disabled=true;allBtn.disabled=true;
-    if(hasJoined){statusText.innerText=`✅ شما با ${myBet} TON وارد شدید.`;actionButton.innerText='برداشت دستی (Cash Out)';actionButton.className='action-btn btn-cashout';actionButton.disabled=false}
-    else{statusText.innerText='شما وارد بازی نشدید! تماشا کنید...';actionButton.innerText='وارد نشدید';actionButton.className='action-btn btn-bet';actionButton.disabled=true}
+    if(hasJoined){statusText.innerText=`✅ You joined with ${myBet} TON.`;actionButton.innerText='Cash Out';actionButton.className='action-btn btn-cashout';actionButton.disabled=false}
+    else{statusText.innerText='You did not join! Watching...';actionButton.innerText='Not Joined';actionButton.className='action-btn btn-bet';actionButton.disabled=true}
     for(let i=0;i<2;i++)addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1);
     let elapsed=0;
     gameInterval=setInterval(()=>{
@@ -845,9 +827,9 @@ function startGameplay(){
         players.forEach(p=>{if(!p.isMe&&!p.cashedOut&&!p.lost&&Math.random()>0.97){p.cashedOut=true;p.cashoutMultiplier=multiplier;renderPlayers()}});
         if(multiplier>=crashPoint){
             clearInterval(gameInterval);multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');
-            gameState='crashed';actionButton.disabled=true;actionButton.innerText='دور بعد...';actionButton.className='action-btn btn-bet';
+            gameState='crashed';actionButton.disabled=true;actionButton.innerText='Next Round...';actionButton.className='action-btn btn-bet';
             addRoundToHistory(crashPoint);
-            statusText.innerText=hasJoined?`💥 سقوط کرد! شما ${myBet} TON باختید.`:`💥 سقوط در ${crashPoint.toFixed(2)}x!`;
+            statusText.innerText=hasJoined?`💥 Crashed! You lost ${myBet} TON.`:`💥 Crashed at ${crashPoint.toFixed(2)}x!`;
             updatePlayersOnCrash();setTimeout(startNewRound,2500);
         }
     },80);
@@ -855,22 +837,22 @@ function startGameplay(){
 function joinGame(){
     if(gameState!=='waiting')return;
     const amount=parseFloat(betInput.value);
-    if(isNaN(amount)||amount<1){statusText.innerText='❌ لطفاً یک مبلغ معتبر وارد کنید!';return}
-    if(amount>balance){statusText.innerText='❌ موجودی کافی نیست!';return}
+    if(isNaN(amount)||amount<1){statusText.innerText='❌ Please enter a valid amount!';return}
+    if(amount>balance){statusText.innerText='❌ Insufficient balance!';return}
     hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);
     if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;
     balance-=amount;updateGlobalBalanceUI();
     betInput.disabled=true;autoCashoutInput.disabled=true;
     halfBtn.disabled=true;allBtn.disabled=true;
-    addPlayer('شما (You)',amount,true);
-    statusText.innerText=myAutoCashout>0?`✅ وارد شدید. برداشت خودکار در ${myAutoCashout.toFixed(2)}x`:`✅ وارد شدید! منتظر شروع...`;
-    actionButton.innerText='منتظر شروع...';actionButton.disabled=true;
+    addPlayer('You',amount,true);
+    statusText.innerText=myAutoCashout>0?`✅ Joined. Auto cashout at ${myAutoCashout.toFixed(2)}x`:`✅ Joined! Waiting for start...`;
+    actionButton.innerText='Waiting...';actionButton.disabled=true;
 }
 function cashOut(isAuto=false){
     if(!hasJoined||gameState!=='playing')return;
     const winnings=myBet*multiplier;balance+=winnings;updateGlobalBalanceUI();
-    hasJoined=false;actionButton.disabled=true;actionButton.innerText='دور بعد...';actionButton.className='action-btn btn-bet';
-    statusText.innerText=isAuto?`🤖 برداشت خودکار در ${multiplier.toFixed(2)}x! سود: ${winnings.toFixed(2)} TON`:`✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
+    hasJoined=false;actionButton.disabled=true;actionButton.innerText='Next Round...';actionButton.className='action-btn btn-bet';
+    statusText.innerText=isAuto?`🤖 Auto cashout at ${multiplier.toFixed(2)}x! Profit: ${winnings.toFixed(2)} TON`:`✅ You won! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
     const mp=players.find(p=>p.isMe);if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers()}
 }
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false)});
@@ -878,24 +860,24 @@ actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();e
 function setBetAll(){
     if(gameState!=='waiting')return;
     const amount=Math.floor(balance*100)/100;
-    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    if(amount<1){showToast('❌ Insufficient balance');return}
     betInput.value=amount.toFixed(2);
     localStorage.setItem('lastBet',amount);
     betInput.style.borderColor='#9b5cff';
     clearTimeout(betInput._t);
     betInput._t=setTimeout(()=>betInput.style.borderColor='#444',500);
-    showToast('🎯 همه موجودی: '+amount.toFixed(2)+' TON');
+    showToast('🎯 All in: '+amount.toFixed(2)+' TON');
 }
 function setBetHalf(){
     if(gameState!=='waiting')return;
     const amount=Math.floor((balance/2)*100)/100;
-    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    if(amount<1){showToast('❌ Insufficient balance');return}
     betInput.value=amount.toFixed(2);
     localStorage.setItem('lastBet',amount);
     betInput.style.borderColor='#0098ea';
     clearTimeout(betInput._t);
     betInput._t=setTimeout(()=>betInput.style.borderColor='#444',500);
-    showToast('⚡ نصف موجودی: '+amount.toFixed(2)+' TON');
+    showToast('⚡ Half balance: '+amount.toFixed(2)+' TON');
 }
 
 betInput.addEventListener('input',()=>{
@@ -982,8 +964,8 @@ function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.ge
 function pvpJoinClick(){
     if(pvpState!=='waiting'||pvpUserJoined)return;
     const amount=parseFloat(document.getElementById('pvpBetInput').value);
-    if(isNaN(amount)||amount<1){showToast('❌ مبلغ معتبر وارد کن');return}
-    if(amount>balance){showToast('❌ موجودی کافی نیست');return}
+    if(isNaN(amount)||amount<1){showToast('❌ Enter a valid amount');return}
+    if(amount>balance){showToast('❌ Insufficient balance');return}
     balance-=amount;updateGlobalBalanceUI();
     pvpUserJoined=true;pvpMyBet=amount;
     localStorage.setItem('lastPvpBet',amount);
@@ -994,27 +976,27 @@ function pvpJoinClick(){
     document.getElementById('pvpBetInput').disabled=true;
     document.getElementById('pvpHalfBtn').disabled=true;
     document.getElementById('pvpAllBtn').disabled=true;
-    showToast('وارد شدی با '+amount+' TON');
+    showToast('Joined with '+amount+' TON');
 }
 function pvpSetBetAll(){
     if(pvpState!=='waiting'||pvpUserJoined)return;
     const amount=Math.floor(balance*100)/100;
-    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    if(amount<1){showToast('❌ Insufficient balance');return}
     document.getElementById('pvpBetInput').value=amount.toFixed(2);
     localStorage.setItem('lastPvpBet',amount);
     document.getElementById('pvpBetInput').style.color='#c8b1ff';
     setTimeout(()=>document.getElementById('pvpBetInput').style.color='#fff',500);
-    showToast('🎯 همه موجودی: '+amount.toFixed(2)+' TON');
+    showToast('🎯 All in: '+amount.toFixed(2)+' TON');
 }
 function pvpSetBetHalf(){
     if(pvpState!=='waiting'||pvpUserJoined)return;
     const amount=Math.floor((balance/2)*100)/100;
-    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    if(amount<1){showToast('❌ Insufficient balance');return}
     document.getElementById('pvpBetInput').value=amount.toFixed(2);
     localStorage.setItem('lastPvpBet',amount);
     document.getElementById('pvpBetInput').style.color='#7dc4ff';
     setTimeout(()=>document.getElementById('pvpBetInput').style.color='#fff',500);
-    showToast('⚡ نصف موجودی: '+amount.toFixed(2)+' TON');
+    showToast('⚡ Half balance: '+amount.toFixed(2)+' TON');
 }
 document.getElementById('pvpBetInput').addEventListener('input',(e)=>{
     const v=parseFloat(e.target.value);
@@ -1084,12 +1066,12 @@ function pvpFinishSpin(){
     pvpRenderPlayers();
     if(winner.isMe){
         const w=pvpPool;balance+=w;updateGlobalBalanceUI();
-        showToast('🏆 بردی! +'+w.toFixed(2)+' TON','win');
+        showToast('🏆 You won! +'+w.toFixed(2)+' TON','win');
         document.getElementById('pvpLast').innerText='+'+w.toFixed(2)+' TON';
         document.getElementById('pvpLastPct').innerText='100%';
     } else {
         if(pvpUserJoined){
-            showToast('😔 باختی — '+winner.name+' برد','lose');
+            showToast('😔 You lost — '+winner.name+' won','lose');
             document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';
             document.getElementById('pvpLastPct').innerText='0%';
         } else {
@@ -1099,7 +1081,7 @@ function pvpFinishSpin(){
     }
     setTimeout(()=>{pvpStartRound()},3200);
 }
-function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON شارژ شد')}
+function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON added')}
 </script>
 </body>
-                </html>
+    </html>
