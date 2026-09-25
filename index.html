@@ -79,6 +79,12 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .input-label{font-size:13px;color:#aaa;width:75px;text-align:right}
 .bet-input{background:#2a2a2a;border:2px solid #444;color:#fff;padding:10px;border-radius:10px;width:130px;text-align:center;font-size:15px;font-weight:bold;transition:border-color .3s}
 .auto-cashout-input{border:2px solid #00c853!important;background:#0d1f0d!important;color:#00c853!important}
+.quick-btns{display:flex;gap:6px}
+.quick-btn{background:linear-gradient(135deg,#2a2a2a,#1a1a1a);border:1px solid #444;color:#fff;padding:9px 12px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.3px;font-family:inherit}
+.quick-btn:active{transform:scale(.95)}
+.quick-btn.all-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff;box-shadow:0 0 10px rgba(124,58,237,.4)}
+.quick-btn.half-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border-color:#0098ea;box-shadow:0 0 10px rgba(0,152,234,.3)}
+.quick-btn:disabled{opacity:.4;cursor:not-allowed}
 .action-btn{width:100%;padding:15px;font-size:20px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;color:#fff;margin-top:3px}
 .action-btn:disabled{opacity:.5}
 .btn-bet{background:linear-gradient(135deg,#1e90ff,#0056b3)}
@@ -215,7 +221,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="bet-input-row">
             <span class="input-label">مبلغ شرط:</span>
             <input type="number" id="betInput" class="bet-input" value="10" min="1">
-            <span style="color:#888;font-size:13px">TON</span>
+            <div class="quick-btns">
+                <button class="quick-btn half-btn" id="halfBtn" onclick="setBetHalf()">50%</button>
+                <button class="quick-btn all-btn" id="allBtn" onclick="setBetAll()">ALL</button>
+            </div>
         </div>
         <div class="bet-input-row">
             <span class="input-label">برداشت خودکار:</span>
@@ -256,7 +265,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="pvp-wheel-wrap">
         <canvas id="pvpCanvas"></canvas>
         <div class="pvp-center">
-            <div class="pvp-timer" id="pvpTimer">00:10</div>
+            <div class="pvp-timer" id="pvpTimer">00:08</div>
             <div class="pvp-pool-label">TOTAL POOL</div>
             <div class="pvp-pool">
                 <span class="ton-icon">◈</span>
@@ -283,13 +292,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div class="toast" id="toast"></div>
 
 <script>
-/* ⚙️⚙️⚙️ تنظیم سرعت بازی — عدد رو کم/زیاد کن ⚙️⚙️⚙️
-   1.00005 = خیلی کند (30 ثانیه تا 2x)
-   1.0001  = کند (7 ثانیه تا 2x) ← الان همین
-   1.0002  = متوسط (3.5 ثانیه تا 2x)
-   1.0003  = تند (2.3 ثانیه تا 2x)
-   1.0007  = خیلی تند (1 ثانیه تا 2x) */
+/* ⚙️ تنظیم سرعت بازی
+   1.00005 = خیلی کند | 1.0001 = کند | 1.0002 = متوسط | 1.0003 = تند | 1.0007 = خیلی تند */
 const SPEED = 1.0001;
+/* ⏱️ زمان شمارش معکوس (ثانیه) */
+const COUNTDOWN_SECONDS = 8;
 
 function openGame(){
     document.getElementById('homeScreen').classList.add('hidden');
@@ -339,6 +346,8 @@ const autoCashoutInput=document.getElementById('autoCashoutInput');
 const multiplierHistoryContainer=document.getElementById('multiplierHistory');
 const canvas=document.getElementById('chartCanvas');
 const ctx=canvas.getContext('2d');
+const halfBtn=document.getElementById('halfBtn');
+const allBtn=document.getElementById('allBtn');
 
 function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
@@ -370,15 +379,18 @@ function startNewRound(){
     clearChart();
     multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');
     betInput.disabled=false;autoCashoutInput.disabled=false;
+    halfBtn.disabled=false;allBtn.disabled=false;
     betInput.value=localStorage.getItem('lastBet')||10;
     autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;
     actionButton.innerText='ورود به بازی (Join)';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
     statusText.innerText='برای ورود به بازی عجله کنید!';
-    let countdown=5;multiplierDisplay.innerText=countdown;
+    let countdown=COUNTDOWN_SECONDS;
+    multiplierDisplay.innerText=countdown;
     countdownInterval=setInterval(()=>{countdown--;if(countdown>0)multiplierDisplay.innerText=countdown;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay()}},1000);
 }
 function startGameplay(){
     gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;
+    halfBtn.disabled=true;allBtn.disabled=true;
     if(hasJoined){statusText.innerText=`✅ شما با ${myBet} TON وارد شدید.`;actionButton.innerText='برداشت دستی (Cash Out)';actionButton.className='action-btn btn-cashout';actionButton.disabled=false}
     else{statusText.innerText='شما وارد بازی نشدید! تماشا کنید...';actionButton.innerText='وارد نشدید';actionButton.className='action-btn btn-bet';actionButton.disabled=true}
     for(let i=0;i<2;i++)addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1);
@@ -407,6 +419,7 @@ function joinGame(){
     if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;
     balance-=amount;updateGlobalBalanceUI();
     betInput.disabled=true;autoCashoutInput.disabled=true;
+    halfBtn.disabled=true;allBtn.disabled=true;
     addPlayer('شما (You)',amount,true);
     statusText.innerText=myAutoCashout>0?`✅ وارد شدید. برداشت خودکار در ${myAutoCashout.toFixed(2)}x`:`✅ وارد شدید! منتظر شروع...`;
     actionButton.innerText='منتظر شروع...';actionButton.disabled=true;
@@ -419,6 +432,29 @@ function cashOut(isAuto=false){
     const mp=players.find(p=>p.isMe);if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers()}
 }
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false)});
+
+function setBetAll(){
+    if(gameState!=='waiting')return;
+    const amount=Math.floor(balance*100)/100;
+    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    betInput.value=amount.toFixed(2);
+    localStorage.setItem('lastBet',amount);
+    betInput.style.borderColor='#9b5cff';
+    clearTimeout(betInput._t);
+    betInput._t=setTimeout(()=>betInput.style.borderColor='#444',500);
+    showToast('🎯 همه موجودی: '+amount.toFixed(2)+' TON');
+}
+function setBetHalf(){
+    if(gameState!=='waiting')return;
+    const amount=Math.floor((balance/2)*100)/100;
+    if(amount<1){showToast('❌ موجودی کافی نیست');return}
+    betInput.value=amount.toFixed(2);
+    localStorage.setItem('lastBet',amount);
+    betInput.style.borderColor='#0098ea';
+    clearTimeout(betInput._t);
+    betInput._t=setTimeout(()=>betInput.style.borderColor='#444',500);
+    showToast('⚡ نصف موجودی: '+amount.toFixed(2)+' TON');
+}
 
 betInput.addEventListener('input',()=>{
     const v=parseFloat(betInput.value);
@@ -447,7 +483,7 @@ const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#
 const PVP_BOTS=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro'];
 const PVP_AVATARS=['🦁','🧔','👨','🐸','🐱','🐻','🤖','🐼','🦊','🐯'];
 
-let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=10,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
+let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=8,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
 
 function pvpInit(){
@@ -473,7 +509,7 @@ function resizePvpCanvas(){
     pvpDraw();
 }
 function pvpStartRound(){
-    pvpState='waiting';pvpTimer=10;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
+    pvpState='waiting';pvpTimer=8;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
     pvpPointerAngle=-Math.PI/2;pvpLastResult=null;
     pvpGameNum=Math.floor(60000+Math.random()*10000);
     document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;
