@@ -72,7 +72,7 @@
             color: #ccc;
             flex-shrink: 0;
         }
-        /* رنگ‌بندی دقیق */
+        /* رنگ‌بندی دقیق طبق درخواست */
         .history-badge.red { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
         .history-badge.green { background-color: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
         .history-badge.blue { background-color: rgba(30, 144, 255, 0.2); color: #1e90ff; border: 1px solid rgba(30, 144, 255, 0.4); }
@@ -102,36 +102,13 @@
             color: #ffcc00;
             z-index: 10;
             text-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
         }
         .multiplier-text.crashed { color: #ff4444; }
-
-        /* شمارش معکوس گرافیکی */
-        .countdown-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .countdown-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .countdown-number {
-            font-size: 180px;
-            font-weight: bold;
+        .multiplier-text.counting {
             color: #ff9800;
-            text-shadow: 0 0 60px rgba(255, 152, 0, 0.8);
-            transform: scale(0.5);
-            transition: transform 0.3s;
-        }
-        .countdown-overlay.active .countdown-number {
-            transform: scale(1);
+            font-size: 100px;
+            text-shadow: 0 0 30px rgba(255, 152, 0, 0.8);
         }
 
         /* بخش شرط‌بندی */
@@ -139,7 +116,7 @@
             padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             background-color: #1e1e1e;
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
@@ -160,10 +137,16 @@
             border-radius: 10px;
             width: 120px;
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             user-select: text !important;
             -webkit-user-select: text !important;
+        }
+        /* استایل مخصوص کادر برداشت خودکار */
+        .auto-cashout-input {
+            border: 1px solid #00c853 !important;
+            background-color: #1a2a1a !important;
+            color: #00c853 !important;
         }
         .action-btn {
             width: 100%;
@@ -175,6 +158,7 @@
             cursor: pointer;
             transition: all 0.2s;
             color: white;
+            margin-top: 5px;
         }
         .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-bet { background: linear-gradient(135deg, #1e90ff, #0056b3); }
@@ -234,19 +218,19 @@
             <input type="number" id="betInput" class="bet-input" placeholder="مبلغ شرط" value="10" min="1">
             <span style="color:#888;">TON</span>
         </div>
+        <!-- کادر جدید برای برداشت خودکار -->
+        <div class="bet-input-row">
+            <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" placeholder="برداشت خودکار (x)" value="2.00" min="1.01" step="0.1">
+            <span style="color:#00c853; font-weight:bold;">x</span>
+        </div>
         <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
         <div style="text-align: center; font-size: 14px; color: #aaa; min-height: 20px;" id="statusText">برای شروع، مبلغ را وارد کنید</div>
     </div>
 
     <div class="history-container" id="historyList"></div>
 
-    <!-- شمارش معکوس گرافیکی -->
-    <div class="countdown-overlay" id="countdownOverlay">
-        <div class="countdown-number" id="countdownNumber">5</div>
-    </div>
-
     <script>
-        let balance = parseFloat(localStorage.getItem('crashBalance_v11')) || 100.00;
+        let balance = parseFloat(localStorage.getItem('crashBalance_v13')) || 100.00;
         let gameState = 'waiting'; 
         let multiplier = 1.00;
         let crashPoint = 0;
@@ -263,11 +247,10 @@
         const historyList = document.getElementById('historyList');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const betInput = document.getElementById('betInput');
+        const autoCashoutInput = document.getElementById('autoCashoutInput');
         const multiplierHistoryContainer = document.getElementById('multiplierHistory');
         const canvas = document.getElementById('chartCanvas');
         const ctx = canvas.getContext('2d');
-        const countdownOverlay = document.getElementById('countdownOverlay');
-        const countdownNumber = document.getElementById('countdownNumber');
 
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
@@ -278,7 +261,7 @@
 
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance_v11', balance);
+            localStorage.setItem('crashBalance_v13', balance);
         }
         updateBalanceUI();
 
@@ -438,7 +421,7 @@
             }
         }, 1000);
 
-        // --- شروع دور جدید با شمارش معکوس گرافیکی ---
+        // --- شروع دور جدید ---
         function startNewRound() {
             gameState = 'waiting';
             hasJoined = false;
@@ -449,33 +432,31 @@
             multiplier = 1.00;
             crashPoint = getRandomCrashPoint(); 
             
-            multiplierDisplay.innerText = '1.00x';
-            multiplierDisplay.classList.remove('crashed');
             clearChart();
+            multiplierDisplay.classList.remove('crashed');
+            multiplierDisplay.classList.add('counting'); 
             
             betInput.disabled = false;
+            autoCashoutInput.disabled = false; // فعال کردن کادر برداشت خودکار
             betInput.value = 10;
+            autoCashoutInput.value = 2.00;
+            
             actionButton.innerText = 'ورود به بازی (Join)';
             actionButton.className = 'action-btn btn-bet';
             actionButton.disabled = false;
             statusText.innerText = 'برای ورود به بازی عجله کنید!';
             
-            // شروع شمارش معکوس گرافیکی
             let countdown = 5;
-            countdownOverlay.classList.add('active');
-            countdownNumber.innerText = countdown;
-            countdownNumber.style.transform = 'scale(0.5)';
-            setTimeout(() => countdownNumber.style.transform = 'scale(1)', 50);
-
+            multiplierDisplay.innerText = countdown;
+            
             countdownInterval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
-                    countdownNumber.innerText = countdown;
-                    countdownNumber.style.transform = 'scale(0.5)';
-                    setTimeout(() => countdownNumber.style.transform = 'scale(1)', 50);
+                    multiplierDisplay.innerText = countdown;
                 } else {
                     clearInterval(countdownInterval);
-                    countdownOverlay.classList.remove('active');
+                    multiplierDisplay.classList.remove('counting');
+                    multiplierDisplay.innerText = '1.00x';
                     startGameplay();
                 }
             }, 1000);
@@ -484,6 +465,7 @@
         function startGameplay() {
             gameState = 'playing';
             betInput.disabled = true;
+            autoCashoutInput.disabled = true; // قفل کردن کادر برداشت خودکار
             
             if (hasJoined) {
                 statusText.innerText = `✅ شما با ${myBet} TON وارد شدید. ضریب در حال افزایش...`;
@@ -503,10 +485,20 @@
             }
 
             gameInterval = setInterval(() => {
-                multiplier += 0.05; 
+                // سرعت ضریب کم شده (0.015 در هر 80 میلی‌ثانیه - تقریباً 1x در هر 5 ثانیه)
+                multiplier += 0.015; 
                 multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
                 drawChart(multiplier);
                 
+                // بررسی برداشت خودکار
+                if (hasJoined) {
+                    const autoCashoutValue = parseFloat(autoCashoutInput.value);
+                    if (!isNaN(autoCashoutValue) && autoCashoutValue > 1.00 && multiplier >= autoCashoutValue) {
+                        cashOut(true); // فراخوانی تابع برداشت با علامت خودکار
+                    }
+                }
+
+                // برداشت خودکار بازیکنان فیک
                 players.forEach(p => {
                     if (!p.isMe && !p.cashedOut && !p.lost && Math.random() > 0.98) {
                         p.cashedOut = true;
@@ -535,7 +527,7 @@
                     updatePlayersOnCrash(); 
                     setTimeout(startNewRound, 2500);
                 }
-            }, 50);
+            }, 80); // زمان 80 میلی‌ثانیه (به جای 50)
         }
 
         function joinGame() {
@@ -549,13 +541,22 @@
             balance -= amount;
             updateBalanceUI();
             betInput.disabled = true;
+            autoCashoutInput.disabled = true;
             addPlayer('شما (You)', amount, true);
-            statusText.innerText = `✅ شما با ${amount} TON وارد بازی شدید! منتظر شروع...`;
+            
+            const autoValue = parseFloat(autoCashoutInput.value);
+            if (!isNaN(autoValue) && autoValue > 1.00) {
+                statusText.innerText = `✅ شما با ${amount} TON وارد شدید. برداشت خودکار در ${autoValue.toFixed(2)}x`;
+            } else {
+                statusText.innerText = `✅ شما با ${amount} TON وارد شدید! منتظر شروع...`;
+            }
+            
             actionButton.innerText = 'منتظر شروع...';
             actionButton.disabled = true;
         }
 
-        function cashOut() {
+        // اضافه کردن پارامتر isAuto به تابع برداشت
+        function cashOut(isAuto = false) {
             if (!hasJoined || gameState !== 'playing') return;
             const winnings = myBet * multiplier;
             balance += winnings;
@@ -564,7 +565,13 @@
             actionButton.disabled = true;
             actionButton.innerText = 'دور بعد...';
             actionButton.className = 'action-btn btn-bet';
-            statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
+            
+            if (isAuto) {
+                statusText.innerText = `🤖 برداشت خودکار در ${multiplier.toFixed(2)}x! سود: ${winnings.toFixed(2)} TON`;
+            } else {
+                statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
+            }
+            
             const myPlayer = players.find(p => p.isMe);
             if (myPlayer) {
                 myPlayer.cashedOut = true;
@@ -575,7 +582,7 @@
 
         actionButton.addEventListener('click', () => {
             if (gameState === 'waiting') joinGame();
-            else if (gameState === 'playing' && hasJoined) cashOut();
+            else if (gameState === 'playing' && hasJoined) cashOut(false);
         });
 
         startNewRound();
