@@ -10,7 +10,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 ::-webkit-scrollbar{display:none}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;transition:transform .3s,opacity .3s;overflow:hidden}
 .screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
-
 #homeScreen{background:radial-gradient(circle at 50% 0%,#1a1f3a 0%,#0a0d14 60%);overflow-y:auto;padding-bottom:90px;padding-top:20px}
 .balance-row{display:flex;align-items:center;padding:12px 16px 18px;gap:12px}
 .avatar-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
@@ -21,7 +20,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .balance-value{font-size:22px;font-weight:800;display:flex;align-items:center;gap:8px}
 .ton-icon{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:800;box-shadow:0 0 10px rgba(0,152,234,.5)}
 .deposit-btn{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:11px 18px;border-radius:14px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(124,58,237,.5)}
-
 .banners{padding:20px 14px 0;display:flex;flex-direction:column;gap:14px}
 .banner{border-radius:22px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:110px}
 .banner:active{transform:scale(.98)}
@@ -50,13 +48,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .gc-crash{background:linear-gradient(135deg,#ff5c5c,#b91c1c);z-index:2}
 .gc-plinko{background:linear-gradient(135deg,#c084fc,#7c3aed);z-index:1}
 .game-card-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;font-weight:800;color:#fff}
-
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(15,18,28,.95);backdrop-filter:blur(20px);display:flex;justify-content:space-around;align-items:center;border-top:1px solid rgba(255,255,255,.08);z-index:100}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#5a6278;font-size:10px;cursor:pointer;font-weight:600}
 .nav-item.active{color:#fff}
 .nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px;box-shadow:0 4px 15px rgba(124,58,237,.5)}
 .nav-icon{font-size:22px}
-
 #gameScreen{background:#121212;z-index:200}
 .game-top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#1e1e1e;border-bottom:1px solid #333;flex-shrink:0}
 .back-btn{background:#333;color:#fff;border:none;padding:8px 15px;border-radius:8px;font-size:14px;cursor:pointer}
@@ -101,8 +97,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .profit{width:65px;text-align:right;font-weight:bold;font-size:13px}
 .fade-in{animation:fadeIn .3s ease-in-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-
-/* ============ PLAY HUB SCREEN ============ */
 #playhubScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);overflow-y:auto;padding-bottom:90px;z-index:150}
 .ph-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;position:sticky;top:0;background:rgba(10,14,23,.95);backdrop-filter:blur(10px);z-index:100}
 .ph-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
@@ -130,8 +124,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .ph-card-crafts{background:linear-gradient(135deg,#ff5722,#bf360c)}
 .ph-card-dice{background:linear-gradient(135deg,#03a9f4,#01579b)}
 .mines-mini{position:absolute;top:14px;right:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:15px}
-
-/* ============ UPGRADE SCREEN ============ */
 #upgradeScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:250;overflow-y:auto;padding-bottom:30px}
 .up-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;position:sticky;top:0;background:rgba(10,14,23,.95);backdrop-filter:blur(10px);z-index:100}
 .up-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
@@ -168,8 +160,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .up-result.show{opacity:1}
 .up-result.win{background:linear-gradient(135deg,rgba(47,240,104,.2),rgba(0,168,56,.2));color:#2ff068;border:1px solid rgba(47,240,104,.4)}
 .up-result.lose{background:linear-gradient(135deg,rgba(255,68,68,.2),rgba(200,30,30,.2));color:#ff4444;border:1px solid rgba(255,68,68,.4)}
-
-/* PVP */
 #pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
 .pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0}
 .pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px}
@@ -289,7 +279,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <span class="val" id="phBalanceDisplay">0.008</span>
         </div>
     </div>
-
     <div class="ph-upgrade" onclick="openUpgrade()">
         <div class="ph-upgrade-badge">🔥 HOT</div>
         <div class="ph-upgrade-title">Upgrade</div>
@@ -298,7 +287,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="ph-upgrade-gift">💖</div>
         <div class="ph-upgrade-percent">15%</div>
     </div>
-
     <div class="ph-games-grid">
         <div class="ph-game-card ph-card-mines" onclick="playhubCardClick('Mines')">
             <div class="ph-new-badge">⚙️ NEW</div>
@@ -326,7 +314,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="ph-game-sub">Higher or Lower</div>
         </div>
     </div>
-
     <div class="bottom-nav">
         <div class="nav-item"><div class="nav-icon">🎒</div><span>Backpack</span></div>
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
@@ -345,12 +332,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <span class="val" id="upBalanceDisplay">100.00</span>
         </div>
     </div>
-
     <div class="up-head">
         <div class="up-head-title">Gift Upgrade</div>
         <div class="up-head-sub">✨ Transform your gift into something better</div>
     </div>
-
     <div class="up-cards-row">
         <div class="up-card">
             <div class="up-card-num">1</div>
@@ -366,7 +351,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="up-card-lbl">Target Amount (TON)</div>
         </div>
     </div>
-
     <div class="up-wheel-wrap">
         <canvas id="upCanvas"></canvas>
         <div class="up-wheel-center">
@@ -374,7 +358,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="up-chance-lbl" id="upChanceLabel">LOW</div>
         </div>
     </div>
-
     <div class="up-stats">
         <div class="up-stat">
             <div class="up-stat-lbl">🎯 Win Chance</div>
@@ -385,9 +368,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="up-stat-val" id="upProfitText">+40.00</div>
         </div>
     </div>
-
     <button class="up-btn" id="upBtn" onclick="upStart()">🚀 UPGRADE</button>
-
     <div class="up-result" id="upResult"></div>
 </div>
 
@@ -549,7 +530,6 @@ let upState = 'idle';
 let upChance = 20;
 let upBetVal = 0;
 let upTargetVal = 0;
-let upIsWin = false;
 
 function upInit(){
     upCanvas = document.getElementById('upCanvas');
@@ -617,7 +597,11 @@ function upDrawWheel(){
     const R = size/2 - 8;
     upCtx.clearRect(0, 0, size, size);
     const greenAngle = (upChance / 100) * Math.PI * 2;
+    // Green sector starts at wheel-local angle 0 (top when wheel angle = 0)
+    // In canvas coords with wheel rotation: startA = upWheelAngle - π/2
     const startA = upWheelAngle - Math.PI/2;
+    
+    // Green sector
     if (greenAngle > 0) {
         upCtx.beginPath();
         upCtx.moveTo(cx, cy);
@@ -639,6 +623,7 @@ function upDrawWheel(){
         }
         upCtx.restore();
     }
+    // Red sector
     if (greenAngle < Math.PI * 2) {
         upCtx.beginPath();
         upCtx.moveTo(cx, cy);
@@ -660,6 +645,7 @@ function upDrawWheel(){
         }
         upCtx.restore();
     }
+    // Inner circle
     upCtx.beginPath();
     upCtx.arc(cx, cy, size*0.22, 0, Math.PI*2);
     upCtx.fillStyle = '#1a1d2e';
@@ -667,11 +653,13 @@ function upDrawWheel(){
     upCtx.strokeStyle = '#2a2e42';
     upCtx.lineWidth = 3;
     upCtx.stroke();
+    // Outer ring
     upCtx.beginPath();
     upCtx.arc(cx, cy, R+3, 0, Math.PI*2);
     upCtx.strokeStyle = '#2a2e42';
     upCtx.lineWidth = 6;
     upCtx.stroke();
+    // Pointer at top
     upCtx.beginPath();
     upCtx.moveTo(cx - 10, 4);
     upCtx.lineTo(cx + 10, 4);
@@ -697,7 +685,46 @@ function upStart(){
     upTargetVal = target;
     balance -= bet;
     updateGlobalBalanceUI();
-    upIsWin = Math.random() * 100 < upChance;
+    
+    // Determine target wheel angle FIRST (this decides the outcome)
+    const greenAngle = (upChance / 100) * Math.PI * 2;
+    // We want the pointer (at canvas angle -π/2) to be:
+    //   On green if we want to win, on red if we want to lose
+    // Green sector in canvas coords covers: [upWheelAngle - π/2, upWheelAngle - π/2 + greenAngle]
+    // Pointer at -π/2 is inside green if: upWheelAngle - π/2 ≤ -π/2 ≤ upWheelAngle - π/2 + greenAngle
+    // => 0 ≤ upWheelAngle ≤ greenAngle  (mod 2π, thinking in terms of what makes green cover the top)
+    // Actually let's just work with: upWheelAngle = some angle, and the pointer lands at wheel-local angle = -upWheelAngle (mod 2π)
+    // Green sector is wheel-local [0, greenAngle], so win if -upWheelAngle mod 2π ∈ [0, greenAngle]
+    // => upWheelAngle mod 2π ∈ [2π - greenAngle, 2π] ∪ {0} 
+    // Equivalently: upWheelAngle mod 2π ∈ [-greenAngle, 0] (with 0 included)
+    
+    // Let's just pick the FINAL wheel angle based on desired outcome:
+    const isWin = Math.random() * 100 < upChance;
+    let finalLocalAngle; // Where the pointer will land in wheel-local coords
+    if (isWin) {
+        // Land somewhere in [0, greenAngle]
+        finalLocalAngle = Math.random() * greenAngle;
+    } else {
+        // Land somewhere in [greenAngle, 2π]
+        finalLocalAngle = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
+    }
+    // Relation: pointer (canvas -π/2) = upWheelAngle - π/2 + finalLocalAngle (mod 2π)
+    // => -π/2 = upWheelAngle - π/2 + finalLocalAngle (mod 2π)
+    // => upWheelAngle = -finalLocalAngle (mod 2π)
+    // Let's normalize to a positive value for spinning forward:
+    let targetWheelAngle = -finalLocalAngle;
+    // Normalize to [0, 2π)
+    targetWheelAngle = ((targetWheelAngle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+    
+    // Animation: spin forward to targetWheelAngle + N full rotations
+    const fullSpins = 6 + Math.floor(Math.random() * 3);
+    // We need final angle > current angle. If not, add full turns.
+    let endAngle = targetWheelAngle;
+    while (endAngle < upWheelAngle + Math.PI * 2 * fullSpins) {
+        endAngle += Math.PI * 2;
+    }
+    const startAngle = upWheelAngle;
+    
     upState = 'spinning';
     const btn = document.getElementById('upBtn');
     btn.disabled = true;
@@ -705,25 +732,7 @@ function upStart(){
     const res = document.getElementById('upResult');
     res.className = 'up-result';
     res.innerText = '';
-    const greenAngle = (upChance / 100) * Math.PI * 2;
-    let finalLocal;
-    if (upIsWin) {
-        // Land inside the green sector (local angle 0 to greenAngle)
-        finalLocal = Math.random() * greenAngle;
-    } else {
-        // Land inside the red sector (local angle greenAngle to 2π)
-        finalLocal = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
-    }
-    // FIXED: pointer is at canvas angle -π/2 (top). We want:
-    // upWheelAngle - π/2 + finalLocal = -π/2  =>  upWheelAngle = -finalLocal
-    const targetAngleBase = -finalLocal;
-    const fullSpins = 6 + Math.floor(Math.random() * 3);
-    const startAngle = upWheelAngle;
-    // We need the animation to spin forward (increase), so we build endAngle > startAngle
-    let endAngle = targetAngleBase + fullSpins * Math.PI * 2;
-    while (endAngle < startAngle + Math.PI * 2 * 5) {
-        endAngle += Math.PI * 2;
-    }
+    
     const duration = 4000;
     const startTime = performance.now();
     function frame(now){
@@ -742,7 +751,19 @@ function upFinish(){
     btn.disabled = false;
     btn.innerText = '🚀 UPGRADE';
     const res = document.getElementById('upResult');
-    if (upIsWin){
+    
+    // ✅ Read the ACTUAL result from where the pointer landed
+    // Pointer is at canvas angle -π/2
+    // Green sector covers canvas [upWheelAngle - π/2, upWheelAngle - π/2 + greenAngle]
+    // Calculate the pointer's position in wheel-local coords:
+    const greenAngle = (upChance / 100) * Math.PI * 2;
+    // Wheel-local angle of pointer = (-π/2) - (upWheelAngle - π/2) = -upWheelAngle
+    let pointerLocal = (-upWheelAngle) % (Math.PI * 2);
+    if (pointerLocal < 0) pointerLocal += Math.PI * 2;
+    
+    const actuallyWon = pointerLocal <= greenAngle;
+    
+    if (actuallyWon){
         balance += upTargetVal;
         updateGlobalBalanceUI();
         res.className = 'up-result win show';
@@ -753,7 +774,7 @@ function upFinish(){
         res.innerText = '😔 You lost! -' + upBetVal.toFixed(2) + ' TON';
         showToast('😔 You lost! -' + upBetVal.toFixed(2) + ' TON', 'lose');
     }
-    // Normalize the angle so it doesn't grow infinitely
+    // Normalize wheel angle for next round
     upWheelAngle = upWheelAngle % (Math.PI * 2);
 }
 
@@ -1084,4 +1105,4 @@ function pvpFinishSpin(){
 function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON added')}
 </script>
 </body>
-    </html>
+</html>
