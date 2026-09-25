@@ -1,1 +1,594 @@
-.
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ebic Gift</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{display:none}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;transition:transform .3s,opacity .3s;overflow:hidden}
+.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
+
+#homeScreen{background:radial-gradient(circle at 50% 0%,#1a1f3a 0%,#0a0d14 60%);overflow-y:auto;padding-bottom:90px;padding-top:20px}
+.balance-row{display:flex;align-items:center;padding:12px 16px 18px;gap:12px}
+.avatar-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2ff0e0,#1e9cff);display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:800;box-shadow:0 0 0 2px rgba(47,240,224,.4),0 0 20px rgba(47,240,224,.3)}
+.avatar-badge{position:absolute;bottom:-2px;right:-4px;font-size:14px;background:#0a0d14;border-radius:50%;width:20px;height:20px;display:flex;justify-content:center;align-items:center}
+.balance-info{flex:1}
+.balance-label{font-size:12px;color:#7a8299;margin-bottom:4px}
+.balance-value{font-size:22px;font-weight:800;display:flex;align-items:center;gap:8px}
+.ton-icon{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:800;box-shadow:0 0 10px rgba(0,152,234,.5)}
+.deposit-btn{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:11px 18px;border-radius:14px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(124,58,237,.5)}
+
+.banners{padding:20px 14px 0;display:flex;flex-direction:column;gap:14px}
+.banner{border-radius:22px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:110px;direction:ltr}
+.banner:active{transform:scale(.98)}
+.banner-badge{position:absolute;top:14px;left:16px;background:rgba(255,255,255,.95);color:#333;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:10}
+.banner-title{position:absolute;bottom:16px;left:20px;font-size:24px;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;text-shadow:0 2px 10px rgba(0,0,0,.4);z-index:10;letter-spacing:.5px}
+.rocket-banner{background:radial-gradient(circle at 75% 50%,rgba(255,255,255,.3) 0%,transparent 45%),linear-gradient(135deg,#4aa8ff 0%,#6bb8ff 50%,#3d8ce8 100%);min-height:130px}
+.rocket-scene{position:absolute;right:0;top:0;bottom:0;width:55%;pointer-events:none}
+.rocket-ship{position:absolute;right:20px;top:50%;transform:translateY(-50%) rotate(-8deg);font-size:74px;line-height:1;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));animation:rocketFloat 2.5s ease-in-out infinite;z-index:2}
+@keyframes rocketFloat{0%,100%{transform:translateY(-50%) rotate(-8deg)}50%{transform:translateY(-58%) rotate(-6deg)}}
+.mult-pill{position:absolute;padding:5px 10px;border-radius:10px;font-size:12px;font-weight:900;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3);animation:pillFloat 3s ease-in-out infinite;z-index:3}
+.mult-pill.green{background:linear-gradient(135deg,#2ff068,#00b848)}
+.mult-pill.yellow{background:linear-gradient(135deg,#ffcb2b,#ff9d00)}
+.mult-pill.red{background:linear-gradient(135deg,#ff5c5c,#d92b2b)}
+.pm-1{top:14px;right:90px}.pm-2{top:55px;right:130px;animation-delay:.6s}.pm-3{bottom:14px;right:70px;animation-delay:1.2s}
+@keyframes pillFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
+.pvp-banner{background:linear-gradient(135deg,#ffc14d 0%,#ff9d3d 100%)}
+.pvp-players{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:6px;z-index:2}
+.pvp-card{width:60px;height:80px;border-radius:14px;background:rgba(0,0,0,.35);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border:1px solid rgba(255,255,255,.15)}
+.pvp-card .pc-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6b7280,#374151);display:flex;justify-content:center;align-items:center;font-size:15px;border:2px solid rgba(255,255,255,.3)}
+.pvp-card .pc-name{font-size:8px;font-weight:800;color:#fff;text-transform:uppercase}
+.pvp-card .pc-pct{font-size:10px;font-weight:800;color:#4ade80}
+.playhub-banner{background:linear-gradient(135deg,#6a1b9a 0%,#3d0a63 100%);min-height:120px}
+.game-cards{position:absolute;right:-10px;top:0;bottom:0;display:flex;align-items:center;z-index:2;pointer-events:none}
+.game-card{width:78px;height:90px;border-radius:12px;display:flex;justify-content:center;align-items:center;font-size:34px;flex-shrink:0;box-shadow:0 8px 20px rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.15);margin-left:-30px;transform:rotate(-8deg);position:relative}
+.gc-upgrade{background:linear-gradient(135deg,#2ff068,#00a03d);z-index:3}
+.gc-crash{background:linear-gradient(135deg,#ff5c5c,#b91c1c);z-index:2}
+.gc-plinko{background:linear-gradient(135deg,#c084fc,#7c3aed);z-index:1}
+.game-card-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;font-weight:800;color:#fff}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(15,18,28,.95);backdrop-filter:blur(20px);display:flex;justify-content:space-around;align-items:center;border-top:1px solid rgba(255,255,255,.08);z-index:100}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#5a6278;font-size:10px;cursor:pointer;font-weight:600}
+.nav-item.active{color:#fff}
+.nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px;box-shadow:0 4px 15px rgba(124,58,237,.5)}
+.nav-icon{font-size:22px}
+
+#gameScreen{background:#121212;z-index:200}
+.game-top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#1e1e1e;border-bottom:1px solid #333;flex-shrink:0}
+.back-btn{background:#333;color:#fff;border:none;padding:8px 15px;border-radius:8px;font-size:14px;cursor:pointer}
+.game-balance{background:#2a2a2a;padding:8px 15px;border-radius:10px;font-weight:bold;color:#00c853;font-size:16px}
+.reset-btn{background:#444;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer}
+.multiplier-history{display:flex;align-items:center;overflow-x:auto;padding:8px 10px;gap:8px;background:#1a1a1a;border-bottom:1px solid #333;white-space:nowrap;min-height:45px;flex-shrink:0;direction:ltr}
+.history-badge{padding:5px 12px;border-radius:15px;font-size:13px;font-weight:bold;background:#2a2a2a;color:#ccc;flex-shrink:0}
+.history-badge.red{background:rgba(255,68,68,.2);color:#ff4444}
+.history-badge.green{background:rgba(0,200,83,.2);color:#00c853}
+.history-badge.blue{background:rgba(30,144,255,.2);color:#1e90ff}
+.history-badge.purple{background:rgba(156,39,176,.2);color:#9c27b0}
+.history-badge.yellow{background:rgba(255,204,0,.2);color:#ffcc00}
+.chart-container{width:100%;height:180px;background:#0a0a0a;position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;flex-shrink:0}
+#chartCanvas{width:100%;height:100%}
+.multiplier-text{position:absolute;font-size:60px;font-weight:bold;color:#ffcc00;z-index:10;text-shadow:0 0 20px rgba(0,0,0,.8);transition:all .3s}
+.multiplier-text.crashed{color:#ff4444}
+.multiplier-text.counting{color:#ff9800;font-size:100px}
+.bet-controls{padding:12px 15px;display:flex;flex-direction:column;gap:8px;background:#1e1e1e;border-top:1px solid #333;border-bottom:1px solid #333;flex-shrink:0}
+.bet-input-row{display:flex;justify-content:center;align-items:center;gap:10px}
+.input-label{font-size:13px;color:#aaa;width:75px;text-align:right}
+.bet-input{background:#2a2a2a;border:2px solid #444;color:#fff;padding:10px;border-radius:10px;width:130px;text-align:center;font-size:15px;font-weight:bold;transition:border-color .3s}
+.auto-cashout-input{border:2px solid #00c853!important;background:#0d1f0d!important;color:#00c853!important}
+.action-btn{width:100%;padding:15px;font-size:20px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;color:#fff;margin-top:3px}
+.action-btn:disabled{opacity:.5}
+.btn-bet{background:linear-gradient(135deg,#1e90ff,#0056b3)}
+.btn-cashout{background:linear-gradient(135deg,#00c853,#009624)}
+.history-container{flex:1;min-height:0;overflow-y:auto;padding:10px}
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#1e1e1e;border-radius:10px;margin-bottom:5px;font-size:13px;border:1px solid #2a2a2a}
+.user-info{display:flex;align-items:center;gap:8px;flex-grow:1}
+.avatar-small{font-size:22px}
+.user-name{color:#ccc;font-weight:bold;font-size:13px}
+.bet-amount{color:#ffcc00;margin-left:auto;padding-left:10px;font-size:13px}
+.multiplier-badge{padding:4px 8px;border-radius:5px;font-weight:bold;min-width:55px;text-align:center;font-size:12px}
+.win{background:rgba(0,200,83,.2);color:#00c853}
+.loss{background:rgba(255,68,68,.2);color:#ff4444}
+.profit{width:65px;text-align:left;font-weight:bold;font-size:13px}
+.fade-in{animation:fadeIn .3s ease-in-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+#pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
+.pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0}
+.pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px}
+.pvp-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
+.pvp-balance-pill .ton-icon{width:22px;height:22px;font-size:12px}
+.pvp-balance-pill .val{font-weight:800;font-size:15px}
+.pvp-plus{background:#2a2e42;border:none;color:#fff;width:26px;height:26px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+.pvp-stats{display:flex;gap:8px;padding:4px 16px 12px;flex-shrink:0}
+.stat-block{flex:1;text-align:center;padding:10px 6px}
+.stat-block+.stat-block{border-right:1px solid #2a2e42}
+.stat-label{font-size:11px;color:#7a8299;margin-bottom:6px}
+.stat-value-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.stat-value{font-size:15px;font-weight:800;color:#0098ea}
+.stat-pct{font-size:12px;color:#7a8299;text-align:left}
+.pvp-wheel-wrap{position:relative;flex:1;min-height:280px;display:flex;justify-content:center;align-items:center;padding:8px 0}
+#pvpCanvas{display:block}
+.pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:130px}
+.pvp-timer{background:#1a1d2e;border:1px solid #2a2e42;color:#fff;font-size:20px;font-weight:800;padding:4px 14px;border-radius:14px;display:inline-block;margin-bottom:10px;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.pvp-pool-label{font-size:10px;color:#7a8299;letter-spacing:1.5px;margin-bottom:4px}
+.pvp-pool{display:flex;justify-content:center;align-items:center;gap:5px;font-size:18px;font-weight:900;color:#fff}
+.pvp-pool .ton-icon{width:18px;height:18px;font-size:10px}
+.pvp-game-num{font-size:10px;color:#5a6278;margin-top:6px}
+.pvp-players-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;flex-shrink:0}
+.pvp-pcard{min-width:96px;padding:14px 10px;border-radius:16px;background:linear-gradient(180deg,#1a1d2e 0%,#14161f 100%);border:1px solid #2a2e42;text-align:center;flex-shrink:0;position:relative;transition:transform .2s}
+.pvp-pcard.isMe{border-color:#ffcc00;box-shadow:0 0 15px rgba(255,204,0,.25)}
+.pvp-pcard.winner{border-color:#2ff068;box-shadow:0 0 25px rgba(47,240,104,.6);transform:scale(1.05)}
+.pvp-pcard-top{position:absolute;top:-1px;left:14px;right:14px;height:3px;border-radius:0 0 4px 4px}
+.pvp-pav{width:46px;height:46px;border-radius:50%;background:#0f1119;border:2px solid #2a2e42;display:flex;justify-content:center;align-items:center;font-size:22px;margin:0 auto 8px;overflow:hidden}
+.pvp-pname{font-size:11px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.pvp-ppct{font-size:13px;font-weight:900;color:#2ff068}
+.pvp-pbet{font-size:10px;color:#7a8299;margin-top:2px}
+.pvp-join-wrap{padding:8px 16px 12px;flex-shrink:0}
+.pvp-bet-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pvp-bet-row label{font-size:12px;color:#7a8299;white-space:nowrap}
+.pvp-bet-input{flex:1;background:#1a1d2e;border:1px solid #2a2e42;color:#fff;padding:12px 14px;border-radius:12px;font-size:15px;font-weight:700;text-align:center;outline:none}
+.pvp-bet-input:focus{border-color:#7c3aed}
+.join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6;transition:all .2s;letter-spacing:.5px}
+.join-battle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;box-shadow:0 6px 25px rgba(124,58,237,.55)}
+.join-battle-btn:disabled{cursor:not-allowed}
+.pvp-players-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid #1a1d2e;flex-shrink:0}
+.pvp-players-header span{font-size:13px;font-weight:700;color:#8a90a6}
+.pvp-players-count{background:#1a1d2e;padding:4px 12px;border-radius:12px;font-size:12px!important}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1d2e;border:1px solid #2a2e42;color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
+.toast.win{background:linear-gradient(135deg,#00c853,#009624);border-color:#2ff068}
+.toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c);border-color:#ff5c5c}
+</style>
+</head>
+<body>
+
+<div id="homeScreen" class="screen">
+    <div class="balance-row">
+        <div class="avatar-wrap">
+            <div class="avatar">M</div>
+            <div class="avatar-badge">💎</div>
+        </div>
+        <div class="balance-info">
+            <div class="balance-label">Your balance</div>
+            <div class="balance-value">
+                <span class="ton-icon">◈</span>
+                <span id="homeBalance">100.000</span>
+            </div>
+        </div>
+        <button class="deposit-btn">💳 Deposit</button>
+    </div>
+    <div class="banners">
+        <div class="banner rocket-banner" onclick="openGame()">
+            <div class="banner-badge">⚡ HOT!</div>
+            <div class="banner-title">🚀 ROCKET</div>
+            <div class="rocket-scene">
+                <div class="rocket-ship">🚀</div>
+                <div class="mult-pill green pm-1">x4.24</div>
+                <div class="mult-pill yellow pm-2">x2.02</div>
+                <div class="mult-pill red pm-3">x1.24</div>
+            </div>
+        </div>
+        <div class="banner pvp-banner" onclick="openPvp()">
+            <div class="banner-badge">🔥 NEW!</div>
+            <div class="banner-title">⚔️ PVP</div>
+            <div class="pvp-players">
+                <div class="pvp-card"><div class="pc-av">🦁</div><div class="pc-name">CRYPTO</div><div class="pc-pct">7.0%</div></div>
+                <div class="pvp-card"><div class="pc-av">🧔</div><div class="pc-name">DEGEN</div><div class="pc-pct">6.8%</div></div>
+                <div class="pvp-card"><div class="pc-av">👨</div><div class="pc-name">MIKE_K</div><div class="pc-pct">4.7%</div></div>
+            </div>
+        </div>
+        <div class="banner playhub-banner">
+            <div class="banner-badge">🔥 HOT</div>
+            <div class="banner-title">🎮 PLAY HUB</div>
+            <div class="game-cards">
+                <div class="game-card gc-upgrade">⬆️<div class="game-card-label">Upgrade</div></div>
+                <div class="game-card gc-crash">🚀<div class="game-card-label">Crash</div></div>
+                <div class="game-card gc-plinko">🎯<div class="game-card-label">Plinko</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+        <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
+        <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
+        <div class="nav-item"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
+        <div class="nav-item"><div class="nav-icon">💰</div><span>Earn</span></div>
+    </div>
+</div>
+
+<div id="gameScreen" class="screen hidden">
+    <div class="game-top-bar">
+        <button class="back-btn" onclick="goHome()">⬅ بازگشت</button>
+        <div class="game-balance" id="balanceDisplay">100.00 TON</div>
+        <button class="reset-btn" onclick="resetBalance()">🔄 شارژ</button>
+    </div>
+    <div class="multiplier-history" id="multiplierHistory"><div style="font-size:12px;color:#666;padding-left:10px">تاریخچه:</div></div>
+    <div class="chart-container">
+        <div class="multiplier-text" id="multiplierDisplay">1.00x</div>
+        <canvas id="chartCanvas"></canvas>
+    </div>
+    <div class="bet-controls">
+        <div class="bet-input-row">
+            <span class="input-label">مبلغ شرط:</span>
+            <input type="number" id="betInput" class="bet-input" value="10" min="1">
+            <span style="color:#888;font-size:13px">TON</span>
+        </div>
+        <div class="bet-input-row">
+            <span class="input-label">برداشت خودکار:</span>
+            <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" value="2.00" min="1.01" step="0.1">
+            <span style="color:#00c853;font-weight:bold;font-size:13px">x</span>
+        </div>
+        <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
+        <div style="text-align:center;font-size:13px;color:#aaa;min-height:18px" id="statusText">برای شروع، مبلغ را وارد کنید</div>
+    </div>
+    <div class="history-container" id="historyList"></div>
+</div>
+
+<div id="pvpScreen" class="screen hidden">
+    <div class="pvp-header">
+        <button class="pvp-back" onclick="goHome()">← بازگشت</button>
+        <div class="pvp-balance-pill">
+            <span class="ton-icon">◈</span>
+            <span class="val" id="pvpBalanceDisplay">100.00</span>
+            <button class="pvp-plus" onclick="pvpAddFunds()">+</button>
+        </div>
+    </div>
+    <div class="pvp-stats">
+        <div class="stat-block">
+            <div class="stat-label">Last Game</div>
+            <div class="stat-value-row">
+                <span class="stat-value" id="pvpLast">+0.00 TON</span>
+                <span class="stat-pct" id="pvpLastPct">0%</span>
+            </div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-label">Top of the Day</div>
+            <div class="stat-value-row">
+                <span class="stat-value" id="pvpTop">+0.00 TON</span>
+                <span class="stat-pct" id="pvpTopPct">0%</span>
+            </div>
+        </div>
+    </div>
+    <div class="pvp-wheel-wrap">
+        <canvas id="pvpCanvas"></canvas>
+        <div class="pvp-center">
+            <div class="pvp-timer" id="pvpTimer">00:10</div>
+            <div class="pvp-pool-label">TOTAL POOL</div>
+            <div class="pvp-pool">
+                <span class="ton-icon">◈</span>
+                <span id="pvpPoolValue">0.00</span>
+            </div>
+            <div class="pvp-game-num" id="pvpGameNum">Game #00000</div>
+        </div>
+    </div>
+    <div class="pvp-players-row" id="pvpPlayersRow"></div>
+    <div class="pvp-join-wrap">
+        <div class="pvp-bet-row">
+            <label>مبلغ ورود:</label>
+            <input type="number" id="pvpBetInput" class="pvp-bet-input" value="10" min="1">
+            <span style="color:#7a8299;font-size:12px">TON</span>
+        </div>
+        <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
+    </div>
+    <div class="pvp-players-header">
+        <span>Players</span>
+        <span class="pvp-players-count" id="pvpPlayersCount">👥 0</span>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function openGame(){
+    document.getElementById('homeScreen').classList.add('hidden');
+    document.getElementById('gameScreen').classList.remove('hidden');
+}
+function openPvp(){
+    document.getElementById('homeScreen').classList.add('hidden');
+    document.getElementById('pvpScreen').classList.remove('hidden');
+    if (!window.pvpInitialized) { pvpInit(); window.pvpInitialized = true; }
+    setTimeout(resizePvpCanvas, 80);
+}
+function goHome(){
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    document.getElementById('homeScreen').classList.remove('hidden');
+}
+
+let balance = parseFloat(localStorage.getItem('crashBalance_home')) || 100.00;
+function updateGlobalBalanceUI() {
+    const hb = document.getElementById('homeBalance');
+    if (hb) hb.innerText = balance.toFixed(3);
+    const bd = document.getElementById('balanceDisplay');
+    if (bd) bd.innerText = balance.toFixed(2) + ' TON';
+    const pb = document.getElementById('pvpBalanceDisplay');
+    if (pb) pb.innerText = balance.toFixed(2);
+    localStorage.setItem('crashBalance_home', balance);
+}
+updateGlobalBalanceUI();
+
+function showToast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.className = 'toast ' + type + ' show';
+    t.innerText = msg;
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+/* ================= CRASH ================= */
+let gameState='waiting', multiplier=1.00, crashPoint=0, myBet=0, myAutoCashout=0, hasJoined=false;
+let gameInterval, countdownInterval, roundHistory=[], players=[];
+
+const multiplierDisplay=document.getElementById('multiplierDisplay');
+const actionButton=document.getElementById('actionButton');
+const statusText=document.getElementById('statusText');
+const historyList=document.getElementById('historyList');
+const betInput=document.getElementById('betInput');
+const autoCashoutInput=document.getElementById('autoCashoutInput');
+const multiplierHistoryContainer=document.getElementById('multiplierHistory');
+const canvas=document.getElementById('chartCanvas');
+const ctx=canvas.getContext('2d');
+
+function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+
+function resetBalance(){balance=100.00;updateGlobalBalanceUI();statusText.innerText='✅ موجودی شما به 100 TON شارژ شد!'}
+
+let multiplierBag=[];const bagCounts={yellow:3,purple:4,blue:8,green:12,red:4};
+function fillBag(){multiplierBag=[];for(let t in bagCounts)for(let i=0;i<bagCounts[t];i++)multiplierBag.push(t);for(let i=multiplierBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[multiplierBag[i],multiplierBag[j]]=[multiplierBag[j],multiplierBag[i]]}}
+function getNextMultiplierType(){if(multiplierBag.length===0)fillBag();return multiplierBag.pop()}
+function getRandomCrashPoint(){const t=getNextMultiplierType();if(t==='yellow')return 10+Math.random()*40;if(t==='purple')return 5+Math.random()*4.99;if(t==='blue')return 2+Math.random()*2.99;if(t==='green')return 1.2+Math.random()*0.79;if(t==='red')return 1.01+Math.random()*0.18;return 1.01}
+function getBadgeColorClass(m){if(m>=10)return'yellow';if(m>=5)return'purple';if(m>=2)return'blue';if(m>=1.2)return'green';return'red'}
+function addRoundToHistory(c){roundHistory.unshift(c);if(roundHistory.length>15)roundHistory.pop();renderRoundHistory()}
+function renderRoundHistory(){multiplierHistoryContainer.innerHTML='<div style="font-size:12px;color:#666;padding-left:10px">تاریخچه:</div>';roundHistory.forEach(m=>{const b=document.createElement('div');b.className='history-badge '+getBadgeColorClass(m);b.innerText=m.toFixed(2)+'x';multiplierHistoryContainer.appendChild(b)})}
+function drawChart(cm){ctx.clearRect(0,0,canvas.width,canvas.height);const max=Math.max(crashPoint,cm,2);const sx=20,sy=canvas.height-20,ex=canvas.width-20;const p=cm/max;const cx=sx+(ex-sx)*p;const cy=sy-(sy-20)*(cm/max);ctx.beginPath();ctx.moveTo(sx,sy);ctx.quadraticCurveTo(sx+(cx-sx)*0.5,sy,cx,cy);ctx.strokeStyle='#ffcc00';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();ctx.shadowBlur=15;ctx.shadowColor='#ffcc00';ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill()}
+function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);drawChart(1)}
+
+const fakeNames=['Ali','Reza','Sara','Mmd','Hossein','Zahra','Amir','Nima','Erfan','Melika','Kian','Matin','Yasin','Arya'];
+const fakeAvatars=['🐸','🐱','⚽','🦊','🐻','🐼','🦁','🐯','🐨','🐵'];
+function addPlayer(name,amount,isMe=false){const avatar=isMe?'👤':fakeAvatars[Math.floor(Math.random()*fakeAvatars.length)];players.push({id:Date.now()+Math.random(),name,amount,avatar,isMe,cashedOut:false,lost:false});if(players.length>15){const idx=players.findIndex(p=>!p.isMe);if(idx!==-1)players.splice(idx,1)}renderPlayers()}
+function renderPlayers(){historyList.innerHTML='';if(players.length===0){historyList.innerHTML='<div style="text-align:center;color:#666;padding:20px;font-size:13px">در انتظار ورود بازیکنان...</div>';return}[...players].reverse().forEach(p=>{const item=document.createElement('div');item.className='history-item fade-in';if(p.isMe)item.style.border='1px solid #ffcc00';let mT='-',mC='',pT='-',pC='#ccc';if(p.cashedOut){mT=p.cashoutMultiplier.toFixed(2)+'x';mC='win';pT='+'+(p.amount*p.cashoutMultiplier).toFixed(2);pC='#00c853'}else if(p.lost){mT='باخت';mC='loss';pT='-'+p.amount.toFixed(2);pC='#ff4444'}item.innerHTML=`<div class="user-info"><span class="avatar-small">${p.avatar}</span><span class="user-name">${p.name}</span></div><div class="bet-amount">${p.amount.toFixed(2)} TON</div><div class="multiplier-badge ${mC}">${mT}</div><div class="profit" style="color:${pC}">${pT}</div>`;historyList.appendChild(item)})}
+function updatePlayersOnCrash(){players.forEach(p=>{if(!p.cashedOut)p.lost=true});renderPlayers()}
+
+setInterval(()=>{if(gameState==='playing'&&Math.random()>0.85){addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1)}},1200);
+
+function startNewRound(){
+    gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;players=[];
+    addPlayer('ربات پشتیبان',10.00);
+    multiplier=1.00;crashPoint=getRandomCrashPoint();
+    clearChart();
+    multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');
+    betInput.disabled=false;autoCashoutInput.disabled=false;
+    // 💾 مبلغ ذخیره‌شده رو بازیابی کن (اگه نبود پیش‌فرض)
+    betInput.value=localStorage.getItem('lastBet')||10;
+    autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;
+    actionButton.innerText='ورود به بازی (Join)';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
+    statusText.innerText='برای ورود به بازی عجله کنید!';
+    let countdown=5;multiplierDisplay.innerText=countdown;
+    countdownInterval=setInterval(()=>{countdown--;if(countdown>0)multiplierDisplay.innerText=countdown;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay()}},1000);
+}
+function startGameplay(){
+    gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;
+    if(hasJoined){statusText.innerText=`✅ شما با ${myBet} TON وارد شدید.`;actionButton.innerText='برداشت دستی (Cash Out)';actionButton.className='action-btn btn-cashout';actionButton.disabled=false}
+    else{statusText.innerText='شما وارد بازی نشدید! تماشا کنید...';actionButton.innerText='وارد نشدید';actionButton.className='action-btn btn-bet';actionButton.disabled=true}
+    for(let i=0;i<2;i++)addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1);
+    let elapsed=0;
+    gameInterval=setInterval(()=>{
+        elapsed+=80;
+        // ⚡ سرعت ضریب پایین‌تر شد (قبلاً 1.0007 بود)
+        multiplier=Math.pow(1.0002,elapsed);
+        multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);
+        if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
+        players.forEach(p=>{if(!p.isMe&&!p.cashedOut&&!p.lost&&Math.random()>0.97){p.cashedOut=true;p.cashoutMultiplier=multiplier;renderPlayers()}});
+        if(multiplier>=crashPoint){
+            clearInterval(gameInterval);multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');
+            gameState='crashed';actionButton.disabled=true;actionButton.innerText='دور بعد...';actionButton.className='action-btn btn-bet';
+            addRoundToHistory(crashPoint);
+            statusText.innerText=hasJoined?`💥 سقوط کرد! شما ${myBet} TON باختید.`:`💥 سقوط در ${crashPoint.toFixed(2)}x!`;
+            updatePlayersOnCrash();setTimeout(startNewRound,2500);
+        }
+    },80);
+}
+function joinGame(){
+    if(gameState!=='waiting')return;
+    const amount=parseFloat(betInput.value);
+    if(isNaN(amount)||amount<1){statusText.innerText='❌ لطفاً یک مبلغ معتبر وارد کنید!';return}
+    if(amount>balance){statusText.innerText='❌ موجودی کافی نیست!';return}
+    hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);
+    if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;
+    balance-=amount;updateGlobalBalanceUI();
+    betInput.disabled=true;autoCashoutInput.disabled=true;
+    addPlayer('شما (You)',amount,true);
+    statusText.innerText=myAutoCashout>0?`✅ وارد شدید. برداشت خودکار در ${myAutoCashout.toFixed(2)}x`:`✅ وارد شدید! منتظر شروع...`;
+    actionButton.innerText='منتظر شروع...';actionButton.disabled=true;
+}
+function cashOut(isAuto=false){
+    if(!hasJoined||gameState!=='playing')return;
+    const winnings=myBet*multiplier;balance+=winnings;updateGlobalBalanceUI();
+    hasJoined=false;actionButton.disabled=true;actionButton.innerText='دور بعد...';actionButton.className='action-btn btn-bet';
+    statusText.innerText=isAuto?`🤖 برداشت خودکار در ${multiplier.toFixed(2)}x! سود: ${winnings.toFixed(2)} TON`:`✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
+    const mp=players.find(p=>p.isMe);if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers()}
+}
+actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false)});
+
+// 💾 ذخیره خودکار مبلغ شرط موقع تایپ (فقط اگه خالی نباشه)
+betInput.addEventListener('input',()=>{
+    const v=parseFloat(betInput.value);
+    if(!isNaN(v)&&v>0){
+        localStorage.setItem('lastBet',v);
+        betInput.style.borderColor='#2ff068';
+        clearTimeout(betInput._t);
+        betInput._t=setTimeout(()=>betInput.style.borderColor='#444',500);
+    }
+});
+autoCashoutInput.addEventListener('input',()=>{
+    const v=parseFloat(autoCashoutInput.value);
+    if(!isNaN(v)&&v>=1.01){
+        localStorage.setItem('lastAuto',v);
+        autoCashoutInput.style.borderColor='#2ff068';
+        clearTimeout(autoCashoutInput._t);
+        autoCashoutInput._t=setTimeout(()=>autoCashoutInput.style.borderColor='#00c853',500);
+    }
+});
+
+startNewRound();
+
+/* ================= PVP ================= */
+window.pvpInitialized = false;
+const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a'];
+const PVP_BOTS=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro'];
+const PVP_AVATARS=['🦁','🧔','👨','🐸','🐱','🐻','🤖','🐼','🦊','🐯'];
+
+let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=10,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
+let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
+
+function pvpInit(){
+    pvpCanvas=document.getElementById('pvpCanvas');
+    pvpCtx=pvpCanvas.getContext('2d');
+    window.addEventListener('resize',resizePvpCanvas);
+    resizePvpCanvas();
+    pvpStartRound();
+}
+function resizePvpCanvas(){
+    if(!pvpCanvas)return;
+    const wrap=pvpCanvas.parentElement;
+    const availableW=wrap.clientWidth-40;
+    const availableH=wrap.clientHeight-20;
+    const size=Math.max(220,Math.min(availableW,availableH,340));
+    const dpr=window.devicePixelRatio||1;
+    pvpSize=size;
+    pvpCanvas.width=size*dpr;
+    pvpCanvas.height=size*dpr;
+    pvpCanvas.style.width=size+'px';
+    pvpCanvas.style.height=size+'px';
+    pvpCtx.setTransform(dpr,0,0,dpr,0,0);
+    pvpDraw();
+}
+function pvpStartRound(){
+    pvpState='waiting';pvpTimer=10;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
+    pvpPointerAngle=-Math.PI/2;pvpLastResult=null;
+    pvpGameNum=Math.floor(60000+Math.random()*10000);
+    document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;
+    pvpPlayers=[];
+    const botCount=2+Math.floor(Math.random()*3);
+    const shuffled=[...PVP_BOTS].sort(()=>Math.random()-0.5);
+    for(let i=0;i<botCount;i++){
+        const bet=parseFloat((Math.random()*25+2).toFixed(2));
+        pvpPlayers.push({name:shuffled[i],avatar:PVP_AVATARS[i%PVP_AVATARS.length],bet:bet,color:PVP_COLORS[i%PVP_COLORS.length],isMe:false});
+    }
+    pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+    const btn=document.getElementById('joinBattleBtn');
+    btn.innerText='Join the Battle';btn.className='join-battle-btn active';btn.disabled=false;
+    document.getElementById('pvpBetInput').disabled=false;
+    document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||10;
+    clearInterval(pvpTimerInterval);
+    pvpTimerInterval=setInterval(()=>{
+        if(pvpState!=='waiting')return;
+        pvpTimer--;pvpUpdateTimerUI();
+        if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpSpin()}
+    },1000);
+    pvpUpdateTimerUI();
+}
+function pvpUpdateTimerUI(){const t=Math.max(0,pvpTimer);const mm=String(Math.floor(t/60)).padStart(2,'0');const ss=String(t%60).padStart(2,'0');document.getElementById('pvpTimer').innerText=mm+':'+ss}
+function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length}
+function pvpJoinClick(){
+    if(pvpState!=='waiting'||pvpUserJoined)return;
+    const amount=parseFloat(document.getElementById('pvpBetInput').value);
+    if(isNaN(amount)||amount<1){showToast('❌ مبلغ معتبر وارد کن');return}
+    if(amount>balance){showToast('❌ موجودی کافی نیست');return}
+    balance-=amount;updateGlobalBalanceUI();
+    pvpUserJoined=true;pvpMyBet=amount;
+    localStorage.setItem('lastPvpBet',amount);
+    pvpPlayers.push({name:'You',avatar:'👤',bet:amount,color:'#ffcc00',isMe:true});
+    pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+    const btn=document.getElementById('joinBattleBtn');
+    btn.innerText='✅ Joined ('+amount+' TON)';btn.className='join-battle-btn';btn.disabled=true;
+    document.getElementById('pvpBetInput').disabled=true;
+    showToast('وارد شدی با '+amount+' TON');
+}
+function pvpRenderPlayers(){
+    const row=document.getElementById('pvpPlayersRow');
+    row.innerHTML='';
+    pvpPlayers.forEach(p=>{
+        const pct=((p.bet/pvpPool)*100).toFixed(1);
+        const card=document.createElement('div');
+        card.className='pvp-pcard'+(p.isMe?' isMe':'');
+        if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe)card.classList.add('winner');
+        card.innerHTML=`<div class="pvp-pcard-top" style="background:${p.color}"></div><div class="pvp-pav" style="border-color:${p.color}">${p.avatar}</div><div class="pvp-pname">${p.name}</div><div class="pvp-ppct" style="color:${p.color}">${pct}%</div><div class="pvp-pbet">${p.bet.toFixed(2)} TON</div>`;
+        row.appendChild(card);
+    });
+}
+function pvpDraw(){
+    if(!pvpCtx)return;
+    const size=pvpSize,cx=size/2,cy=size/2,R=size/2-6,innerR=size*0.27;
+    pvpCtx.clearRect(0,0,size,size);
+    if(pvpPlayers.length===0){pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);pvpCtx.strokeStyle='#2a2e42';pvpCtx.lineWidth=2;pvpCtx.stroke();return}
+    let angle=-Math.PI/2;
+    pvpPlayers.forEach(p=>{
+        const share=p.bet/pvpPool,arc=share*Math.PI*2;
+        pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);pvpCtx.arc(cx,cy,R,angle,angle+arc);pvpCtx.closePath();
+        pvpCtx.fillStyle=p.color;pvpCtx.fill();
+        pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke();
+        angle+=arc;
+    });
+    pvpCtx.beginPath();pvpCtx.arc(cx,cy,innerR,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();
+    pvpCtx.strokeStyle='#0f1119';pvpCtx.lineWidth=3;pvpCtx.stroke();
+    const px=cx+Math.cos(pvpPointerAngle)*R,py=cy+Math.sin(pvpPointerAngle)*R;
+    const sx=cx+Math.cos(pvpPointerAngle)*innerR,sy=cy+Math.sin(pvpPointerAngle)*innerR;
+    pvpCtx.beginPath();pvpCtx.moveTo(sx,sy);pvpCtx.lineTo(px,py);
+    pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;
+    pvpCtx.beginPath();pvpCtx.arc(px,py,7,0,Math.PI*2);pvpCtx.fillStyle='#fff';pvpCtx.fill();pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=3;pvpCtx.stroke();
+}
+function pvpDetermineWinner(){
+    let a=pvpPointerAngle+Math.PI/2;a=((a%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+    let cum=0;
+    for(let p of pvpPlayers){const arc=(p.bet/pvpPool)*Math.PI*2;if(a>=cum&&a<cum+arc)return p;cum+=arc}
+    return pvpPlayers[pvpPlayers.length-1];
+}
+function pvpSpin(){
+    if(pvpState!=='waiting')return;
+    pvpState='spinning';
+    const fullSpins=6+Math.floor(Math.random()*3);
+    const finalOffset=Math.random()*Math.PI*2;
+    const startAngle=pvpPointerAngle;
+    const targetAngle=startAngle+fullSpins*Math.PI*2+finalOffset;
+    const duration=4200;
+    const startTime=performance.now();
+    function frame(now){
+        const t=Math.min(1,(now-startTime)/duration);
+        const eased=1-Math.pow(1-t,3.2);
+        pvpPointerAngle=startAngle+(targetAngle-startAngle)*eased;
+        pvpDraw();
+        if(t<1)requestAnimationFrame(frame);else pvpFinishSpin();
+    }
+    requestAnimationFrame(frame);
+}
+function pvpFinishSpin(){
+    pvpState='done';
+    const winner=pvpDetermineWinner();
+    pvpLastResult=winner;
+    pvpRenderPlayers();
+    if(winner.isMe){
+        const w=pvpPool;balance+=w;updateGlobalBalanceUI();
+        showToast('🏆 بردی! +'+w.toFixed(2)+' TON','win');
+        document.getElementById('pvpLast').innerText='+'+w.toFixed(2)+' TON';
+        document.getElementById('pvpLastPct').innerText='100%';
+    } else {
+        if(pvpUserJoined){
+            showToast('😔 باختی — '+winner.name+' برد','lose');
+            document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';
+            document.getElementById('pvpLastPct').innerText='0%';
+        } else {
+            document.getElementById('pvpLast').innerText='+'+pvpPool.toFixed(2)+' TON';
+            document.getElementById('pvpLastPct').innerText='100%';
+        }
+    }
+    setTimeout(()=>{pvpStartRound()},3200);
+}
+function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON شارژ شد')}
+</script>
+</body>
+</html>
