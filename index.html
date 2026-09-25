@@ -6,7 +6,7 @@
 <title>Gift Hub</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent;font-variant-numeric:lining-nums}
 ::-webkit-scrollbar{display:none}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;transition:transform .3s,opacity .3s;overflow:hidden}
 .screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
@@ -73,7 +73,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .bet-controls{padding:12px 12px;display:flex;flex-direction:column;gap:8px;background:#1e1e1e;border-top:1px solid #333;border-bottom:1px solid #333;flex-shrink:0}
 .bet-input-row{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:nowrap}
 .input-label{font-size:12px;color:#aaa;width:85px;text-align:right;flex-shrink:0}
-.bet-input{background:#2a2a2a;border:2px solid #444;color:#fff;padding:10px 6px;border-radius:10px;width:90px;text-align:center;font-size:15px;font-weight:bold;transition:border-color .3s;min-width:0}
+.bet-input{background:#2a2a2a;border:2px solid #444;color:#fff;padding:10px 6px;border-radius:10px;width:90px;text-align:center;font-size:15px;font-weight:bold;transition:border-color .3s;min-width:0;font-variant-numeric:lining-nums;font-feature-settings:"lnum"}
 .auto-cashout-input{border:2px solid #00c853!important;background:#0d1f0d!important;color:#00c853!important}
 .quick-btns{display:flex;gap:5px;flex-shrink:0}
 .quick-btn{background:linear-gradient(135deg,#2a2a2a,#1a1a1a);border:1px solid #444;color:#fff;padding:9px 8px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.3px;font-family:inherit;flex-shrink:0}
@@ -138,7 +138,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .up-card{background:#131824;border:1px solid #2a2e42;border-radius:18px;padding:14px 10px;text-align:center}
 .up-card-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#2ff068;color:#0a0d14;font-size:12px;font-weight:900;margin-bottom:6px}
 .up-card-title{font-size:13px;font-weight:800;color:#fff;margin-bottom:12px}
-.up-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;text-align:center;font-size:16px;font-weight:800;padding:10px 4px;outline:none;font-family:inherit;transition:border-color .3s}
+.up-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;text-align:center;font-size:16px;font-weight:800;padding:10px 4px;outline:none;font-family:inherit;transition:border-color .3s;font-variant-numeric:lining-nums;font-feature-settings:"lnum"}
 .up-input:focus{border-color:#2ff068}
 .up-card-lbl{font-size:10px;color:#7a8299;margin-top:6px}
 .up-swap-icon{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2ff068,#00a838);display:flex;justify-content:center;align-items:center;font-size:20px;box-shadow:0 0 20px rgba(47,240,104,.5);flex-shrink:0}
@@ -194,7 +194,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-join-wrap{padding:8px 16px 12px;flex-shrink:0}
 .pvp-bet-label{font-size:12px;color:#7a8299;margin-bottom:6px;display:block}
 .pvp-bet-input-wrap{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:#1a1d2e;border:2px solid #2a2e42;border-radius:12px;padding:0 12px;transition:border-color .3s}
-.pvp-bet-input{flex:1;background:transparent;border:none;color:#fff;padding:12px 0;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0}
+.pvp-bet-input{flex:1;background:transparent;border:none;color:#fff;padding:12px 0;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0;font-variant-numeric:lining-nums;font-feature-settings:"lnum"}
 .pvp-bet-input-wrap:focus-within{border-color:#7c3aed}
 .pvp-quick-row{display:flex;gap:6px;margin-bottom:10px}
 .pvp-quick-btn{flex:1;background:linear-gradient(135deg,#2a2e42,#1a1d2e);border:1px solid #3a3e52;color:#fff;padding:11px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;font-family:inherit;letter-spacing:.5px}
@@ -340,14 +340,14 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="up-card">
             <div class="up-card-num">1</div>
             <div class="up-card-title">Your Gift</div>
-            <input type="number" id="upBetInput" class="up-input" value="10" min="1" step="0.1">
+            <input type="number" id="upBetInput" class="up-input" lang="en" value="10" min="1" step="0.1" inputmode="decimal">
             <div class="up-card-lbl">Entry Amount (TON)</div>
         </div>
         <div class="up-swap-icon">⚡</div>
         <div class="up-card">
             <div class="up-card-num" style="background:#ffcc00;">2</div>
             <div class="up-card-title">Target Gift</div>
-            <input type="number" id="upTargetInput" class="up-input" value="50" min="2" step="0.1">
+            <input type="number" id="upTargetInput" class="up-input" lang="en" value="50" min="2" step="0.1" inputmode="decimal">
             <div class="up-card-lbl">Target Amount (TON)</div>
         </div>
     </div>
@@ -386,7 +386,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="bet-controls">
         <div class="bet-input-row">
             <span class="input-label">Bet Amount:</span>
-            <input type="number" id="betInput" class="bet-input" value="10" min="1">
+            <input type="number" id="betInput" class="bet-input" lang="en" value="10" min="1" inputmode="decimal">
             <div class="quick-btns">
                 <button class="quick-btn half-btn" id="halfBtn" onclick="setBetHalf()">50%</button>
                 <button class="quick-btn all-btn" id="allBtn" onclick="setBetAll()">ALL</button>
@@ -394,7 +394,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         </div>
         <div class="bet-input-row">
             <span class="input-label">Auto Cashout:</span>
-            <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" value="2.00" min="1.01" step="0.1">
+            <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" lang="en" value="2.00" min="1.01" step="0.1" inputmode="decimal">
             <span style="color:#00c853;font-weight:bold;font-size:13px">x</span>
         </div>
         <button class="action-btn btn-bet" id="actionButton">Join Game</button>
@@ -445,7 +445,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <label class="pvp-bet-label">Entry Amount (TON):</label>
         <div class="pvp-bet-input-wrap">
             <span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span>
-            <input type="number" id="pvpBetInput" class="pvp-bet-input" value="10" min="1">
+            <input type="number" id="pvpBetInput" class="pvp-bet-input" lang="en" value="10" min="1" inputmode="decimal">
         </div>
         <div class="pvp-quick-row">
             <button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button>
@@ -597,11 +597,7 @@ function upDrawWheel(){
     const R = size/2 - 8;
     upCtx.clearRect(0, 0, size, size);
     const greenAngle = (upChance / 100) * Math.PI * 2;
-    // Green sector starts at wheel-local angle 0 (top when wheel angle = 0)
-    // In canvas coords with wheel rotation: startA = upWheelAngle - π/2
     const startA = upWheelAngle - Math.PI/2;
-    
-    // Green sector
     if (greenAngle > 0) {
         upCtx.beginPath();
         upCtx.moveTo(cx, cy);
@@ -623,7 +619,6 @@ function upDrawWheel(){
         }
         upCtx.restore();
     }
-    // Red sector
     if (greenAngle < Math.PI * 2) {
         upCtx.beginPath();
         upCtx.moveTo(cx, cy);
@@ -645,7 +640,6 @@ function upDrawWheel(){
         }
         upCtx.restore();
     }
-    // Inner circle
     upCtx.beginPath();
     upCtx.arc(cx, cy, size*0.22, 0, Math.PI*2);
     upCtx.fillStyle = '#1a1d2e';
@@ -653,13 +647,11 @@ function upDrawWheel(){
     upCtx.strokeStyle = '#2a2e42';
     upCtx.lineWidth = 3;
     upCtx.stroke();
-    // Outer ring
     upCtx.beginPath();
     upCtx.arc(cx, cy, R+3, 0, Math.PI*2);
     upCtx.strokeStyle = '#2a2e42';
     upCtx.lineWidth = 6;
     upCtx.stroke();
-    // Pointer at top
     upCtx.beginPath();
     upCtx.moveTo(cx - 10, 4);
     upCtx.lineTo(cx + 10, 4);
@@ -685,46 +677,22 @@ function upStart(){
     upTargetVal = target;
     balance -= bet;
     updateGlobalBalanceUI();
-    
-    // Determine target wheel angle FIRST (this decides the outcome)
     const greenAngle = (upChance / 100) * Math.PI * 2;
-    // We want the pointer (at canvas angle -π/2) to be:
-    //   On green if we want to win, on red if we want to lose
-    // Green sector in canvas coords covers: [upWheelAngle - π/2, upWheelAngle - π/2 + greenAngle]
-    // Pointer at -π/2 is inside green if: upWheelAngle - π/2 ≤ -π/2 ≤ upWheelAngle - π/2 + greenAngle
-    // => 0 ≤ upWheelAngle ≤ greenAngle  (mod 2π, thinking in terms of what makes green cover the top)
-    // Actually let's just work with: upWheelAngle = some angle, and the pointer lands at wheel-local angle = -upWheelAngle (mod 2π)
-    // Green sector is wheel-local [0, greenAngle], so win if -upWheelAngle mod 2π ∈ [0, greenAngle]
-    // => upWheelAngle mod 2π ∈ [2π - greenAngle, 2π] ∪ {0} 
-    // Equivalently: upWheelAngle mod 2π ∈ [-greenAngle, 0] (with 0 included)
-    
-    // Let's just pick the FINAL wheel angle based on desired outcome:
     const isWin = Math.random() * 100 < upChance;
-    let finalLocalAngle; // Where the pointer will land in wheel-local coords
+    let finalLocalAngle;
     if (isWin) {
-        // Land somewhere in [0, greenAngle]
         finalLocalAngle = Math.random() * greenAngle;
     } else {
-        // Land somewhere in [greenAngle, 2π]
         finalLocalAngle = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
     }
-    // Relation: pointer (canvas -π/2) = upWheelAngle - π/2 + finalLocalAngle (mod 2π)
-    // => -π/2 = upWheelAngle - π/2 + finalLocalAngle (mod 2π)
-    // => upWheelAngle = -finalLocalAngle (mod 2π)
-    // Let's normalize to a positive value for spinning forward:
     let targetWheelAngle = -finalLocalAngle;
-    // Normalize to [0, 2π)
     targetWheelAngle = ((targetWheelAngle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
-    
-    // Animation: spin forward to targetWheelAngle + N full rotations
     const fullSpins = 6 + Math.floor(Math.random() * 3);
-    // We need final angle > current angle. If not, add full turns.
     let endAngle = targetWheelAngle;
     while (endAngle < upWheelAngle + Math.PI * 2 * fullSpins) {
         endAngle += Math.PI * 2;
     }
     const startAngle = upWheelAngle;
-    
     upState = 'spinning';
     const btn = document.getElementById('upBtn');
     btn.disabled = true;
@@ -732,7 +700,6 @@ function upStart(){
     const res = document.getElementById('upResult');
     res.className = 'up-result';
     res.innerText = '';
-    
     const duration = 4000;
     const startTime = performance.now();
     function frame(now){
@@ -751,18 +718,10 @@ function upFinish(){
     btn.disabled = false;
     btn.innerText = '🚀 UPGRADE';
     const res = document.getElementById('upResult');
-    
-    // ✅ Read the ACTUAL result from where the pointer landed
-    // Pointer is at canvas angle -π/2
-    // Green sector covers canvas [upWheelAngle - π/2, upWheelAngle - π/2 + greenAngle]
-    // Calculate the pointer's position in wheel-local coords:
     const greenAngle = (upChance / 100) * Math.PI * 2;
-    // Wheel-local angle of pointer = (-π/2) - (upWheelAngle - π/2) = -upWheelAngle
     let pointerLocal = (-upWheelAngle) % (Math.PI * 2);
     if (pointerLocal < 0) pointerLocal += Math.PI * 2;
-    
     const actuallyWon = pointerLocal <= greenAngle;
-    
     if (actuallyWon){
         balance += upTargetVal;
         updateGlobalBalanceUI();
@@ -774,7 +733,6 @@ function upFinish(){
         res.innerText = '😔 You lost! -' + upBetVal.toFixed(2) + ' TON';
         showToast('😔 You lost! -' + upBetVal.toFixed(2) + ' TON', 'lose');
     }
-    // Normalize wheel angle for next round
     upWheelAngle = upWheelAngle % (Math.PI * 2);
 }
 
