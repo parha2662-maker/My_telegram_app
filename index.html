@@ -28,6 +28,7 @@
             background-color: #1e1e1e;
             border-bottom: 1px solid #333;
             flex-shrink: 0;
+            z-index: 10;
         }
         .balance-box {
             background-color: #2a2a2a;
@@ -59,8 +60,7 @@
             white-space: nowrap;
             min-height: 45px;
             flex-shrink: 0;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            z-index: 10;
         }
         .multiplier-history::-webkit-scrollbar { display: none; }
         .history-badge {
@@ -72,7 +72,7 @@
             color: #ccc;
             flex-shrink: 0;
         }
-        /* رنگ‌بندی جدید دقیقاً طبق درخواست */
+        /* رنگ‌بندی دقیق */
         .history-badge.red { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
         .history-badge.green { background-color: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
         .history-badge.blue { background-color: rgba(30, 144, 255, 0.2); color: #1e90ff; border: 1px solid rgba(30, 144, 255, 0.4); }
@@ -102,10 +102,37 @@
             color: #ffcc00;
             z-index: 10;
             text-shadow: 0 0 20px rgba(0,0,0,0.8);
-            transition: all 0.3s ease;
         }
         .multiplier-text.crashed { color: #ff4444; }
-        .multiplier-text.countdown { color: #ff9800; font-size: 90px; text-shadow: 0 0 30px rgba(255, 152, 0, 0.8); }
+
+        /* شمارش معکوس گرافیکی */
+        .countdown-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .countdown-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .countdown-number {
+            font-size: 180px;
+            font-weight: bold;
+            color: #ff9800;
+            text-shadow: 0 0 60px rgba(255, 152, 0, 0.8);
+            transform: scale(0.5);
+            transition: transform 0.3s;
+        }
+        .countdown-overlay.active .countdown-number {
+            transform: scale(1);
+        }
 
         /* بخش شرط‌بندی */
         .bet-controls {
@@ -117,6 +144,7 @@
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
             flex-shrink: 0;
+            z-index: 10;
         }
         .bet-input-row {
             display: flex;
@@ -159,6 +187,7 @@
             padding: 10px;
             background-color: #121212;
             flex-shrink: 0;
+            z-index: 10;
         }
         .history-item {
             display: flex;
@@ -211,8 +240,13 @@
 
     <div class="history-container" id="historyList"></div>
 
+    <!-- شمارش معکوس گرافیکی -->
+    <div class="countdown-overlay" id="countdownOverlay">
+        <div class="countdown-number" id="countdownNumber">5</div>
+    </div>
+
     <script>
-        let balance = parseFloat(localStorage.getItem('crashBalance_v10')) || 100.00;
+        let balance = parseFloat(localStorage.getItem('crashBalance_v11')) || 100.00;
         let gameState = 'waiting'; 
         let multiplier = 1.00;
         let crashPoint = 0;
@@ -232,6 +266,8 @@
         const multiplierHistoryContainer = document.getElementById('multiplierHistory');
         const canvas = document.getElementById('chartCanvas');
         const ctx = canvas.getContext('2d');
+        const countdownOverlay = document.getElementById('countdownOverlay');
+        const countdownNumber = document.getElementById('countdownNumber');
 
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
@@ -242,7 +278,7 @@
 
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance_v10', balance);
+            localStorage.setItem('crashBalance_v11', balance);
         }
         updateBalanceUI();
 
@@ -252,24 +288,15 @@
             statusText.innerText = '✅ موجودی شما به 100 TON شارژ شد!';
         }
 
-        // --- سیستم جدید توزیع ضریب‌ها (کیسه‌ای) ---
+        // --- سیستم توزیع ضریب‌ها (کیسه‌ای) ---
         let multiplierBag = [];
-        const bagCounts = {
-            'yellow': 3,  // 10.00 - 50.00
-            'purple': 4,  // 5.00 - 9.99
-            'blue': 8,    // 2.00 - 4.99
-            'green': 12,  // 1.20 - 1.99
-            'red': 4      // 1.01 - 1.19
-        };
+        const bagCounts = { 'yellow': 3, 'purple': 4, 'blue': 8, 'green': 12, 'red': 4 };
 
         function fillBag() {
             multiplierBag = [];
             for (let type in bagCounts) {
-                for (let i = 0; i < bagCounts[type]; i++) {
-                    multiplierBag.push(type);
-                }
+                for (let i = 0; i < bagCounts[type]; i++) multiplierBag.push(type);
             }
-            // شافل کردن کیسه
             for (let i = multiplierBag.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [multiplierBag[i], multiplierBag[j]] = [multiplierBag[j], multiplierBag[i]];
@@ -281,7 +308,6 @@
             return multiplierBag.pop();
         }
 
-        // تابع تولید ضریب بر اساس رنگ انتخاب شده
         function getRandomCrashPoint() {
             const type = getNextMultiplierType();
             if (type === 'yellow') return 10.00 + Math.random() * 40.00;
@@ -289,10 +315,9 @@
             if (type === 'blue') return 2.00 + Math.random() * 2.99;
             if (type === 'green') return 1.20 + Math.random() * 0.79;
             if (type === 'red') return 1.01 + Math.random() * 0.18;
-            return 1.01 + Math.random() * 1.0; // Fallback
+            return 1.01;
         }
 
-        // تابع تعیین رنگ بج بر اساس ضریب
         function getBadgeColorClass(m) {
             if (m >= 10.00) return 'yellow';
             if (m >= 5.00) return 'purple';
@@ -318,7 +343,7 @@
             });
         }
 
-        // --- مدیریت Canvas (نمودار) ---
+        // --- مدیریت Canvas ---
         function drawChart(currentMultiplier) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const maxMultiplier = Math.max(crashPoint, currentMultiplier, 2); 
@@ -362,15 +387,7 @@
 
         function addPlayer(name, amount, isMe = false) {
             const avatar = isMe ? '👤' : fakeAvatars[Math.floor(Math.random() * fakeAvatars.length)];
-            const player = {
-                id: Date.now() + Math.random(),
-                name: name,
-                amount: amount,
-                avatar: avatar,
-                isMe: isMe,
-                cashedOut: false,
-                lost: false
-            };
+            const player = { id: Date.now() + Math.random(), name, amount, avatar, isMe, cashedOut: false, lost: false };
             players.push(player);
             if (players.length > 15) players.shift();
             renderPlayers();
@@ -382,18 +399,12 @@
                 historyList.innerHTML = '<div style="text-align:center; color:#666; padding:20px; font-size:13px;">در انتظار ورود بازیکنان...</div>';
                 return;
             }
-
             const sortedPlayers = [...players].reverse();
             sortedPlayers.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'history-item fade-in';
                 if (p.isMe) item.style.border = '1px solid #ffcc00';
-
-                let multiplierText = '-';
-                let multiplierClass = '';
-                let profitText = '-';
-                let profitColor = '#ccc';
-
+                let multiplierText = '-', multiplierClass = '', profitText = '-', profitColor = '#ccc';
                 if (p.cashedOut) {
                     multiplierText = p.cashoutMultiplier.toFixed(2) + 'x';
                     multiplierClass = 'win';
@@ -405,12 +416,8 @@
                     profitText = '-' + p.amount.toFixed(2);
                     profitColor = '#ff4444';
                 }
-
                 item.innerHTML = `
-                    <div class="user-info">
-                        <span class="avatar">${p.avatar}</span>
-                        <span class="user-name">${p.name}</span>
-                    </div>
+                    <div class="user-info"><span class="avatar">${p.avatar}</span><span class="user-name">${p.name}</span></div>
                     <div class="bet-amount">${p.amount.toFixed(2)} TON</div>
                     <div class="multiplier-badge ${multiplierClass}">${multiplierText}</div>
                     <div class="profit" style="color: ${profitColor}">${profitText}</div>
@@ -420,9 +427,7 @@
         }
 
         function updatePlayersOnCrash() {
-            players.forEach(p => {
-                if (!p.cashedOut) p.lost = true;
-            });
+            players.forEach(p => { if (!p.cashedOut) p.lost = true; });
             renderPlayers();
         }
 
@@ -439,36 +444,38 @@
             hasJoined = false;
             myBet = 0;
             players = []; 
-            
             addPlayer('ربات پشتیبان', 10.00);
             
             multiplier = 1.00;
             crashPoint = getRandomCrashPoint(); 
             
-            // پاک کردن نمودار و نمایش شمارش معکوس روی صفحه
-            clearChart();
+            multiplierDisplay.innerText = '1.00x';
             multiplierDisplay.classList.remove('crashed');
-            multiplierDisplay.classList.add('countdown');
+            clearChart();
             
             betInput.disabled = false;
             betInput.value = 10;
-            
             actionButton.innerText = 'ورود به بازی (Join)';
             actionButton.className = 'action-btn btn-bet';
             actionButton.disabled = false;
             statusText.innerText = 'برای ورود به بازی عجله کنید!';
             
+            // شروع شمارش معکوس گرافیکی
             let countdown = 5;
-            multiplierDisplay.innerText = countdown;
-            
+            countdownOverlay.classList.add('active');
+            countdownNumber.innerText = countdown;
+            countdownNumber.style.transform = 'scale(0.5)';
+            setTimeout(() => countdownNumber.style.transform = 'scale(1)', 50);
+
             countdownInterval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
-                    multiplierDisplay.innerText = countdown;
+                    countdownNumber.innerText = countdown;
+                    countdownNumber.style.transform = 'scale(0.5)';
+                    setTimeout(() => countdownNumber.style.transform = 'scale(1)', 50);
                 } else {
                     clearInterval(countdownInterval);
-                    multiplierDisplay.classList.remove('countdown');
-                    multiplierDisplay.innerText = '1.00x';
+                    countdownOverlay.classList.remove('active');
                     startGameplay();
                 }
             }, 1000);
@@ -533,25 +540,16 @@
 
         function joinGame() {
             if (gameState !== 'waiting') return;
-            
             const amount = parseFloat(betInput.value);
-            if (isNaN(amount) || amount < 1) {
-                statusText.innerText = '❌ لطفاً یک مبلغ معتبر وارد کنید!';
-                return;
-            }
-            if (amount > balance) {
-                statusText.innerText = '❌ موجودی کافی نیست!';
-                return;
-            }
+            if (isNaN(amount) || amount < 1) { statusText.innerText = '❌ لطفاً یک مبلغ معتبر وارد کنید!'; return; }
+            if (amount > balance) { statusText.innerText = '❌ موجودی کافی نیست!'; return; }
             
             hasJoined = true;
             myBet = amount;
             balance -= amount;
             updateBalanceUI();
             betInput.disabled = true;
-            
             addPlayer('شما (You)', amount, true);
-            
             statusText.innerText = `✅ شما با ${amount} TON وارد بازی شدید! منتظر شروع...`;
             actionButton.innerText = 'منتظر شروع...';
             actionButton.disabled = true;
@@ -559,18 +557,14 @@
 
         function cashOut() {
             if (!hasJoined || gameState !== 'playing') return;
-
             const winnings = myBet * multiplier;
             balance += winnings;
             updateBalanceUI();
-
             hasJoined = false; 
             actionButton.disabled = true;
             actionButton.innerText = 'دور بعد...';
             actionButton.className = 'action-btn btn-bet';
-            
             statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
-            
             const myPlayer = players.find(p => p.isMe);
             if (myPlayer) {
                 myPlayer.cashedOut = true;
@@ -580,15 +574,11 @@
         }
 
         actionButton.addEventListener('click', () => {
-            if (gameState === 'waiting') {
-                joinGame();
-            } else if (gameState === 'playing' && hasJoined) {
-                cashOut();
-            }
+            if (gameState === 'waiting') joinGame();
+            else if (gameState === 'playing' && hasJoined) cashOut();
         });
 
         startNewRound();
-
     </script>
 </body>
 </html>
