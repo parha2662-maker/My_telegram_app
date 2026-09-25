@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Crash Game</title>
     <style>
-        /* فیکس کردن کامل ارتفاع در موبایل و جلوگیری از اسکرول */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* جلوگیری از اسکرول کل صفحه */
+            overflow: hidden;
             background-color: #121212;
             color: white;
             font-family: sans-serif;
@@ -73,9 +72,12 @@
             color: #ccc;
             flex-shrink: 0;
         }
-        .history-badge.win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
-        .history-badge.loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
-        .history-badge.high { background-color: rgba(255, 204, 0, 0.2); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); }
+        /* رنگ‌بندی جدید دقیقاً طبق درخواست */
+        .history-badge.red { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
+        .history-badge.green { background-color: rgba(0, 200, 83, 0.2); color: #00c853; border: 1px solid rgba(0, 200, 83, 0.4); }
+        .history-badge.blue { background-color: rgba(30, 144, 255, 0.2); color: #1e90ff; border: 1px solid rgba(30, 144, 255, 0.4); }
+        .history-badge.purple { background-color: rgba(156, 39, 176, 0.2); color: #9c27b0; border: 1px solid rgba(156, 39, 176, 0.4); }
+        .history-badge.yellow { background-color: rgba(255, 204, 0, 0.2); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); }
 
         /* نمودار گرافیکی */
         .chart-container {
@@ -100,8 +102,10 @@
             color: #ffcc00;
             z-index: 10;
             text-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: all 0.3s ease;
         }
         .multiplier-text.crashed { color: #ff4444; }
+        .multiplier-text.countdown { color: #ff9800; font-size: 90px; text-shadow: 0 0 30px rgba(255, 152, 0, 0.8); }
 
         /* بخش شرط‌بندی */
         .bet-controls {
@@ -148,10 +152,10 @@
         .btn-bet { background: linear-gradient(135deg, #1e90ff, #0056b3); }
         .btn-cashout { background: linear-gradient(135deg, #00c853, #009624); }
 
-        /* لیست شرط‌بندی‌ها - ارتفاع ثابت و اسکرول داخلی */
+        /* لیست شرط‌بندی‌ها */
         .history-container {
-            height: 30vh; /* ارتفاع ثابت */
-            overflow-y: auto; /* اسکرول فقط داخلی */
+            height: 30vh;
+            overflow-y: auto;
             padding: 10px;
             background-color: #121212;
             flex-shrink: 0;
@@ -208,7 +212,7 @@
     <div class="history-container" id="historyList"></div>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('crashBalance_v9')) || 100.00;
+        let balance = parseFloat(localStorage.getItem('crashBalance_v10')) || 100.00;
         let gameState = 'waiting'; 
         let multiplier = 1.00;
         let crashPoint = 0;
@@ -238,7 +242,7 @@
 
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance_v9', balance);
+            localStorage.setItem('crashBalance_v10', balance);
         }
         updateBalanceUI();
 
@@ -248,18 +252,56 @@
             statusText.innerText = '✅ موجودی شما به 100 TON شارژ شد!';
         }
 
-        // ۱. تابع تولید ضریب سقوط با تمایل شدید به اعداد پایین
-        function getRandomCrashPoint() {
-            const rand = Math.random();
-            // ۸۰٪ احتمال سقوط بین ۱.۰۱ تا ۲.۰۰
-            if (rand < 0.8) return 1.01 + Math.random() * 1.0; 
-            // ۱۵٪ احتمال سقوط بین ۲.۰۱ تا ۴.۰۰
-            if (rand < 0.95) return 2.01 + Math.random() * 2.0; 
-            // فقط ۵٪ احتمال سقوط بالای ۴.۰۰
-            return 4.01 + Math.random() * 3.0; 
+        // --- سیستم جدید توزیع ضریب‌ها (کیسه‌ای) ---
+        let multiplierBag = [];
+        const bagCounts = {
+            'yellow': 3,  // 10.00 - 50.00
+            'purple': 4,  // 5.00 - 9.99
+            'blue': 8,    // 2.00 - 4.99
+            'green': 12,  // 1.20 - 1.99
+            'red': 4      // 1.01 - 1.19
+        };
+
+        function fillBag() {
+            multiplierBag = [];
+            for (let type in bagCounts) {
+                for (let i = 0; i < bagCounts[type]; i++) {
+                    multiplierBag.push(type);
+                }
+            }
+            // شافل کردن کیسه
+            for (let i = multiplierBag.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [multiplierBag[i], multiplierBag[j]] = [multiplierBag[j], multiplierBag[i]];
+            }
         }
 
-        // ۲. مدیریت نوار تاریخچه ضریب‌ها
+        function getNextMultiplierType() {
+            if (multiplierBag.length === 0) fillBag();
+            return multiplierBag.pop();
+        }
+
+        // تابع تولید ضریب بر اساس رنگ انتخاب شده
+        function getRandomCrashPoint() {
+            const type = getNextMultiplierType();
+            if (type === 'yellow') return 10.00 + Math.random() * 40.00;
+            if (type === 'purple') return 5.00 + Math.random() * 4.99;
+            if (type === 'blue') return 2.00 + Math.random() * 2.99;
+            if (type === 'green') return 1.20 + Math.random() * 0.79;
+            if (type === 'red') return 1.01 + Math.random() * 0.18;
+            return 1.01 + Math.random() * 1.0; // Fallback
+        }
+
+        // تابع تعیین رنگ بج بر اساس ضریب
+        function getBadgeColorClass(m) {
+            if (m >= 10.00) return 'yellow';
+            if (m >= 5.00) return 'purple';
+            if (m >= 2.00) return 'blue';
+            if (m >= 1.20) return 'green';
+            return 'red';
+        }
+
+        // --- مدیریت نوار تاریخچه ---
         function addRoundToHistory(crashMultiplier) {
             roundHistory.unshift(crashMultiplier);
             if (roundHistory.length > 15) roundHistory.pop();
@@ -270,16 +312,13 @@
             multiplierHistoryContainer.innerHTML = '<div style="font-size:12px; color:#666; padding-left:10px;">تاریخچه:</div>';
             roundHistory.forEach(m => {
                 const badge = document.createElement('div');
-                badge.className = 'history-badge';
-                if (m >= 10) badge.classList.add('high');
-                else if (m >= 1.5) badge.classList.add('win');
-                else badge.classList.add('loss');
+                badge.className = 'history-badge ' + getBadgeColorClass(m);
                 badge.innerText = m.toFixed(2) + 'x';
                 multiplierHistoryContainer.appendChild(badge);
             });
         }
 
-        // ۳. مدیریت Canvas (نمودار)
+        // --- مدیریت Canvas (نمودار) ---
         function drawChart(currentMultiplier) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const maxMultiplier = Math.max(crashPoint, currentMultiplier, 2); 
@@ -317,7 +356,7 @@
             drawChart(1.00);
         }
 
-        // ۴. مدیریت بازیکنان (محدود به ۱۵ نفر آخر)
+        // --- مدیریت بازیکنان ---
         const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika', 'Kian', 'Matin', 'Yasin', 'Arya'];
         const fakeAvatars = ['🐸', '🐱', '⚽', '🦊', '🐻', '🐼', '🦁', '🐯', '🐨', '🐵'];
 
@@ -333,7 +372,6 @@
                 lost: false
             };
             players.push(player);
-            // فقط ۱۵ نفر آخر رو نگه دار
             if (players.length > 15) players.shift();
             renderPlayers();
         }
@@ -388,7 +426,6 @@
             renderPlayers();
         }
 
-        // تایمر اضافه کردن بازیکن فیک (کمتر و کنترل شده - هر ۱ ثانیه ۲۰٪ شانس)
         setInterval(() => {
             if (gameState === 'playing' && Math.random() > 0.8) {
                 const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
@@ -396,39 +433,42 @@
             }
         }, 1000);
 
-        // شروع دور جدید
+        // --- شروع دور جدید با شمارش معکوس گرافیکی ---
         function startNewRound() {
             gameState = 'waiting';
             hasJoined = false;
             myBet = 0;
             players = []; 
             
-            // یک بازیکن فیک اولیه
             addPlayer('ربات پشتیبان', 10.00);
             
             multiplier = 1.00;
             crashPoint = getRandomCrashPoint(); 
             
-            multiplierDisplay.innerText = '1.00x';
+            // پاک کردن نمودار و نمایش شمارش معکوس روی صفحه
+            clearChart();
             multiplierDisplay.classList.remove('crashed');
+            multiplierDisplay.classList.add('countdown');
+            
             betInput.disabled = false;
             betInput.value = 10;
             
             actionButton.innerText = 'ورود به بازی (Join)';
             actionButton.className = 'action-btn btn-bet';
             actionButton.disabled = false;
-            
-            clearChart();
+            statusText.innerText = 'برای ورود به بازی عجله کنید!';
             
             let countdown = 5;
-            statusText.innerText = `⏳ زمان باقی‌مانده: ${countdown} ثانیه`;
+            multiplierDisplay.innerText = countdown;
             
             countdownInterval = setInterval(() => {
                 countdown--;
                 if (countdown > 0) {
-                    statusText.innerText = `⏳ زمان باقی‌مانده: ${countdown} ثانیه`;
+                    multiplierDisplay.innerText = countdown;
                 } else {
                     clearInterval(countdownInterval);
+                    multiplierDisplay.classList.remove('countdown');
+                    multiplierDisplay.innerText = '1.00x';
                     startGameplay();
                 }
             }, 1000);
@@ -450,7 +490,6 @@
                 actionButton.disabled = true;
             }
 
-            // اضافه کردن ۲ بازیکن فیک در شروع بازی
             for(let i=0; i<2; i++) {
                 const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 100);
                 addPlayer(name, (Math.random() * 50 + 1));
