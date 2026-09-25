@@ -102,6 +102,42 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .fade-in{animation:fadeIn .3s ease-in-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 
+/* ============ PLAY HUB SCREEN ============ */
+#playhubScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);overflow-y:auto;padding-bottom:90px;z-index:150}
+.ph-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;position:sticky;top:0;background:rgba(10,14,23,.95);backdrop-filter:blur(10px);z-index:100}
+.ph-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
+.ph-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
+.ph-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
+.ph-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
+.ph-balance-pill .val{font-weight:800;font-size:14px}
+.ph-live-row{display:flex;gap:10px;padding:10px 16px;overflow-x:auto;flex-shrink:0}
+.ph-live-icon{width:56px;height:56px;border-radius:16px;display:flex;justify-content:center;align-items:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.4);position:relative}
+.ph-live-icon.purple{background:linear-gradient(135deg,#9c27b0,#6a1b9a)}
+.ph-live-icon.blue{background:linear-gradient(135deg,#2196f3,#0d47a1)}
+.ph-live-icon.pink{background:linear-gradient(135deg,#e91e63,#880e4f)}
+.ph-live-icon.green{background:linear-gradient(135deg,#00c853,#009624)}
+.ph-upgrade{margin:10px 16px;border-radius:22px;padding:20px;position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#00e676,#00a838);min-height:130px;box-shadow:0 8px 25px rgba(0,230,118,.3)}
+.ph-upgrade-badge{position:absolute;top:14px;left:16px;background:#fff;color:#00a838;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;z-index:5}
+.ph-upgrade-title{font-size:28px;font-weight:900;margin-top:28px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.2)}
+.ph-upgrade-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:4px;font-weight:600}
+.ph-upgrade-circle{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin 3s linear infinite}
+@keyframes spin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
+.ph-upgrade-gift{position:absolute;right:38px;top:50%;transform:translateY(-50%);font-size:44px;z-index:5}
+.ph-upgrade-percent{position:absolute;right:52px;top:calc(50% + 40px);background:#fff;color:#00a838;padding:4px 12px;border-radius:12px;font-size:13px;font-weight:900;z-index:6}
+.ph-games-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 16px 20px}
+.ph-game-card{border-radius:22px;padding:16px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 8px 22px rgba(0,0,0,.4)}
+.ph-game-card:active{transform:scale(.97)}
+.ph-game-title{font-size:22px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.ph-game-sub{font-size:11px;color:rgba(255,255,255,.85);margin-top:3px;font-weight:600}
+.ph-game-icon{position:absolute;top:14px;right:16px;font-size:46px;opacity:.95}
+.ph-new-badge{position:absolute;top:14px;left:16px;background:#fff;color:#000;padding:3px 9px;border-radius:10px;font-size:10px;font-weight:800}
+.ph-card-mines{background:linear-gradient(135deg,#2196f3,#0d47a1)}
+.ph-card-plinko{background:linear-gradient(135deg,#9c27b0,#4a148c)}
+.ph-card-crafts{background:linear-gradient(135deg,#ff5722,#bf360c)}
+.ph-card-dice{background:linear-gradient(135deg,#03a9f4,#01579b)}
+.mines-mini{position:absolute;top:14px;right:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:15px}
+
+/* PVP */
 #pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
 .pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0}
 .pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px}
@@ -193,7 +229,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
                 <div class="pvp-card"><div class="pc-av">👨</div><div class="pc-name">MIKE_K</div><div class="pc-pct">4.7%</div></div>
             </div>
         </div>
-        <div class="banner playhub-banner">
+        <div class="banner playhub-banner" onclick="openPlayHub()">
             <div class="banner-badge">🔥 HOT</div>
             <div class="banner-title">🎮 PLAY HUB</div>
             <div class="game-cards">
@@ -209,6 +245,71 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
         <div class="nav-item"><div class="nav-icon">💰</div><span>Earn</span></div>
+    </div>
+</div>
+
+<div id="playhubScreen" class="screen hidden">
+    <div class="ph-top-bar">
+        <button class="ph-back" onclick="goHome()">⬅ بازگشت</button>
+        <div class="ph-title">🎁 Epic Gift</div>
+        <div class="ph-balance-pill">
+            <span class="ton-icon">◈</span>
+            <span class="val" id="phBalanceDisplay">0.008</span>
+        </div>
+    </div>
+
+    <div class="ph-live-row">
+        <div class="ph-live-icon green">🐸</div>
+        <div class="ph-live-icon purple">💖</div>
+        <div class="ph-live-icon blue">🐸</div>
+        <div class="ph-live-icon blue">🦋</div>
+        <div class="ph-live-icon pink">💖</div>
+        <div class="ph-live-icon pink">🧸</div>
+    </div>
+
+    <div class="ph-upgrade" onclick="playhubCardClick('Upgrade')">
+        <div class="ph-upgrade-badge">🔥 HOT</div>
+        <div class="ph-upgrade-title">Upgrade</div>
+        <div class="ph-upgrade-sub">Choose a dream gift</div>
+        <div class="ph-upgrade-circle"></div>
+        <div class="ph-upgrade-gift">💖</div>
+        <div class="ph-upgrade-percent">15%</div>
+    </div>
+
+    <div class="ph-games-grid">
+        <div class="ph-game-card ph-card-mines" onclick="playhubCardClick('Mines')">
+            <div class="ph-new-badge">⚙️ NEW</div>
+            <div class="mines-mini">
+                <span>💎</span><span>💎</span><span>💎</span>
+                <span>💣</span><span>💎</span><span>💎</span>
+                <span>💎</span><span>💎</span><span>💣</span>
+            </div>
+            <div class="ph-game-title">Mines</div>
+            <div class="ph-game-sub">Dodge the mines</div>
+        </div>
+        <div class="ph-game-card ph-card-plinko" onclick="playhubCardClick('Plinko')">
+            <div class="ph-game-icon">🎯</div>
+            <div class="ph-game-title">Plinko</div>
+            <div class="ph-game-sub">Win up to 1000x</div>
+        </div>
+        <div class="ph-game-card ph-card-crafts" onclick="playhubCardClick('Crafts')">
+            <div class="ph-game-icon">🧩</div>
+            <div class="ph-game-title">Crafts</div>
+            <div class="ph-game-sub">Merge your gifts</div>
+        </div>
+        <div class="ph-game-card ph-card-dice" onclick="playhubCardClick('Dice')">
+            <div class="ph-game-icon">🎲</div>
+            <div class="ph-game-title">Dice</div>
+            <div class="ph-game-sub">Higher or Lower</div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+        <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
+        <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
+        <div class="nav-item"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
+        <div class="nav-item"><div class="nav-icon">🔄</div><span>P2P</span></div>
     </div>
 </div>
 
@@ -310,18 +411,25 @@ const COUNTDOWN_SECONDS = 8;
 const PVP_COUNTDOWN_SECONDS = 10;
 
 function openGame(){
-    document.getElementById('homeScreen').classList.add('hidden');
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('gameScreen').classList.remove('hidden');
 }
 function openPvp(){
-    document.getElementById('homeScreen').classList.add('hidden');
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('pvpScreen').classList.remove('hidden');
     if (!window.pvpInitialized) { pvpInit(); window.pvpInitialized = true; }
     setTimeout(resizePvpCanvas, 80);
 }
+function openPlayHub(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('playhubScreen').classList.remove('hidden');
+}
 function goHome(){
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     document.getElementById('homeScreen').classList.remove('hidden');
+}
+function playhubCardClick(name){
+    showToast('🚧 ' + name + ' - Coming Soon!');
 }
 
 let balance = parseFloat(localStorage.getItem('crashBalance_home')) || 100.00;
@@ -332,6 +440,8 @@ function updateGlobalBalanceUI() {
     if (bd) bd.innerText = balance.toFixed(2) + ' TON';
     const pb = document.getElementById('pvpBalanceDisplay');
     if (pb) pb.innerText = balance.toFixed(2);
+    const phb = document.getElementById('phBalanceDisplay');
+    if (phb) phb.innerText = balance.toFixed(3);
     localStorage.setItem('crashBalance_home', balance);
 }
 updateGlobalBalanceUI();
@@ -571,7 +681,6 @@ function pvpSetBetAll(){
     if(amount<1){showToast('❌ موجودی کافی نیست');return}
     document.getElementById('pvpBetInput').value=amount.toFixed(2);
     localStorage.setItem('lastPvpBet',amount);
-    document.getElementById('pvpBetInput-wrap-hl','');
     document.getElementById('pvpBetInput').style.color='#c8b1ff';
     setTimeout(()=>document.getElementById('pvpBetInput').style.color='#fff',500);
     showToast('🎯 همه موجودی: '+amount.toFixed(2)+' TON');
@@ -588,9 +697,7 @@ function pvpSetBetHalf(){
 }
 document.getElementById('pvpBetInput').addEventListener('input',(e)=>{
     const v=parseFloat(e.target.value);
-    if(!isNaN(v)&&v>0){
-        localStorage.setItem('lastPvpBet',v);
-    }
+    if(!isNaN(v)&&v>0){localStorage.setItem('lastPvpBet',v)}
 });
 function pvpRenderPlayers(){
     const row=document.getElementById('pvpPlayersRow');
@@ -674,4 +781,4 @@ function pvpFinishSpin(){
 function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON شارژ شد')}
 </script>
 </body>
-    </html>
+</html>
