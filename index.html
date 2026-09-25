@@ -22,7 +22,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 10px 15px;
             background-color: #1e1e1e;
             border-bottom: 1px solid #333;
         }
@@ -32,7 +32,16 @@
             border-radius: 10px;
             font-weight: bold;
             color: #00c853;
-            font-size: 18px;
+            font-size: 16px;
+        }
+        .reset-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
         }
         .game-container {
             text-align: center;
@@ -43,6 +52,13 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+        }
+        .timer-box {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 10px;
+            min-height: 30px;
         }
         .multiplier {
             font-size: 70px;
@@ -70,6 +86,8 @@
             text-align: center;
             font-size: 16px;
             font-weight: bold;
+            user-select: text !important;
+            -webkit-user-select: text !important;
         }
         .action-btn {
             width: 90%;
@@ -83,6 +101,10 @@
             color: white;
             margin: 0 auto;
         }
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .btn-bet {
             background: linear-gradient(135deg, #1e90ff, #0056b3);
             box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
@@ -93,13 +115,13 @@
         }
         .status {
             margin-top: 15px;
-            font-size: 16px;
+            font-size: 15px;
             color: #aaaaaa;
+            min-height: 20px;
         }
-        /* استایل لیست شرط‌بندی‌ها */
         .history-container {
             width: 95%;
-            height: 30%;
+            height: 28%;
             background-color: #1e1e1e;
             border-radius: 15px;
             padding: 10px;
@@ -108,7 +130,7 @@
             margin: 0 auto 10px auto;
         }
         .history-title {
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
             margin-bottom: 10px;
             text-align: right;
@@ -122,7 +144,7 @@
             background-color: #2a2a2a;
             border-radius: 10px;
             margin-bottom: 5px;
-            font-size: 14px;
+            font-size: 13px;
             animation: fadeIn 0.3s ease-in-out;
         }
         @keyframes fadeIn {
@@ -131,19 +153,21 @@
         }
         .user-name { color: #ccc; width: 30%; text-align: right; }
         .bet-amount { color: #ffcc00; width: 20%; text-align: center; }
-        .multiplier-badge { padding: 3px 8px; border-radius: 5px; font-weight: bold; width: 20%; text-align: center; }
+        .multiplier-badge { padding: 3px 6px; border-radius: 5px; font-weight: bold; width: 22%; text-align: center; }
         .win { background-color: rgba(0, 200, 83, 0.2); color: #00c853; }
         .loss { background-color: rgba(255, 68, 68, 0.2); color: #ff4444; }
-        .profit { width: 25%; text-align: left; font-weight: bold; }
+        .profit { width: 23%; text-align: left; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="top-bar">
-        <div>💰 موجودی شما:</div>
-        <div class="balance-box" id="balanceDisplay">1000.00 TON</div>
+        <div style="font-size:14px;">💰 موجودی:</div>
+        <div class="balance-box" id="balanceDisplay">100.00 TON</div>
+        <button class="reset-btn" onclick="resetBalance()">🔄 شارژ مجدد</button>
     </div>
 
     <div class="game-container">
+        <div class="timer-box" id="timerDisplay">⏳ منتظر شروع دور...</div>
         <div class="multiplier" id="multiplierDisplay">1.00x</div>
         
         <div class="bet-input-container">
@@ -151,8 +175,8 @@
             <span style="padding-top:10px; color:#888;">TON</span>
         </div>
 
-        <button class="action-btn btn-bet" id="actionButton">شروع شرط‌بندی (Place Bet)</button>
-        <div class="status" id="statusText">مبلغ شرط رو وارد کنید و شروع کنید</div>
+        <button class="action-btn btn-bet" id="actionButton">ورود به بازی (Join)</button>
+        <div class="status" id="statusText">برای شروع، مبلغ را وارد کنید</div>
     </div>
 
     <div class="history-container">
@@ -161,13 +185,16 @@
     </div>
 
     <script>
-        // لود کردن موجودی از حافظه مرورگر یا مقدار پیش‌فرض 1000
-        let balance = parseFloat(localStorage.getItem('crashBalance')) || 1000.00;
+        // --- متغیرهای اصلی ---
+        let balance = parseFloat(localStorage.getItem('crashBalance_v3')) || 100.00;
+        let gameState = 'waiting'; // waiting, playing, crashed
+        let countdown = 5;
         let multiplier = 1.00;
-        let isPlaying = false;
-        let interval;
         let crashPoint = 0;
-        let currentBet = 0;
+        let myBet = 0;
+        let hasJoined = false;
+        let gameInterval;
+        let countdownInterval;
 
         const multiplierDisplay = document.getElementById('multiplierDisplay');
         const actionButton = document.getElementById('actionButton');
@@ -175,14 +202,22 @@
         const historyList = document.getElementById('historyList');
         const balanceDisplay = document.getElementById('balanceDisplay');
         const betInput = document.getElementById('betInput');
+        const timerDisplay = document.getElementById('timerDisplay');
 
-        // آپدیت کردن نمایش موجودی
+        // --- مدیریت موجودی ---
         function updateBalanceUI() {
             balanceDisplay.innerText = balance.toFixed(2) + ' TON';
-            localStorage.setItem('crashBalance', balance); // ذخیره در حافظه
+            localStorage.setItem('crashBalance_v3', balance);
         }
-        updateBalanceUI(); // اجرا در شروع
+        updateBalanceUI();
 
+        function resetBalance() {
+            balance = 100.00;
+            updateBalanceUI();
+            statusText.innerText = '✅ موجودی شما به 100 TON شارژ شد!';
+        }
+
+        // --- لیست شرط‌بندی فیک ---
         const fakeNames = ['Ali', 'Reza', 'Sara', 'Mmd', 'Hossein', 'Zahra', 'Amir', 'Nima', 'Erfan', 'Melika'];
 
         function createFakeBet() {
@@ -209,85 +244,144 @@
             if (historyList.children.length > 20) historyList.removeChild(historyList.lastChild);
         }
 
+        // شرط‌بندی‌های فیک فقط در زمان بازی ساخته میشن
         setInterval(() => {
-            if (Math.random() > 0.3) createFakeBet();
-        }, Math.random() * 2000 + 2000);
+            if (gameState === 'playing' && Math.random() > 0.5) createFakeBet();
+        }, 1500);
 
-        actionButton.addEventListener('click', () => {
-            if (!isPlaying) {
-                startGame();
-            } else {
-                cashOut();
-            }
-        });
+        // --- منطق اصلی بازی ---
 
-        function startGame() {
-            // خواندن مبلغ شرط از اینپوت
-            currentBet = parseFloat(betInput.value);
-            
-            // اعتبارسنجی شرط
-            if (isNaN(currentBet) || currentBet < 1) {
-                statusText.innerText = "❌ لطفاً یک مبلغ معتبر وارد کنید!";
-                return;
-            }
-            if (currentBet > balance) {
-                statusText.innerText = "❌ موجودی کافی نیست!";
-                return;
-            }
-            
-            // کم کردن شرط از موجودی
-            balance -= currentBet;
-            updateBalanceUI();
-            betInput.disabled = true; // قفل کردن اینپوت در حین بازی
-
-            isPlaying = true;
+        // شروع یک دور جدید
+        function startNewRound() {
+            gameState = 'waiting';
+            hasJoined = false;
+            myBet = 0;
+            countdown = 5;
             multiplier = 1.00;
-            crashPoint = Math.random() * 8.9 + 1.1; // نقطه سقوط تصادفی
             
-            multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
+            multiplierDisplay.innerText = '1.00x';
             multiplierDisplay.classList.remove('crashed');
-            actionButton.innerText = 'برداشت (Cash Out)';
-            actionButton.className = 'action-btn btn-cashout';
-            statusText.innerText = `شرط شما: ${currentBet} TON. منتظر بمانید...`;
+            betInput.disabled = false;
+            betInput.value = 10;
+            
+            actionButton.innerText = 'ورود به بازی (Join)';
+            actionButton.className = 'action-btn btn-bet';
+            actionButton.disabled = false;
+            statusText.innerText = '⏳ برای ورود به بازی عجله کنید!';
+            
+            timerDisplay.innerText = `⏳ زمان باقیمانده: 5 ثانیه`;
+            
+            // شمارش معکوس
+            countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    timerDisplay.innerText = `⏳ زمان باقیمانده: ${countdown} ثانیه`;
+                } else {
+                    clearInterval(countdownInterval);
+                    startGameplay();
+                }
+            }, 1000);
+        }
 
-            interval = setInterval(() => {
+        // شروع فاز بازی (بالا رفتن ضریب)
+        function startGameplay() {
+            gameState = 'playing';
+            timerDisplay.innerText = '';
+            crashPoint = Math.random() * 8.9 + 1.1; 
+            betInput.disabled = true;
+            
+            if (hasJoined) {
+                statusText.innerText = `✅ شما با ${myBet} TON وارد شدید. ضریب در حال افزایش...`;
+            } else {
+                statusText.innerText = 'شما وارد بازی نشدید! تماشا کنید...';
+            }
+            
+            // دکمه فقط برای کسانی که وارد شدن فعاله
+            if (hasJoined) {
+                actionButton.innerText = 'برداشت (Cash Out)';
+                actionButton.className = 'action-btn btn-cashout';
+                actionButton.disabled = false;
+            } else {
+                actionButton.innerText = 'وارد نشدید';
+                actionButton.className = 'action-btn btn-bet';
+                actionButton.disabled = true;
+            }
+
+            gameInterval = setInterval(() => {
                 multiplier += 0.05; 
                 
                 if (multiplier >= crashPoint) {
-                    // باخت
-                    clearInterval(interval);
+                    // سقوط
+                    clearInterval(gameInterval);
                     multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
                     multiplierDisplay.classList.add('crashed');
-                    isPlaying = false;
-                    actionButton.innerText = 'شروع مجدد (Place Bet)';
+                    gameState = 'crashed';
+                    actionButton.disabled = true;
+                    actionButton.innerText = 'دور بعد...';
                     actionButton.className = 'action-btn btn-bet';
-                    statusText.innerText = '💥 سقوط کرد! شما باختید.';
-                    betInput.disabled = false; // باز کردن اینپوت
-                    addMyBetToHistory(false, 1.00); 
+                    
+                    if (hasJoined) {
+                        statusText.innerText = `💥 سقوط کرد! شما ${myBet} TON باختید.`;
+                        addMyBetToHistory(false, 1.00);
+                    } else {
+                        statusText.innerText = `💥 سقوط در ${crashPoint.toFixed(2)}x!`;
+                    }
+                    
+                    setTimeout(startNewRound, 2500); // دور بعدی بعد از 2.5 ثانیه
                 } else {
                     multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
                 }
             }, 50);
         }
 
-        function cashOut() {
-            // برد
-            clearInterval(interval);
-            isPlaying = false;
-            betInput.disabled = false; // باز کردن اینپوت
-
-            const profit = currentBet * multiplier;
-            balance += profit; // اضافه کردن سود به موجودی
+        // ورود به بازی (Join)
+        function joinGame() {
+            if (gameState !== 'waiting') return;
+            
+            const amount = parseFloat(betInput.value);
+            if (isNaN(amount) || amount < 1) {
+                statusText.innerText = '❌ لطفاً یک مبلغ معتبر وارد کنید!';
+                return;
+            }
+            if (amount > balance) {
+                statusText.innerText = '❌ موجودی کافی نیست!';
+                return;
+            }
+            
+            hasJoined = true;
+            myBet = amount;
+            balance -= amount;
             updateBalanceUI();
-
-            actionButton.innerText = 'شروع مجدد (Place Bet)';
-            actionButton.className = 'action-btn btn-bet';
-            statusText.innerText = `✅ بردید! ضریب: ${multiplier.toFixed(2)}x - سود: ${profit.toFixed(2)} TON`;
-            addMyBetToHistory(true, multiplier.toFixed(2)); 
+            betInput.disabled = true;
+            
+            statusText.innerText = `✅ شما با ${amount} TON وارد بازی شدید! منتظر شروع...`;
+            actionButton.innerText = 'منتظر شروع...';
+            actionButton.disabled = true;
         }
 
+        // برداشت (Cash Out)
+        function cashOut() {
+            if (!hasJoined || gameState !== 'playing') return;
+            
+            clearInterval(gameInterval);
+            const winnings = myBet * multiplier;
+            balance += winnings;
+            updateBalanceUI();
+            
+            gameState = 'crashed'; // جلوگیری از برداشت دوباره
+            actionButton.disabled = true;
+            actionButton.innerText = 'دور بعد...';
+            actionButton.className = 'action-btn btn-bet';
+            
+            statusText.innerText = `✅ بردید! ${myBet} × ${multiplier.toFixed(2)} = ${winnings.toFixed(2)} TON`;
+            addMyBetToHistory(true, multiplier.toFixed(2));
+            
+            // منتظر بمان تا سقوط اعلام شود
+        }
+
+        // اضافه کردن شرط خودم به لیست
         function addMyBetToHistory(isWin, multiplierValue) {
-            const amount = currentBet;
+            const amount = myBet;
             const profit = isWin ? (amount * multiplierValue).toFixed(2) : '-' + amount;
             let multiplierClass = isWin ? 'win' : 'loss';
             let multiplierText = isWin ? multiplierValue + 'x' : '1.00x';
@@ -303,6 +397,19 @@
             `;
             historyList.prepend(item);
         }
+
+        // --- شنونده رویداد کلیک دکمه ---
+        actionButton.addEventListener('click', () => {
+            if (gameState === 'waiting') {
+                joinGame();
+            } else if (gameState === 'playing' && hasJoined) {
+                cashOut();
+            }
+        });
+
+        // شروع اولین دور
+        startNewRound();
+
     </script>
 </body>
 </html>
