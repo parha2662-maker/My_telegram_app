@@ -645,7 +645,6 @@ function plUpdatePlayBtn(){
     const bet = parseFloat(document.getElementById('plBetInput').value) || 0;
     const btn = document.getElementById('plPlayBtn');
     btn.innerText = 'Place ' + bet.toFixed(2) + ' TON Bet';
-    btn.disabled = false;
 }
 function plMaxBet(){
     document.getElementById('plBetInput').value = balance.toFixed(2);
@@ -726,7 +725,6 @@ function plDrop(){
     
     balance -= bet;
     updateGlobalBalanceUI();
-    document.getElementById('plPlayBtn').disabled = true;
     
     let sum = 0;
     const directions = [];
@@ -787,7 +785,6 @@ function plAnimate(){
             } else {
                 showToast('📉 ' + b.multiplier.toFixed(2) + 'x = ' + (b.winnings - b.bet).toFixed(2) + ' TON', 'lose');
             }
-            document.getElementById('plPlayBtn').disabled = false;
         }
         if (!b.done) anyActive = true;
     });
