@@ -71,10 +71,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
 .sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;justify-content:center;flex-shrink:0}
 .sh-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 16px;gap:6px;overflow-y:auto;scroll-behavior:smooth;margin-bottom:10px}
+.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 16px;gap:8px;overflow-y:auto;scroll-behavior:smooth;margin-bottom:10px}
 .sh-row{display:flex;align-items:center;justify-content:center;width:100%;max-width:350px;transition:opacity 0.3s;margin-bottom: 4px;}
-.sh-row.inactive-row{opacity:0;pointer-events:none;display:none}
-.sh-row.active-row{opacity:1;display:flex}
+/* تغییر مهم: ردیف‌های غیرفعال محو میشن ولی حذف نمیشن */
+.sh-row.inactive-row{opacity:0.2;pointer-events:none;}
+.sh-row.active-row{opacity:1;}
 .sh-mult{font-size:13px;font-weight:800;color:#7a8299;width:48px;text-align:right;flex-shrink:0;margin-right:12px}
 .sh-circles{display:flex;gap:6px;justify-content:center;}
 .sh-circle{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:18px;transition:transform .1s;flex-shrink:0}
@@ -87,7 +88,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .sh-currency-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border:none;color:#fff;padding:0 20px;height:46px;border-radius:25px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px}
 .sh-bet-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1d2e;border:2px solid #2a2e42;border-radius:25px;padding:4px;height:56px;width:100%;max-width:350px;margin:0 auto}
 .sh-bet-btn{width:44px;height:44px;border-radius:50%;background:#2a2e42;border:none;color:#fff;font-size:24px;font-weight:800;display:flex;justify-content:center;align-items:center;cursor:pointer;font-family:inherit}
-.sh-bet-value{flex:1;text-align:center;font-size:18px;font-weight:900;color:#fff;cursor:pointer}
+/* تغییر مهم: استایل اینپوت دستی */
+.sh-bet-value{flex:1;text-align:center;font-size:18px;font-weight:900;color:#fff;background:transparent;border:none;outline:none;font-family:inherit;width:100%;min-width:0;}
 .sh-action-btn{width:100%;max-width:350px;padding:16px;border-radius:14px;font-size:16px;font-weight:900;border:none;cursor:pointer;font-family:inherit;margin:0 auto;display:block}
 .sh-action-btn.start{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
 .sh-action-btn.cashout{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;box-shadow:0 0 20px rgba(47,240,104,0.5)}
@@ -456,9 +458,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <button class="sh-icon-btn">⭐</button>
             <button class="sh-currency-btn"><span class="ton-icon" style="width:18px;height:18px;font-size:10px;">◈</span> TON</button>
         </div>
+        <!-- تغییر مهم: اینپوت دستی -->
         <div class="sh-bet-bar">
             <button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">-</button>
-            <div class="sh-bet-value" id="soloBetValue">0.1 TON</div>
+            <input type="number" id="soloBetInput" class="sh-bet-value" value="0.1" min="0.1" step="0.1" inputmode="decimal">
             <button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button>
         </div>
         <button class="sh-action-btn start" id="towerStartBtn" onclick="startTowerGame()">Start Game</button>
@@ -714,7 +717,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <script>
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=10,PL_MAX_BALLS=20,VIP_CODE='parham2010';
-const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVr';
+const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount = 0.1;
 
@@ -722,9 +725,9 @@ let soloBetAmount = 0.1;
 let towerState = 'idle'; // idle, playing, ended
 let towerLevel = 0;
 let towerBet = 0;
-// آرایه‌ها دقیقاً مطابق عکس (۵ ردیف: ۶، ۵، ۴، ۳، ۲)
-let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25]; 
-let towerRows = [6, 5, 4, 3, 2]; 
+// آرایه‌ها دقیقاً مطابق عکس (۶ ردیف: ۶، ۵، ۴، ۳، ۲، ۱)
+let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25, 8.50]; 
+let towerRows = [6, 5, 4, 3, 2, 1]; 
 let towerBombs = []; // Stores the bomb index for each level
 
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
@@ -754,12 +757,28 @@ function openSoloHub() {
     resetTowerGame();
 }
 
+// تغییر مهم: خواندن مقدار از اینپوت دستی
 function adjustSoloBet(amount) {
     if (towerState === 'playing') return;
-    soloBetAmount += amount;
-    if (soloBetAmount < 0.1) soloBetAmount = 0.1;
-    document.getElementById('soloBetValue').innerText = soloBetAmount.toFixed(2) + ' TON';
+    const input = document.getElementById('soloBetInput');
+    let currentBet = parseFloat(input.value) || 0.1;
+    currentBet += amount;
+    if (currentBet < 0.1) currentBet = 0.1;
+    input.value = currentBet.toFixed(2);
+    soloBetAmount = currentBet;
 }
+
+// تغییر مهم: گوش دادن به تایپ دستی کاربر
+document.getElementById('soloBetInput').addEventListener('input', function(e) {
+    if (towerState === 'playing') {
+        e.target.value = soloBetAmount.toFixed(2); // اگر در حال بازی بود، مقدار رو برنگردون
+        return;
+    }
+    let val = parseFloat(e.target.value);
+    if (!isNaN(val) && val >= 0.1) {
+        soloBetAmount = val;
+    }
+});
 
 function resetTowerGame() {
     towerState = 'idle';
@@ -776,10 +795,10 @@ function renderTowerGrid() {
     const container = document.getElementById('towerGameArea');
     container.innerHTML = '';
     
-    // رندر از بالا به پایین (سطح ۴ تا سطح ۰)
+    // رندر از بالا به پایین (سطح ۵ تا سطح ۰)
     for (let level = towerRows.length - 1; level >= 0; level--) {
         const rowDiv = document.createElement('div');
-        rowDiv.className = 'sh-row inactive-row'; // همه ردیف‌ها ابتدا مخفی هستند
+        rowDiv.className = 'sh-row inactive-row'; // همه ردیف‌ها ابتدا مخفی (کم‌رنگ) هستند
         rowDiv.id = 'tower-row-div-' + level;
         
         const multLabel = document.createElement('div');
@@ -802,7 +821,7 @@ function renderTowerGrid() {
         rowDiv.appendChild(circlesDiv);
         container.appendChild(rowDiv);
     }
-    // ردیف پایین (سطح ۰) رو قابل مشاهده کن
+    // ردیف پایین (سطح ۰) رو پررنگ و فعال کن
     const firstRow = document.getElementById('tower-row-div-0');
     if (firstRow) {
         firstRow.classList.remove('inactive-row');
@@ -812,13 +831,15 @@ function renderTowerGrid() {
 
 function startTowerGame() {
     if (towerState === 'playing') return;
-    const bet = soloBetAmount;
-    if (bet > balance) { showToast('❌ Insufficient balance'); return; }
+    // خواندن مقدار نهایی از اینپوت
+    soloBetAmount = parseFloat(document.getElementById('soloBetInput').value) || 0.1;
     
-    balance -= bet;
+    if (soloBetAmount > balance) { showToast('❌ Insufficient balance'); return; }
+    
+    balance -= soloBetAmount;
     updateGlobalBalanceUI();
     
-    towerBet = bet;
+    towerBet = soloBetAmount;
     towerState = 'playing';
     towerLevel = 0;
     
@@ -830,10 +851,10 @@ function startTowerGame() {
     
     document.getElementById('towerStartBtn').style.display = 'none';
     document.getElementById('towerCashoutBtn').style.display = 'block';
-    document.getElementById('towerCashoutBtn').disabled = true; // غیرفعال تا اولین کلیک
+    document.getElementById('towerCashoutBtn').disabled = true; 
     document.getElementById('towerCashoutBtn').innerText = 'Cash Out (0.00 TON)';
     
-    // پاکسازی گرید
+    // پاکسازی گرید و مخفی کردن همه ردیف‌ها جز ردیف اول
     renderTowerGrid();
     
     // فعال کردن فقط ردیف اول (سطح ۰)
@@ -896,7 +917,7 @@ function clickTowerTile(level, index, circleElement) {
         cashoutBtn.disabled = false;
         cashoutBtn.innerText = 'Cash Out (' + currentWin.toFixed(2) + ' TON)';
         
-        // فعال و قابل مشاهده کردن ردیف بعدی
+        // فعال و پررنگ کردن ردیف بعدی
         const nextRowDiv = document.getElementById('tower-row-div-' + towerLevel);
         nextRowDiv.classList.remove('inactive-row');
         nextRowDiv.classList.add('active-row');
