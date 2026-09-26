@@ -66,31 +66,31 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .nav-icon{font-size:22px}
 
 /* ================= استایل بازی Tower (Solo Hub) ================= */
-#soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;overflow-y:auto;padding-bottom:20px}
+#soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;display:flex;flex-direction:column;height:100%}
 .sh-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0}
 .sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
-.sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;justify-content:center;}
+.sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;justify-content:center;flex-shrink:0}
 .sh-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 16px;gap:8px;min-height:300px;overflow-y:auto}
-.sh-row{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:350px;transition:opacity 0.3s}
-.sh-row.inactive-row{opacity:0.3;pointer-events:none}
-.sh-row.active-row{opacity:1}
-.sh-mult{font-size:12px;font-weight:800;color:#7a8299;width:45px;text-align:right;flex-shrink:0}
-.sh-circles{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
-.sh-circle{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:16px;transition:transform .1s}
+.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 16px;gap:6px;overflow-y:auto;scroll-behavior:smooth;margin-bottom:10px}
+.sh-row{display:flex;align-items:center;justify-content:center;width:100%;max-width:350px;transition:opacity 0.3s;margin-bottom: 4px;}
+.sh-row.inactive-row{opacity:0;pointer-events:none;display:none}
+.sh-row.active-row{opacity:1;display:flex}
+.sh-mult{font-size:13px;font-weight:800;color:#7a8299;width:48px;text-align:right;flex-shrink:0;margin-right:12px}
+.sh-circles{display:flex;gap:6px;justify-content:center;}
+.sh-circle{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:18px;transition:transform .1s;flex-shrink:0}
 .sh-circle:active{transform:scale(.95)}
-.sh-circle.revealed-tick{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068;cursor:default}
-.sh-circle.revealed-bomb{background:radial-gradient(circle, #ff4444 0%, #b91c1c 100%);border-color:#ff4444;box-shadow:0 0 15px #ff4444;cursor:default}
-.sh-controls{padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg, transparent 0%, #0a0d14 30%);flex-shrink:0}
-.sh-btn-row{display:flex;align-items:center;gap:10px}
+.sh-circle.revealed-tick{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068;cursor:default;color:#0a0d14}
+.sh-circle.revealed-bomb{background:radial-gradient(circle, #ff4444 0%, #b91c1c 100%);border-color:#ff4444;box-shadow:0 0 15px #ff4444;cursor:default;color:#fff}
+.sh-controls{padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg, transparent 0%, #0a0d14 30%);flex-shrink:0;padding-bottom:85px}
+.sh-btn-row{display:flex;align-items:center;gap:10px;justify-content:center}
 .sh-icon-btn{background:#1a1d2e;border:1px solid #2a2e42;color:#fff;width:46px;height:46px;border-radius:50%;font-size:18px;display:flex;justify-content:center;align-items:center;cursor:pointer}
-.sh-currency-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border:none;color:#fff;padding:0 16px;height:46px;border-radius:25px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px}
+.sh-currency-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border:none;color:#fff;padding:0 20px;height:46px;border-radius:25px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px}
 .sh-bet-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1d2e;border:2px solid #2a2e42;border-radius:25px;padding:4px;height:56px;width:100%;max-width:350px;margin:0 auto}
 .sh-bet-btn{width:44px;height:44px;border-radius:50%;background:#2a2e42;border:none;color:#fff;font-size:24px;font-weight:800;display:flex;justify-content:center;align-items:center;cursor:pointer;font-family:inherit}
 .sh-bet-value{flex:1;text-align:center;font-size:18px;font-weight:900;color:#fff;cursor:pointer}
-.sh-action-btn{width:100%;max-width:350px;padding:16px;border-radius:14px;font-size:16px;font-weight:900;border:none;cursor:pointer;font-family:inherit;margin-top:5px}
+.sh-action-btn{width:100%;max-width:350px;padding:16px;border-radius:14px;font-size:16px;font-weight:900;border:none;cursor:pointer;font-family:inherit;margin:0 auto;display:block}
 .sh-action-btn.start{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
-.sh-action-btn.cashout{background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;box-shadow:0 0 20px rgba(255,204,0,0.5)}
+.sh-action-btn.cashout{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;box-shadow:0 0 20px rgba(47,240,104,0.5)}
 .sh-action-btn:disabled{opacity:.5;background:#2a2e42;color:#6a6a7a;box-shadow:none;cursor:not-allowed}
 /* =========================================================================== */
 
@@ -443,7 +443,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <button class="sh-back" style="visibility:hidden;">⬅ Back</button>
     </div>
     
-    <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.79</span> TON</div>
+    <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.00</span> TON</div>
 
     <!-- Game Area -->
     <div class="sh-game-area" id="towerGameArea">
@@ -452,7 +452,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
     <!-- Controls -->
     <div class="sh-controls">
-        <div class="sh-btn-row" style="justify-content:center;">
+        <div class="sh-btn-row">
             <button class="sh-icon-btn">⭐</button>
             <button class="sh-currency-btn"><span class="ton-icon" style="width:18px;height:18px;font-size:10px;">◈</span> TON</button>
         </div>
@@ -722,9 +722,9 @@ let soloBetAmount = 0.1;
 let towerState = 'idle'; // idle, playing, ended
 let towerLevel = 0;
 let towerBet = 0;
-// تغییرات: ۱۲ ردیف با ضریب‌های متناسب
-let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25, 8.50, 12.75, 17.00, 21.25, 25.50, 50.00, 100.00]; 
-let towerRows = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; 
+// آرایه‌ها دقیقاً مطابق عکس (۶ ردیف)
+let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25, 8.50]; 
+let towerRows = [6, 5, 4, 3, 2, 1]; 
 let towerBombs = []; // Stores the bomb index for each level
 
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
@@ -776,18 +776,11 @@ function renderTowerGrid() {
     const container = document.getElementById('towerGameArea');
     container.innerHTML = '';
     
-    // Render from top to bottom (Level 11 down to Level 0)
+    // رندر از بالا به پایین
     for (let level = towerRows.length - 1; level >= 0; level--) {
         const rowDiv = document.createElement('div');
-        rowDiv.className = 'sh-row';
+        rowDiv.className = 'sh-row inactive-row'; // همه ردیف‌ها ابتدا مخفی هستند
         rowDiv.id = 'tower-row-div-' + level;
-        
-        // اگر ردیف از سطح فعلی بالاتر باشه، محو میشه
-        if (level > towerLevel) {
-            rowDiv.classList.add('inactive-row');
-        } else if (level === towerLevel) {
-            rowDiv.classList.add('active-row');
-        }
         
         const multLabel = document.createElement('div');
         multLabel.className = 'sh-mult';
@@ -809,19 +802,11 @@ function renderTowerGrid() {
         rowDiv.appendChild(circlesDiv);
         container.appendChild(rowDiv);
     }
-    // اسکرول به پایین‌ترین ردیف
-    container.scrollTop = container.scrollHeight;
-}
-
-function updateTowerVisibility() {
-    document.querySelectorAll('.sh-row').forEach(row => {
-        row.classList.remove('active-row');
-        row.classList.add('inactive-row');
-    });
-    const activeRow = document.getElementById('tower-row-div-' + towerLevel);
-    if (activeRow) {
-        activeRow.classList.remove('inactive-row');
-        activeRow.classList.add('active-row');
+    // ردیف پایین (سطح ۰) رو قابل مشاهده کن
+    const firstRow = document.getElementById('tower-row-div-0');
+    if (firstRow) {
+        firstRow.classList.remove('inactive-row');
+        firstRow.classList.add('active-row');
     }
 }
 
@@ -837,7 +822,7 @@ function startTowerGame() {
     towerState = 'playing';
     towerLevel = 0;
     
-    // Generate bombs (one per level)
+    // ساخت بمب‌ها (یکی برای هر ردیف)
     towerBombs = [];
     for (let i = 0; i < towerRows.length; i++) {
         towerBombs.push(Math.floor(Math.random() * towerRows[i]));
@@ -845,20 +830,20 @@ function startTowerGame() {
     
     document.getElementById('towerStartBtn').style.display = 'none';
     document.getElementById('towerCashoutBtn').style.display = 'block';
-    document.getElementById('towerCashoutBtn').disabled = true; // Disabled until first click
+    document.getElementById('towerCashoutBtn').disabled = true; // غیرفعال تا اولین کلیک
     document.getElementById('towerCashoutBtn').innerText = 'Cash Out (0.00 TON)';
     
-    // Reset grid visual
+    // پاکسازی گرید
     renderTowerGrid();
     
-    // Enable only the first row (level 0)
+    // فعال کردن فقط ردیف اول (سطح ۰)
     enableTowerRow(0);
 }
 
 function enableTowerRow(level) {
-    // Disable all rows
+    // غیرفعال کردن همه دایره‌ها
     document.querySelectorAll('.sh-circle').forEach(c => c.style.pointerEvents = 'none');
-    // Enable the specific row
+    // فعال کردن دایره‌های ردیف مشخص شده
     const row = document.getElementById('tower-row-' + level);
     if (row) {
         Array.from(row.children).forEach(c => c.style.pointerEvents = 'auto');
@@ -868,14 +853,14 @@ function enableTowerRow(level) {
 function clickTowerTile(level, index, circleElement) {
     if (towerState !== 'playing' || level !== towerLevel) return;
     
-    // Disable the row after click
+    // غیرفعال کردن ردیف بعد از کلیک
     const row = document.getElementById('tower-row-' + level);
     Array.from(row.children).forEach(c => c.style.pointerEvents = 'none');
     
     if (index === towerBombs[level]) {
-        // Hit a bomb
+        // به بمب خوردی
         circleElement.classList.add('revealed-bomb');
-        circleElement.innerText = '❌';
+        circleElement.innerText = '✕';
         towerState = 'ended';
         showToast('💥 You hit a bomb! Lost ' + towerBet.toFixed(2) + ' TON', 'lose');
         document.getElementById('towerCashoutBtn').style.display = 'none';
@@ -884,34 +869,50 @@ function clickTowerTile(level, index, circleElement) {
         document.getElementById('towerStartBtn').disabled = false;
         setTimeout(resetTowerGame, 3000);
     } else {
-        // Safe
+        // امن بود
         circleElement.classList.add('revealed-tick');
-        circleElement.innerText = '✅';
+        circleElement.innerText = '✓';
         
+        // نمایش بمب مخفی در این ردیف
+        Array.from(row.children).forEach((c, i) => {
+            if (i === towerBombs[level]) {
+                c.classList.add('revealed-bomb');
+                c.innerText = '✕';
+            }
+        });
+
         towerLevel++;
         
         if (towerLevel >= towerRows.length) {
-            // Won the whole tower!
+            // کل برج رو بردی!
             towerCashOut();
             return;
         }
         
-        // Update cashout button
+        // آپدیت دکمه Cash Out
         const currentMult = towerMultipliers[towerLevel - 1];
         const currentWin = towerBet * currentMult;
         const cashoutBtn = document.getElementById('towerCashoutBtn');
         cashoutBtn.disabled = false;
         cashoutBtn.innerText = 'Cash Out (' + currentWin.toFixed(2) + ' TON)';
         
-        // Enable next row
-        updateTowerVisibility();
+        // فعال و قابل مشاهده کردن ردیف بعدی
+        const nextRowDiv = document.getElementById('tower-row-div-' + towerLevel);
+        nextRowDiv.classList.remove('inactive-row');
+        nextRowDiv.classList.add('active-row');
+        
         enableTowerRow(towerLevel);
+        
+        // اسکرول خودکار به ردیف فعال
+        setTimeout(() => {
+            nextRowDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
     }
 }
 
 function towerCashOut() {
     if (towerState !== 'playing') return;
-    if (towerLevel === 0) return; // Can't cash out without playing
+    if (towerLevel === 0) return; 
     
     const currentMult = towerMultipliers[towerLevel - 1];
     const winAmount = towerBet * currentMult;
