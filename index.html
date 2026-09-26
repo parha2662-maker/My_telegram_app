@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Gift Hub</title>
-<!-- تغییر مهم: لینک از unpkg به jsdelivr تغییر کرد تا در ایران باز شود -->
+<!-- لینک از jsdelivr برای دور زدن تحریم -->
 <script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -323,12 +323,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .deposit-status{font-size:13px;color:#ffcc00;margin-top:10px;min-height:20px;font-weight:700}
 .deposit-wallet-info{background:#131824;border:1px solid #2a2e42;border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;color:#7a8299;word-break:break-all}
 .deposit-wallet-info b{color:#2ff068}
-/* استایل اینپوت مبلغ دلخواه */
-.deposit-amount-input {
-    width: 100%; background: #0a0d14; border: 1px solid #2a2e42; border-radius: 10px; 
-    color: #fff; padding: 10px; text-align: center; font-size: 16px; font-weight: bold; 
-    outline: none; margin-bottom: 12px; font-family: inherit;
-}
+.deposit-amount-input {width: 100%; background: #0a0d14; border: 1px solid #2a2e42; border-radius: 10px; color: #fff; padding: 10px; text-align: center; font-size: 16px; font-weight: bold; outline: none; margin-bottom: 12px; font-family: inherit;}
 </style>
 </head>
 <body>
@@ -645,6 +640,9 @@ async function initTonConnect(){
     try{
         tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});
         tonConnectUI.onStatusChange(async wallet=>{
+            // مودال دیپازیت رو دوباره نشون بده (چون در تابع connectWallet مخفی شده بود)
+            document.getElementById('depositModal').classList.remove('hidden');
+
             if(wallet){
                 isWalletConnected=true;
                 const addr=wallet.account.address;
@@ -682,13 +680,34 @@ async function initTonConnect(){
 }
 function openDepositModal(){document.getElementById('depositModal').classList.remove('hidden');if(!tonConnectUI)initTonConnect();}
 function closeDepositModal(){document.getElementById('depositModal').classList.add('hidden');document.getElementById('depositStatus').innerText='';}
-async function connectWallet(){if(!tonConnectUI){document.getElementById('depositStatus').innerText='⏳ Loading wallet...';await initTonConnect();}try{await tonConnectUI.openModal();}catch(e){document.getElementById('depositStatus').innerText='❌ Could not open wallet';}}
 
-// منطق پرداخت داینامیک و محاسبه پاداش
+// تابع اصلاح شده برای باز شدن کیف پول (مخفی کردن مودال آبی قبل از باز شدن TON Connect)
+async function connectWallet(){
+    if(!tonConnectUI){
+        document.getElementById('depositStatus').innerText='⏳ Loading wallet...';
+        await initTonConnect();
+    }
+    
+    // مودال آبی رو مخفی کن تا TON Connect باز بشه
+    document.getElementById('depositModal').classList.add('hidden');
+    
+    try {
+        await tonConnectUI.openModal();
+        // مودال آبی بعد از بسته شدن TON Connect توسط onStatusChange دوباره باز میشه
+    } catch(e) {
+        document.getElementById('depositModal').classList.remove('hidden');
+        document.getElementById('depositStatus').innerText='❌ Could not open wallet';
+    }
+}
+
+// تابع اصلاح شده برای پرداخت (رفع مشکل کاما و محاسبه پاداش)
 async function sendPayment(){
     if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect your wallet first';return;}
     
-    const amountTon = parseFloat(document.getElementById('depositAmountInput').value);
+    // رفع مشکل کاما (,) و تبدیل به نقطه (.)
+    let amountStr = document.getElementById('depositAmountInput').value.replace(',', '.');
+    const amountTon = parseFloat(amountStr);
+    
     if(isNaN(amountTon) || amountTon < 0.1){
         document.getElementById('depositStatus').innerText='❌ Minimum deposit is 0.1 TON';
         return;
