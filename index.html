@@ -387,7 +387,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
 </div>
 
-<!-- مودال دیپازیت با اینپوت مبلغ دلخواه -->
+<!-- مودال دیپازیت با اینپوت مبلغ دلخواه و دکمه قطع اتصال -->
 <div id="depositModal" class="deposit-modal hidden">
     <div class="deposit-modal-content">
         <div class="deposit-modal-title">💎 Deposit</div>
@@ -397,7 +397,12 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
         
         <div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div>
+        
         <button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
+        
+        <!-- دکمه جدید قطع اتصال که در ابتدا مخفی است -->
+        <button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none; background: linear-gradient(135deg, #d92b2b, #b91c1c);">🔌 Disconnect Wallet</button>
+        
         <button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
         <button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button>
         <div class="deposit-status" id="depositStatus"></div>
@@ -640,7 +645,7 @@ async function initTonConnect(){
     try{
         tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});
         tonConnectUI.onStatusChange(async wallet=>{
-            // مودال دیپازیت رو دوباره نشون بده (چون در تابع connectWallet مخفی شده بود)
+            // مودال دیپازیت رو دوباره نشون بده
             document.getElementById('depositModal').classList.remove('hidden');
 
             if(wallet){
@@ -648,8 +653,10 @@ async function initTonConnect(){
                 const addr=wallet.account.address;
                 const shortAddr=addr.slice(0,6)+'...'+addr.slice(-4);
                 document.getElementById('walletInfo').innerHTML='✅ Connected: <b>'+shortAddr+'</b>';
-                document.getElementById('connectWalletBtn').innerText='✅ Wallet Connected';
-                document.getElementById('connectWalletBtn').disabled=true;
+                
+                // تغییر دکمه‌ها
+                document.getElementById('connectWalletBtn').style.display='none';
+                document.getElementById('disconnectWalletBtn').style.display='block';
                 document.getElementById('payBtn').disabled=false;
                 
                 document.getElementById('depositStatus').innerText='⏳ Fetching real balance...';
@@ -670,8 +677,10 @@ async function initTonConnect(){
             }else{
                 isWalletConnected=false;
                 document.getElementById('walletInfo').innerText='Wallet not connected';
-                document.getElementById('connectWalletBtn').innerText='🔗 Connect Wallet';
-                document.getElementById('connectWalletBtn').disabled=false;
+                
+                // تغییر دکمه‌ها
+                document.getElementById('connectWalletBtn').style.display='block';
+                document.getElementById('disconnectWalletBtn').style.display='none';
                 document.getElementById('payBtn').disabled=true;
                 document.getElementById('depositStatus').innerText='';
             }
@@ -681,30 +690,39 @@ async function initTonConnect(){
 function openDepositModal(){document.getElementById('depositModal').classList.remove('hidden');if(!tonConnectUI)initTonConnect();}
 function closeDepositModal(){document.getElementById('depositModal').classList.add('hidden');document.getElementById('depositStatus').innerText='';}
 
-// تابع اصلاح شده برای باز شدن کیف پول (مخفی کردن مودال آبی قبل از باز شدن TON Connect)
+// تابع باز شدن کیف پول
 async function connectWallet(){
     if(!tonConnectUI){
         document.getElementById('depositStatus').innerText='⏳ Loading wallet...';
         await initTonConnect();
     }
     
-    // مودال آبی رو مخفی کن تا TON Connect باز بشه
     document.getElementById('depositModal').classList.add('hidden');
     
     try {
         await tonConnectUI.openModal();
-        // مودال آبی بعد از بسته شدن TON Connect توسط onStatusChange دوباره باز میشه
     } catch(e) {
         document.getElementById('depositModal').classList.remove('hidden');
         document.getElementById('depositStatus').innerText='❌ Could not open wallet';
     }
 }
 
-// تابع اصلاح شده برای پرداخت (رفع مشکل کاما و محاسبه پاداش)
+// تابع جدید قطع اتصال کیف پول
+async function disconnectWallet(){
+    if(tonConnectUI) {
+        try {
+            await tonConnectUI.disconnect();
+            showToast('🔌 Wallet disconnected', 'lose');
+        } catch(e) {
+            console.error('Disconnect error', e);
+        }
+    }
+}
+
+// تابع پرداخت داینامیک
 async function sendPayment(){
     if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect your wallet first';return;}
     
-    // رفع مشکل کاما (,) و تبدیل به نقطه (.)
     let amountStr = document.getElementById('depositAmountInput').value.replace(',', '.');
     const amountTon = parseFloat(amountStr);
     
