@@ -714,7 +714,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <script>
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=10,PL_MAX_BALLS=20,VIP_CODE='parham2010';
-const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
+const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVr';
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount = 0.1;
 
@@ -722,9 +722,9 @@ let soloBetAmount = 0.1;
 let towerState = 'idle'; // idle, playing, ended
 let towerLevel = 0;
 let towerBet = 0;
-// آرایه‌ها دقیقاً مطابق عکس (۶ ردیف)
-let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25, 8.50]; 
-let towerRows = [6, 5, 4, 3, 2, 1]; 
+// آرایه‌ها دقیقاً مطابق عکس (۵ ردیف: ۶، ۵، ۴، ۳، ۲)
+let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25]; 
+let towerRows = [6, 5, 4, 3, 2]; 
 let towerBombs = []; // Stores the bomb index for each level
 
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
@@ -776,7 +776,7 @@ function renderTowerGrid() {
     const container = document.getElementById('towerGameArea');
     container.innerHTML = '';
     
-    // رندر از بالا به پایین
+    // رندر از بالا به پایین (سطح ۴ تا سطح ۰)
     for (let level = towerRows.length - 1; level >= 0; level--) {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'sh-row inactive-row'; // همه ردیف‌ها ابتدا مخفی هستند
