@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Gift Hub</title>
-<!-- لینک از jsdelivr برای دور زدن تحریم -->
 <script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -65,6 +64,26 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .nav-item.active{color:#fff}
 .nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px}
 .nav-icon{font-size:22px}
+/* استایل صفحه لیدربورد */
+#leaderboardScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:180;overflow-y:auto;padding-bottom:20px}
+.lb-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;background:rgba(10,14,23,.95);z-index:100}
+.lb-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
+.lb-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
+.lb-header{padding:10px 16px 20px;text-align:center}
+.lb-header h2{font-size:24px;font-weight:900;color:#fff}
+.lb-header p{font-size:12px;color:#7a8299;margin-top:5px}
+.lb-list{padding:0 16px;display:flex;flex-direction:column;gap:8px}
+.lb-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#1a1d2e;border-radius:16px;border:1px solid #2a2e42}
+.lb-item.is-me{background:linear-gradient(135deg, rgba(155,92,255,.2), rgba(124,58,237,.1)); border-color:#9b5cff;}
+.lb-rank{font-size:16px;font-weight:900;width:30px;text-align:center;color:#7a8299}
+.lb-rank.top-1{color:#ffcc00;font-size:20px}
+.lb-rank.top-2{color:#c0c0c0;font-size:18px}
+.lb-rank.top-3{color:#cd7f32;font-size:18px}
+.lb-avatar{width:40px;height:40px;border-radius:50%;background:#2a2e42;display:flex;justify-content:center;align-items:center;font-size:20px}
+.lb-info{flex:1;display:flex;flex-direction:column}
+.lb-name{font-size:14px;font-weight:800;color:#fff}
+.lb-score{font-size:12px;color:#2ff068;font-weight:700}
+.lb-badge{font-size:10px;padding:4px 8px;border-radius:8px;background:rgba(47,240,104,.15);color:#2ff068;font-weight:800}
 #gameScreen{background:#121212;z-index:200}
 .game-top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#1e1e1e;border-bottom:1px solid #333;flex-shrink:0}
 .back-btn{background:#333;color:#fff;border:none;padding:8px 15px;border-radius:8px;font-size:14px;cursor:pointer}
@@ -382,12 +401,28 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">🎒</div><span>Backpack</span></div>
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
+        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
         <div class="nav-item"><div class="nav-icon">💰</div><span>Earn</span></div>
     </div>
 </div>
 
-<!-- مودال دیپازیت با اینپوت مبلغ دلخواه و دکمه قطع اتصال -->
+<!-- صفحه جدید لیدربورد -->
+<div id="leaderboardScreen" class="screen hidden">
+    <div class="lb-top-bar">
+        <button class="lb-back" onclick="goHome()">⬅ Back</button>
+        <div class="lb-title">🏆 Global Leaderboard</div>
+        <div style="width:60px;"></div> <!-- Spacer -->
+    </div>
+    <div class="lb-header">
+        <h2>Top Players</h2>
+        <p>Ranking based on highest TON balance</p>
+    </div>
+    <div class="lb-list" id="leaderboardList">
+        <!-- لیست اینجا توسط جاوااسکریپت پر میشه -->
+    </div>
+</div>
+
+<!-- مودال دیپازیت -->
 <div id="depositModal" class="deposit-modal hidden">
     <div class="deposit-modal-content">
         <div class="deposit-modal-title">💎 Deposit</div>
@@ -399,10 +434,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div>
         
         <button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
-        
-        <!-- دکمه جدید قطع اتصال که در ابتدا مخفی است -->
         <button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none; background: linear-gradient(135deg, #d92b2b, #b91c1c);">🔌 Disconnect Wallet</button>
-        
         <button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
         <button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button>
         <div class="deposit-status" id="depositStatus"></div>
@@ -478,7 +510,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">🎒</div><span>Backpack</span></div>
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
+        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
         <div class="nav-item"><div class="nav-icon">🔄</div><span>P2P</span></div>
     </div>
 </div>
@@ -640,12 +672,80 @@ function updateGlobalBalanceUI(){
 updateGlobalBalanceUI();
 function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
 
+// ==================== منطق لیدربورد شبیه‌سازی شده ====================
+const FAKE_NAMES=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro','DragonSlayer','NightHawk','ThunderBolt','IceQueen','ShadowWolf','GoldenKnight','SilentStorm','FirePhoenix','DarkNinja','MysticMage','IronFist','SilverArrow','CosmicStar','VenomStrike','FrostBite','AlphaWolf','GhostRider','NeoTrader','MoonWalker','ZeroCool'];
+const FAKE_AVATARS=['🦁','🧔','👨','🐸','🐱','🐻','🤖','🐼','🦊','🐯','🐨','🐵','🐶','🐷','🐔','🐧','🦉','🦅','🐺','🐗','🦄','🐲','👽','👾','🤠'];
+
+function openLeaderboard() {
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('leaderboardScreen').classList.remove('hidden');
+    renderLeaderboard();
+}
+
+function renderLeaderboard() {
+    const listContainer = document.getElementById('leaderboardList');
+    listContainer.innerHTML = '';
+    
+    // ساخت ۳۰ بازیکن خیالی
+    let bots = [];
+    for (let i = 0; i < 30; i++) {
+        // امتیازات تصادفی بین 500 تا 50000، اما بعضیاشون رو نزدیک به کاربر میکنیم تا رقابت واقعیتر بشه
+        let score;
+        if (Math.random() > 0.7) {
+            score = Math.floor(Math.random() * 5000) + 100; // امتیاز پایین
+        } else {
+            score = Math.floor(Math.random() * 100000) + 5000; // امتیاز بالا
+        }
+        
+        bots.push({
+            name: FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)] + Math.floor(Math.random() * 100),
+            avatar: FAKE_AVATARS[Math.floor(Math.random() * FAKE_AVATARS.length)],
+            score: score,
+            isMe: false
+        });
+    }
+    
+    // اضافه کردن کاربر فعلی به لیست
+    bots.push({
+        name: 'You',
+        avatar: '👤',
+        score: parseFloat(balance.toFixed(2)),
+        isMe: true
+    });
+    
+    // مرتب‌سازی بر اساس امتیاز (نزولی)
+    bots.sort((a, b) => b.score - a.score);
+    
+    // رندر کردن لیست
+    bots.forEach((player, index) => {
+        const rank = index + 1;
+        const item = document.createElement('div');
+        item.className = 'lb-item' + (player.isMe ? ' is-me' : '');
+        
+        let rankClass = '';
+        if (rank === 1) rankClass = 'top-1';
+        else if (rank === 2) rankClass = 'top-2';
+        else if (rank === 3) rankClass = 'top-3';
+        
+        item.innerHTML = `
+            <div class="lb-rank ${rankClass}">#${rank}</div>
+            <div class="lb-avatar">${player.avatar}</div>
+            <div class="lb-info">
+                <div class="lb-name">${player.name}</div>
+                <div class="lb-score">${player.score.toFixed(2)} TON</div>
+            </div>
+            ${player.isMe ? '<div class="lb-badge">YOU</div>' : ''}
+        `;
+        listContainer.appendChild(item);
+    });
+}
+// =====================================================================
+
 // منطق اتصال و دریافت موجودی واقعی
 async function initTonConnect(){
     try{
         tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});
         tonConnectUI.onStatusChange(async wallet=>{
-            // مودال دیپازیت رو دوباره نشون بده
             document.getElementById('depositModal').classList.remove('hidden');
 
             if(wallet){
@@ -654,7 +754,6 @@ async function initTonConnect(){
                 const shortAddr=addr.slice(0,6)+'...'+addr.slice(-4);
                 document.getElementById('walletInfo').innerHTML='✅ Connected: <b>'+shortAddr+'</b>';
                 
-                // تغییر دکمه‌ها
                 document.getElementById('connectWalletBtn').style.display='none';
                 document.getElementById('disconnectWalletBtn').style.display='block';
                 document.getElementById('payBtn').disabled=false;
@@ -678,7 +777,6 @@ async function initTonConnect(){
                 isWalletConnected=false;
                 document.getElementById('walletInfo').innerText='Wallet not connected';
                 
-                // تغییر دکمه‌ها
                 document.getElementById('connectWalletBtn').style.display='block';
                 document.getElementById('disconnectWalletBtn').style.display='none';
                 document.getElementById('payBtn').disabled=true;
@@ -690,15 +788,12 @@ async function initTonConnect(){
 function openDepositModal(){document.getElementById('depositModal').classList.remove('hidden');if(!tonConnectUI)initTonConnect();}
 function closeDepositModal(){document.getElementById('depositModal').classList.add('hidden');document.getElementById('depositStatus').innerText='';}
 
-// تابع باز شدن کیف پول
 async function connectWallet(){
     if(!tonConnectUI){
         document.getElementById('depositStatus').innerText='⏳ Loading wallet...';
         await initTonConnect();
     }
-    
     document.getElementById('depositModal').classList.add('hidden');
-    
     try {
         await tonConnectUI.openModal();
     } catch(e) {
@@ -707,7 +802,6 @@ async function connectWallet(){
     }
 }
 
-// تابع جدید قطع اتصال کیف پول
 async function disconnectWallet(){
     if(tonConnectUI) {
         try {
@@ -719,7 +813,6 @@ async function disconnectWallet(){
     }
 }
 
-// تابع پرداخت داینامیک
 async function sendPayment(){
     if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect your wallet first';return;}
     
