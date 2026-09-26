@@ -64,7 +64,31 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .nav-item.active{color:#fff}
 .nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px}
 .nav-icon{font-size:22px}
-/* استایل صفحه لیدربورد */
+
+/* ================= استایل صفحه Solo Hub (شبیه عکس سمت چپ) ================= */
+#soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;overflow-y:auto;padding-bottom:20px}
+.sh-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0}
+.sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
+.sh-online{display:flex;align-items:center;gap:6px;background:rgba(47,240,104,.1);border:1px solid rgba(47,240,104,.3);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#2ff068}
+.sh-online .dot{width:8px;height:8px;border-radius:50%;background:#2ff068;box-shadow:0 0 8px #2ff068}
+.sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;}
+.sh-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
+.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px 16px;gap:8px;min-height:300px}
+.sh-row{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:350px}
+.sh-mult{font-size:14px;font-weight:800;color:#7a8299;width:45px;text-align:right;flex-shrink:0}
+.sh-circles{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.sh-circle{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5)}
+.sh-circle.active{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068}
+.sh-controls{padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg, transparent 0%, #0a0d14 30%);flex-shrink:0}
+.sh-btn-row{display:flex;align-items:center;gap:10px}
+.sh-icon-btn{background:#1a1d2e;border:1px solid #2a2e42;color:#fff;width:46px;height:46px;border-radius:50%;font-size:18px;display:flex;justify-content:center;align-items:center;cursor:pointer}
+.sh-currency-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border:none;color:#fff;padding:0 16px;height:46px;border-radius:25px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px}
+.sh-bet-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1d2e;border:2px solid #2a2e42;border-radius:25px;padding:4px;height:56px;width:100%;max-width:350px;margin:0 auto}
+.sh-bet-btn{width:44px;height:44px;border-radius:50%;background:#2a2e42;border:none;color:#fff;font-size:24px;font-weight:800;display:flex;justify-content:center;align-items:center;cursor:pointer;font-family:inherit}
+.sh-bet-value{flex:1;text-align:center;font-size:18px;font-weight:900;color:#fff;cursor:pointer}
+.sh-hash{text-align:center;font-size:11px;color:#5a6278;margin-top:5px}
+/* =========================================================================== */
+
 #leaderboardScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:180;overflow-y:auto;padding-bottom:20px}
 .lb-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;background:rgba(10,14,23,.95);z-index:100}
 .lb-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
@@ -402,24 +426,100 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
-        <div class="nav-item"><div class="nav-icon">💰</div><span>Earn</span></div>
+        <div class="nav-item" onclick="openSoloHub()"><div class="nav-icon">🎯</div><span>Solo Hub</span></div>
     </div>
 </div>
 
-<!-- صفحه جدید لیدربورد -->
+<!-- صفحه جدید Solo Hub (شبیه عکس سمت چپ) -->
+<div id="soloHubScreen" class="screen hidden">
+    <div class="sh-top-bar">
+        <button class="sh-back" onclick="goHome()">⬅ Back</button>
+        <div class="sh-online"><span class="dot"></span> 10 online</div>
+        <button class="sh-back" style="padding:9px 12px;">▼</button>
+    </div>
+    
+    <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.79</span> TON</div>
+
+    <!-- Game Area -->
+    <div class="sh-game-area">
+        <!-- Row 4.25x -->
+        <div class="sh-row">
+            <div class="sh-mult">4.25x</div>
+            <div class="sh-circles">
+                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
+            </div>
+        </div>
+        <!-- Row 3.40x -->
+        <div class="sh-row">
+            <div class="sh-mult">3.40x</div>
+            <div class="sh-circles">
+                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
+            </div>
+        </div>
+        <!-- Row 2.55x -->
+        <div class="sh-row">
+            <div class="sh-mult">2.55x</div>
+            <div class="sh-circles">
+                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
+            </div>
+        </div>
+        <!-- Row 1.70x -->
+        <div class="sh-row">
+            <div class="sh-mult">1.70x</div>
+            <div class="sh-circles">
+                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
+            </div>
+        </div>
+        <!-- Row 1.27x -->
+        <div class="sh-row">
+            <div class="sh-mult">1.27x</div>
+            <div class="sh-circles">
+                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
+            </div>
+        </div>
+        <!-- Row 1.02x -->
+        <div class="sh-row">
+            <div class="sh-mult" style="color:#2ff068">1.02x</div>
+            <div class="sh-circles">
+                <div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="sh-controls">
+        <div class="sh-btn-row">
+            <button class="sh-icon-btn">⭐</button>
+            <button class="sh-currency-btn"><span class="ton-icon" style="width:18px;height:18px;font-size:10px;">◈</span> TON</button>
+        </div>
+        <div class="sh-bet-bar">
+            <button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">-</button>
+            <div class="sh-bet-value" id="soloBetValue">0.1 TON</div>
+            <button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button>
+        </div>
+        <div class="sh-hash">Hash: 5c05...3795 📋</div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏪</div><span>Market</span></div>
+        <div class="nav-item active"><div class="nav-icon">🎯</div><span>Solo Hub</span></div>
+        <div class="nav-item"><div class="nav-icon">⚔️</div><span>Arena</span></div>
+        <div class="nav-item"><div class="nav-icon">🏆</div><span>Event</span></div>
+        <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+    </div>
+</div>
+
 <div id="leaderboardScreen" class="screen hidden">
     <div class="lb-top-bar">
         <button class="lb-back" onclick="goHome()">⬅ Back</button>
         <div class="lb-title">🏆 Global Leaderboard</div>
-        <div style="width:60px;"></div> <!-- Spacer -->
+        <div style="width:60px;"></div>
     </div>
     <div class="lb-header">
         <h2>Top Players</h2>
         <p>Ranking based on highest TON balance</p>
     </div>
-    <div class="lb-list" id="leaderboardList">
-        <!-- لیست اینجا توسط جاوااسکریپت پر میشه -->
-    </div>
+    <div class="lb-list" id="leaderboardList"></div>
 </div>
 
 <!-- مودال دیپازیت -->
@@ -511,7 +611,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
-        <div class="nav-item"><div class="nav-icon">🔄</div><span>P2P</span></div>
+        <div class="nav-item" onclick="openSoloHub()"><div class="nav-icon">🎯</div><span>Solo Hub</span></div>
     </div>
 </div>
 
@@ -651,6 +751,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=10,PL_MAX_BALLS=20,VIP_CODE='parham2010';
 const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 let tonConnectUI=null,isWalletConnected=false;
+let soloBetAmount = 0.1;
 
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
 function openPvp(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('pvpScreen').classList.remove('hidden');if(!window.pvpInitialized){pvpInit();window.pvpInitialized=true;}setTimeout(resizePvpCanvas,80);}
@@ -665,14 +766,32 @@ function goHome(){document.querySelectorAll('.screen').forEach(s=>s.classList.ad
 function playhubCardClick(name){showToast('🚧 '+name+' - Coming Soon!');}
 let balance=parseFloat(localStorage.getItem('crashBalance_home'))||100.00;
 function updateGlobalBalanceUI(){
-    const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2]];
+    const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2],['shBalanceDisplay',2]];
     ids.forEach(([id,d])=>{const el=document.getElementById(id);if(el)el.innerText=d===3?balance.toFixed(3):balance.toFixed(2);});
     localStorage.setItem('crashBalance_home',balance);
 }
 updateGlobalBalanceUI();
 function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
 
-// ==================== منطق لیدربورد شبیه‌سازی شده ====================
+// ==================== Solo Hub Logic ====================
+function openSoloHub() {
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('soloHubScreen').classList.remove('hidden');
+    updateSoloBetUI();
+}
+
+function adjustSoloBet(amount) {
+    soloBetAmount += amount;
+    if (soloBetAmount < 0.1) soloBetAmount = 0.1;
+    updateSoloBetUI();
+}
+
+function updateSoloBetUI() {
+    document.getElementById('soloBetValue').innerText = soloBetAmount.toFixed(2) + ' TON';
+}
+// ========================================================
+
+// ==================== Global Leaderboard Logic ====================
 const FAKE_NAMES=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro','DragonSlayer','NightHawk','ThunderBolt','IceQueen','ShadowWolf','GoldenKnight','SilentStorm','FirePhoenix','DarkNinja','MysticMage','IronFist','SilverArrow','CosmicStar','VenomStrike','FrostBite','AlphaWolf','GhostRider','NeoTrader','MoonWalker','ZeroCool'];
 const FAKE_AVATARS=['🦁','🧔','👨','🐸','🐱','🐻','🤖','🐼','🦊','🐯','🐨','🐵','🐶','🐷','🐔','🐧','🦉','🦅','🐺','🐗','🦄','🐲','👽','👾','🤠'];
 
@@ -685,18 +804,14 @@ function openLeaderboard() {
 function renderLeaderboard() {
     const listContainer = document.getElementById('leaderboardList');
     listContainer.innerHTML = '';
-    
-    // ساخت ۳۰ بازیکن خیالی
     let bots = [];
     for (let i = 0; i < 30; i++) {
-        // امتیازات تصادفی بین 500 تا 50000، اما بعضیاشون رو نزدیک به کاربر میکنیم تا رقابت واقعیتر بشه
         let score;
         if (Math.random() > 0.7) {
-            score = Math.floor(Math.random() * 5000) + 100; // امتیاز پایین
+            score = Math.floor(Math.random() * 5000) + 100;
         } else {
-            score = Math.floor(Math.random() * 100000) + 5000; // امتیاز بالا
+            score = Math.floor(Math.random() * 100000) + 5000;
         }
-        
         bots.push({
             name: FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)] + Math.floor(Math.random() * 100),
             avatar: FAKE_AVATARS[Math.floor(Math.random() * FAKE_AVATARS.length)],
@@ -704,29 +819,21 @@ function renderLeaderboard() {
             isMe: false
         });
     }
-    
-    // اضافه کردن کاربر فعلی به لیست
     bots.push({
         name: 'You',
         avatar: '👤',
         score: parseFloat(balance.toFixed(2)),
         isMe: true
     });
-    
-    // مرتب‌سازی بر اساس امتیاز (نزولی)
     bots.sort((a, b) => b.score - a.score);
-    
-    // رندر کردن لیست
     bots.forEach((player, index) => {
         const rank = index + 1;
         const item = document.createElement('div');
         item.className = 'lb-item' + (player.isMe ? ' is-me' : '');
-        
         let rankClass = '';
         if (rank === 1) rankClass = 'top-1';
         else if (rank === 2) rankClass = 'top-2';
         else if (rank === 3) rankClass = 'top-3';
-        
         item.innerHTML = `
             <div class="lb-rank ${rankClass}">#${rank}</div>
             <div class="lb-avatar">${player.avatar}</div>
@@ -739,7 +846,7 @@ function renderLeaderboard() {
         listContainer.appendChild(item);
     });
 }
-// =====================================================================
+// ===============================================================
 
 // منطق اتصال و دریافت موجودی واقعی
 async function initTonConnect(){
@@ -747,17 +854,14 @@ async function initTonConnect(){
         tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});
         tonConnectUI.onStatusChange(async wallet=>{
             document.getElementById('depositModal').classList.remove('hidden');
-
             if(wallet){
                 isWalletConnected=true;
                 const addr=wallet.account.address;
                 const shortAddr=addr.slice(0,6)+'...'+addr.slice(-4);
                 document.getElementById('walletInfo').innerHTML='✅ Connected: <b>'+shortAddr+'</b>';
-                
                 document.getElementById('connectWalletBtn').style.display='none';
                 document.getElementById('disconnectWalletBtn').style.display='block';
                 document.getElementById('payBtn').disabled=false;
-                
                 document.getElementById('depositStatus').innerText='⏳ Fetching real balance...';
                 try {
                     const response = await fetch('https://tonapi.io/v2/accounts/' + addr);
@@ -772,11 +876,9 @@ async function initTonConnect(){
                     console.error('Balance fetch error', e);
                     document.getElementById('depositStatus').innerText='Ready to pay TON';
                 }
-                
             }else{
                 isWalletConnected=false;
                 document.getElementById('walletInfo').innerText='Wallet not connected';
-                
                 document.getElementById('connectWalletBtn').style.display='block';
                 document.getElementById('disconnectWalletBtn').style.display='none';
                 document.getElementById('payBtn').disabled=true;
@@ -787,54 +889,27 @@ async function initTonConnect(){
 }
 function openDepositModal(){document.getElementById('depositModal').classList.remove('hidden');if(!tonConnectUI)initTonConnect();}
 function closeDepositModal(){document.getElementById('depositModal').classList.add('hidden');document.getElementById('depositStatus').innerText='';}
-
 async function connectWallet(){
-    if(!tonConnectUI){
-        document.getElementById('depositStatus').innerText='⏳ Loading wallet...';
-        await initTonConnect();
-    }
+    if(!tonConnectUI){document.getElementById('depositStatus').innerText='⏳ Loading wallet...';await initTonConnect();}
     document.getElementById('depositModal').classList.add('hidden');
-    try {
-        await tonConnectUI.openModal();
-    } catch(e) {
-        document.getElementById('depositModal').classList.remove('hidden');
-        document.getElementById('depositStatus').innerText='❌ Could not open wallet';
-    }
+    try { await tonConnectUI.openModal(); } catch(e) { document.getElementById('depositModal').classList.remove('hidden');document.getElementById('depositStatus').innerText='❌ Could not open wallet'; }
 }
-
 async function disconnectWallet(){
-    if(tonConnectUI) {
-        try {
-            await tonConnectUI.disconnect();
-            showToast('🔌 Wallet disconnected', 'lose');
-        } catch(e) {
-            console.error('Disconnect error', e);
-        }
-    }
+    if(tonConnectUI) { try { await tonConnectUI.disconnect(); showToast('🔌 Wallet disconnected', 'lose'); } catch(e) { console.error('Disconnect error', e); } }
 }
-
 async function sendPayment(){
     if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect your wallet first';return;}
-    
     let amountStr = document.getElementById('depositAmountInput').value.replace(',', '.');
     const amountTon = parseFloat(amountStr);
-    
-    if(isNaN(amountTon) || amountTon < 0.1){
-        document.getElementById('depositStatus').innerText='❌ Minimum deposit is 0.1 TON';
-        return;
-    }
-    
+    if(isNaN(amountTon) || amountTon < 0.1){document.getElementById('depositStatus').innerText='❌ Minimum deposit is 0.1 TON';return;}
     const amountNano = Math.floor(amountTon * 1e9).toString();
     const btn=document.getElementById('payBtn');
     btn.disabled=true;
     document.getElementById('depositStatus').innerText='⏳ Waiting for wallet approval...';
-    
     try{
         const transaction={validUntil:Math.floor(Date.now()/1000)+360,messages:[{address:RECIPIENT_ADDRESS,amount:amountNano}]};
         await tonConnectUI.sendTransaction(transaction);
-        
         const reward = Math.floor((amountTon / 0.1) * 10000);
-        
         document.getElementById('depositStatus').innerText='✅ Payment sent! Adding balance...';
         setTimeout(()=>{
             balance+=reward;
