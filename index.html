@@ -65,20 +65,20 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px}
 .nav-icon{font-size:22px}
 
-/* ================= استایل صفحه Solo Hub (شبیه عکس سمت چپ) ================= */
+/* ================= استایل بازی Tower (Solo Hub) ================= */
 #soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;overflow-y:auto;padding-bottom:20px}
 .sh-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0}
 .sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
-.sh-online{display:flex;align-items:center;gap:6px;background:rgba(47,240,104,.1);border:1px solid rgba(47,240,104,.3);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#2ff068}
-.sh-online .dot{width:8px;height:8px;border-radius:50%;background:#2ff068;box-shadow:0 0 8px #2ff068}
-.sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;}
+.sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;justify-content:center;}
 .sh-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px 16px;gap:8px;min-height:300px}
+.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px 16px;gap:10px;min-height:300px}
 .sh-row{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:350px}
-.sh-mult{font-size:14px;font-weight:800;color:#7a8299;width:45px;text-align:right;flex-shrink:0}
+.sh-mult{font-size:14px;font-weight:800;color:#7a8299;width:50px;text-align:right;flex-shrink:0}
 .sh-circles{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
-.sh-circle{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5)}
-.sh-circle.active{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068}
+.sh-circle{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:20px;transition:transform .1s}
+.sh-circle:active{transform:scale(.95)}
+.sh-circle.revealed-tick{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068;cursor:default}
+.sh-circle.revealed-bomb{background:radial-gradient(circle, #ff4444 0%, #b91c1c 100%);border-color:#ff4444;box-shadow:0 0 15px #ff4444;cursor:default}
 .sh-controls{padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg, transparent 0%, #0a0d14 30%);flex-shrink:0}
 .sh-btn-row{display:flex;align-items:center;gap:10px}
 .sh-icon-btn{background:#1a1d2e;border:1px solid #2a2e42;color:#fff;width:46px;height:46px;border-radius:50%;font-size:18px;display:flex;justify-content:center;align-items:center;cursor:pointer}
@@ -86,6 +86,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .sh-bet-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1d2e;border:2px solid #2a2e42;border-radius:25px;padding:4px;height:56px;width:100%;max-width:350px;margin:0 auto}
 .sh-bet-btn{width:44px;height:44px;border-radius:50%;background:#2a2e42;border:none;color:#fff;font-size:24px;font-weight:800;display:flex;justify-content:center;align-items:center;cursor:pointer;font-family:inherit}
 .sh-bet-value{flex:1;text-align:center;font-size:18px;font-weight:900;color:#fff;cursor:pointer}
+.sh-action-btn{width:100%;max-width:350px;padding:16px;border-radius:14px;font-size:16px;font-weight:900;border:none;cursor:pointer;font-family:inherit;margin-top:5px}
+.sh-action-btn.start{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
+.sh-action-btn.cashout{background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;box-shadow:0 0 20px rgba(255,204,0,0.5)}
+.sh-action-btn:disabled{opacity:.5;background:#2a2e42;color:#6a6a7a;box-shadow:none;cursor:not-allowed}
 .sh-hash{text-align:center;font-size:11px;color:#5a6278;margin-top:5px}
 /* =========================================================================== */
 
@@ -177,6 +181,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .ph-card-plinko{background:linear-gradient(135deg,#9c27b0,#4a148c)}
 .ph-card-crafts{background:linear-gradient(135deg,#ff5722,#bf360c)}
 .ph-card-dice{background:linear-gradient(135deg,#03a9f4,#01579b)}
+.ph-card-tower{background:linear-gradient(135deg,#00bcd4,#006064)} /* استایل کارت جدید */
 .mines-mini{position:absolute;top:14px;right:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:15px}
 #upgradeScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:250;overflow-y:auto;padding-bottom:30px}
 .up-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;background:rgba(10,14,23,.95);z-index:100}
@@ -430,65 +435,24 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
 </div>
 
-<!-- صفحه جدید Solo Hub (شبیه عکس سمت چپ) -->
+<!-- صفحه جدید Solo Hub (بازی Tower) -->
 <div id="soloHubScreen" class="screen hidden">
     <div class="sh-top-bar">
         <button class="sh-back" onclick="goHome()">⬅ Back</button>
-        <div class="sh-online"><span class="dot"></span> 10 online</div>
-        <button class="sh-back" style="padding:9px 12px;">▼</button>
+        <div class="sh-title" style="font-size:16px;font-weight:800;">🎯 Tower Game</div>
+        <button class="sh-back" style="visibility:hidden;">⬅ Back</button>
     </div>
     
     <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.79</span> TON</div>
 
     <!-- Game Area -->
-    <div class="sh-game-area">
-        <!-- Row 4.25x -->
-        <div class="sh-row">
-            <div class="sh-mult">4.25x</div>
-            <div class="sh-circles">
-                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
-            </div>
-        </div>
-        <!-- Row 3.40x -->
-        <div class="sh-row">
-            <div class="sh-mult">3.40x</div>
-            <div class="sh-circles">
-                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
-            </div>
-        </div>
-        <!-- Row 2.55x -->
-        <div class="sh-row">
-            <div class="sh-mult">2.55x</div>
-            <div class="sh-circles">
-                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
-            </div>
-        </div>
-        <!-- Row 1.70x -->
-        <div class="sh-row">
-            <div class="sh-mult">1.70x</div>
-            <div class="sh-circles">
-                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
-            </div>
-        </div>
-        <!-- Row 1.27x -->
-        <div class="sh-row">
-            <div class="sh-mult">1.27x</div>
-            <div class="sh-circles">
-                <div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div><div class="sh-circle"></div>
-            </div>
-        </div>
-        <!-- Row 1.02x -->
-        <div class="sh-row">
-            <div class="sh-mult" style="color:#2ff068">1.02x</div>
-            <div class="sh-circles">
-                <div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div><div class="sh-circle active"></div>
-            </div>
-        </div>
+    <div class="sh-game-area" id="towerGameArea">
+        <!-- Rows will be generated here by JS -->
     </div>
 
     <!-- Controls -->
     <div class="sh-controls">
-        <div class="sh-btn-row">
+        <div class="sh-btn-row" style="justify-content:center;">
             <button class="sh-icon-btn">⭐</button>
             <button class="sh-currency-btn"><span class="ton-icon" style="width:18px;height:18px;font-size:10px;">◈</span> TON</button>
         </div>
@@ -497,7 +461,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="sh-bet-value" id="soloBetValue">0.1 TON</div>
             <button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button>
         </div>
-        <div class="sh-hash">Hash: 5c05...3795 📋</div>
+        <button class="sh-action-btn start" id="towerStartBtn" onclick="startTowerGame()">Start Game</button>
+        <button class="sh-action-btn cashout" id="towerCashoutBtn" onclick="towerCashOut()" style="display:none;">Cash Out</button>
     </div>
 
     <div class="bottom-nav">
@@ -595,10 +560,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="ph-game-title">Plinko</div>
             <div class="ph-game-sub">Win up to 1000x</div>
         </div>
-        <div class="ph-game-card ph-card-crafts" onclick="playhubCardClick('Crafts')">
-            <div class="ph-game-icon">🧩</div>
-            <div class="ph-game-title">Crafts</div>
-            <div class="ph-game-sub">Merge your gifts</div>
+        <!-- کارت جدید Tower -->
+        <div class="ph-game-card ph-card-tower" onclick="openSoloHub()">
+            <div class="ph-game-icon">🗼</div>
+            <div class="ph-game-title">Tower</div>
+            <div class="ph-game-sub">Climb & Win</div>
         </div>
         <div class="ph-game-card ph-card-dice" onclick="playhubCardClick('Dice')">
             <div class="ph-game-icon">🎲</div>
@@ -753,6 +719,14 @@ const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount = 0.1;
 
+// Tower Game Variables
+let towerState = 'idle'; // idle, playing, ended
+let towerLevel = 0;
+let towerBet = 0;
+let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 3.40]; // Levels 0 to 4
+let towerRows = [5, 4, 3, 2, 1]; // Number of circles per level
+let towerBombs = []; // Stores the bomb index for each level
+
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
 function openPvp(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('pvpScreen').classList.remove('hidden');if(!window.pvpInitialized){pvpInit();window.pvpInitialized=true;}setTimeout(resizePvpCanvas,80);}
 function openPlayHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('playhubScreen').classList.remove('hidden');}
@@ -773,21 +747,162 @@ function updateGlobalBalanceUI(){
 updateGlobalBalanceUI();
 function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
 
-// ==================== Solo Hub Logic ====================
+// ==================== Solo Hub (Tower) Logic ====================
 function openSoloHub() {
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('soloHubScreen').classList.remove('hidden');
-    updateSoloBetUI();
+    resetTowerGame();
 }
 
 function adjustSoloBet(amount) {
+    if (towerState === 'playing') return;
     soloBetAmount += amount;
     if (soloBetAmount < 0.1) soloBetAmount = 0.1;
-    updateSoloBetUI();
+    document.getElementById('soloBetValue').innerText = soloBetAmount.toFixed(2) + ' TON';
 }
 
-function updateSoloBetUI() {
-    document.getElementById('soloBetValue').innerText = soloBetAmount.toFixed(2) + ' TON';
+function resetTowerGame() {
+    towerState = 'idle';
+    towerLevel = 0;
+    towerBet = 0;
+    document.getElementById('towerStartBtn').style.display = 'block';
+    document.getElementById('towerCashoutBtn').style.display = 'none';
+    document.getElementById('towerStartBtn').disabled = false;
+    document.getElementById('towerStartBtn').innerText = 'Start Game';
+    renderTowerGrid();
+}
+
+function renderTowerGrid() {
+    const container = document.getElementById('towerGameArea');
+    container.innerHTML = '';
+    
+    // Render from top to bottom (Level 4 down to Level 0)
+    for (let level = towerRows.length - 1; level >= 0; level--) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'sh-row';
+        
+        const multLabel = document.createElement('div');
+        multLabel.className = 'sh-mult';
+        multLabel.innerText = towerMultipliers[level].toFixed(2) + 'x';
+        rowDiv.appendChild(multLabel);
+        
+        const circlesDiv = document.createElement('div');
+        circlesDiv.className = 'sh-circles';
+        circlesDiv.id = 'tower-row-' + level;
+        
+        for (let i = 0; i < towerRows[level]; i++) {
+            const circle = document.createElement('div');
+            circle.className = 'sh-circle';
+            circle.dataset.level = level;
+            circle.dataset.index = i;
+            circle.onclick = () => clickTowerTile(level, i, circle);
+            circlesDiv.appendChild(circle);
+        }
+        rowDiv.appendChild(circlesDiv);
+        container.appendChild(rowDiv);
+    }
+}
+
+function startTowerGame() {
+    if (towerState === 'playing') return;
+    const bet = soloBetAmount;
+    if (bet > balance) { showToast('❌ Insufficient balance'); return; }
+    
+    balance -= bet;
+    updateGlobalBalanceUI();
+    
+    towerBet = bet;
+    towerState = 'playing';
+    towerLevel = 0;
+    
+    // Generate bombs (one per level)
+    towerBombs = [];
+    for (let i = 0; i < towerRows.length; i++) {
+        towerBombs.push(Math.floor(Math.random() * towerRows[i]));
+    }
+    
+    document.getElementById('towerStartBtn').style.display = 'none';
+    document.getElementById('towerCashoutBtn').style.display = 'block';
+    document.getElementById('towerCashoutBtn').disabled = true; // Disabled until first click
+    document.getElementById('towerCashoutBtn').innerText = 'Cash Out (0.00 TON)';
+    
+    // Reset grid visual
+    renderTowerGrid();
+    
+    // Enable only the first row (level 0)
+    enableTowerRow(0);
+}
+
+function enableTowerRow(level) {
+    // Disable all rows
+    document.querySelectorAll('.sh-circle').forEach(c => c.style.pointerEvents = 'none');
+    // Enable the specific row
+    const row = document.getElementById('tower-row-' + level);
+    if (row) {
+        Array.from(row.children).forEach(c => c.style.pointerEvents = 'auto');
+    }
+}
+
+function clickTowerTile(level, index, circleElement) {
+    if (towerState !== 'playing' || level !== towerLevel) return;
+    
+    // Disable the row after click
+    const row = document.getElementById('tower-row-' + level);
+    Array.from(row.children).forEach(c => c.style.pointerEvents = 'none');
+    
+    if (index === towerBombs[level]) {
+        // Hit a bomb
+        circleElement.classList.add('revealed-bomb');
+        circleElement.innerText = '💣';
+        towerState = 'ended';
+        showToast('💥 You hit a bomb! Lost ' + towerBet.toFixed(2) + ' TON', 'lose');
+        document.getElementById('towerCashoutBtn').style.display = 'none';
+        document.getElementById('towerStartBtn').style.display = 'block';
+        document.getElementById('towerStartBtn').innerText = 'Play Again';
+        document.getElementById('towerStartBtn').disabled = false;
+        setTimeout(resetTowerGame, 3000);
+    } else {
+        // Safe
+        circleElement.classList.add('revealed-tick');
+        circleElement.innerText = '✅';
+        
+        towerLevel++;
+        
+        if (towerLevel >= towerRows.length) {
+            // Won the whole tower!
+            towerCashOut();
+            return;
+        }
+        
+        // Update cashout button
+        const currentMult = towerMultipliers[towerLevel - 1];
+        const currentWin = towerBet * currentMult;
+        const cashoutBtn = document.getElementById('towerCashoutBtn');
+        cashoutBtn.disabled = false;
+        cashoutBtn.innerText = 'Cash Out (' + currentWin.toFixed(2) + ' TON)';
+        
+        // Enable next row
+        enableTowerRow(towerLevel);
+    }
+}
+
+function towerCashOut() {
+    if (towerState !== 'playing') return;
+    if (towerLevel === 0) return; // Can't cash out without playing
+    
+    const currentMult = towerMultipliers[towerLevel - 1];
+    const winAmount = towerBet * currentMult;
+    balance += winAmount;
+    updateGlobalBalanceUI();
+    
+    showToast('🏆 Cashed out! +' + winAmount.toFixed(2) + ' TON', 'win');
+    
+    towerState = 'ended';
+    document.getElementById('towerCashoutBtn').style.display = 'none';
+    document.getElementById('towerStartBtn').style.display = 'block';
+    document.getElementById('towerStartBtn').innerText = 'Play Again';
+    document.getElementById('towerStartBtn').disabled = false;
+    setTimeout(resetTowerGame, 3000);
 }
 // ========================================================
 
