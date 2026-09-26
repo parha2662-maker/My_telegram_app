@@ -196,22 +196,29 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .mn-badge-cashout{background:linear-gradient(135deg,#2ff068,#00a838);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:900;color:#0a0d14;cursor:pointer;transition:all .2s}
 .mn-badge-cashout:active{transform:scale(.97)}
 .mn-badge-cashout.disabled{background:#2a2e42;color:#6a6a7a;cursor:not-allowed}
-.mn-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:14px 16px;max-width:400px;margin:0 auto;width:100%}
-.mn-tile{aspect-ratio:1;background:#131824;border:2px solid #2a2e42;border-radius:12px;display:flex;justify-content:center;align-items:center;font-size:24px;cursor:pointer;transition:all .15s;user-select:none;position:relative}
+.mn-grid-wrap{padding:10px 12px;max-width:440px;margin:0 auto;width:100%}
+.mn-grid{display:grid;gap:6px;width:100%}
+.mn-tile{aspect-ratio:1;background:#131824;border:1px solid #2a2e42;border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:20px;cursor:pointer;transition:all .15s;user-select:none}
 .mn-tile:active{transform:scale(.95)}
-.mn-tile.diamond{background:radial-gradient(circle,rgba(47,240,104,.25) 0%,rgba(47,240,104,.08) 70%);border-color:#2ff068;box-shadow:0 0 20px rgba(47,240,104,.3),inset 0 0 15px rgba(47,240,104,.2)}
-.mn-tile.bomb{background:radial-gradient(circle,rgba(255,68,68,.25) 0%,rgba(255,68,68,.08) 70%);border-color:#ff4444;box-shadow:0 0 20px rgba(255,68,68,.3),inset 0 0 15px rgba(255,68,68,.2)}
-.mn-tile.hidden-reveal{opacity:.5;background:#131824;border-color:#2a2e42;box-shadow:none}
-.mn-tile.disabled{cursor:not-allowed}
+.mn-tile.diamond{background:radial-gradient(circle,rgba(47,240,104,.25) 0%,rgba(47,240,104,.08) 70%);border-color:#2ff068;box-shadow:0 0 15px rgba(47,240,104,.3),inset 0 0 10px rgba(47,240,104,.2)}
+.mn-tile.bomb{background:radial-gradient(circle,rgba(255,68,68,.25) 0%,rgba(255,68,68,.08) 70%);border-color:#ff4444;box-shadow:0 0 15px rgba(255,68,68,.3),inset 0 0 10px rgba(255,68,68,.2)}
+.mn-tile.hidden-reveal{opacity:.4}
+.mn-grid[data-size="9"] .mn-tile{font-size:12px;border-radius:6px;gap:3px}
+.mn-grid[data-size="9"]{gap:3px}
+.mn-grid[data-size="6"] .mn-tile{font-size:16px}
 .mn-tiers{display:flex;gap:6px;padding:8px 16px;overflow-x:auto}
-.mn-tier{padding:8px 14px;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;font-size:12px;font-weight:800;color:#7a8299;flex-shrink:0;white-space:nowrap}
+.mn-tier{padding:7px 12px;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;font-size:12px;font-weight:800;color:#7a8299;flex-shrink:0;white-space:nowrap}
 .mn-tier.past{color:#4a4a5a}
 .mn-tier.current{background:rgba(47,240,104,.15);border-color:#2ff068;color:#2ff068}
 .mn-tier.next{color:#c8b1ff;border-color:rgba(120,100,200,.4)}
-.mn-bomb-selector{padding:8px 16px}
-.mn-bomb-label{font-size:12px;color:#7a8299;margin-bottom:8px;font-weight:700}
-.mn-bomb-btns{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-.mn-bomb-btn{min-width:40px;padding:9px 0;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;color:#7a8299;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;transition:all .2s}
+.mn-config-row{display:flex;gap:10px;padding:8px 16px}
+.mn-config-block{flex:1}
+.mn-config-label{font-size:11px;color:#7a8299;font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.mn-size-btns{display:flex;gap:6px}
+.mn-size-btn{flex:1;padding:10px 0;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;color:#7a8299;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s}
+.mn-size-btn.active{background:linear-gradient(135deg,#2196f3,#0d47a1);border-color:#2196f3;color:#fff;box-shadow:0 0 12px rgba(33,150,243,.5)}
+.mn-bomb-btns{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px}
+.mn-bomb-btn{min-width:36px;padding:9px 0;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;color:#7a8299;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;transition:all .2s}
 .mn-bomb-btn.active{background:linear-gradient(135deg,#ff5c5c,#d92b2b);border-color:#ff5c5c;color:#fff;box-shadow:0 0 12px rgba(255,68,68,.5)}
 .mn-bet-row{padding:8px 16px 12px}
 .mn-bet-label{font-size:11px;color:#7a8299;font-weight:700;letter-spacing:1px;margin-bottom:6px}
@@ -282,16 +289,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <div id="homeScreen" class="screen">
     <div class="balance-row">
-        <div class="avatar-wrap">
-            <div class="avatar">M</div>
-            <div class="avatar-badge">💎</div>
-        </div>
+        <div class="avatar-wrap"><div class="avatar">M</div><div class="avatar-badge">💎</div></div>
         <div class="balance-info">
             <div class="balance-label">Your Balance</div>
-            <div class="balance-value">
-                <span class="ton-icon">◈</span>
-                <span id="homeBalance">100.000</span>
-            </div>
+            <div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">100.000</span></div>
         </div>
         <button class="deposit-btn">💳 Deposit</button>
     </div>
@@ -299,8 +300,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="banner rocket-banner" onclick="openGame()">
             <div class="banner-badge">⚡ HOT!</div>
             <div class="banner-title">🚀 ROCKET</div>
-            <div class="rocket-scene">
-                <div class="rocket-ship">🚀</div>
+            <div class="rocket-scene"><div class="rocket-ship">🚀</div>
                 <div class="mult-pill green pm-1">x4.24</div>
                 <div class="mult-pill yellow pm-2">x2.02</div>
                 <div class="mult-pill red pm-3">x1.24</div>
@@ -338,10 +338,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="ph-top-bar">
         <button class="ph-back" onclick="goHome()">⬅ Back</button>
         <div class="ph-title">🎁 Gift Hub</div>
-        <div class="ph-balance-pill">
-            <span class="ton-icon">◈</span>
-            <span class="val" id="phBalanceDisplay">0.008</span>
-        </div>
+        <div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.008</span></div>
     </div>
     <div class="ph-upgrade" onclick="openUpgrade()">
         <div class="ph-upgrade-badge">🔥 HOT</div>
@@ -354,11 +351,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="ph-games-grid">
         <div class="ph-game-card ph-card-mines" onclick="openMines()">
             <div class="ph-new-badge">⚙️ NEW</div>
-            <div class="mines-mini">
-                <span>💎</span><span>💎</span><span>💎</span>
-                <span>💣</span><span>💎</span><span>💎</span>
-                <span>💎</span><span>💎</span><span>💣</span>
-            </div>
+            <div class="mines-mini"><span>💎</span><span>💎</span><span>💎</span><span>💣</span><span>💎</span><span>💎</span><span>💎</span><span>💎</span><span>💣</span></div>
             <div class="ph-game-title">Mines</div>
             <div class="ph-game-sub">Dodge the mines</div>
         </div>
@@ -402,11 +395,25 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="mn-badge-cashout disabled" id="mnCashOut" onclick="mnCashOut()">Cash out 0.00</div>
         </div>
     </div>
-    <div class="mn-grid" id="mnGrid"></div>
+    <div class="mn-config-row">
+        <div class="mn-config-block">
+            <div class="mn-config-label">📐 GRID SIZE</div>
+            <div class="mn-size-btns" id="mnSizeBtns">
+                <button class="mn-size-btn" data-size="5" onclick="mnSetSize(5)">5×5</button>
+                <button class="mn-size-btn active" data-size="6" onclick="mnSetSize(6)">6×6</button>
+                <button class="mn-size-btn" data-size="9" onclick="mnSetSize(9)">9×9</button>
+            </div>
+        </div>
+    </div>
+    <div class="mn-grid-wrap">
+        <div class="mn-grid" id="mnGrid" data-size="6" style="grid-template-columns:repeat(6,1fr)"></div>
+    </div>
     <div class="mn-tiers" id="mnTiers"></div>
-    <div class="mn-bomb-selector">
-        <div class="mn-bomb-label">💣 MINES COUNT</div>
-        <div class="mn-bomb-btns" id="mnBombBtns"></div>
+    <div class="mn-config-row">
+        <div class="mn-config-block">
+            <div class="mn-config-label">💣 MINES COUNT</div>
+            <div class="mn-bomb-btns" id="mnBombBtns"></div>
+        </div>
     </div>
     <div class="mn-bet-row">
         <div class="mn-bet-label">BET AMOUNT</div>
@@ -450,10 +457,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="up-top-bar">
         <button class="up-back" onclick="closeUpgrade()">⬅ Back</button>
         <div class="up-title">🎁 Gift Hub</div>
-        <div class="up-balance-pill">
-            <span class="ton-icon">◈</span>
-            <span class="val" id="upBalanceDisplay">100.00</span>
-        </div>
+        <div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">100.00</span></div>
     </div>
     <div class="up-head">
         <div class="up-head-title">Gift Upgrade</div>
@@ -482,14 +486,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         </div>
     </div>
     <div class="up-stats">
-        <div class="up-stat">
-            <div class="up-stat-lbl">🎯 Win Chance</div>
-            <div class="up-stat-val" id="upChanceText">19.4%</div>
-        </div>
-        <div class="up-stat">
-            <div class="up-stat-lbl">💰 Profit if Win</div>
-            <div class="up-stat-val" id="upProfitText">+40.00</div>
-        </div>
+        <div class="up-stat"><div class="up-stat-lbl">🎯 Win Chance</div><div class="up-stat-val" id="upChanceText">19.4%</div></div>
+        <div class="up-stat"><div class="up-stat-lbl">💰 Profit if Win</div><div class="up-stat-val" id="upProfitText">+40.00</div></div>
     </div>
     <button class="up-btn" id="upBtn" onclick="upStart()">🚀 UPGRADE</button>
     <div class="up-result" id="upResult"></div>
@@ -529,57 +527,32 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div id="pvpScreen" class="screen hidden">
     <div class="pvp-header">
         <button class="pvp-back" onclick="goHome()">← Back</button>
-        <div class="pvp-balance-pill">
-            <span class="ton-icon">◈</span>
-            <span class="val" id="pvpBalanceDisplay">100.00</span>
-            <button class="pvp-plus" onclick="pvpAddFunds()">+</button>
-        </div>
+        <div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">100.00</span><button class="pvp-plus" onclick="pvpAddFunds()">+</button></div>
     </div>
     <div class="pvp-stats">
-        <div class="stat-block">
-            <div class="stat-label">Last Game</div>
-            <div class="stat-value-row">
-                <span class="stat-value" id="pvpLast">+0.00 TON</span>
-                <span class="stat-pct" id="pvpLastPct">0%</span>
-            </div>
-        </div>
-        <div class="stat-block">
-            <div class="stat-label">Top of the Day</div>
-            <div class="stat-value-row">
-                <span class="stat-value" id="pvpTop">+0.00 TON</span>
-                <span class="stat-pct" id="pvpTopPct">0%</span>
-            </div>
-        </div>
+        <div class="stat-block"><div class="stat-label">Last Game</div><div class="stat-value-row"><span class="stat-value" id="pvpLast">+0.00 TON</span><span class="stat-pct" id="pvpLastPct">0%</span></div></div>
+        <div class="stat-block"><div class="stat-label">Top of the Day</div><div class="stat-value-row"><span class="stat-value" id="pvpTop">+0.00 TON</span><span class="stat-pct" id="pvpTopPct">0%</span></div></div>
     </div>
     <div class="pvp-wheel-wrap">
         <canvas id="pvpCanvas"></canvas>
         <div class="pvp-center">
             <div class="pvp-timer" id="pvpTimer">00:10</div>
             <div class="pvp-pool-label">TOTAL POOL</div>
-            <div class="pvp-pool">
-                <span class="ton-icon">◈</span>
-                <span id="pvpPoolValue">0.00</span>
-            </div>
+            <div class="pvp-pool"><span class="ton-icon">◈</span><span id="pvpPoolValue">0.00</span></div>
             <div class="pvp-game-num" id="pvpGameNum">Game #00000</div>
         </div>
     </div>
     <div class="pvp-players-row" id="pvpPlayersRow"></div>
     <div class="pvp-join-wrap">
         <label class="pvp-bet-label">Entry Amount (TON):</label>
-        <div class="pvp-bet-input-wrap">
-            <span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span>
-            <input type="number" id="pvpBetInput" class="pvp-bet-input" lang="en" value="10" min="1" inputmode="decimal">
-        </div>
+        <div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" lang="en" value="10" min="1" inputmode="decimal"></div>
         <div class="pvp-quick-row">
             <button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button>
             <button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button>
         </div>
         <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
     </div>
-    <div class="pvp-players-header">
-        <span>Players</span>
-        <span class="pvp-players-count" id="pvpPlayersCount">👥 0</span>
-    </div>
+    <div class="pvp-players-header"><span>Players</span><span class="pvp-players-count" id="pvpPlayersCount">👥 0</span></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -589,98 +562,59 @@ const SPEED = 1.0001;
 const COUNTDOWN_SECONDS = 8;
 const PVP_COUNTDOWN_SECONDS = 10;
 const PL_MAX_BALLS = 20;
-const MN_TOTAL = 25;
 
-function openGame(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('gameScreen').classList.remove('hidden');
-}
-function openPvp(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('pvpScreen').classList.remove('hidden');
-    if (!window.pvpInitialized) { pvpInit(); window.pvpInitialized = true; }
-    setTimeout(resizePvpCanvas, 80);
-}
-function openPlayHub(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('playhubScreen').classList.remove('hidden');
-}
-function openUpgrade(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('upgradeScreen').classList.remove('hidden');
-    if (!window.upInitialized) { upInit(); window.upInitialized = true; }
-    setTimeout(()=>{ upResize(); upUpdateChance(); }, 100);
-}
-function closeUpgrade(){
-    document.getElementById('upgradeScreen').classList.add('hidden');
-    document.getElementById('playhubScreen').classList.remove('hidden');
-}
-function openPlinko(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('plinkoScreen').classList.remove('hidden');
-    if (!window.plInitialized) { plInit(); window.plInitialized = true; }
-    setTimeout(plResize, 100);
-}
-function closePlinko(){
-    document.getElementById('plinkoScreen').classList.add('hidden');
-    document.getElementById('playhubScreen').classList.remove('hidden');
-}
-function openMines(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('minesScreen').classList.remove('hidden');
-    if (!window.mnInitialized) { mnInit(); window.mnInitialized = true; }
-    mnResetGrid();
-}
-function closeMines(){
-    document.getElementById('minesScreen').classList.add('hidden');
-    document.getElementById('playhubScreen').classList.remove('hidden');
-}
-function goHome(){
-    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-    document.getElementById('homeScreen').classList.remove('hidden');
-}
-function playhubCardClick(name){
-    showToast('🚧 ' + name + ' - Coming Soon!');
-}
+function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
+function openPvp(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('pvpScreen').classList.remove('hidden');if(!window.pvpInitialized){pvpInit();window.pvpInitialized=true;}setTimeout(resizePvpCanvas,80);}
+function openPlayHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('playhubScreen').classList.remove('hidden');}
+function openUpgrade(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('upgradeScreen').classList.remove('hidden');if(!window.upInitialized){upInit();window.upInitialized=true;}setTimeout(()=>{upResize();upUpdateChance();},100);}
+function closeUpgrade(){document.getElementById('upgradeScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
+function openPlinko(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('plinkoScreen').classList.remove('hidden');if(!window.plInitialized){plInit();window.plInitialized=true;}setTimeout(plResize,100);}
+function closePlinko(){document.getElementById('plinkoScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
+function openMines(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('minesScreen').classList.remove('hidden');if(!window.mnInitialized){mnInit();window.mnInitialized=true;}mnResetGrid();}
+function closeMines(){document.getElementById('minesScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
+function goHome(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('homeScreen').classList.remove('hidden');}
+function playhubCardClick(name){showToast('🚧 '+name+' - Coming Soon!');}
 
 let balance = parseFloat(localStorage.getItem('crashBalance_home')) || 100.00;
-function updateGlobalBalanceUI() {
-    const hb = document.getElementById('homeBalance');
-    if (hb) hb.innerText = balance.toFixed(3);
-    const bd = document.getElementById('balanceDisplay');
-    if (bd) bd.innerText = balance.toFixed(2) + ' TON';
-    const pb = document.getElementById('pvpBalanceDisplay');
-    if (pb) pb.innerText = balance.toFixed(2);
-    const phb = document.getElementById('phBalanceDisplay');
-    if (phb) phb.innerText = balance.toFixed(3);
-    const ub = document.getElementById('upBalanceDisplay');
-    if (ub) ub.innerText = balance.toFixed(2);
-    const plb = document.getElementById('plBalanceDisplay');
-    if (plb) plb.innerText = balance.toFixed(2);
-    const mnb = document.getElementById('mnBalanceDisplay');
-    if (mnb) mnb.innerText = balance.toFixed(2);
-    localStorage.setItem('crashBalance_home', balance);
+function updateGlobalBalanceUI(){
+    const hb=document.getElementById('homeBalance');if(hb)hb.innerText=balance.toFixed(3);
+    const bd=document.getElementById('balanceDisplay');if(bd)bd.innerText=balance.toFixed(2)+' TON';
+    const pb=document.getElementById('pvpBalanceDisplay');if(pb)pb.innerText=balance.toFixed(2);
+    const phb=document.getElementById('phBalanceDisplay');if(phb)phb.innerText=balance.toFixed(3);
+    const ub=document.getElementById('upBalanceDisplay');if(ub)ub.innerText=balance.toFixed(2);
+    const plb=document.getElementById('plBalanceDisplay');if(plb)plb.innerText=balance.toFixed(2);
+    const mnb=document.getElementById('mnBalanceDisplay');if(mnb)mnb.innerText=balance.toFixed(2);
+    localStorage.setItem('crashBalance_home',balance);
 }
 updateGlobalBalanceUI();
-
-function showToast(msg, type='') {
-    const t = document.getElementById('toast');
-    t.className = 'toast ' + type + ' show';
-    t.innerText = msg;
-    clearTimeout(t._tid);
-    t._tid = setTimeout(() => t.classList.remove('show'), 2500);
-}
+function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
 
 /* ================= MINES GAME ================= */
 window.mnInitialized = false;
 let mnState = 'idle';
 let mnBombCount = 3;
+let mnGridSize = 6;
 let mnBombs = [];
 let mnRevealed = [];
 let mnCurrentMult = 1;
 let mnLockedBet = 0;
 
+function mnMaxBombs(){
+    if (mnGridSize === 5) return 9;
+    if (mnGridSize === 6) return 12;
+    return 20;
+}
 function mnInit(){
+    mnRenderBombBtns();
+    mnBuildGrid();
+    mnUpdateUI();
+}
+function mnSetSize(size){
+    if (mnState === 'playing') return;
+    mnGridSize = size;
+    document.querySelectorAll('.mn-size-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.size) === size));
+    const maxB = mnMaxBombs();
+    if (mnBombCount > maxB) mnBombCount = maxB;
     mnRenderBombBtns();
     mnBuildGrid();
     mnUpdateUI();
@@ -688,7 +622,8 @@ function mnInit(){
 function mnRenderBombBtns(){
     const container = document.getElementById('mnBombBtns');
     container.innerHTML = '';
-    for (let i = 1; i <= 9; i++) {
+    const maxB = mnMaxBombs();
+    for (let i = 1; i <= maxB; i++){
         const btn = document.createElement('button');
         btn.className = 'mn-bomb-btn' + (i === mnBombCount ? ' active' : '');
         btn.innerText = i;
@@ -704,8 +639,11 @@ function mnSetBombs(n){
 }
 function mnBuildGrid(){
     const grid = document.getElementById('mnGrid');
+    grid.setAttribute('data-size', mnGridSize);
+    grid.style.gridTemplateColumns = 'repeat(' + mnGridSize + ',1fr)';
     grid.innerHTML = '';
-    for (let i = 0; i < MN_TOTAL; i++){
+    const total = mnGridSize * mnGridSize;
+    for (let i = 0; i < total; i++){
         const t = document.createElement('div');
         t.className = 'mn-tile';
         t.dataset.index = i;
@@ -713,17 +651,20 @@ function mnBuildGrid(){
         grid.appendChild(t);
     }
 }
-function mnCalcMult(count, bombs){
-    let m = 1;
-    for (let i = 0; i < count; i++){
-        m *= (MN_TOTAL - i) / (MN_TOTAL - bombs - i);
+function mnCalcMult(picks, bombs){
+    const total = mnGridSize * mnGridSize;
+    const safe = total - bombs;
+    let prob = 1;
+    for (let i = 0; i < picks; i++){
+        prob *= (safe - i) / (total - i);
     }
-    return m * 0.97;
+    return (1 / prob) * 0.97;
 }
 function mnUpdateUI(){
+    const total = mnGridSize * mnGridSize;
+    const maxSafe = total - mnBombCount;
     const multEl = document.getElementById('mnMultiplier');
     if (multEl) multEl.innerText = '×' + mnCurrentMult.toFixed(2);
-    const maxSafe = MN_TOTAL - mnBombCount;
     const nextCount = Math.min(mnRevealed.length + 1, maxSafe);
     const nextMult = mnCalcMult(nextCount, mnBombCount);
     const nextEl = document.getElementById('mnNextTile');
@@ -742,7 +683,8 @@ function mnUpdateUI(){
     const tiers = document.getElementById('mnTiers');
     if (tiers) {
         tiers.innerHTML = '';
-        for (let c = 1; c <= Math.min(10, maxSafe); c++){
+        const tierMax = Math.min(10, maxSafe);
+        for (let c = 1; c <= tierMax; c++){
             const m = mnCalcMult(c, mnBombCount);
             const t = document.createElement('div');
             t.className = 'mn-tier';
@@ -769,8 +711,9 @@ function mnPlay(){
     mnRevealed = [];
     mnCurrentMult = 1;
     mnBombs = [];
+    const total = mnGridSize * mnGridSize;
     const available = [];
-    for (let i = 0; i < MN_TOTAL; i++) available.push(i);
+    for (let i = 0; i < total; i++) available.push(i);
     for (let i = 0; i < mnBombCount; i++){
         const idx = Math.floor(Math.random() * available.length);
         mnBombs.push(available[idx]);
@@ -778,7 +721,7 @@ function mnPlay(){
     }
     mnState = 'playing';
     mnBuildGrid();
-    document.querySelectorAll('.mn-bomb-btn').forEach(b => b.style.pointerEvents = 'none');
+    document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b => b.style.pointerEvents = 'none');
     document.getElementById('mnPlayBtn').innerText = 'Playing...';
     document.getElementById('mnPlayBtn').disabled = true;
     document.getElementById('mnBetInput').disabled = true;
@@ -803,7 +746,7 @@ function mnClickTile(idx){
         document.getElementById('mnPlayBtn').innerText = 'Place Bet';
         document.getElementById('mnPlayBtn').disabled = false;
         document.getElementById('mnBetInput').disabled = false;
-        document.querySelectorAll('.mn-bomb-btn').forEach(b => b.style.pointerEvents = 'auto');
+        document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b => b.style.pointerEvents = 'auto');
         showToast('💥 You hit a mine! Lost ' + mnLockedBet.toFixed(2) + ' TON', 'lose');
         setTimeout(() => { mnResetGrid(); }, 2200);
     } else {
@@ -812,7 +755,8 @@ function mnClickTile(idx){
         mnRevealed.push(idx);
         mnCurrentMult = mnCalcMult(mnRevealed.length, mnBombCount);
         mnUpdateUI();
-        const maxSafe = MN_TOTAL - mnBombCount;
+        const total = mnGridSize * mnGridSize;
+        const maxSafe = total - mnBombCount;
         if (mnRevealed.length === maxSafe){
             mnAutoCashOut();
         }
@@ -835,7 +779,7 @@ function mnCashOut(){
     document.getElementById('mnPlayBtn').innerText = 'Place Bet';
     document.getElementById('mnPlayBtn').disabled = false;
     document.getElementById('mnBetInput').disabled = false;
-    document.querySelectorAll('.mn-bomb-btn').forEach(b => b.style.pointerEvents = 'auto');
+    document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b => b.style.pointerEvents = 'auto');
     setTimeout(() => { mnResetGrid(); }, 2200);
 }
 function mnAutoCashOut(){
@@ -847,7 +791,7 @@ function mnAutoCashOut(){
     document.getElementById('mnPlayBtn').innerText = 'Place Bet';
     document.getElementById('mnPlayBtn').disabled = false;
     document.getElementById('mnBetInput').disabled = false;
-    document.querySelectorAll('.mn-bomb-btn').forEach(b => b.style.pointerEvents = 'auto');
+    document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b => b.style.pointerEvents = 'auto');
     setTimeout(() => { mnResetGrid(); }, 2200);
 }
 function mnResetGrid(){
@@ -934,14 +878,11 @@ function plUpdatePlayBtn(){
     const btn = document.getElementById('plPlayBtn');
     btn.innerText = 'Place ' + bet.toFixed(2) + ' TON Bet';
 }
-function plMaxBet(){
-    document.getElementById('plBetInput').value = balance.toFixed(2);
-    plUpdatePlayBtn();
-}
+function plMaxBet(){document.getElementById('plBetInput').value = balance.toFixed(2);plUpdatePlayBtn();}
 function plUpdateBallCount(){
     const el = document.getElementById('plBallCount');
     if (!el) return;
-    if (plBalls.length > 0) {
+    if (plBalls.length > 0){
         el.style.display = 'block';
         el.innerText = plBalls.length + ' ball' + (plBalls.length > 1 ? 's' : '') + ' in air';
     } else {
@@ -960,19 +901,13 @@ function plGetColorForMultiplier(m){
 function plDraw(){
     if(!plCtx) return;
     const grad = plCtx.createLinearGradient(0, 0, 0, plHeight);
-    grad.addColorStop(0, '#2d1a4a');
-    grad.addColorStop(0.5, '#1f1135');
-    grad.addColorStop(1, '#0a0d14');
+    grad.addColorStop(0, '#2d1a4a');grad.addColorStop(0.5, '#1f1135');grad.addColorStop(1, '#0a0d14');
     plCtx.fillStyle = grad;
     plCtx.fillRect(0, 0, plWidth, plHeight);
     plCtx.fillStyle = '#ffffff';
     plCtx.shadowBlur = 6;
     plCtx.shadowColor = 'rgba(255,255,255,0.5)';
-    plPegs.forEach(p => {
-        plCtx.beginPath();
-        plCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        plCtx.fill();
-    });
+    plPegs.forEach(p => {plCtx.beginPath();plCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);plCtx.fill();});
     plCtx.shadowBlur = 0;
     const multipliers = PL_MULTIPLIERS[plDifficulty];
     const numSlots = multipliers.length;
@@ -987,34 +922,19 @@ function plDraw(){
         const w = slotWidth - 3;
         const rx = x - w/2, ry = slotY - slotH/2, r = 6;
         plCtx.beginPath();
-        plCtx.moveTo(rx + r, ry);
-        plCtx.lineTo(rx + w - r, ry);
+        plCtx.moveTo(rx + r, ry);plCtx.lineTo(rx + w - r, ry);
         plCtx.quadraticCurveTo(rx + w, ry, rx + w, ry + r);
-        plCtx.lineTo(rx + w, ry + slotH - r);
-        plCtx.quadraticCurveTo(rx + w, ry + slotH, rx + w - r, ry + slotH);
-        plCtx.lineTo(rx + r, ry + slotH);
-        plCtx.quadraticCurveTo(rx, ry + slotH, rx, ry + slotH - r);
-        plCtx.lineTo(rx, ry + r);
-        plCtx.quadraticCurveTo(rx, ry, rx + r, ry);
+        plCtx.lineTo(rx + w, ry + slotH - r);plCtx.quadraticCurveTo(rx + w, ry + slotH, rx + w - r, ry + slotH);
+        plCtx.lineTo(rx + r, ry + slotH);plCtx.quadraticCurveTo(rx, ry + slotH, rx, ry + slotH - r);
+        plCtx.lineTo(rx, ry + r);plCtx.quadraticCurveTo(rx, ry, rx + r, ry);
         plCtx.closePath();
-        plCtx.fillStyle = colors.bg;
-        plCtx.fill();
-        plCtx.fillStyle = colors.text;
-        plCtx.font = 'bold 11px -apple-system, sans-serif';
-        plCtx.textAlign = 'center';
-        plCtx.textBaseline = 'middle';
+        plCtx.fillStyle = colors.bg;plCtx.fill();
+        plCtx.fillStyle = colors.text;plCtx.font = 'bold 11px -apple-system, sans-serif';
+        plCtx.textAlign = 'center';plCtx.textBaseline = 'middle';
         const label = m >= 10 ? m.toFixed(0) : m.toFixed(1);
         plCtx.fillText(label, x, slotY);
     }
-    plBalls.forEach(b => {
-        plCtx.beginPath();
-        plCtx.arc(b.x, b.y, 5, 0, Math.PI * 2);
-        plCtx.fillStyle = '#ffffff';
-        plCtx.shadowBlur = 15;
-        plCtx.shadowColor = '#c084fc';
-        plCtx.fill();
-        plCtx.shadowBlur = 0;
-    });
+    plBalls.forEach(b => {plCtx.beginPath();plCtx.arc(b.x, b.y, 5, 0, Math.PI * 2);plCtx.fillStyle = '#ffffff';plCtx.shadowBlur = 15;plCtx.shadowColor = '#c084fc';plCtx.fill();plCtx.shadowBlur = 0;});
 }
 function plDrop(){
     const bet = parseFloat(document.getElementById('plBetInput').value);
@@ -1025,11 +945,7 @@ function plDrop(){
     updateGlobalBalanceUI();
     let sum = 0;
     const directions = [];
-    for (let i = 0; i < PL_ROWS; i++) {
-        const dir = Math.random() < 0.5 ? 1 : -1;
-        directions.push(dir);
-        sum += dir;
-    }
+    for (let i = 0; i < PL_ROWS; i++) {const dir = Math.random() < 0.5 ? 1 : -1;directions.push(dir);sum += dir;}
     const slotIndex = Math.round(sum / 2 + (PL_ROWS / 2));
     const safeIndex = Math.max(0, Math.min(PL_MULTIPLIERS[plDifficulty].length - 1, slotIndex));
     const multiplier = PL_MULTIPLIERS[plDifficulty][safeIndex];
@@ -1039,19 +955,10 @@ function plDrop(){
     const path = [];
     path.push({ x: cx, y: plTopPad - 20 });
     let pos = 0;
-    for (let i = 0; i < PL_ROWS; i++) {
-        path.push({ x: cx + pos * plSpacing / 2, y: plTopPad + i * rowHeight });
-        pos += directions[i];
-    }
+    for (let i = 0; i < PL_ROWS; i++) {path.push({ x: cx + pos * plSpacing / 2, y: plTopPad + i * rowHeight });pos += directions[i];}
     const finalX = cx + (sum / 2) * plSpacing;
     path.push({ x: finalX, y: plLastRowY + 25 });
-    const ball = {
-        x: path[0].x, y: path[0].y, path: path,
-        startTime: performance.now(),
-        duration: 2200 + Math.random() * 600,
-        bet: bet, multiplier: multiplier, winnings: winnings,
-        landed: false, done: false
-    };
+    const ball = {x: path[0].x, y: path[0].y, path: path,startTime: performance.now(),duration: 2200 + Math.random() * 600,bet: bet, multiplier: multiplier, winnings: winnings,landed: false, done: false};
     plBalls.push(ball);
     plUpdateBallCount();
     if (!plAnimId) plAnimate();
@@ -1076,21 +983,15 @@ function plAnimate(){
             b.done = true;
             balance += b.winnings;
             updateGlobalBalanceUI();
-            if (b.multiplier >= 1) {
-                showToast('🎉 Win! ' + b.multiplier.toFixed(2) + 'x = +' + b.winnings.toFixed(2) + ' TON', 'win');
-            } else {
-                showToast('📉 ' + b.multiplier.toFixed(2) + 'x = ' + (b.winnings - b.bet).toFixed(2) + ' TON', 'lose');
-            }
+            if (b.multiplier >= 1) showToast('🎉 Win! ' + b.multiplier.toFixed(2) + 'x = +' + b.winnings.toFixed(2) + ' TON', 'win');
+            else showToast('📉 ' + b.multiplier.toFixed(2) + 'x = ' + (b.winnings - b.bet).toFixed(2) + ' TON', 'lose');
         }
         if (!b.done) anyActive = true;
     });
     plDraw();
     plBalls = plBalls.filter(b => !b.done);
     plUpdateBallCount();
-    if (!anyActive) {
-        cancelAnimationFrame(plAnimId);
-        plAnimId = null;
-    }
+    if (!anyActive) {cancelAnimationFrame(plAnimId);plAnimId = null;}
 }
 
 /* ================= UPGRADE GAME ================= */
@@ -1101,13 +1002,11 @@ let upState = 'idle';
 let upChance = 20;
 let upBetVal = 0;
 let upTargetVal = 0;
-
 function upInit(){
     upCanvas = document.getElementById('upCanvas');
     upCtx = upCanvas.getContext('2d');
     window.addEventListener('resize', ()=>{ if(upCanvas) upResize(); });
-    upResize();
-    upDrawWheel();
+    upResize();upDrawWheel();
     document.getElementById('upBetInput').addEventListener('input', upUpdateChance);
     document.getElementById('upTargetInput').addEventListener('input', upUpdateChance);
     upUpdateChance();
@@ -1120,46 +1019,21 @@ function upResize(){
     const size = Math.max(200, Math.min(availW, availH, 300));
     const dpr = window.devicePixelRatio || 1;
     upSize = size;
-    upCanvas.width = size * dpr;
-    upCanvas.height = size * dpr;
-    upCanvas.style.width = size + 'px';
-    upCanvas.style.height = size + 'px';
+    upCanvas.width = size * dpr;upCanvas.height = size * dpr;
+    upCanvas.style.width = size + 'px';upCanvas.style.height = size + 'px';
     upCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     upDrawWheel();
 }
 function upUpdateChance(){
     const bet = parseFloat(document.getElementById('upBetInput').value) || 0;
     const target = parseFloat(document.getElementById('upTargetInput').value) || 0;
-    if (bet > 0 && target > bet) {
-        const raw = (bet / target) * 100;
-        upChance = Math.max(1, Math.min(96, raw * 0.97));
-    } else {
-        upChance = 0;
-    }
+    if (bet > 0 && target > bet) { const raw = (bet / target) * 100; upChance = Math.max(1, Math.min(96, raw * 0.97)); } else { upChance = 0; }
     const chanceEl = document.getElementById('upChanceDisplay');
     const chanceLbl = document.getElementById('upChanceLabel');
-    if (chanceEl) {
-        chanceEl.innerText = upChance.toFixed(1) + '%';
-        chanceEl.classList.remove('low','mid');
-        if (upChance < 25) chanceEl.classList.add('low');
-        else if (upChance < 55) chanceEl.classList.add('mid');
-    }
-    if (chanceLbl) {
-        let lbl = 'VERY LOW';
-        if (upChance >= 90) lbl = 'EXTREME';
-        else if (upChance >= 70) lbl = 'VERY HIGH';
-        else if (upChance >= 50) lbl = 'HIGH';
-        else if (upChance >= 30) lbl = 'MEDIUM';
-        else if (upChance >= 15) lbl = 'LOW';
-        chanceLbl.innerText = lbl;
-    }
-    const chanceText = document.getElementById('upChanceText');
-    if (chanceText) chanceText.innerText = upChance.toFixed(1) + '%';
-    const profitText = document.getElementById('upProfitText');
-    if (profitText) {
-        const profit = target > bet ? (target - bet) : 0;
-        profitText.innerText = '+' + profit.toFixed(2);
-    }
+    if (chanceEl) {chanceEl.innerText = upChance.toFixed(1) + '%';chanceEl.classList.remove('low','mid');if (upChance < 25) chanceEl.classList.add('low');else if (upChance < 55) chanceEl.classList.add('mid');}
+    if (chanceLbl) {let lbl = 'VERY LOW';if (upChance >= 90) lbl = 'EXTREME';else if (upChance >= 70) lbl = 'VERY HIGH';else if (upChance >= 50) lbl = 'HIGH';else if (upChance >= 30) lbl = 'MEDIUM';else if (upChance >= 15) lbl = 'LOW';chanceLbl.innerText = lbl;}
+    const chanceText = document.getElementById('upChanceText');if (chanceText) chanceText.innerText = upChance.toFixed(1) + '%';
+    const profitText = document.getElementById('upProfitText');if (profitText) {const profit = target > bet ? (target - bet) : 0;profitText.innerText = '+' + profit.toFixed(2);}
     upDrawWheel();
 }
 function upDrawWheel(){
@@ -1170,72 +1044,24 @@ function upDrawWheel(){
     const greenAngle = (upChance / 100) * Math.PI * 2;
     const startA = upWheelAngle - Math.PI/2;
     if (greenAngle > 0) {
-        upCtx.beginPath();
-        upCtx.moveTo(cx, cy);
-        upCtx.arc(cx, cy, R, startA, startA + greenAngle);
-        upCtx.closePath();
-        upCtx.fillStyle = '#2ff068';
-        upCtx.fill();
-        upCtx.save();
-        upCtx.beginPath(); upCtx.moveTo(cx,cy); upCtx.arc(cx,cy,R,startA,startA+greenAngle); upCtx.closePath();
-        upCtx.clip();
-        for (let i=0; i<40; i++){
-            const a = startA + (i/40) * greenAngle;
-            upCtx.beginPath();
-            upCtx.moveTo(cx, cy);
-            upCtx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);
-            upCtx.strokeStyle = 'rgba(0,0,0,.15)';
-            upCtx.lineWidth = 1;
-            upCtx.stroke();
-        }
+        upCtx.beginPath();upCtx.moveTo(cx, cy);upCtx.arc(cx, cy, R, startA, startA + greenAngle);upCtx.closePath();
+        upCtx.fillStyle = '#2ff068';upCtx.fill();
+        upCtx.save();upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,startA,startA+greenAngle);upCtx.closePath();upCtx.clip();
+        for (let i=0; i<40; i++){const a = startA + (i/40) * greenAngle;upCtx.beginPath();upCtx.moveTo(cx, cy);upCtx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);upCtx.strokeStyle = 'rgba(0,0,0,.15)';upCtx.lineWidth = 1;upCtx.stroke();}
         upCtx.restore();
     }
     if (greenAngle < Math.PI * 2) {
-        upCtx.beginPath();
-        upCtx.moveTo(cx, cy);
-        upCtx.arc(cx, cy, R, startA + greenAngle, startA + Math.PI*2);
-        upCtx.closePath();
-        upCtx.fillStyle = '#ff4444';
-        upCtx.fill();
-        upCtx.save();
-        upCtx.beginPath(); upCtx.moveTo(cx,cy); upCtx.arc(cx,cy,R,startA+greenAngle,startA+Math.PI*2); upCtx.closePath();
-        upCtx.clip();
-        for (let i=0; i<40; i++){
-            const a = startA + greenAngle + (i/40) * (Math.PI*2 - greenAngle);
-            upCtx.beginPath();
-            upCtx.moveTo(cx, cy);
-            upCtx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);
-            upCtx.strokeStyle = 'rgba(0,0,0,.15)';
-            upCtx.lineWidth = 1;
-            upCtx.stroke();
-        }
+        upCtx.beginPath();upCtx.moveTo(cx, cy);upCtx.arc(cx, cy, R, startA + greenAngle, startA + Math.PI*2);upCtx.closePath();
+        upCtx.fillStyle = '#ff4444';upCtx.fill();
+        upCtx.save();upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,startA+greenAngle,startA+Math.PI*2);upCtx.closePath();upCtx.clip();
+        for (let i=0; i<40; i++){const a = startA + greenAngle + (i/40) * (Math.PI*2 - greenAngle);upCtx.beginPath();upCtx.moveTo(cx, cy);upCtx.lineTo(cx + Math.cos(a)*R, cy + Math.sin(a)*R);upCtx.strokeStyle = 'rgba(0,0,0,.15)';upCtx.lineWidth = 1;upCtx.stroke();}
         upCtx.restore();
     }
-    upCtx.beginPath();
-    upCtx.arc(cx, cy, size*0.22, 0, Math.PI*2);
-    upCtx.fillStyle = '#1a1d2e';
-    upCtx.fill();
-    upCtx.strokeStyle = '#2a2e42';
-    upCtx.lineWidth = 3;
-    upCtx.stroke();
-    upCtx.beginPath();
-    upCtx.arc(cx, cy, R+3, 0, Math.PI*2);
-    upCtx.strokeStyle = '#2a2e42';
-    upCtx.lineWidth = 6;
-    upCtx.stroke();
-    upCtx.beginPath();
-    upCtx.moveTo(cx - 10, 4);
-    upCtx.lineTo(cx + 10, 4);
-    upCtx.lineTo(cx, 24);
-    upCtx.closePath();
-    upCtx.fillStyle = '#ffcc00';
-    upCtx.shadowBlur = 15;
-    upCtx.shadowColor = '#ffcc00';
-    upCtx.fill();
-    upCtx.shadowBlur = 0;
-    upCtx.strokeStyle = '#fff';
-    upCtx.lineWidth = 1.5;
-    upCtx.stroke();
+    upCtx.beginPath();upCtx.arc(cx, cy, size*0.22, 0, Math.PI*2);upCtx.fillStyle = '#1a1d2e';upCtx.fill();upCtx.strokeStyle = '#2a2e42';upCtx.lineWidth = 3;upCtx.stroke();
+    upCtx.beginPath();upCtx.arc(cx, cy, R+3, 0, Math.PI*2);upCtx.strokeStyle = '#2a2e42';upCtx.lineWidth = 6;upCtx.stroke();
+    upCtx.beginPath();upCtx.moveTo(cx - 10, 4);upCtx.lineTo(cx + 10, 4);upCtx.lineTo(cx, 24);upCtx.closePath();
+    upCtx.fillStyle = '#ffcc00';upCtx.shadowBlur = 15;upCtx.shadowColor = '#ffcc00';upCtx.fill();upCtx.shadowBlur = 0;
+    upCtx.strokeStyle = '#fff';upCtx.lineWidth = 1.5;upCtx.stroke();
 }
 function upStart(){
     if (upState !== 'idle') return;
@@ -1244,73 +1070,47 @@ function upStart(){
     if (isNaN(bet) || bet < 1) { showToast('❌ Invalid entry amount'); return; }
     if (isNaN(target) || target <= bet) { showToast('❌ Target must be greater than entry'); return; }
     if (bet > balance) { showToast('❌ Insufficient balance'); return; }
-    upBetVal = bet;
-    upTargetVal = target;
-    balance -= bet;
-    updateGlobalBalanceUI();
+    upBetVal = bet;upTargetVal = target;balance -= bet;updateGlobalBalanceUI();
     const greenAngle = (upChance / 100) * Math.PI * 2;
     const isWin = Math.random() * 100 < upChance;
     let finalLocalAngle;
-    if (isWin) {
-        finalLocalAngle = Math.random() * greenAngle;
-    } else {
-        finalLocalAngle = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
-    }
+    if (isWin) finalLocalAngle = Math.random() * greenAngle;
+    else finalLocalAngle = greenAngle + Math.random() * (Math.PI*2 - greenAngle);
     let targetWheelAngle = -finalLocalAngle;
     targetWheelAngle = ((targetWheelAngle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
     const fullSpins = 6 + Math.floor(Math.random() * 3);
     let endAngle = targetWheelAngle;
-    while (endAngle < upWheelAngle + Math.PI * 2 * fullSpins) {
-        endAngle += Math.PI * 2;
-    }
+    while (endAngle < upWheelAngle + Math.PI * 2 * fullSpins) { endAngle += Math.PI * 2; }
     const startAngle = upWheelAngle;
     upState = 'spinning';
-    const btn = document.getElementById('upBtn');
-    btn.disabled = true;
-    btn.innerText = '⏳ Spinning...';
-    const res = document.getElementById('upResult');
-    res.className = 'up-result';
-    res.innerText = '';
-    const duration = 4000;
-    const startTime = performance.now();
+    const btn = document.getElementById('upBtn');btn.disabled = true;btn.innerText = '⏳ Spinning...';
+    const res = document.getElementById('upResult');res.className = 'up-result';res.innerText = '';
+    const duration = 4000;const startTime = performance.now();
     function frame(now){
         const t = Math.min(1, (now - startTime) / duration);
         const eased = 1 - Math.pow(1 - t, 3.2);
         upWheelAngle = startAngle + (endAngle - startAngle) * eased;
         upDrawWheel();
-        if (t < 1) requestAnimationFrame(frame);
-        else upFinish();
+        if (t < 1) requestAnimationFrame(frame);else upFinish();
     }
     requestAnimationFrame(frame);
 }
 function upFinish(){
     upState = 'idle';
-    const btn = document.getElementById('upBtn');
-    btn.disabled = false;
-    btn.innerText = '🚀 UPGRADE';
+    const btn = document.getElementById('upBtn');btn.disabled = false;btn.innerText = '🚀 UPGRADE';
     const res = document.getElementById('upResult');
     const greenAngle = (upChance / 100) * Math.PI * 2;
     let pointerLocal = (-upWheelAngle) % (Math.PI * 2);
     if (pointerLocal < 0) pointerLocal += Math.PI * 2;
     const actuallyWon = pointerLocal <= greenAngle;
-    if (actuallyWon){
-        balance += upTargetVal;
-        updateGlobalBalanceUI();
-        res.className = 'up-result win show';
-        res.innerText = '🏆 You won! +' + upTargetVal.toFixed(2) + ' TON';
-        showToast('🏆 You won! +' + upTargetVal.toFixed(2) + ' TON', 'win');
-    } else {
-        res.className = 'up-result lose show';
-        res.innerText = '😔 You lost! -' + upBetVal.toFixed(2) + ' TON';
-        showToast('😔 You lost! -' + upBetVal.toFixed(2) + ' TON', 'lose');
-    }
+    if (actuallyWon){balance += upTargetVal;updateGlobalBalanceUI();res.className = 'up-result win show';res.innerText = '🏆 You won! +' + upTargetVal.toFixed(2) + ' TON';showToast('🏆 You won! +' + upTargetVal.toFixed(2) + ' TON', 'win');}
+    else {res.className = 'up-result lose show';res.innerText = '😔 You lost! -' + upBetVal.toFixed(2) + ' TON';showToast('😔 You lost! -' + upBetVal.toFixed(2) + ' TON', 'lose');}
     upWheelAngle = upWheelAngle % (Math.PI * 2);
 }
 
 /* ================= CRASH ================= */
 let gameState='waiting', multiplier=1.00, crashPoint=0, myBet=0, myAutoCashout=0, hasJoined=false;
 let gameInterval, countdownInterval, roundHistory=[], players=[];
-
 const multiplierDisplay=document.getElementById('multiplierDisplay');
 const actionButton=document.getElementById('actionButton');
 const statusText=document.getElementById('statusText');
@@ -1322,7 +1122,6 @@ const canvas=document.getElementById('chartCanvas');
 const ctx=canvas.getContext('2d');
 const halfBtn=document.getElementById('halfBtn');
 const allBtn=document.getElementById('allBtn');
-
 function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
 function resetBalance(){balance=100.00;updateGlobalBalanceUI();statusText.innerText='✅ Balance recharged to 100 TON!'}
@@ -1389,4 +1188,103 @@ function joinGame(){
     balance-=amount;updateGlobalBalanceUI();
     betInput.disabled=true;autoCashoutInput.disabled=true;
     halfBtn.disabled=true;allBtn.disabled=true;
-    addPlayer('You',amount,
+    addPlayer('You',amount,true);
+    statusText.innerText=myAutoCashout>0?'✅ Joined. Auto cashout at '+myAutoCashout.toFixed(2)+'x':'✅ Joined! Waiting for start...';
+    actionButton.innerText='Waiting...';actionButton.disabled=true;
+}
+function cashOut(isAuto=false){
+    if(!hasJoined||gameState!=='playing')return;
+    const winnings=myBet*multiplier;balance+=winnings;updateGlobalBalanceUI();
+    hasJoined=false;actionButton.disabled=true;actionButton.innerText='Next Round...';actionButton.className='action-btn btn-bet';
+    statusText.innerText=isAuto?'🤖 Auto cashout at '+multiplier.toFixed(2)+'x! Profit: '+winnings.toFixed(2)+' TON':'✅ You won! '+myBet+' × '+multiplier.toFixed(2)+' = '+winnings.toFixed(2)+' TON';
+    const mp=players.find(p=>p.isMe);if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers()}
+}
+actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false)});
+function setBetAll(){if(gameState!=='waiting')return;const amount=Math.floor(balance*100)/100;if(amount<1){showToast('❌ Insufficient balance');return}betInput.value=amount.toFixed(2);localStorage.setItem('lastBet',amount);showToast('🎯 All in: '+amount.toFixed(2)+' TON')}
+function setBetHalf(){if(gameState!=='waiting')return;const amount=Math.floor((balance/2)*100)/100;if(amount<1){showToast('❌ Insufficient balance');return}betInput.value=amount.toFixed(2);localStorage.setItem('lastBet',amount);showToast('⚡ Half balance: '+amount.toFixed(2)+' TON')}
+betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastBet',v)});
+autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v)});
+startNewRound();
+
+/* ================= PVP ================= */
+window.pvpInitialized = false;
+const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a'];
+const PVP_BOTS=['CryptoKing','Sheyx00','Jasur','Degen99','Mike_K','TonMaster','PepeLord','Lucky_Boy','StarFire','PixelPro'];
+const PVP_AVATARS=['🦁','🧔','👨','🐸','🐱','🐻','🤖','🐼','🦊','🐯'];
+let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
+let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
+function pvpInit(){pvpCanvas=document.getElementById('pvpCanvas');pvpCtx=pvpCanvas.getContext('2d');window.addEventListener('resize',resizePvpCanvas);resizePvpCanvas();pvpStartRound();}
+function resizePvpCanvas(){if(!pvpCanvas)return;const wrap=pvpCanvas.parentElement;const availableW=wrap.clientWidth-40;const availableH=wrap.clientHeight-20;const size=Math.max(220,Math.min(availableW,availableH,340));const dpr=window.devicePixelRatio||1;pvpSize=size;pvpCanvas.width=size*dpr;pvpCanvas.height=size*dpr;pvpCanvas.style.width=size+'px';pvpCanvas.style.height=size+'px';pvpCtx.setTransform(dpr,0,0,dpr,0,0);pvpDraw();}
+function pvpStartRound(){
+    pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;pvpPointerAngle=-Math.PI/2;pvpLastResult=null;
+    pvpGameNum=Math.floor(60000+Math.random()*10000);document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;
+    pvpPlayers=[];const botCount=2+Math.floor(Math.random()*3);const shuffled=[...PVP_BOTS].sort(()=>Math.random()-0.5);
+    for(let i=0;i<botCount;i++){const bet=parseFloat((Math.random()*25+2).toFixed(2));pvpPlayers.push({name:shuffled[i],avatar:PVP_AVATARS[i%PVP_AVATARS.length],bet:bet,color:PVP_COLORS[i%PVP_COLORS.length],isMe:false});}
+    pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+    const btn=document.getElementById('joinBattleBtn');btn.innerText='Join the Battle';btn.className='join-battle-btn active';btn.disabled=false;
+    document.getElementById('pvpBetInput').disabled=false;document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||10;
+    document.getElementById('pvpHalfBtn').disabled=false;document.getElementById('pvpAllBtn').disabled=false;
+    clearInterval(pvpTimerInterval);
+    pvpTimerInterval=setInterval(()=>{if(pvpState!=='waiting')return;pvpTimer--;pvpUpdateTimerUI();if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpSpin()}},1000);
+    pvpUpdateTimerUI();
+}
+function pvpUpdateTimerUI(){const t=Math.max(0,pvpTimer);const mm=String(Math.floor(t/60)).padStart(2,'0');const ss=String(t%60).padStart(2,'0');document.getElementById('pvpTimer').innerText=mm+':'+ss}
+function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length}
+function pvpJoinClick(){
+    if(pvpState!=='waiting'||pvpUserJoined)return;
+    const amount=parseFloat(document.getElementById('pvpBetInput').value);
+    if(isNaN(amount)||amount<1){showToast('❌ Enter a valid amount');return}
+    if(amount>balance){showToast('❌ Insufficient balance');return}
+    balance-=amount;updateGlobalBalanceUI();pvpUserJoined=true;pvpMyBet=amount;localStorage.setItem('lastPvpBet',amount);
+    pvpPlayers.push({name:'You',avatar:'👤',bet:amount,color:'#ffcc00',isMe:true});
+    pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+    const btn=document.getElementById('joinBattleBtn');btn.innerText='✅ Joined ('+amount+' TON)';btn.className='join-battle-btn';btn.disabled=true;
+    document.getElementById('pvpBetInput').disabled=true;document.getElementById('pvpHalfBtn').disabled=true;document.getElementById('pvpAllBtn').disabled=true;
+    showToast('Joined with '+amount+' TON');
+}
+function pvpSetBetAll(){if(pvpState!=='waiting'||pvpUserJoined)return;const amount=Math.floor(balance*100)/100;if(amount<1){showToast('❌ Insufficient balance');return}document.getElementById('pvpBetInput').value=amount.toFixed(2);localStorage.setItem('lastPvpBet',amount);showToast('🎯 All in: '+amount.toFixed(2)+' TON')}
+function pvpSetBetHalf(){if(pvpState!=='waiting'||pvpUserJoined)return;const amount=Math.floor((balance/2)*100)/100;if(amount<1){showToast('❌ Insufficient balance');return}document.getElementById('pvpBetInput').value=amount.toFixed(2);localStorage.setItem('lastPvpBet',amount);showToast('⚡ Half balance: '+amount.toFixed(2)+' TON')}
+document.getElementById('pvpBetInput').addEventListener('input',(e)=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastPvpBet',v)});
+function pvpRenderPlayers(){
+    const row=document.getElementById('pvpPlayersRow');row.innerHTML='';
+    pvpPlayers.forEach(p=>{
+        const pct=((p.bet/pvpPool)*100).toFixed(1);
+        const card=document.createElement('div');card.className='pvp-pcard'+(p.isMe?' isMe':'');
+        if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe)card.classList.add('winner');
+        card.innerHTML='<div class="pvp-pcard-top" style="background:'+p.color+'"></div><div class="pvp-pav" style="border-color:'+p.color+'">'+p.avatar+'</div><div class="pvp-pname">'+p.name+'</div><div class="pvp-ppct" style="color:'+p.color+'">'+pct+'%</div><div class="pvp-pbet">'+p.bet.toFixed(2)+' TON</div>';
+        row.appendChild(card);
+    });
+}
+function pvpDraw(){
+    if(!pvpCtx)return;
+    const size=pvpSize,cx=size/2,cy=size/2,R=size/2-6,innerR=size*0.27;
+    pvpCtx.clearRect(0,0,size,size);
+    if(pvpPlayers.length===0){pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);pvpCtx.strokeStyle='#2a2e42';pvpCtx.lineWidth=2;pvpCtx.stroke();return}
+    let angle=-Math.PI/2;
+    pvpPlayers.forEach(p=>{const share=p.bet/pvpPool,arc=share*Math.PI*2;pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);pvpCtx.arc(cx,cy,R,angle,angle+arc);pvpCtx.closePath();pvpCtx.fillStyle=p.color;pvpCtx.fill();pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke();angle+=arc;});
+    pvpCtx.beginPath();pvpCtx.arc(cx,cy,innerR,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();pvpCtx.strokeStyle='#0f1119';pvpCtx.lineWidth=3;pvpCtx.stroke();
+    const px=cx+Math.cos(pvpPointerAngle)*R,py=cy+Math.sin(pvpPointerAngle)*R;
+    const sx=cx+Math.cos(pvpPointerAngle)*innerR,sy=cy+Math.sin(pvpPointerAngle)*innerR;
+    pvpCtx.beginPath();pvpCtx.moveTo(sx,sy);pvpCtx.lineTo(px,py);
+    pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;
+    pvpCtx.beginPath();pvpCtx.arc(px,py,7,0,Math.PI*2);pvpCtx.fillStyle='#fff';pvpCtx.fill();pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=3;pvpCtx.stroke();
+}
+function pvpDetermineWinner(){let a=pvpPointerAngle+Math.PI/2;a=((a%(Math.PI*2))+Math.PI*2)%(Math.PI*2);let cum=0;for(let p of pvpPlayers){const arc=(p.bet/pvpPool)*Math.PI*2;if(a>=cum&&a<cum+arc)return p;cum+=arc}return pvpPlayers[pvpPlayers.length-1]}
+function pvpSpin(){
+    if(pvpState!=='waiting')return;pvpState='spinning';
+    const fullSpins=6+Math.floor(Math.random()*3);const finalOffset=Math.random()*Math.PI*2;
+    const startAngle=pvpPointerAngle;const targetAngle=startAngle+fullSpins*Math.PI*2+finalOffset;
+    const duration=4200;const startTime=performance.now();
+    function frame(now){const t=Math.min(1,(now-startTime)/duration);const eased=1-Math.pow(1-t,3.2);pvpPointerAngle=startAngle+(targetAngle-startAngle)*eased;pvpDraw();if(t<1)requestAnimationFrame(frame);else pvpFinishSpin();}
+    requestAnimationFrame(frame);
+}
+function pvpFinishSpin(){
+    pvpState='done';const winner=pvpDetermineWinner();pvpLastResult=winner;pvpRenderPlayers();
+    if(winner.isMe){const w=pvpPool;balance+=w;updateGlobalBalanceUI();showToast('🏆 You won! +'+w.toFixed(2)+' TON','win');document.getElementById('pvpLast').innerText='+'+w.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';}
+    else{if(pvpUserJoined){showToast('😔 You lost — '+winner.name+' won','lose');document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='0%';}else{document.getElementById('pvpLast').innerText='+'+pvpPool.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';}}
+    setTimeout(()=>{pvpStartRound()},3200);
+}
+function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON added')}
+</script>
+</body>
+    </html>
