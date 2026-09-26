@@ -71,11 +71,13 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
 .sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;justify-content:center;}
 .sh-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px 16px;gap:10px;min-height:300px}
-.sh-row{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:350px}
-.sh-mult{font-size:14px;font-weight:800;color:#7a8299;width:50px;text-align:right;flex-shrink:0}
-.sh-circles{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
-.sh-circle{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:20px;transition:transform .1s}
+.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 16px;gap:8px;min-height:300px;overflow-y:auto}
+.sh-row{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:350px;transition:opacity 0.3s}
+.sh-row.inactive-row{opacity:0.3;pointer-events:none}
+.sh-row.active-row{opacity:1}
+.sh-mult{font-size:12px;font-weight:800;color:#7a8299;width:45px;text-align:right;flex-shrink:0}
+.sh-circles{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
+.sh-circle{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:16px;transition:transform .1s}
 .sh-circle:active{transform:scale(.95)}
 .sh-circle.revealed-tick{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068;cursor:default}
 .sh-circle.revealed-bomb{background:radial-gradient(circle, #ff4444 0%, #b91c1c 100%);border-color:#ff4444;box-shadow:0 0 15px #ff4444;cursor:default}
@@ -90,7 +92,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .sh-action-btn.start{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
 .sh-action-btn.cashout{background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;box-shadow:0 0 20px rgba(255,204,0,0.5)}
 .sh-action-btn:disabled{opacity:.5;background:#2a2e42;color:#6a6a7a;box-shadow:none;cursor:not-allowed}
-.sh-hash{text-align:center;font-size:11px;color:#5a6278;margin-top:5px}
 /* =========================================================================== */
 
 #leaderboardScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:180;overflow-y:auto;padding-bottom:20px}
@@ -431,7 +432,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
-        <!-- Solo Hub از اینجا حذف شد -->
     </div>
 </div>
 
@@ -577,7 +577,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
-        <!-- Solo Hub از اینجا حذف شد -->
     </div>
 </div>
 
@@ -723,9 +722,9 @@ let soloBetAmount = 0.1;
 let towerState = 'idle'; // idle, playing, ended
 let towerLevel = 0;
 let towerBet = 0;
-// افزایش تعداد ردیف‌ها به ۶ ردیف (۶، ۵، ۴، ۳، ۲، ۱)
-let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25, 8.50]; 
-let towerRows = [6, 5, 4, 3, 2, 1]; 
+// تغییرات: ۱۲ ردیف با ضریب‌های متناسب
+let towerMultipliers = [1.02, 1.27, 1.70, 2.55, 4.25, 8.50, 12.75, 17.00, 21.25, 25.50, 50.00, 100.00]; 
+let towerRows = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]; 
 let towerBombs = []; // Stores the bomb index for each level
 
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
@@ -777,10 +776,18 @@ function renderTowerGrid() {
     const container = document.getElementById('towerGameArea');
     container.innerHTML = '';
     
-    // Render from top to bottom (Level 5 down to Level 0)
+    // Render from top to bottom (Level 11 down to Level 0)
     for (let level = towerRows.length - 1; level >= 0; level--) {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'sh-row';
+        rowDiv.id = 'tower-row-div-' + level;
+        
+        // اگر ردیف از سطح فعلی بالاتر باشه، محو میشه
+        if (level > towerLevel) {
+            rowDiv.classList.add('inactive-row');
+        } else if (level === towerLevel) {
+            rowDiv.classList.add('active-row');
+        }
         
         const multLabel = document.createElement('div');
         multLabel.className = 'sh-mult';
@@ -801,6 +808,20 @@ function renderTowerGrid() {
         }
         rowDiv.appendChild(circlesDiv);
         container.appendChild(rowDiv);
+    }
+    // اسکرول به پایین‌ترین ردیف
+    container.scrollTop = container.scrollHeight;
+}
+
+function updateTowerVisibility() {
+    document.querySelectorAll('.sh-row').forEach(row => {
+        row.classList.remove('active-row');
+        row.classList.add('inactive-row');
+    });
+    const activeRow = document.getElementById('tower-row-div-' + towerLevel);
+    if (activeRow) {
+        activeRow.classList.remove('inactive-row');
+        activeRow.classList.add('active-row');
     }
 }
 
@@ -883,6 +904,7 @@ function clickTowerTile(level, index, circleElement) {
         cashoutBtn.innerText = 'Cash Out (' + currentWin.toFixed(2) + ' TON)';
         
         // Enable next row
+        updateTowerVisibility();
         enableTowerRow(towerLevel);
     }
 }
@@ -1170,4 +1192,4 @@ function pvpFinishSpin(){pvpState='done';const winner=pvpDetermineWinner();pvpLa
 function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON added');}
 </script>
 </body>
-    </html>
+</html>
