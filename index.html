@@ -180,6 +180,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pl-play-btn{width:100%;padding:16px;font-size:16px;font-weight:900;border:none;border-radius:14px;cursor:pointer;background:rgba(60,50,90,.7);color:#8a7ba8;transition:all .2s;letter-spacing:.5px}
 .pl-play-btn.active{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;box-shadow:0 6px 20px rgba(124,58,237,.5)}
 .pl-play-btn:disabled{cursor:not-allowed}
+.pl-count{position:absolute;top:14px;right:16px;background:rgba(30,25,50,.85);border:1px solid #3a2e5e;color:#c8b1ff;padding:6px 12px;border-radius:12px;font-size:12px;font-weight:800;z-index:20;display:none}
 #pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
 .pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0}
 .pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px}
@@ -349,7 +350,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="pl-title">🎯 Plinko</div>
         <div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">100.00</span></div>
     </div>
-    <div class="pl-canvas-wrap"><canvas id="plinkoCanvas"></canvas></div>
+    <div class="pl-canvas-wrap">
+        <div class="pl-count" id="plBallCount">0 balls</div>
+        <canvas id="plinkoCanvas"></canvas>
+    </div>
     <div class="pl-controls">
         <div class="pl-diff-row">
             <button class="pl-diff-btn" id="plDiffEasy" onclick="plSetDifficulty('easy')">Easy</button>
@@ -509,6 +513,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 const SPEED = 1.0001;
 const COUNTDOWN_SECONDS = 8;
 const PVP_COUNTDOWN_SECONDS = 10;
+const PL_MAX_BALLS = 20;
 
 function openGame(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
@@ -650,6 +655,16 @@ function plMaxBet(){
     document.getElementById('plBetInput').value = balance.toFixed(2);
     plUpdatePlayBtn();
 }
+function plUpdateBallCount(){
+    const el = document.getElementById('plBallCount');
+    if (!el) return;
+    if (plBalls.length > 0) {
+        el.style.display = 'block';
+        el.innerText = plBalls.length + ' ball' + (plBalls.length > 1 ? 's' : '') + ' in air';
+    } else {
+        el.style.display = 'none';
+    }
+}
 function plGetColorForMultiplier(m){
     if (m >= 30) return { bg: '#7c3aed', text: '#fff' };
     if (m >= 10) return { bg: '#6d28d9', text: '#fff' };
@@ -722,10 +737,11 @@ function plDrop(){
     const bet = parseFloat(document.getElementById('plBetInput').value);
     if (isNaN(bet) || bet < 0.1) { showToast('❌ Minimum bet is 0.1 TON'); return; }
     if (bet > balance) { showToast('❌ Insufficient balance'); return; }
-    
+    if (plBalls.length >= PL_MAX_BALLS) { showToast('⚠️ Too many balls in air! Wait a moment.'); return; }
+
     balance -= bet;
     updateGlobalBalanceUI();
-    
+
     let sum = 0;
     const directions = [];
     for (let i = 0; i < PL_ROWS; i++) {
@@ -737,7 +753,7 @@ function plDrop(){
     const safeIndex = Math.max(0, Math.min(PL_MULTIPLIERS[plDifficulty].length - 1, slotIndex));
     const multiplier = PL_MULTIPLIERS[plDifficulty][safeIndex];
     const winnings = bet * multiplier;
-    
+
     const cx = plWidth / 2;
     const rowHeight = (plLastRowY - plTopPad) / (PL_ROWS - 1);
     const path = [];
@@ -749,7 +765,7 @@ function plDrop(){
     }
     const finalX = cx + (sum / 2) * plSpacing;
     path.push({ x: finalX, y: plLastRowY + 25 });
-    
+
     const ball = {
         x: path[0].x, y: path[0].y, path: path,
         startTime: performance.now(),
@@ -758,6 +774,7 @@ function plDrop(){
         landed: false, done: false
     };
     plBalls.push(ball);
+    plUpdateBallCount();
     if (!plAnimId) plAnimate();
 }
 function plAnimate(){
@@ -789,10 +806,8 @@ function plAnimate(){
         if (!b.done) anyActive = true;
     });
     plDraw();
-    setTimeout(() => {
-        plBalls = plBalls.filter(b => !b.done);
-        plDraw();
-    }, 500);
+    plBalls = plBalls.filter(b => !b.done);
+    plUpdateBallCount();
     if (!anyActive) {
         cancelAnimationFrame(plAnimId);
         plAnimId = null;
