@@ -1295,6 +1295,8 @@ startNewRound();
 window.pvpInitialized=false;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpPointerAngle=-Math.PI/2;
 let pvpRound=null,pvpSubscription=null,pvpIsHost=false,pvpMyBet=0;
+let lastAutoReset = 0;
+let lastRenderHash = '';
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0','#ff9f1a','#18dcff','#32ff7e','#7d5fff'];
 const PvpRoundClass = Parse.Object.extend('PvpRound');
 
@@ -1305,20 +1307,41 @@ async function pvpInit(){
     resizePvpCanvas();
 
     try {
-        // مرحله ۱: ساخت کلاس با Cloud Function
+        // ۱. Cloud init
         try {
-            const result = await Parse.Cloud.run('initPvpClass');
-            console.log('✅ Cloud init:', result);
-        } catch(cloudErr) {
-            console.warn('⚠️ Cloud init error:', cloudErr);
-        }
+            await Parse.Cloud.run('initPvpClass');
+            console.log('✅ Cloud init done');
+        } catch(e) { console.warn('Cloud init:', e); }
 
-        // مرحله ۲: پیدا کردن یا ساختن راند
+        // ۲. پیدا کردن یا ساختن راند
         const q = new Parse.Query(PvpRoundClass);
         q.equalTo('status', 'waiting');
         q.descending('createdAt');
         q.limit(1);
         let round = await q.first();
+
+        // ۳. چک کردن راند قدیمی گیرکرده
+        if (round) {
+            const startTime = round.get('startTime') || 0;
+            const players = round.get('players') || [];
+            const age = Date.now() - (startTime - 15000);
+
+            // اگه راند بیش از ۲ دقیقه گیر کرده و کمتر از ۲ نفر داره → پاکش کن
+            if (age > 120000 && players.length < 2) {
+                console.log('🧹 Deleting stale round');
+                for (const p of players) {
+                    if (String(p.userId) === String(TG_USER.id)) {
+                        balance += p.bet;
+                        updateGlobalBalanceUI();
+                        showToast('💰 Refunded ' + p.bet.toFixed(2) + ' TON', 'win');
+                    }
+                }
+                try { await round.destroy(); } catch(e) {}
+                round = null;
+            }
+        }
+
+        // ۴. ساختن راند جدید اگه لازمه
         if (!round) {
             round = new PvpRoundClass();
             round.set('status', 'waiting');
@@ -1329,12 +1352,13 @@ async function pvpInit(){
             round.set('finalAngle', -Math.PI/2);
             await round.save();
             console.log('✅ Created new round');
-        } else {
-            console.log('✅ Found existing round');
         }
+
         pvpRound = round;
+        lastRenderHash = '';
         pvpApplyRound(round);
 
+        // ۵. Subscribe
         const subQ = new Parse.Query(PvpRoundClass);
         subQ.equalTo('objectId', round.id);
         pvpSubscription = await subQ.subscribe();
@@ -1356,29 +1380,48 @@ function pvpApplyRound(round){
     document.getElementById('pvpGameNum').innerText = 'Game #' + round.id.slice(-5);
 
     pvpIsHost = players.length > 0 && String(players[0].userId) === String(TG_USER.id);
-    pvpRenderPlayersReal(players, totalPool);
+
+    const playersHash = JSON.stringify(players) + '_' + totalPool;
+    if (playersHash !== lastRenderHash) {
+        lastRenderHash = playersHash;
+        pvpRenderPlayersReal(players, totalPool);
+    }
 
     const btn = document.getElementById('joinBattleBtn');
     const alreadyJoined = players.some(p => String(p.userId) === String(TG_USER.id));
+    const myPlayer = players.find(p => String(p.userId) === String(TG_USER.id));
 
     if (status === 'waiting') {
         const remain = Math.max(0, Math.ceil((round.get('startTime') - Date.now()) / 1000));
         document.getElementById('pvpTimer').innerText = '00:' + String(remain).padStart(2, '0');
+
         if (alreadyJoined) {
-            btn.innerText = '✅ Joined'; btn.className = 'join-battle-btn'; btn.disabled = true;
+            btn.innerText = '✅ Joined (' + (myPlayer ? myPlayer.bet.toFixed(2) : '0') + ' TON)';
+            btn.className = 'join-battle-btn';
+            btn.disabled = true;
             document.getElementById('pvpBetInput').disabled = true;
         } else {
-            btn.innerText = 'Join the Battle'; btn.className = 'join-battle-btn active'; btn.disabled = false;
+            btn.innerText = 'Join the Battle';
+            btn.className = 'join-battle-btn active';
+            btn.disabled = false;
             document.getElementById('pvpBetInput').disabled = false;
         }
-        if (remain <= 0 && pvpIsHost && players.length >= 2) pvpHostSpin(round);
-        else if (remain <= 0 && players.length < 2 && pvpIsHost) {
-            round.set('startTime', Date.now() + 10000);
-            round.save();
+
+        if (remain <= 0) {
+            if (players.length >= 2 && pvpIsHost) {
+                pvpHostSpin(round);
+            } else {
+                if (Date.now() - lastAutoReset > 5000) {
+                    lastAutoReset = Date.now();
+                    round.set('startTime', Date.now() + 15000);
+                    round.save().catch(e => console.warn('Reset err:', e));
+                }
+            }
         }
     } else if (status === 'spinning') {
         document.getElementById('pvpTimer').innerText = '🎰';
-        btn.innerText = 'Spinning...'; btn.disabled = true;
+        btn.innerText = 'Spinning...';
+        btn.disabled = true;
         pvpAnimateSpin(round.get('finalAngle'));
     } else if (status === 'done') {
         document.getElementById('pvpTimer').innerText = '🏆';
@@ -1398,6 +1441,7 @@ function pvpApplyRound(round){
             }, 5000);
         }
     }
+
     pvpDrawWheelReal(players, totalPool, pvpPointerAngle);
 }
 
@@ -1502,9 +1546,11 @@ async function pvpHostSpin(round){
         await round.save();
 
         setTimeout(async () => {
-            round.set('status','done');
-            await round.save();
-            pvpHandlePayout(winnerId, players, totalPool);
+            try {
+                round.set('status','done');
+                await round.save();
+                pvpHandlePayout(winnerId, players, totalPool);
+            } catch(e) {}
         }, 5000);
     } catch(e) { console.error('Host spin error:', e); }
 }
@@ -1568,4 +1614,4 @@ function pvpSetBetHalf(){ const a=Math.floor((balance/2)*100)/100; if(a>=0.1) do
 function pvpAddFunds(){ showToast('❌ Deposit required'); }
 </script>
 </body>
-    </html>
+</html>
