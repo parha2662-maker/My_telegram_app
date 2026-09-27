@@ -478,7 +478,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div>
             <div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div>
         </div>
-        <div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they join and start playing, you get <b>0.05 TON</b></div>
+        <div class="ref-info">💡 <b>How it works:</b><br>• Share your link<br>• Get <b>0.05 TON</b> per friend</div>
     </div>
     <div class="bottom-nav">
         <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
@@ -746,9 +746,9 @@ const ADMIN_CHAT_ID = '6151360205';
 const MIN_TON_DEPOSIT = 0.1;
 const REFERRAL_REWARD = 0.05;
 
-/* ===== Back4App (Parse) Configuration ===== */
-const PARSE_APP_ID = 'vNgoEBHPwH8kfwGWa8bcBRlnI5ftloj7URTQ8FrQ';
-const PARSE_JS_KEY = 'zULQHPuWW28TYuXkjLqk8P1K0poJouToWDnk8wcr';
+/* ===== Back4App (Parse) ===== */
+const PARSE_APP_ID = 'vNgoEBHPwHBkfwGWa8bcBRlnl5FtIoi7URTQ8FrQ';
+const PARSE_JS_KEY = 'zULQHPuWW28TYuXkjLqk9P1K0poJouToWDnK8wcr';
 const PARSE_SERVER = 'https://parseapi.back4app.com';
 
 Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
@@ -790,7 +790,6 @@ function loadTelegramUser(){
         }
     } catch(e) {}
 }
-
 async function loadBotUsername(){
     try {
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/getMe`;
@@ -800,7 +799,6 @@ async function loadBotUsername(){
         if (data && data.ok && data.result && data.result.username) BOT_USERNAME = data.result.username;
     } catch(e) {}
 }
-
 window.addEventListener('load', () => {
     loadTelegramUser();
     loadBotUsername().then(() => { checkReferral(); updateReferralUI(); });
@@ -965,7 +963,6 @@ async function requestGiftWithdraw(uid){
     if (sent) { removeGiftFromInventory(uid); renderBackpack(); showToast('✅ Sent to admin!', 'win'); }
     else { showToast('❌ Failed', 'lose'); }
 }
-
 async function sendToAdmin(text){
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const body = `chat_id=${encodeURIComponent(ADMIN_CHAT_ID)}&text=${encodeURIComponent(text)}`;
@@ -1294,7 +1291,7 @@ betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!is
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
-/* ========= PVP (Back4App Realtime) ========= */
+/* ========= PVP (Back4App) ========= */
 window.pvpInitialized=false;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpPointerAngle=-Math.PI/2;
 let pvpRound=null,pvpSubscription=null,pvpIsHost=false,pvpMyBet=0;
@@ -1308,7 +1305,6 @@ async function pvpInit(){
     resizePvpCanvas();
 
     try {
-        // Find or create a waiting round
         const q = new Parse.Query(PvpRoundClass);
         q.equalTo('status', 'waiting');
         q.descending('createdAt');
@@ -1330,15 +1326,14 @@ async function pvpInit(){
         pvpRound = round;
         pvpApplyRound(round);
 
-        // Live subscription
         const subQ = new Parse.Query(PvpRoundClass);
         subQ.equalTo('objectId', round.id);
         pvpSubscription = await subQ.subscribe();
         pvpSubscription.on('update', (r) => { pvpApplyRound(r); });
-        console.log('✅ Subscribed to round');
+        console.log('✅ Subscribed');
     } catch(e) {
         console.error('PVP init error:', e);
-        showToast('❌ PVP failed: ' + (e.message || 'unknown'), 'lose');
+        showToast('❌ PVP: ' + (e.message || 'unknown'), 'lose');
     }
 }
 
@@ -1352,7 +1347,6 @@ function pvpApplyRound(round){
     document.getElementById('pvpGameNum').innerText = 'Game #' + round.id.slice(-5);
 
     pvpIsHost = players.length > 0 && String(players[0].userId) === String(TG_USER.id);
-
     pvpRenderPlayersReal(players, totalPool);
 
     const btn = document.getElementById('joinBattleBtn');
@@ -1362,14 +1356,10 @@ function pvpApplyRound(round){
         const remain = Math.max(0, Math.ceil((round.get('startTime') - Date.now()) / 1000));
         document.getElementById('pvpTimer').innerText = '00:' + String(remain).padStart(2, '0');
         if (alreadyJoined) {
-            btn.innerText = '✅ Joined';
-            btn.className = 'join-battle-btn';
-            btn.disabled = true;
+            btn.innerText = '✅ Joined'; btn.className = 'join-battle-btn'; btn.disabled = true;
             document.getElementById('pvpBetInput').disabled = true;
         } else {
-            btn.innerText = 'Join the Battle';
-            btn.className = 'join-battle-btn active';
-            btn.disabled = false;
+            btn.innerText = 'Join the Battle'; btn.className = 'join-battle-btn active'; btn.disabled = false;
             document.getElementById('pvpBetInput').disabled = false;
         }
         if (remain <= 0 && pvpIsHost && players.length >= 2) pvpHostSpin(round);
@@ -1379,8 +1369,7 @@ function pvpApplyRound(round){
         }
     } else if (status === 'spinning') {
         document.getElementById('pvpTimer').innerText = '🎰';
-        btn.innerText = 'Spinning...';
-        btn.disabled = true;
+        btn.innerText = 'Spinning...'; btn.disabled = true;
         pvpAnimateSpin(round.get('finalAngle'));
     } else if (status === 'done') {
         document.getElementById('pvpTimer').innerText = '🏆';
@@ -1400,7 +1389,6 @@ function pvpApplyRound(round){
             }, 5000);
         }
     }
-
     pvpDrawWheelReal(players, totalPool, pvpPointerAngle);
 }
 
@@ -1562,18 +1550,12 @@ async function pvpJoinClick(){
     } catch(e) {
         console.error('Join error:', e);
         balance += amount; updateGlobalBalanceUI();
-        showToast('❌ Failed', 'lose');
+        showToast('❌ ' + (e.message || 'Failed'), 'lose');
     }
 }
 
-function pvpSetBetAll(){
-    const a=Math.floor(balance*100)/100;
-    if(a>=0.1) document.getElementById('pvpBetInput').value=a.toFixed(2);
-}
-function pvpSetBetHalf(){
-    const a=Math.floor((balance/2)*100)/100;
-    if(a>=0.1) document.getElementById('pvpBetInput').value=a.toFixed(2);
-}
+function pvpSetBetAll(){ const a=Math.floor(balance*100)/100; if(a>=0.1) document.getElementById('pvpBetInput').value=a.toFixed(2); }
+function pvpSetBetHalf(){ const a=Math.floor((balance/2)*100)/100; if(a>=0.1) document.getElementById('pvpBetInput').value=a.toFixed(2); }
 function pvpAddFunds(){ showToast('❌ Deposit required'); }
 </script>
 </body>
