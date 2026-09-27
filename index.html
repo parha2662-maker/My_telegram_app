@@ -74,6 +74,21 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .bp-gift-name{font-size:13px;font-weight:800;color:#fff;text-align:center;margin-bottom:10px;min-height:18px}
 .bp-gift-sell{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;border:none;padding:8px 12px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;width:100%;margin-bottom:6px}
 .bp-gift-withdraw{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:8px 12px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;width:100%}
+#referralScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:195;overflow-y:auto;padding-bottom:90px}
+.ref-content{padding:16px}
+.ref-hero{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-radius:22px;padding:28px 20px;text-align:center;margin-bottom:16px;box-shadow:0 10px 30px rgba(124,58,237,.4)}
+.ref-emoji{font-size:60px;margin-bottom:10px}
+.ref-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:6px}
+.ref-sub{font-size:13px;color:rgba(255,255,255,.85);font-weight:600}
+.ref-link-box{display:flex;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;border-radius:14px;padding:6px;margin-bottom:12px}
+.ref-link-input{flex:1;background:transparent;border:none;color:#fff;font-size:12px;padding:10px;outline:none;font-family:inherit;min-width:0}
+.ref-copy-btn{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;border:none;padding:0 16px;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit}
+.ref-share-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:16px}
+.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.ref-stat{background:#1a1d2e;border:1px solid #2a2e42;border-radius:16px;padding:16px;text-align:center}
+.ref-stat-val{font-size:24px;font-weight:900;color:#2ff068;margin-bottom:4px}
+.ref-stat-lbl{font-size:11px;color:#7a8299;font-weight:700;letter-spacing:1px}
+.ref-info{background:rgba(47,240,104,.08);border:1px solid rgba(47,240,104,.25);border-radius:14px;padding:14px;font-size:12px;color:#2ff068;font-weight:600;line-height:1.6}
 #soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;display:flex;flex-direction:column;height:100%}
 .sh-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0}
 .sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
@@ -369,16 +384,24 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .vip-confirm{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
 .deposit-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);z-index:6000;display:flex;justify-content:center;align-items:center;padding:20px}
 .deposit-modal.hidden{display:none}
-.deposit-modal-content{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #0098ea;border-radius:24px;padding:24px;max-width:360px;width:100%;text-align:center;box-sizing:border-box}
-.deposit-modal-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:6px}
-.deposit-modal-sub{font-size:13px;color:#7a8299;margin-bottom:18px}
-.deposit-modal-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:10px}
+.deposit-modal-content{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #0098ea;border-radius:24px;padding:20px;max-width:380px;width:100%;text-align:center;box-sizing:border-box;max-height:90vh;overflow-y:auto}
+.deposit-modal-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:14px}
+.dep-section-title{font-size:14px;font-weight:800;margin-bottom:10px;text-align:left}
+.dep-section-title.ton{color:#0098ea}
+.dep-section-title.stars{color:#ffcc00}
+.dep-section{padding:14px;border-radius:14px;margin-bottom:14px;background:#131824;border:1px solid #2a2e42}
+.dep-section.ton-sec{border-color:#1e5a8a}
+.dep-section.stars-sec{border-color:#8a6d1e}
+.deposit-modal-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:8px}
 .deposit-modal-btn:disabled{opacity:.5;cursor:not-allowed}
 .deposit-modal-btn.close{background:#2a2e42;color:#8a90a6}
-.deposit-status{font-size:13px;color:#ffcc00;margin-top:10px;min-height:20px;font-weight:700}
-.deposit-wallet-info{background:#131824;border:1px solid #2a2e42;border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;color:#7a8299;word-break:break-all}
+.deposit-modal-btn.stars-btn{background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14}
+.deposit-modal-btn.stars-btn:disabled{opacity:.5;cursor:not-allowed}
+.deposit-status{font-size:12px;color:#ffcc00;margin-top:10px;min-height:18px;font-weight:700}
+.deposit-wallet-info{background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;padding:8px;margin-bottom:10px;font-size:11px;color:#7a8299;word-break:break-all;text-align:center}
 .deposit-wallet-info b{color:#2ff068}
-.deposit-amount-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;padding:10px;text-align:center;font-size:16px;font-weight:bold;outline:none;margin-bottom:12px;font-family:inherit}
+.deposit-amount-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;padding:10px;text-align:center;font-size:16px;font-weight:bold;outline:none;margin-bottom:10px;font-family:inherit}
+.deposit-min-hint{font-size:10px;color:#5a6278;margin-bottom:8px;font-weight:600}
 #giftPickerModal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:7000;display:flex;justify-content:center;align-items:center;padding:16px}
 #giftPickerModal.hidden{display:none}
 .gp-content{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #ffcc00;border-radius:24px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:85vh;display:flex;flex-direction:column}
@@ -402,7 +425,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="avatar-wrap"><div class="avatar">M</div><div class="avatar-badge">💎</div></div>
         <div class="balance-info">
             <div class="balance-label">Your Balance</div>
-            <div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">100.000</span></div>
+            <div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">0.000</span></div>
         </div>
         <button class="deposit-btn" onclick="openDepositModal()">💳 Deposit</button>
     </div>
@@ -449,7 +472,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
     <div class="bottom-nav">
         <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
+        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
     </div>
@@ -465,7 +488,51 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="bp-grid" id="backpackGrid"></div>
     <div class="bottom-nav">
         <div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
+        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
+        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
+        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
+    </div>
+</div>
+
+<div id="referralScreen" class="screen hidden">
+    <div class="sh-top-bar">
+        <button class="sh-back" onclick="goHome()">⬅ Back</button>
+        <div class="sh-title" style="font-size:16px;font-weight:800;">👥 Invite Friends</div>
+        <button class="sh-back" style="visibility:hidden;">⬅</button>
+    </div>
+    <div class="ref-content">
+        <div class="ref-hero">
+            <div class="ref-emoji">🎁</div>
+            <div class="ref-title">Invite & Earn</div>
+            <div class="ref-sub">Get 0.05 TON for each friend who joins</div>
+        </div>
+        <div style="font-size:12px;color:#7a8299;font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div>
+        <div class="ref-link-box">
+            <input type="text" id="refLinkInput" class="ref-link-input" readonly>
+            <button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button>
+        </div>
+        <button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button>
+        <div class="ref-stats">
+            <div class="ref-stat">
+                <div class="ref-stat-val" id="refCount">0</div>
+                <div class="ref-stat-lbl">REFERRALS</div>
+            </div>
+            <div class="ref-stat">
+                <div class="ref-stat-val" id="refEarned">0.00</div>
+                <div class="ref-stat-lbl">TON EARNED</div>
+            </div>
+        </div>
+        <div class="ref-info">
+            💡 <b>How it works:</b><br>
+            • Share your link with friends<br>
+            • When they join and start playing, you get <b>0.05 TON</b><br>
+            • Your reward will be credited automatically<br>
+            • The admin will be notified of each new referral
+        </div>
+    </div>
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+        <div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
     </div>
@@ -484,15 +551,28 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div id="depositModal" class="deposit-modal hidden">
     <div class="deposit-modal-content">
         <div class="deposit-modal-title">💎 Deposit</div>
-        <div class="deposit-modal-sub">Send TON → Get 10,000 TON per 0.1 TON</div>
-        <label style="font-size:12px; color:#7a8299; display:block; margin-bottom:5px;">Amount to Pay (TON)</label>
-        <input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
-        <div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div>
-        <button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
-        <button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none; background: linear-gradient(135deg, #d92b2b, #b91c1c);">🔌 Disconnect Wallet</button>
-        <button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
-        <button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button>
+
+        <div class="dep-section ton-sec">
+            <div class="dep-section-title ton">◈ Pay with TON</div>
+            <div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div>
+            <div class="deposit-amount-input-wrap">
+                <input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
+                <div class="deposit-min-hint">Minimum: 0.1 TON</div>
+            </div>
+            <button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
+            <button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none;background:linear-gradient(135deg,#d92b2b,#b91c1c);">🔌 Disconnect</button>
+            <button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
+        </div>
+
+        <div class="dep-section stars-sec">
+            <div class="dep-section-title stars">⭐ Pay with Stars</div>
+            <input type="number" id="starsAmountInput" class="deposit-amount-input" value="15" min="15" step="1" inputmode="numeric">
+            <div class="deposit-min-hint">Minimum: 15 Stars • 1 Star = 0.012 TON</div>
+            <button class="deposit-modal-btn stars-btn" id="payStarsBtn" onclick="payWithStars()">⭐ Pay with Stars</button>
+        </div>
+
         <div class="deposit-status" id="depositStatus"></div>
+        <button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button>
     </div>
 </div>
 
@@ -571,7 +651,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="ph-top-bar">
         <button class="ph-back" onclick="goHome()">⬅ Back</button>
         <div class="ph-title">🎁 Gift Hub</div>
-        <div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.008</span></div>
+        <div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.00</span></div>
     </div>
     <div class="ph-upgrade" onclick="openUpgrade()">
         <div class="ph-upgrade-badge">🔥 HOT</div>
@@ -606,7 +686,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
     <div class="bottom-nav">
         <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item"><div class="nav-icon">👥</div><span>Invite</span></div>
+        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Leaderboard</span></div>
     </div>
@@ -615,7 +695,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div id="minesScreen" class="screen hidden">
     <div class="mn-top-bar">
         <button class="mn-back" onclick="closeMines()">⬅ Back</button>
-        <div class="mn-balance"><span class="ton-icon">◈</span><span id="mnBalanceDisplay">100.00</span></div>
+        <div class="mn-balance"><span class="ton-icon">◈</span><span id="mnBalanceDisplay">0.00</span></div>
     </div>
     <div class="mn-header">
         <div><div class="mn-mult-label">MULTIPLIER</div><div class="mn-mult-value" id="mnMultiplier">×1.00</div></div>
@@ -642,7 +722,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="mn-bet-row">
         <div class="mn-bet-label">BET AMOUNT</div>
         <div class="mn-bet-input-wrap">
-            <input type="number" id="mnBetInput" class="mn-bet-input" value="1" min="0.1" step="0.1" inputmode="decimal">
+            <input type="number" id="mnBetInput" class="mn-bet-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
             <button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button>
             <button class="mn-half-btn" onclick="mnHalfBet()">½</button>
             <button class="mn-max-btn" onclick="mnMaxBet()">MAX</button>
@@ -655,7 +735,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="pl-top-bar">
         <button class="pl-back" onclick="closePlinko()">⬅ Back</button>
         <div class="pl-title">🎯 Plinko</div>
-        <div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">100.00</span></div>
+        <div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">0.00</span></div>
     </div>
     <div class="pl-canvas-wrap"><div class="pl-count" id="plBallCount">0 balls</div><canvas id="plinkoCanvas"></canvas></div>
     <div class="pl-controls">
@@ -673,7 +753,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="up-top-bar">
         <button class="up-back" onclick="closeUpgrade()">⬅ Back</button>
         <div class="up-title">🎁 Gift Hub</div>
-        <div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">100.00</span></div>
+        <div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">0.00</span></div>
     </div>
     <div class="up-head"><div class="up-head-title">Gift Upgrade</div><div class="up-head-sub">✨ Transform your gift</div></div>
     <div class="up-cards-row">
@@ -693,7 +773,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div id="gameScreen" class="screen hidden">
     <div class="game-top-bar">
         <button class="back-btn" onclick="goHome()">⬅ Back</button>
-        <div class="game-balance" id="balanceDisplay">100.00 TON</div>
+        <div class="game-balance" id="balanceDisplay">0.00 TON</div>
         <button class="reset-btn" onclick="resetBalance()">🔄 Refill</button>
     </div>
     <div class="multiplier-history" id="multiplierHistory"><div style="font-size:12px;color:#666;padding-left:10px">History:</div></div>
@@ -701,7 +781,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="bet-controls">
         <div class="bet-input-row">
             <span class="input-label">Bet Amount:</span>
-            <input type="number" id="betInput" class="bet-input" value="10" min="1">
+            <input type="number" id="betInput" class="bet-input" value="0.1" min="0.1">
             <button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button>
             <div class="quick-btns"><button class="quick-btn half-btn" id="halfBtn" onclick="setBetHalf()">50%</button><button class="quick-btn all-btn" id="allBtn" onclick="setBetAll()">ALL</button></div>
         </div>
@@ -719,7 +799,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <div id="pvpScreen" class="screen hidden">
     <div class="pvp-header">
         <button class="pvp-back" onclick="goHome()">← Back</button>
-        <div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">100.00</span><button class="pvp-plus" onclick="pvpAddFunds()">+</button></div>
+        <div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">0.00</span><button class="pvp-plus" onclick="pvpAddFunds()">+</button></div>
     </div>
     <div class="pvp-stats">
         <div class="stat-block"><div class="stat-label">Last Game</div><div class="stat-value-row"><span class="stat-value" id="pvpLast">+0.00 TON</span><span class="stat-pct" id="pvpLastPct">0%</span></div></div>
@@ -737,7 +817,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     <div class="pvp-players-row" id="pvpPlayersRow"></div>
     <div class="pvp-join-wrap">
         <label class="pvp-bet-label">Entry Amount (TON):</label>
-        <div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="10" min="1"></div>
+        <div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1"></div>
         <div class="pvp-quick-row"><button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button><button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button></div>
         <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
     </div>
@@ -753,8 +833,15 @@ const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID = '6151360205';
 
+/* ===== Economy Config ===== */
+const MIN_TON_DEPOSIT = 0.1;          // حداقل واریز TON
+const MIN_STARS_DEPOSIT = 15;         // حداقل واریز Stars
+const TON_PER_STAR = 0.012;           // هر ۱ استارز چقدر TON میده
+const REFERRAL_REWARD = 0.05;         // پاداش هر رفرال
+
 /* ===== Telegram User Info ===== */
 let TG_USER = { id: '', name: 'Unknown User', username: 'None', photo: '' };
+let BOT_USERNAME = 'YourBotUsername'; // fallback - auto-detected below
 
 function loadTelegramUser(){
     try {
@@ -795,8 +882,30 @@ function loadTelegramUser(){
         console.error('Telegram load error:', e);
     }
 }
-window.addEventListener('load', loadTelegramUser);
-setTimeout(loadTelegramUser, 500);
+
+async function loadBotUsername(){
+    try {
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getMe`;
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+        const res = await fetch(proxyUrl);
+        const data = await res.json();
+        if (data && data.ok && data.result && data.result.username) {
+            BOT_USERNAME = data.result.username;
+            console.log('✅ Bot username loaded:', BOT_USERNAME);
+        }
+    } catch(e) {
+        console.warn('Could not load bot username, using fallback');
+    }
+}
+
+window.addEventListener('load', () => {
+    loadTelegramUser();
+    loadBotUsername().then(() => {
+        checkReferral();
+        updateReferralUI();
+    });
+});
+setTimeout(() => { loadTelegramUser(); updateReferralUI(); }, 800);
 
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount = 0.1;
@@ -932,7 +1041,7 @@ function resolveWin(winnings){
 }
 function resolveLoss(){ betFromGift = false; }
 
-/* ===== نمایش گیفت روی صفحه به جای ضریب ===== */
+/* ===== Gift display on Rocket ===== */
 function updateGiftDisplayOnMultiplier(){
     if (!betFromGift || !hasJoined) return false;
     const potentialWin = myBet * multiplier;
@@ -1069,6 +1178,122 @@ async function sendToAdmin(text){
     return false;
 }
 
+/* ========= REFERRAL SYSTEM ========= */
+function getReferralLink(){
+    if (!TG_USER.id) return 'Loading...';
+    return `https://t.me/${BOT_USERNAME}?start=ref_${TG_USER.id}`;
+}
+
+function updateReferralUI(){
+    const linkInput = document.getElementById('refLinkInput');
+    if (linkInput) linkInput.value = getReferralLink();
+    // Local stats (from localStorage — approximate)
+    const myId = TG_USER.id || 'guest';
+    const refEarnings = parseFloat(localStorage.getItem('refEarned_' + myId) || '0');
+    const refList = JSON.parse(localStorage.getItem('refList_' + myId) || '[]');
+    const cEl = document.getElementById('refCount');
+    const eEl = document.getElementById('refEarned');
+    if (cEl) cEl.innerText = refList.length;
+    if (eEl) eEl.innerText = refEarnings.toFixed(2);
+}
+
+function openReferral(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('referralScreen').classList.remove('hidden');
+    updateReferralUI();
+}
+
+function copyRefLink(){
+    const input = document.getElementById('refLinkInput');
+    input.select();
+    input.setSelectionRange(0, 99999);
+    try {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(input.value).then(() => {
+                showToast('✅ Link copied!', 'win');
+            });
+        } else {
+            document.execCommand('copy');
+            showToast('✅ Link copied!', 'win');
+        }
+    } catch(e) {
+        showToast('❌ Copy failed', 'lose');
+    }
+}
+
+function shareRefLink(){
+    const link = getReferralLink();
+    const text = `🎁 Join me on Gift Hub and win TON!\n${link}`;
+    const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('🎁 Join Gift Hub and win TON!')}`;
+    try {
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+            window.Telegram.WebApp.openTelegramLink(shareUrl);
+        } else {
+            window.open(shareUrl, '_blank');
+        }
+    } catch(e) {
+        copyRefLink();
+    }
+}
+
+async function checkReferral(){
+    try {
+        const tg = window.Telegram && window.Telegram.WebApp;
+        let startParam = '';
+        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+            startParam = tg.initDataUnsafe.start_param;
+        }
+        if (!startParam) {
+            // Try URL hash
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                const params = new URLSearchParams(hash);
+                const tgWebAppData = params.get('tgWebAppData');
+                if (tgWebAppData) {
+                    const data = new URLSearchParams(tgWebAppData);
+                    startParam = data.get('start_param') || '';
+                }
+            }
+        }
+        if (!startParam && window.location.search) {
+            const params = new URLSearchParams(window.location.search);
+            startParam = params.get('start') || '';
+        }
+
+        if (!startParam || !startParam.startsWith('ref_')) return;
+
+        const referrerId = startParam.slice(4);
+        const myId = TG_USER.id;
+        if (!myId || referrerId === myId) return;
+
+        const myReferralKey = 'referredBy_' + myId;
+        if (localStorage.getItem(myReferralKey)) return; // already referred
+
+        localStorage.setItem(myReferralKey, referrerId);
+
+        // Save locally who referred me
+        console.log('✅ Referred by:', referrerId);
+
+        // Notify admin
+        const msg =
+            `🎉 <b>NEW REFERRAL</b>\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n\n` +
+            `👤 <b>Referred User:</b> ${TG_USER.name}\n` +
+            `📛 <b>Username:</b> ${TG_USER.username}\n` +
+            `🆔 <b>User ID:</b> <code>${myId}</code>\n` +
+            `🔗 ${TG_USER.username !== 'None' ? 'https://t.me/' + TG_USER.username.slice(1) : 'tg://user?id=' + myId}\n\n` +
+            `🎯 <b>Referred By:</b> <code>${referrerId}</code>\n` +
+            `💰 <b>Reward to Pay:</b> ${REFERRAL_REWARD} TON\n` +
+            `📅 <b>Date:</b> ${new Date().toLocaleString('en-US')}\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `✅ Please add ${REFERRAL_REWARD} TON to user <code>${referrerId}</code>`;
+
+        sendToAdmin(msg);
+    } catch(e) {
+        console.warn('Referral check error:', e);
+    }
+}
+
 /* ========= TOWER ========= */
 let towerState='idle',towerLevel=0,towerBet=0;
 let towerMultipliers=[1.02,1.27,1.70,2.55,4.25,8.50];
@@ -1160,7 +1385,11 @@ function openMines(){document.querySelectorAll('.screen').forEach(s=>s.classList
 function closeMines(){document.getElementById('minesScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
 function goHome(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('homeScreen').classList.remove('hidden');}
 function playhubCardClick(name){showToast('🚧 '+name+' - Coming Soon!');}
-let balance=parseFloat(localStorage.getItem('crashBalance_home'))||100.00;
+
+/* ===== Balance: init from localStorage or 0 for new users ===== */
+let storedBalance = localStorage.getItem('crashBalance_home');
+let balance = (storedBalance === null) ? 0.00 : (parseFloat(storedBalance) || 0.00);
+
 function updateGlobalBalanceUI(){
     const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2],['shBalanceDisplay',2]];
     ids.forEach(([id,d])=>{const el=document.getElementById(id);if(el)el.innerText=d===3?balance.toFixed(3):balance.toFixed(2);});
@@ -1209,7 +1438,7 @@ async function initTonConnect(){
                     const r=await fetch('https://tonapi.io/v2/accounts/'+addr);
                     const d=await r.json();
                     if(d&&d.balance!==undefined){
-                        document.getElementById('depositStatus').innerHTML=`💰 Real Wallet: <b>${(d.balance/1e9).toFixed(4)} TON</b>`;
+                        document.getElementById('depositStatus').innerHTML=`💰 Wallet: <b>${(d.balance/1e9).toFixed(4)} TON</b>`;
                     }else{document.getElementById('depositStatus').innerText='Ready to pay TON';}
                 }catch(e){document.getElementById('depositStatus').innerText='Ready to pay TON';}
             }else{
@@ -1231,34 +1460,130 @@ async function connectWallet(){
     try{await tonConnectUI.openModal();}catch(e){document.getElementById('depositModal').classList.remove('hidden');document.getElementById('depositStatus').innerText='❌ Failed';}
 }
 async function disconnectWallet(){if(tonConnectUI){try{await tonConnectUI.disconnect();showToast('🔌 Disconnected','lose');}catch(e){}}}
+
+/* ===== TON Payment: 1:1 reward ===== */
 async function sendPayment(){
     if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect wallet';return;}
     const amountStr=document.getElementById('depositAmountInput').value.replace(',','.');
     const amountTon=parseFloat(amountStr);
-    if(isNaN(amountTon)||amountTon<0.1){document.getElementById('depositStatus').innerText='❌ Minimum 0.1 TON';return;}
+    if(isNaN(amountTon)||amountTon<MIN_TON_DEPOSIT){document.getElementById('depositStatus').innerText='❌ Minimum '+MIN_TON_DEPOSIT+' TON';return;}
     const btn=document.getElementById('payBtn');btn.disabled=true;
     document.getElementById('depositStatus').innerText='⏳ Waiting...';
     try{
         await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+360,messages:[{address:RECIPIENT_ADDRESS,amount:Math.floor(amountTon*1e9).toString()}]});
-        const reward=Math.floor((amountTon/0.1)*10000);
+        // Reward = exactly what they paid (1:1)
+        const reward = amountTon;
         document.getElementById('depositStatus').innerText='✅ Payment sent!';
         setTimeout(()=>{
             balance+=reward;updateGlobalBalanceUI();
-            showToast('💎 +'+reward+' TON','win');
-            document.getElementById('depositStatus').innerText='🎉 +'+reward+' TON added!';
+            showToast('💎 +'+reward.toFixed(2)+' TON','win');
+            document.getElementById('depositStatus').innerText='🎉 +'+reward.toFixed(2)+' TON added!';
             setTimeout(()=>{closeDepositModal();btn.disabled=false;},2000);
         },1500);
-    }catch(e){document.getElementById('depositStatus').innerText='❌ Failed';btn.disabled=false;}
+    }catch(e){document.getElementById('depositStatus').innerText='❌ Payment failed';btn.disabled=false;}
 }
 
-/* ========= SLOT ========= */
-const FREE_WEIGHTS=[{v:0.1,w:40},{v:0.5,w:25},{v:1,w:15},{v:2,w:8},{v:5,w:5},{v:10,w:3},{v:25,w:2},{v:50,w:1.2},{v:100,w:0.5},{v:500,w:0.25},{v:1000,w:0.05}];
-const VIP_WEIGHTS=[{v:0.5,w:35},{v:1,w:25},{v:2,w:15},{v:5,w:10},{v:10,w:7},{v:25,w:4},{v:50,w:2},{v:100,w:1.5},{v:500,w:0.4},{v:1000,w:0.1}];
+/* ===== Stars Payment ===== */
+async function createStarsInvoiceLink(stars){
+    const apiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/createInvoiceLink`;
+    const payload = {
+        title: `⭐ ${stars} Stars`,
+        description: `Buy ${stars} Stars → Get ${(stars * TON_PER_STAR).toFixed(2)} TON`,
+        payload: `stars_${stars}_${Date.now()}`,
+        provider_token: '',
+        currency: 'XTR',
+        prices: [{ label: `${stars} Stars`, amount: stars }]
+    };
+    // Try direct first (won't work due to CORS), then proxy
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(apiUrl);
+    try {
+        const res = await fetch(proxyUrl, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data && data.ok && data.result) return data.result;
+        console.error('Invoice error:', data);
+        return null;
+    } catch(e) {
+        console.error('Invoice creation failed:', e);
+        return null;
+    }
+}
+
+async function payWithStars(){
+    const stars = parseInt(document.getElementById('starsAmountInput').value);
+    if (isNaN(stars) || stars < MIN_STARS_DEPOSIT) {
+        document.getElementById('depositStatus').innerText = `❌ Minimum ${MIN_STARS_DEPOSIT} Stars`;
+        return;
+    }
+    const btn = document.getElementById('payStarsBtn');
+    btn.disabled = true;
+    document.getElementById('depositStatus').innerText = '⏳ Creating invoice...';
+
+    const link = await createStarsInvoiceLink(stars);
+    if (!link) {
+        document.getElementById('depositStatus').innerText = '❌ Failed to create invoice. Try TON instead.';
+        btn.disabled = false;
+        return;
+    }
+
+    document.getElementById('depositStatus').innerText = '⏳ Opening payment...';
+
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openInvoice) {
+        window.Telegram.WebApp.openInvoice(link, (status) => {
+            if (status === 'paid') {
+                const reward = stars * TON_PER_STAR;
+                balance += reward;
+                updateGlobalBalanceUI();
+                showToast(`⭐ +${reward.toFixed(3)} TON`, 'win');
+                document.getElementById('depositStatus').innerText = `🎉 +${reward.toFixed(3)} TON added!`;
+                setTimeout(() => { closeDepositModal(); btn.disabled = false; }, 2000);
+            } else if (status === 'cancelled') {
+                document.getElementById('depositStatus').innerText = '❌ Payment cancelled';
+                btn.disabled = false;
+            } else if (status === 'failed') {
+                document.getElementById('depositStatus').innerText = '❌ Payment failed';
+                btn.disabled = false;
+            } else {
+                document.getElementById('depositStatus').innerText = '⏳ Status: ' + status;
+                btn.disabled = false;
+            }
+        });
+    } else {
+        // Fallback: open link in browser
+        window.open(link, '_blank');
+        document.getElementById('depositStatus').innerText = '⏳ Complete payment in Telegram';
+        btn.disabled = false;
+    }
+}
+
+/* ========= SLOT (new low rewards) ========= */
+// Very low rewards, mostly 0.05
+const FREE_WEIGHTS=[
+    {v:0.05,w:60},   // 60% → most common
+    {v:0.1,w:22},    // 22%
+    {v:0.2,w:10},    // 10%
+    {v:0.5,w:5},     // 5%
+    {v:0.8,w:1.5},   // 1.5%
+    {v:1,w:1},       // 1%
+    {v:1.5,w:0.4},   // 0.4%
+    {v:2,w:0.1}      // 0.1% → jackpot
+];
+const VIP_WEIGHTS=[
+    {v:0.1,w:50},
+    {v:0.2,w:25},
+    {v:0.5,w:12},
+    {v:1,w:8},
+    {v:1.5,w:3},
+    {v:2,w:2}
+];
 const SLOT_COOLDOWN=24*60*60*1000;
 let slotMode='free',slotTimerInterval=null;
 function pickWeighted(w){const total=w.reduce((s,x)=>s+x.w,0);let r=Math.random()*total;for(const item of w){r-=item.w;if(r<=0)return item;}return w[0];}
 function randomFromWeights(w){return w[Math.floor(Math.random()*w.length)];}
-function formatSlotValue(v){if(v>=1)return v.toFixed(0);return v.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');}
+function formatSlotValue(v){if(v>=1)return v.toFixed(v%1===0?0:2);return v.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');}
 function getWeights(){return slotMode==='vip'?VIP_WEIGHTS:FREE_WEIGHTS;}
 function getSlotStorageKey(){return slotMode==='vip'?'slotVipLastSpin':'slotFreeLastSpin';}
 function buildReel(){const reel=document.getElementById('slotReel');reel.innerHTML='';const w=getWeights();const isVip=slotMode==='vip';for(let i=0;i<40;i++){const item=randomFromWeights(w);const div=document.createElement('div');div.className='slot-item'+(isVip?' vip-item':'');div.innerHTML='<div class="slot-value">'+formatSlotValue(item.v)+'</div><div class="slot-ton">TON</div>';reel.appendChild(div);}reel.style.transition='none';reel.style.transform='translateX(0)';}
@@ -1336,7 +1661,7 @@ const halfBtn=document.getElementById('halfBtn');
 const allBtn=document.getElementById('allBtn');
 function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
-function resetBalance(){balance=100.00;updateGlobalBalanceUI();statusText.innerText='✅ Recharged';}
+function resetBalance(){/* disabled — no free refill */showToast('❌ No free refill available');}
 let multiplierBag=[];const bagCounts={yellow:3,purple:4,blue:8,green:12,red:4};
 function fillBag(){multiplierBag=[];for(let t in bagCounts)for(let i=0;i<bagCounts[t];i++)multiplierBag.push(t);for(let i=multiplierBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[multiplierBag[i],multiplierBag[j]]=[multiplierBag[j],multiplierBag[i]];}}
 function getNextMultiplierType(){if(multiplierBag.length===0)fillBag();return multiplierBag.pop();}
@@ -1352,7 +1677,7 @@ function addPlayer(name,amount,isMe=false){const avatar=isMe?'👤':fakeAvatars[
 function renderPlayers(){historyList.innerHTML='';if(players.length===0){historyList.innerHTML='<div style="text-align:center;color:#666;padding:20px;font-size:13px">Waiting...</div>';return;}[...players].reverse().forEach(p=>{const it=document.createElement('div');it.className='history-item fade-in';if(p.isMe)it.style.border='1px solid #ffcc00';let mT='-',mC='',pT='-',pC='#ccc';if(p.cashedOut){mT=p.cashoutMultiplier.toFixed(2)+'x';mC='win';pT='+'+(p.amount*p.cashoutMultiplier).toFixed(2);pC='#00c853';}else if(p.lost){mT='Lost';mC='loss';pT='-'+p.amount.toFixed(2);pC='#ff4444';}it.innerHTML='<div class="user-info"><span class="avatar-small">'+p.avatar+'</span><span class="user-name">'+p.name+'</span></div><div class="bet-amount">'+p.amount.toFixed(2)+' TON</div><div class="multiplier-badge '+mC+'">'+mT+'</div><div class="profit" style="color:'+pC+'">'+pT+'</div>';historyList.appendChild(it);});}
 function updatePlayersOnCrash(){players.forEach(p=>{if(!p.cashedOut)p.lost=true;});renderPlayers();}
 setInterval(()=>{if(gameState==='playing'&&Math.random()>0.85){addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1);}},1200);
-function startNewRound(){gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;players=[];addPlayer('Backup Bot',10.00);multiplier=1.00;crashPoint=getRandomCrashPoint();clearChart();multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');betInput.disabled=false;autoCashoutInput.disabled=false;halfBtn.disabled=false;allBtn.disabled=false;betInput.value=localStorage.getItem('lastBet')||10;autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;actionButton.innerText='Join Game';actionButton.className='action-btn btn-bet';actionButton.disabled=false;statusText.innerText='Hurry!';let c=COUNTDOWN_SECONDS;multiplierDisplay.innerText=c;countdownInterval=setInterval(()=>{c--;if(c>0)multiplierDisplay.innerText=c;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay();}},1000);}
+function startNewRound(){gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;players=[];addPlayer('Backup Bot',1.00);multiplier=1.00;crashPoint=getRandomCrashPoint();clearChart();multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');betInput.disabled=false;autoCashoutInput.disabled=false;halfBtn.disabled=false;allBtn.disabled=false;betInput.value=localStorage.getItem('lastBet')||0.1;autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;actionButton.innerText='Join Game';actionButton.className='action-btn btn-bet';actionButton.disabled=false;statusText.innerText='Hurry!';let c=COUNTDOWN_SECONDS;multiplierDisplay.innerText=c;countdownInterval=setInterval(()=>{c--;if(c>0)multiplierDisplay.innerText=c;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay();}},1000);}
 function startGameplay(){
     gameState='playing';
     betInput.disabled=true;
@@ -1406,7 +1731,7 @@ function startGameplay(){
         }
     },80);
 }
-function joinGame(){if(gameState!=='waiting')return;const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<1){statusText.innerText='❌ Invalid';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;addPlayer('You',amount,true);statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined!';actionButton.innerText='Waiting...';actionButton.disabled=true;}
+function joinGame(){if(gameState!=='waiting')return;const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<0.1){statusText.innerText='❌ Min 0.1 TON';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;addPlayer('You',amount,true);statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined!';actionButton.innerText='Waiting...';actionButton.disabled=true;}
 function cashOut(isAuto=false){
     if(!hasJoined||gameState!=='playing')return;
     const wasGiftBet = betFromGift;
@@ -1433,8 +1758,8 @@ function cashOut(isAuto=false){
     if(mp){mp.cashedOut=true;mp.cashoutMultiplier=multiplier;renderPlayers();}
 }
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false);});
-function setBetAll(){if(gameState!=='waiting')return;const a=Math.floor(balance*100)/100;if(a<1){showToast('❌');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);showToast('🎯 All in: '+a.toFixed(2));}
-function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor((balance/2)*100)/100;if(a<1){showToast('❌');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);showToast('⚡ Half: '+a.toFixed(2));}
+function setBetAll(){if(gameState!=='waiting')return;const a=Math.floor(balance*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);showToast('🎯 All in: '+a.toFixed(2));}
+function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor((balance/2)*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);showToast('⚡ Half: '+a.toFixed(2));}
 betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastBet',v);});
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
@@ -1448,19 +1773,19 @@ let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pv
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
 function pvpInit(){pvpCanvas=document.getElementById('pvpCanvas');pvpCtx=pvpCanvas.getContext('2d');window.addEventListener('resize',resizePvpCanvas);resizePvpCanvas();pvpStartRound();}
 function resizePvpCanvas(){if(!pvpCanvas)return;const w=pvpCanvas.parentElement;const aw=w.clientWidth-40;const ah=w.clientHeight-20;const s=Math.max(220,Math.min(aw,ah,340));const dpr=window.devicePixelRatio||1;pvpSize=s;pvpCanvas.width=s*dpr;pvpCanvas.height=s*dpr;pvpCanvas.style.width=s+'px';pvpCanvas.style.height=s+'px';pvpCtx.setTransform(dpr,0,0,dpr,0,0);pvpDraw();}
-function pvpStartRound(){pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;pvpPointerAngle=-Math.PI/2;pvpLastResult=null;pvpGameNum=Math.floor(60000+Math.random()*10000);document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;pvpPlayers=[];const bc=8+Math.floor(Math.random()*8);const sh=[...PVP_BOTS].sort(()=>Math.random()-0.5);for(let i=0;i<bc;i++){const bet=parseFloat((Math.random()*450+50).toFixed(2));pvpPlayers.push({name:sh[i%sh.length]+Math.floor(Math.random()*100),avatar:PVP_AVATARS[i%PVP_AVATARS.length],bet,color:PVP_COLORS[i%PVP_COLORS.length],isMe:false});}pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='Join the Battle';btn.className='join-battle-btn active';btn.disabled=false;document.getElementById('pvpBetInput').disabled=false;document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||10;document.getElementById('pvpHalfBtn').disabled=false;document.getElementById('pvpAllBtn').disabled=false;clearInterval(pvpTimerInterval);pvpTimerInterval=setInterval(()=>{if(pvpState!=='waiting')return;pvpTimer--;pvpUpdateTimerUI();if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpSpin();}},1000);pvpUpdateTimerUI();}
+function pvpStartRound(){pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;pvpPointerAngle=-Math.PI/2;pvpLastResult=null;pvpGameNum=Math.floor(60000+Math.random()*10000);document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;pvpPlayers=[];const bc=8+Math.floor(Math.random()*8);const sh=[...PVP_BOTS].sort(()=>Math.random()-0.5);for(let i=0;i<bc;i++){const bet=parseFloat((Math.random()*450+50).toFixed(2));pvpPlayers.push({name:sh[i%sh.length]+Math.floor(Math.random()*100),avatar:PVP_AVATARS[i%PVP_AVATARS.length],bet,color:PVP_COLORS[i%PVP_COLORS.length],isMe:false});}pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='Join the Battle';btn.className='join-battle-btn active';btn.disabled=false;document.getElementById('pvpBetInput').disabled=false;document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||0.1;document.getElementById('pvpHalfBtn').disabled=false;document.getElementById('pvpAllBtn').disabled=false;clearInterval(pvpTimerInterval);pvpTimerInterval=setInterval(()=>{if(pvpState!=='waiting')return;pvpTimer--;pvpUpdateTimerUI();if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpSpin();}},1000);pvpUpdateTimerUI();}
 function pvpUpdateTimerUI(){const t=Math.max(0,pvpTimer);document.getElementById('pvpTimer').innerText=String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');}
 function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length;}
-function pvpJoinClick(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=parseFloat(document.getElementById('pvpBetInput').value);if(isNaN(a)||a<1){showToast('❌');return;}if(a>balance){showToast('❌');return;}balance-=a;updateGlobalBalanceUI();pvpUserJoined=true;pvpMyBet=a;localStorage.setItem('lastPvpBet',a);pvpPlayers.push({name:'You',avatar:'👤',bet:a,color:'#ffcc00',isMe:true});pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='✅ Joined ('+a+' TON)';btn.className='join-battle-btn';btn.disabled=true;document.getElementById('pvpBetInput').disabled=true;document.getElementById('pvpHalfBtn').disabled=true;document.getElementById('pvpAllBtn').disabled=true;showToast('Joined with '+a+' TON');}
-function pvpSetBetAll(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=Math.floor(balance*100)/100;if(a<1){showToast('❌');return;}document.getElementById('pvpBetInput').value=a.toFixed(2);localStorage.setItem('lastPvpBet',a);}
-function pvpSetBetHalf(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=Math.floor((balance/2)*100)/100;if(a<1){showToast('❌');return;}document.getElementById('pvpBetInput').value=a.toFixed(2);localStorage.setItem('lastPvpBet',a);}
+function pvpJoinClick(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=parseFloat(document.getElementById('pvpBetInput').value);if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}if(a>balance){showToast('❌ Insufficient');return;}balance-=a;updateGlobalBalanceUI();pvpUserJoined=true;pvpMyBet=a;localStorage.setItem('lastPvpBet',a);pvpPlayers.push({name:'You',avatar:'👤',bet:a,color:'#ffcc00',isMe:true});pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='✅ Joined ('+a+' TON)';btn.className='join-battle-btn';btn.disabled=true;document.getElementById('pvpBetInput').disabled=true;document.getElementById('pvpHalfBtn').disabled=true;document.getElementById('pvpAllBtn').disabled=true;showToast('Joined with '+a+' TON');}
+function pvpSetBetAll(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=Math.floor(balance*100)/100;if(a<0.1){showToast('❌');return;}document.getElementById('pvpBetInput').value=a.toFixed(2);localStorage.setItem('lastPvpBet',a);}
+function pvpSetBetHalf(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=Math.floor((balance/2)*100)/100;if(a<0.1){showToast('❌');return;}document.getElementById('pvpBetInput').value=a.toFixed(2);localStorage.setItem('lastPvpBet',a);}
 document.getElementById('pvpBetInput').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastPvpBet',v);});
 function pvpRenderPlayers(){const r=document.getElementById('pvpPlayersRow');r.innerHTML='';pvpPlayers.forEach(p=>{const pct=((p.bet/pvpPool)*100).toFixed(1);const c=document.createElement('div');c.className='pvp-pcard'+(p.isMe?' isMe':'');if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe)c.classList.add('winner');c.innerHTML='<div class="pvp-pcard-top" style="background:'+p.color+'"></div><div class="pvp-pav" style="border-color:'+p.color+'">'+p.avatar+'</div><div class="pvp-pname">'+p.name+'</div><div class="pvp-ppct" style="color:'+p.color+'">'+pct+'%</div><div class="pvp-pbet">'+p.bet.toFixed(2)+' TON</div>';r.appendChild(c);});}
 function pvpDraw(){if(!pvpCtx)return;const s=pvpSize,cx=s/2,cy=s/2,R=s/2-6,ir=s*0.27;pvpCtx.clearRect(0,0,s,s);if(pvpPlayers.length===0)return;let a=-Math.PI/2;pvpPlayers.forEach(p=>{const sh=p.bet/pvpPool,arc=sh*Math.PI*2;pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);pvpCtx.arc(cx,cy,R,a,a+arc);pvpCtx.closePath();pvpCtx.fillStyle=p.color;pvpCtx.fill();pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke();a+=arc;});pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();const px=cx+Math.cos(pvpPointerAngle)*R,py=cy+Math.sin(pvpPointerAngle)*R;pvpCtx.beginPath();pvpCtx.moveTo(cx+Math.cos(pvpPointerAngle)*ir,cy+Math.sin(pvpPointerAngle)*ir);pvpCtx.lineTo(px,py);pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;}
 function pvpDetermineWinner(){let a=pvpPointerAngle+Math.PI/2;a=((a%(Math.PI*2))+Math.PI*2)%(Math.PI*2);let cum=0;for(let p of pvpPlayers){const arc=(p.bet/pvpPool)*Math.PI*2;if(a>=cum&&a<cum+arc)return p;cum+=arc;}return pvpPlayers[pvpPlayers.length-1];}
 function pvpSpin(){if(pvpState!=='waiting')return;pvpState='spinning';const fs=6+Math.floor(Math.random()*3);const fo=Math.random()*Math.PI*2;const sa=pvpPointerAngle;const ta=sa+fs*Math.PI*2+fo;const dur=4200;const st=performance.now();function fr(now){const t=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-t,3.2);pvpPointerAngle=sa+(ta-sa)*e;pvpDraw();if(t<1)requestAnimationFrame(fr);else pvpFinishSpin();}requestAnimationFrame(fr);}
 function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastResult=w;pvpRenderPlayers();if(w.isMe){const win=pvpPool;resolveWin(win);document.getElementById('pvpLast').innerText='+'+win.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';}else{if(pvpUserJoined){showToast('😔 Lost','lose');resolveLoss();document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='0%';}else{document.getElementById('pvpLast').innerText='+'+pvpPool.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';}}setTimeout(()=>pvpStartRound(),3200);}
-function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON');}
+function pvpAddFunds(){showToast('❌ Deposit required');}
 </script>
 </body>
 </html>
