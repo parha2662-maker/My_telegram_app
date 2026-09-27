@@ -317,6 +317,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .pvp-quick-btn:disabled{opacity:.4}
 .join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6}
 .join-battle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
+.leave-battle-btn{width:100%;padding:14px;font-size:15px;font-weight:900;border:none;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,#d92b2b,#b91c1c);color:#fff;margin-top:8px;font-family:inherit;display:none}
+.leave-battle-btn.show{display:block}
 .pvp-players-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid #1a1d2e;flex-shrink:0}
 .pvp-players-header span{font-size:13px;font-weight:700;color:#8a90a6}
 .pvp-players-count{background:#1a1d2e;padding:4px 12px;border-radius:12px;font-size:12px!important}
@@ -732,6 +734,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1"></div>
         <div class="pvp-quick-row"><button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button><button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button></div>
         <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
+        <button class="leave-battle-btn" id="leaveBattleBtn" onclick="pvpLeaveAndRefund()">🚪 Leave & Refund</button>
     </div>
     <div class="pvp-players-header"><span>Players</span><span class="pvp-players-count" id="pvpPlayersCount">👥 0</span></div>
 </div>
@@ -1320,11 +1323,14 @@ async function pvpInit(){
         let round = await q.first();
 
         if (round) {
-            const startTime = round.get('startTime') || 0;
+            // چک کردن سن راند با createdAt (نه startTime)
+            const createdAt = round.get('createdAt');
+            const roundAgeMs = createdAt ? (Date.now() - createdAt.getTime()) : 0;
             const players = round.get('players') || [];
-            const age = Date.now() - (startTime - 15000);
-            if (age > 60000 && players.length < 2) {
-                console.log('🧹 Deleting stale round');
+            
+            // اگه راند بیش از ۹۰ ثانیه از ساختش گذشته و کمتر از ۲ نفر داره → پاک کن
+            if (roundAgeMs > 90000 && players.length < 2) {
+                console.log('🧹 Deleting stale round (age:', Math.round(roundAgeMs/1000), 's)');
                 for (const p of players) {
                     if (String(p.userId) === String(TG_USER.id)) {
                         balance += p.bet;
@@ -1369,7 +1375,6 @@ async function pvpTrySpin(round){
     if (spinTriggered) return;
     spinTriggered = true;
     try {
-        // تاخیر رندوم
         await new Promise(r => setTimeout(r, Math.random() * 600));
         
         await round.fetch();
@@ -1397,7 +1402,6 @@ async function pvpTrySpin(round){
         await round.save();
         console.log('✅ Spin triggered by me!');
         
-        // بعد از ۵ ثانیه، done کن
         setTimeout(async () => {
             try {
                 const r2 = await round.fetch();
@@ -1432,6 +1436,7 @@ function pvpApplyRound(round){
     }
 
     const btn = document.getElementById('joinBattleBtn');
+    const leaveBtn = document.getElementById('leaveBattleBtn');
     const alreadyJoined = players.some(p => String(p.userId) === String(TG_USER.id));
     const myPlayer = players.find(p => String(p.userId) === String(TG_USER.id));
 
@@ -1444,16 +1449,23 @@ function pvpApplyRound(round){
             btn.className = 'join-battle-btn';
             btn.disabled = true;
             document.getElementById('pvpBetInput').disabled = true;
+            
+            // اگه تنها هستی، دکمه Leave & Refund رو نشون بده
+            if (players.length < 2) {
+                leaveBtn.classList.add('show');
+            } else {
+                leaveBtn.classList.remove('show');
+            }
         } else {
             btn.innerText = 'Join the Battle';
             btn.className = 'join-battle-btn active';
             btn.disabled = false;
             document.getElementById('pvpBetInput').disabled = false;
+            leaveBtn.classList.remove('show');
         }
 
         if (remain <= 0) {
             if (players.length >= 2) {
-                // 🔥 هر کسی می‌تونه اسپین کنه
                 pvpTrySpin(round);
             } else {
                 if (Date.now() - lastAutoReset > 5000) {
@@ -1468,12 +1480,13 @@ function pvpApplyRound(round){
         document.getElementById('pvpTimer').innerText = '🎰';
         btn.innerText = 'Spinning...';
         btn.disabled = true;
+        leaveBtn.classList.remove('show');
         pvpAnimateSpin(round.get('finalAngle'));
     } else if (status === 'done') {
         document.getElementById('pvpTimer').innerText = '🏆';
         const winnerId = round.get('winnerId');
         pvpShowResult(winnerId, players, totalPool);
-        // هر کسی می‌تونه reset کنه، ولی فقط یه بار
+        leaveBtn.classList.remove('show');
         if (pvpIsHost && !window._resetScheduled) {
             window._resetScheduled = true;
             setTimeout(async () => {
@@ -1493,6 +1506,41 @@ function pvpApplyRound(round){
     }
 
     pvpDrawWheelReal(players, totalPool, pvpPointerAngle);
+}
+
+async function pvpLeaveAndRefund(){
+    if(!pvpRound) return;
+    try {
+        await pvpRound.fetch();
+        const players = pvpRound.get('players') || [];
+        const myId = String(TG_USER.id);
+        const myPlayer = players.find(p => String(p.userId) === myId);
+        if(!myPlayer){ showToast('❌ You are not in this round', 'lose'); return; }
+        
+        // فقط اگه کمتر از ۲ نفر باشن اجازه برگشت بده
+        if(players.length >= 2){
+            showToast('❌ Cannot leave — game is starting', 'lose');
+            return;
+        }
+        
+        // پول رو برگردون
+        balance += myPlayer.bet;
+        updateGlobalBalanceUI();
+        
+        // پاک کردن round
+        try { await pvpRound.destroy(); } catch(e) {}
+        
+        showToast('💰 Refunded ' + myPlayer.bet.toFixed(2) + ' TON', 'win');
+        
+        // ریستارت PVP
+        window.pvpInitialized = false;
+        spinTriggered = false;
+        lastRenderHash = '';
+        setTimeout(() => { pvpInit(); }, 500);
+    } catch(e) {
+        console.error('Leave error:', e);
+        showToast('❌ Failed to leave', 'lose');
+    }
 }
 
 function resizePvpCanvas(){
