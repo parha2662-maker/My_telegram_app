@@ -904,18 +904,22 @@ function renderBackpack(){
         grid.appendChild(card);
     });
 }
+
+/* ========= SELL — بدون confirm() ========= */
 function sellGift(uid){
-    const gift=getGiftByUid(uid); if(!gift)return;
-    if(!confirm(`Sell "${gift.name}" for ${gift.value.toFixed(2)} TON?`))return;
-    balance+=gift.value; updateGlobalBalanceUI();
-    removeGiftFromInventory(uid); renderBackpack();
-    showToast(`💰 Sold ${gift.name} for +${gift.value.toFixed(2)} TON`,'win');
+    const gift=getGiftByUid(uid); 
+    if(!gift){ showToast('❌ Gift not found','lose'); return; }
+    balance += gift.value; 
+    updateGlobalBalanceUI();
+    removeGiftFromInventory(uid); 
+    renderBackpack();
+    showToast(`💰 Sold ${gift.name} for +${gift.value.toFixed(2)} TON`, 'win');
 }
 
+/* ========= WITHDRAW — بدون confirm() ========= */
 async function requestGiftWithdraw(uid){
     const gift = getGiftByUid(uid);
-    if (!gift) return;
-    if (!confirm(`📤 Request withdrawal?\n\n${gift.emoji} ${gift.name}\nValue: ${gift.value.toFixed(2)} TON\n\nAdmin will send this gift to your Telegram account.`)) return;
+    if (!gift) { showToast('❌ Gift not found', 'lose'); return; }
 
     let userName = 'Unknown User';
     let userId = '';
@@ -957,10 +961,14 @@ async function requestGiftWithdraw(uid){
         } else {
             console.error('Bot error:', data);
             showToast('❌ Bot error: ' + (data.description || 'Unknown'), 'lose');
+            addGiftToInventory(gift);
+            renderBackpack();
         }
     } catch(e) {
         console.error('Send error:', e);
         showToast('❌ Network error. Try again.', 'lose');
+        addGiftToInventory(gift);
+        renderBackpack();
     }
 }
 
