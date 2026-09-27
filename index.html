@@ -923,60 +923,92 @@ function sellGift(uid){
     showToast(`💰 Sold ${gift.name} for +${gift.value.toFixed(2)} TON`, 'win');
 }
 
+/* ========= FIXED: WITHDRAW GIFT ========= */
 async function requestGiftWithdraw(uid){
     const gift = getGiftByUid(uid);
     if (!gift) { showToast('❌ Gift not found', 'lose'); return; }
 
     let userName = 'Unknown User';
     let userId = '';
+    let userUsername = 'None';
     try {
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
             const u = window.Telegram.WebApp.initDataUnsafe.user;
-            userName = (u.first_name || '') + (u.last_name ? ' ' + u.last_name : '');
-            if (u.username) userName += ' (@' + u.username + ')';
+            userName = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown';
+            if (u.username) userUsername = '@' + u.username;
             userId = u.id || '';
         }
     } catch(e) {}
 
-    const msg = 
-        `🎁 <b>GIFT WITHDRAW REQUEST</b>\n\n` +
-        `<b>From:</b> ${userName}\n` +
-        `<b>User ID:</b> <code>${userId}</code>\n\n` +
-        `<b>Gift:</b> ${gift.emoji} ${gift.name}\n` +
-        `<b>Value:</b> ${gift.value.toFixed(2)} TON\n` +
-        `<b>UID:</b> <code>${gift.uid}</code>\n` +
-        `<b>Date:</b> ${new Date().toLocaleString()}\n\n` +
-        `━━━━━━━━━━━━━━━\n` +
-        `✋ Please confirm & send this gift to the user.`;
+    const reqId = 'WD' + Date.now();
 
-    const reqs = JSON.parse(localStorage.getItem('withdrawGiftRequests') || '[]');
-    reqs.push({gift, userName, userId, date: Date.now(), status: 'pending'});
-    localStorage.setItem('withdrawGiftRequests', JSON.stringify(reqs));
-
-    removeGiftFromInventory(uid);
-    renderBackpack();
+    const msg =
+        `🎁 <b>GIFT WITHDRAW REQUEST</b>\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `👤 <b>Name:</b> ${userName}\n` +
+        `📛 <b>Username:</b> ${userUsername}\n` +
+        `🆔 <b>User ID:</b> <code>${userId}</code>\n\n` +
+        `🎀 <b>Gift:</b> ${gift.emoji} ${gift.name}\n` +
+        `💰 <b>Value:</b> ${gift.value.toFixed(2)} TON\n` +
+        `🔑 <b>Request ID:</b> <code>${reqId}</code>\n` +
+        `📅 <b>Date:</b> ${new Date().toLocaleString('en-US')}\n\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ Please send this gift to the user.\n` +
+        `👤 User account: ${userUsername !== 'None' ? userUsername : 'ID: ' + userId}`;
 
     showToast('⏳ Sending to admin...', '');
-    try {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-        const body = `chat_id=${encodeURIComponent(ADMIN_CHAT_ID)}&text=${encodeURIComponent(msg)}&parse_mode=HTML`;
-        const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body });
-        const data = await res.json();
-        if (data.ok) {
-            showToast('✅ Request sent to admin!', 'win');
-        } else {
-            console.error('Bot error:', data);
-            showToast('❌ Bot error: ' + (data.description || 'Unknown'), 'lose');
-            addGiftToInventory(gift);
-            renderBackpack();
-        }
-    } catch(e) {
-        console.error('Send error:', e);
-        showToast('❌ Network error. Try again.', 'lose');
-        addGiftToInventory(gift);
+    const sent = await sendToAdmin(msg);
+
+    if (sent) {
+        const reqs = JSON.parse(localStorage.getItem('withdrawGiftRequests') || '[]');
+        reqs.push({reqId, gift, userName, userId, userUsername, date: Date.now(), status: 'pending'});
+        localStorage.setItem('withdrawGiftRequests', JSON.stringify(reqs));
+        removeGiftFromInventory(uid);
         renderBackpack();
+        showToast('✅ Request sent! Admin will send your gift.', 'win');
+    } else {
+        showToast('❌ Failed. Try again.', 'lose');
     }
 }
+
+async function sendToAdmin(text){
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    const body = `chat_id=${encodeURIComponent(ADMIN_CHAT_ID)}&text=${encodeURIComponent(text)}&parse_mode=HTML&disable_web_page_preview=true`;
+
+    // Method 1: no-cors (works because this is a simple POST request)
+    try {
+        await fetch(url, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: body
+        });
+        console.log('✅ Sent via no-cors');
+        return true;
+    } catch(e) {
+        console.warn('no-cors failed:', e);
+    }
+
+    // Method 2: proxy fallback
+    try {
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+        const res = await fetch(proxyUrl, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: body
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+            console.log('✅ Sent via proxy');
+            return true;
+        }
+    } catch(e) {
+        console.warn('proxy failed:', e);
+    }
+
+    return false;
+}
+/* ========= END FIXED ========= */
 
 /* ========= TOWER ========= */
 let towerState='idle',towerLevel=0,towerBet=0;
@@ -1105,7 +1137,6 @@ async function initTonConnect(){
     try{
         tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});
         tonConnectUI.onStatusChange(async wallet=>{
-            document.getElementById('depositModal').classList.remove('hidden');
             if(wallet){
                 isWalletConnected=true;
                 const addr=wallet.account.address;
