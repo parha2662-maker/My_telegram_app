@@ -76,7 +76,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .bp-gift-name{font-size:13px;font-weight:800;color:#fff;text-align:center;margin-bottom:10px;min-height:18px}
 .bp-gift-sell{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;border:none;padding:8px 12px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;width:100%}
 
-/* Solo Hub */
+/* Tower */
 #soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;display:flex;flex-direction:column;height:100%}
 .sh-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0}
 .sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
@@ -751,7 +751,6 @@ const GIFT_DATABASE = [
     {id:'chill_flame',name:'Chill Flame',emoji:'🔥',value:4.04},
     {id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:4.01},
     {id:'instant_ramen',name:'Instant Ramen',emoji:'🍜',value:4.00},
-    {id:'nothing',name:'Nothing',emoji:'🤷',value:0.00},
     {id:'tama_gadget',name:'Tama Gadget',emoji:'📟',value:4.26},
     {id:'candy_cane',name:'Candy Cane',emoji:'🍬',value:4.24},
     {id:'lol_pop',name:'Lol Pop',emoji:'🍭',value:4.19},
@@ -824,6 +823,46 @@ const GIFT_DATABASE = [
     {id:'snoop_cigar',name:'Snoop Cigar',emoji:'🚬',value:15.20},
     {id:'crystal_ball',name:'Crystal Ball',emoji:'🔮',value:13.09},
     {id:'mad_pumpkin',name:'Mad Pumpkin',emoji:'🎃',value:13.04},
+    {id:'sky_stilettos',name:'Sky Stilettos',emoji:'👠',value:19.03},
+    {id:'ufc_strike',name:'UFC Strike',emoji:'🥊',value:16.41},
+    {id:'trapped_heart',name:'Trapped Heart',emoji:'💔',value:15.55},
+    {id:'love_potion',name:'Love Potion',emoji:'💗',value:15.41},
+    {id:'khabib_papakha',name:"Khabib's Papakha",emoji:'🧢',value:25.37},
+    {id:'electric_skull',name:'Electric Skull',emoji:'💀',value:25.07},
+    {id:'eternal_rose',name:'Eternal Rose',emoji:'🌹',value:24.63},
+    {id:'cupid_charm',name:'Cupid Charm',emoji:'💘',value:21.89},
+    {id:'vintage_cigar',name:'Vintage Cigar',emoji:'🚬',value:36.47},
+    {id:'voodoo_doll',name:'Voodoo Doll',emoji:'🧸',value:36.29},
+    {id:'toy_bear',name:'Toy Bear',emoji:'🧸',value:36.20},
+    {id:'genie_lamp',name:'Genie Lamp',emoji:'🪔',value:33.82},
+    {id:'signet_ring',name:'Signet Ring',emoji:'💍',value:32.79},
+    {id:'diamond_ring',name:'Diamond Ring',emoji:'💎',value:30.67},
+    {id:'bling_binky',name:'Bling Binky',emoji:'👶',value:25.87},
+    {id:'rare_bird',name:'Rare Bird',emoji:'🦅',value:25.40},
+    {id:'sharp_tongue',name:'Sharp Tongue',emoji:'👄',value:44.96},
+    {id:'kissed_frog',name:'Kissed Frog',emoji:'🐸',value:44.26},
+    {id:'bonded_ring',name:'Bonded Ring',emoji:'💍',value:40.37},
+    {id:'neko_helmet',name:'Neko Helmet',emoji:'🏍️',value:37.85},
+    {id:'gem_signet',name:'Gem Signet',emoji:'💍',value:61.33},
+    {id:'swiss_watch',name:'Swiss Watch',emoji:'⌚',value:55.95},
+    {id:'low_rider',name:'Low Rider',emoji:'🚗',value:54.37},
+    {id:'magic_potion',name:'Magic Potion',emoji:'🧪',value:52.68},
+    {id:'perfume_bottle',name:'Perfume Bottle',emoji:'💐',value:74.54},
+    {id:'mini_oscar',name:'Mini Oscar',emoji:'🏆',value:69.50},
+    {id:'ion_gem',name:'Ion Gem',emoji:'💎',value:67.48},
+    {id:'artisan_brick',name:'Artisan Brick',emoji:'🧱',value:62.20},
+    {id:'astral_shard',name:'Astral Shard',emoji:'💎',value:113.81},
+    {id:'nail_bracelet',name:'Nail Bracelet',emoji:'💫',value:113.41},
+    {id:'westside_sign',name:'Westside Sign',emoji:'🤘',value:99.64},
+    {id:'durov_glasses',name:"Durov's Glasses",emoji:'🕶️',value:90.60},
+    {id:'loot_bag',name:'Loot Bag',emoji:'👜',value:121.77},
+    {id:'mighty_arm',name:'Mighty Arm',emoji:'💪',value:113.93},
+    {id:'scared_cat',name:'Scared Cat',emoji:'🐱',value:236.21},
+    {id:'heroic_helmet',name:'Heroic Helmet',emoji:'🪖',value:186.23},
+    {id:'durov_cap',name:"Durov's Cap",emoji:'🧢',value:382.25},
+    {id:'precious_peach',name:'Precious Peach',emoji:'🍑',value:249.37},
+    {id:'plush_pepe',name:'Plush Pepe',emoji:'🐸',value:5906.59},
+    {id:'heart_locket',name:'Heart Locket',emoji:'💝',value:1320.60},
 ];
 
 function getUserGifts(){ try{return JSON.parse(localStorage.getItem('userGifts')||'[]')}catch(e){return[]} }
@@ -831,11 +870,20 @@ function saveUserGifts(g){ localStorage.setItem('userGifts',JSON.stringify(g)) }
 function addGiftToInventory(gift){ const g=getUserGifts(); g.push({...gift,uid:Date.now()+Math.random(),obtainedAt:Date.now()}); saveUserGifts(g); }
 function removeGiftFromInventory(uid){ let g=getUserGifts(); g=g.filter(x=>x.uid!==uid); saveUserGifts(g); }
 function getGiftByUid(uid){ return getUserGifts().find(g=>g.uid===uid); }
+
+// پیدا کردن نزدیک‌ترین گیفت به مبلغ برد (حداقل ۴ TON)
 function pickRandomGiftForValue(value){
-    const min=value*0.7, max=value*1.6;
-    const c=GIFT_DATABASE.filter(g=>g.value>=min&&g.value<=max&&g.value>0);
-    if(c.length===0)return GIFT_DATABASE[Math.floor(Math.random()*GIFT_DATABASE.length)];
-    return c[Math.floor(Math.random()*c.length)];
+    if(value < 4) return null;
+    let closest = null;
+    let minDiff = Infinity;
+    GIFT_DATABASE.forEach(g => {
+        const diff = Math.abs(g.value - value);
+        if(diff < minDiff){
+            minDiff = diff;
+            closest = g;
+        }
+    });
+    return closest;
 }
 
 function openBackpack(){
@@ -1195,7 +1243,7 @@ function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upC
 function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const res=document.getElementById('upResult');res.className='up-result';res.innerText='';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
 function upFinish(){upState='idle';const btn=document.getElementById('upBtn');btn.disabled=false;btn.innerText='🚀 UPGRADE';const res=document.getElementById('upResult');const ga=(upChance/100)*Math.PI*2;let pl=(-upWheelAngle)%(Math.PI*2);if(pl<0)pl+=Math.PI*2;const aw=pl<=ga;if(aw){balance+=upTargetVal;updateGlobalBalanceUI();res.className='up-result win show';res.innerText='🏆 +'+upTargetVal.toFixed(2)+' TON';showToast('🏆 +'+upTargetVal.toFixed(2)+' TON','win');}else{res.className='up-result lose show';res.innerText='😔 Lost -'+upBetVal.toFixed(2)+' TON';showToast('😔 Lost','lose');}upWheelAngle=upWheelAngle%(Math.PI*2);}
 
-/* ========= CRASH ========= */
+/* ========= CRASH / ROCKET ========= */
 let gameState='waiting',multiplier=1.00,crashPoint=0,myBet=0,myAutoCashout=0,hasJoined=false;
 let gameInterval,countdownInterval,roundHistory=[],players=[];
 const multiplierDisplay=document.getElementById('multiplierDisplay');
@@ -1231,31 +1279,32 @@ function startNewRound(){gameState='waiting';hasJoined=false;myBet=0;myAutoCasho
 function startGameplay(){gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;if(hasJoined){statusText.innerText='✅ Joined with '+myBet+' TON.';actionButton.innerText='Cash Out';actionButton.className='action-btn btn-cashout';actionButton.disabled=false;}else{statusText.innerText='Watching...';actionButton.innerText='Not Joined';actionButton.className='action-btn btn-bet';actionButton.disabled=true;}for(let i=0;i<2;i++)addPlayer(fakeNames[Math.floor(Math.random()*fakeNames.length)]+Math.floor(Math.random()*100),Math.random()*50+1);let el=0;gameInterval=setInterval(()=>{el+=80;multiplier=Math.pow(SPEED,el);multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);players.forEach(p=>{if(!p.isMe&&!p.cashedOut&&!p.lost&&Math.random()>0.97){p.cashedOut=true;p.cashoutMultiplier=multiplier;renderPlayers();}});if(multiplier>=crashPoint){clearInterval(gameInterval);multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');gameState='crashed';actionButton.disabled=true;actionButton.innerText='Next...';actionButton.className='action-btn btn-bet';addRoundToHistory(crashPoint);statusText.innerText=hasJoined?'💥 Lost '+myBet+' TON.':'💥 Crashed!';updatePlayersOnCrash();setTimeout(startNewRound,2500);}},80);}
 function joinGame(){if(gameState!=='waiting')return;const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<1){statusText.innerText='❌ Invalid';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;addPlayer('You',amount,true);statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined!';actionButton.innerText='Waiting...';actionButton.disabled=true;}
 
+// 🎁 نسخه جدید cashOut: هر برد >= ۴ TON به گیفت تبدیل میشه
 function cashOut(isAuto=false){
     if(!hasJoined||gameState!=='playing')return;
     const winnings=myBet*multiplier;
-    balance+=winnings;
-    updateGlobalBalanceUI();
     hasJoined=false;
     actionButton.disabled=true;
     actionButton.innerText='Next...';
     actionButton.className='action-btn btn-bet';
     
-    // 🎁 40% شانس دریافت گیفت به جای TON
-    const giftChance = Math.random() < 0.40;
-    if(giftChance && winnings >= 4){
-        const randomGift = pickRandomGiftForValue(winnings);
-        if(randomGift && randomGift.value > 0){
-            balance -= winnings;
-            addGiftToInventory(randomGift);
+    // اگه برد >= ۴ TON بود، به گیفت تبدیل کن
+    if(winnings >= 4){
+        const gift = pickRandomGiftForValue(winnings);
+        if(gift){
+            addGiftToInventory(gift);
+            statusText.innerText = `🎁 Won: ${gift.emoji} ${gift.name} (${gift.value.toFixed(2)} TON)`;
+            showToast(`🎁 ${gift.name} (${gift.value.toFixed(2)} TON)`,'win');
+        } else {
+            balance += winnings;
             updateGlobalBalanceUI();
-            statusText.innerText = `🎁 Won a gift: ${randomGift.emoji} ${randomGift.name} (${randomGift.value.toFixed(2)} TON)!`;
-            showToast(`🎁 Won ${randomGift.name}!`, 'win');
-        }else{
-            statusText.innerText=isAuto?'🤖 +'+winnings.toFixed(2)+' TON':'✅ +'+winnings.toFixed(2)+' TON';
+            statusText.innerText='✅ +'+winnings.toFixed(2)+' TON';
         }
-    }else{
-        statusText.innerText=isAuto?'🤖 +'+winnings.toFixed(2)+' TON':'✅ +'+winnings.toFixed(2)+' TON';
+    } else {
+        // کمتر از ۴ TON به صورت TON پرداخت میشه
+        balance += winnings;
+        updateGlobalBalanceUI();
+        statusText.innerText = isAuto ? '🤖 +'+winnings.toFixed(2)+' TON' : '✅ +'+winnings.toFixed(2)+' TON';
     }
     
     const mp=players.find(p=>p.isMe);
@@ -1292,4 +1341,4 @@ function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastRes
 function pvpAddFunds(){balance+=100;updateGlobalBalanceUI();showToast('+100 TON');}
 </script>
 </body>
-    </html>
+</html>
