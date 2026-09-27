@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Gift Hub</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -752,6 +753,51 @@ const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID = '6151360205';
 
+/* ===== Telegram User Info ===== */
+let TG_USER = { id: '', name: 'Unknown User', username: 'None', photo: '' };
+
+function loadTelegramUser(){
+    try {
+        const tg = window.Telegram && window.Telegram.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+            const u = tg.initDataUnsafe && tg.initDataUnsafe.user;
+            if (u) {
+                TG_USER.id = String(u.id || '');
+                TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
+                TG_USER.username = u.username ? '@' + u.username : 'None';
+                TG_USER.photo = u.photo_url || '';
+                console.log('✅ Telegram user loaded:', TG_USER);
+                return;
+            }
+        }
+        const hash = window.location.hash.slice(1);
+        if (hash) {
+            const params = new URLSearchParams(hash);
+            const userStr = params.get('tgWebAppData');
+            if (userStr) {
+                const data = new URLSearchParams(userStr);
+                const userJson = data.get('user');
+                if (userJson) {
+                    const u = JSON.parse(decodeURIComponent(userJson));
+                    TG_USER.id = String(u.id || '');
+                    TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
+                    TG_USER.username = u.username ? '@' + u.username : 'None';
+                    TG_USER.photo = u.photo_url || '';
+                    console.log('✅ Telegram user loaded from hash:', TG_USER);
+                    return;
+                }
+            }
+        }
+        console.warn('⚠️ Telegram user not found');
+    } catch(e) {
+        console.error('Telegram load error:', e);
+    }
+}
+window.addEventListener('load', loadTelegramUser);
+setTimeout(loadTelegramUser, 500);
+
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount = 0.1;
 let betFromGift = false;
@@ -923,45 +969,38 @@ function sellGift(uid){
     showToast(`💰 Sold ${gift.name} for +${gift.value.toFixed(2)} TON`, 'win');
 }
 
-/* ========= FIXED: WITHDRAW GIFT ========= */
+/* ========= WITHDRAW GIFT (با اطلاعات کامل کاربر) ========= */
 async function requestGiftWithdraw(uid){
     const gift = getGiftByUid(uid);
     if (!gift) { showToast('❌ Gift not found', 'lose'); return; }
 
-    let userName = 'Unknown User';
-    let userId = '';
-    let userUsername = 'None';
-    try {
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-            const u = window.Telegram.WebApp.initDataUnsafe.user;
-            userName = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown';
-            if (u.username) userUsername = '@' + u.username;
-            userId = u.id || '';
-        }
-    } catch(e) {}
+    if (!TG_USER.id) {
+        loadTelegramUser();
+        await new Promise(r => setTimeout(r, 300));
+    }
 
     const reqId = 'WD' + Date.now();
 
     const msg =
         `🎁 <b>GIFT WITHDRAW REQUEST</b>\n` +
         `━━━━━━━━━━━━━━━━━━━━\n\n` +
-        `👤 <b>Name:</b> ${userName}\n` +
-        `📛 <b>Username:</b> ${userUsername}\n` +
-        `🆔 <b>User ID:</b> <code>${userId}</code>\n\n` +
+        `👤 <b>Name:</b> ${TG_USER.name}\n` +
+        `📛 <b>Username:</b> ${TG_USER.username}\n` +
+        `🆔 <b>User ID:</b> <code>${TG_USER.id || 'N/A'}</code>\n` +
+        `🔗 <b>Profile:</b> ${TG_USER.username !== 'None' ? 'https://t.me/' + TG_USER.username.slice(1) : (TG_USER.id ? 'tg://user?id=' + TG_USER.id : 'N/A')}\n\n` +
         `🎀 <b>Gift:</b> ${gift.emoji} ${gift.name}\n` +
         `💰 <b>Value:</b> ${gift.value.toFixed(2)} TON\n` +
         `🔑 <b>Request ID:</b> <code>${reqId}</code>\n` +
         `📅 <b>Date:</b> ${new Date().toLocaleString('en-US')}\n\n` +
         `━━━━━━━━━━━━━━━━━━━━\n` +
-        `✅ Please send this gift to the user.\n` +
-        `👤 User account: ${userUsername !== 'None' ? userUsername : 'ID: ' + userId}`;
+        `✅ Please send this gift to the user.`;
 
     showToast('⏳ Sending to admin...', '');
     const sent = await sendToAdmin(msg);
 
     if (sent) {
         const reqs = JSON.parse(localStorage.getItem('withdrawGiftRequests') || '[]');
-        reqs.push({reqId, gift, userName, userId, userUsername, date: Date.now(), status: 'pending'});
+        reqs.push({reqId, gift, user: TG_USER, date: Date.now(), status: 'pending'});
         localStorage.setItem('withdrawGiftRequests', JSON.stringify(reqs));
         removeGiftFromInventory(uid);
         renderBackpack();
@@ -975,7 +1014,6 @@ async function sendToAdmin(text){
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const body = `chat_id=${encodeURIComponent(ADMIN_CHAT_ID)}&text=${encodeURIComponent(text)}&parse_mode=HTML&disable_web_page_preview=true`;
 
-    // Method 1: no-cors (works because this is a simple POST request)
     try {
         await fetch(url, {
             method: 'POST',
@@ -989,7 +1027,6 @@ async function sendToAdmin(text){
         console.warn('no-cors failed:', e);
     }
 
-    // Method 2: proxy fallback
     try {
         const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
         const res = await fetch(proxyUrl, {
@@ -1008,7 +1045,6 @@ async function sendToAdmin(text){
 
     return false;
 }
-/* ========= END FIXED ========= */
 
 /* ========= TOWER ========= */
 let towerState='idle',towerLevel=0,towerBet=0;
