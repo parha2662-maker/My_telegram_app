@@ -749,10 +749,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=10,PL_MAX_BALLS=20,VIP_CODE='parham2010';
 const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 
-/* ========== اطلاعات ربات تلگرام ========== */
 const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID = '6151360205';
-/* ========================================= */
 
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount = 0.1;
@@ -822,9 +820,19 @@ const GIFT_DATABASE = [
 
 function getUserGifts(){ try{return JSON.parse(localStorage.getItem('userGifts')||'[]')}catch(e){return[]} }
 function saveUserGifts(g){ localStorage.setItem('userGifts',JSON.stringify(g)) }
-function addGiftToInventory(gift){ const g=getUserGifts(); g.push({...gift,uid:Date.now()+Math.random(),obtainedAt:Date.now()}); saveUserGifts(g); }
-function removeGiftFromInventory(uid){ let g=getUserGifts(); g=g.filter(x=>x.uid!==uid); saveUserGifts(g); }
-function getGiftByUid(uid){ return getUserGifts().find(g=>g.uid===uid); }
+function addGiftToInventory(gift){ 
+    const g=getUserGifts(); 
+    g.push({...gift, uid: String(Date.now())+'_'+String(Math.random()).slice(2,8), obtainedAt:Date.now()}); 
+    saveUserGifts(g); 
+}
+function removeGiftFromInventory(uid){ 
+    let g=getUserGifts(); 
+    g = g.filter(x => String(x.uid) !== String(uid)); 
+    saveUserGifts(g); 
+}
+function getGiftByUid(uid){ 
+    return getUserGifts().find(g => String(g.uid) === String(uid)); 
+}
 function pickClosestGiftTemplate(value){
     let closest = GIFT_DATABASE[0]; let minDiff = Infinity;
     GIFT_DATABASE.forEach(g => { const d = Math.abs(g.value - value); if(d < minDiff){ minDiff = d; closest = g; } });
@@ -905,7 +913,6 @@ function renderBackpack(){
     });
 }
 
-/* ========= SELL — بدون confirm() ========= */
 function sellGift(uid){
     const gift=getGiftByUid(uid); 
     if(!gift){ showToast('❌ Gift not found','lose'); return; }
@@ -916,7 +923,6 @@ function sellGift(uid){
     showToast(`💰 Sold ${gift.name} for +${gift.value.toFixed(2)} TON`, 'win');
 }
 
-/* ========= WITHDRAW — بدون confirm() ========= */
 async function requestGiftWithdraw(uid){
     const gift = getGiftByUid(uid);
     if (!gift) { showToast('❌ Gift not found', 'lose'); return; }
