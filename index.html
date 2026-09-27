@@ -748,7 +748,7 @@ const REFERRAL_REWARD = 0.05;
 
 /* ===== Back4App (Parse) ===== */
 const PARSE_APP_ID = 'vNgoEBHPwHBkfwGWa8bcBRlnl5FtIoi7URTQ8FrQ';
-const PARSE_JS_KEY = 'zULQHPuWW28TYuXkjLqk9P1K0poJouToWDnK8wcr';
+const PARSE_JS_KEY = 'djVtC2gZ9gmdRDxf6ztd26D7deEWXsKWXcGvUEdO';
 const PARSE_SERVER = 'https://parseapi.back4app.com';
 
 Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
@@ -1291,7 +1291,7 @@ betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!is
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
-/* ========= PVP (Back4App) ========= */
+/* ========= PVP (Back4App Realtime) ========= */
 window.pvpInitialized=false;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpPointerAngle=-Math.PI/2;
 let pvpRound=null,pvpSubscription=null,pvpIsHost=false,pvpMyBet=0;
@@ -1305,6 +1305,15 @@ async function pvpInit(){
     resizePvpCanvas();
 
     try {
+        // مرحله ۱: ساخت کلاس با Cloud Function
+        try {
+            const result = await Parse.Cloud.run('initPvpClass');
+            console.log('✅ Cloud init:', result);
+        } catch(cloudErr) {
+            console.warn('⚠️ Cloud init error:', cloudErr);
+        }
+
+        // مرحله ۲: پیدا کردن یا ساختن راند
         const q = new Parse.Query(PvpRoundClass);
         q.equalTo('status', 'waiting');
         q.descending('createdAt');
@@ -1559,4 +1568,4 @@ function pvpSetBetHalf(){ const a=Math.floor((balance/2)*100)/100; if(a>=0.1) do
 function pvpAddFunds(){ showToast('❌ Deposit required'); }
 </script>
 </body>
-</html>
+    </html>
