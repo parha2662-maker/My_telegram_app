@@ -1297,6 +1297,7 @@ let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpPointerAngle=-Math.PI/2;
 let pvpRound=null,pvpSubscription=null,pvpIsHost=false,pvpMyBet=0;
 let lastAutoReset = 0;
 let lastRenderHash = '';
+let spinTriggered = false;
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0','#ff9f1a','#18dcff','#32ff7e','#7d5fff'];
 const PvpRoundClass = Parse.Object.extend('PvpRound');
 
@@ -1307,27 +1308,22 @@ async function pvpInit(){
     resizePvpCanvas();
 
     try {
-        // ۱. Cloud init
         try {
             await Parse.Cloud.run('initPvpClass');
             console.log('✅ Cloud init done');
         } catch(e) { console.warn('Cloud init:', e); }
 
-        // ۲. پیدا کردن یا ساختن راند
         const q = new Parse.Query(PvpRoundClass);
         q.equalTo('status', 'waiting');
         q.descending('createdAt');
         q.limit(1);
         let round = await q.first();
 
-        // ۳. چک کردن راند قدیمی گیرکرده
         if (round) {
             const startTime = round.get('startTime') || 0;
             const players = round.get('players') || [];
             const age = Date.now() - (startTime - 15000);
-
-            // اگه راند بیش از ۲ دقیقه گیر کرده و کمتر از ۲ نفر داره → پاکش کن
-            if (age > 120000 && players.length < 2) {
+            if (age > 60000 && players.length < 2) {
                 console.log('🧹 Deleting stale round');
                 for (const p of players) {
                     if (String(p.userId) === String(TG_USER.id)) {
@@ -1341,7 +1337,6 @@ async function pvpInit(){
             }
         }
 
-        // ۴. ساختن راند جدید اگه لازمه
         if (!round) {
             round = new PvpRoundClass();
             round.set('status', 'waiting');
@@ -1356,9 +1351,9 @@ async function pvpInit(){
 
         pvpRound = round;
         lastRenderHash = '';
+        spinTriggered = false;
         pvpApplyRound(round);
 
-        // ۵. Subscribe
         const subQ = new Parse.Query(PvpRoundClass);
         subQ.equalTo('objectId', round.id);
         pvpSubscription = await subQ.subscribe();
@@ -1367,6 +1362,55 @@ async function pvpInit(){
     } catch(e) {
         console.error('PVP init error:', e);
         showToast('❌ PVP: ' + (e.message || 'unknown'), 'lose');
+    }
+}
+
+async function pvpTrySpin(round){
+    if (spinTriggered) return;
+    spinTriggered = true;
+    try {
+        // تاخیر رندوم
+        await new Promise(r => setTimeout(r, Math.random() * 600));
+        
+        await round.fetch();
+        if(round.get('status') !== 'waiting'){ spinTriggered = false; return; }
+        const players = round.get('players') || [];
+        if(players.length < 2){ spinTriggered = false; return; }
+        
+        const totalPool = players.reduce((s,p)=>s+p.bet,0);
+        let rand = Math.random()*totalPool;
+        let winnerId = players[0].userId;
+        for(const p of players){ rand -= p.bet; if(rand<=0){ winnerId = p.userId; break; } }
+        
+        let cumul=0,winnerStart=0,winnerArc=0;
+        for(const p of players){
+            const arc=(p.bet/totalPool)*Math.PI*2;
+            if(String(p.userId)===String(winnerId)){ winnerStart=cumul; winnerArc=arc; break; }
+            cumul+=arc;
+        }
+        const winnerMidOffset = winnerStart + winnerArc/2;
+        const finalAngle = -Math.PI/2 - winnerMidOffset;
+        
+        round.set('status','spinning');
+        round.set('winnerId', String(winnerId));
+        round.set('finalAngle', finalAngle);
+        await round.save();
+        console.log('✅ Spin triggered by me!');
+        
+        // بعد از ۵ ثانیه، done کن
+        setTimeout(async () => {
+            try {
+                const r2 = await round.fetch();
+                if(r2.get('status') === 'spinning'){
+                    r2.set('status','done');
+                    await r2.save();
+                    pvpHandlePayout(winnerId, players, totalPool);
+                }
+            } catch(e) { console.warn('Done save err:', e); }
+        }, 5000);
+    } catch(e) {
+        console.warn('Spin attempt failed:', e);
+        spinTriggered = false;
     }
 }
 
@@ -1408,11 +1452,13 @@ function pvpApplyRound(round){
         }
 
         if (remain <= 0) {
-            if (players.length >= 2 && pvpIsHost) {
-                pvpHostSpin(round);
+            if (players.length >= 2) {
+                // 🔥 هر کسی می‌تونه اسپین کنه
+                pvpTrySpin(round);
             } else {
                 if (Date.now() - lastAutoReset > 5000) {
                     lastAutoReset = Date.now();
+                    spinTriggered = false;
                     round.set('startTime', Date.now() + 15000);
                     round.save().catch(e => console.warn('Reset err:', e));
                 }
@@ -1427,7 +1473,9 @@ function pvpApplyRound(round){
         document.getElementById('pvpTimer').innerText = '🏆';
         const winnerId = round.get('winnerId');
         pvpShowResult(winnerId, players, totalPool);
-        if (pvpIsHost) {
+        // هر کسی می‌تونه reset کنه، ولی فقط یه بار
+        if (pvpIsHost && !window._resetScheduled) {
+            window._resetScheduled = true;
             setTimeout(async () => {
                 try {
                     round.set('status', 'waiting');
@@ -1437,7 +1485,9 @@ function pvpApplyRound(round){
                     round.set('winnerId', '');
                     round.set('finalAngle', -Math.PI/2);
                     await round.save();
-                } catch(e) {}
+                    window._resetScheduled = false;
+                    spinTriggered = false;
+                } catch(e) { window._resetScheduled = false; }
             }, 5000);
         }
     }
@@ -1519,40 +1569,6 @@ function pvpAnimateSpin(finalAngle){
         else { pvpPointerAngle = finalAngle; window.pvpSpinAnimating = false; }
     }
     requestAnimationFrame(frame);
-}
-
-async function pvpHostSpin(round){
-    try {
-        await round.fetch();
-        if(round.get('status') !== 'waiting') return;
-        const players = round.get('players') || [];
-        if(players.length < 2) return;
-        const totalPool = players.reduce((s,p)=>s+p.bet,0);
-        let rand = Math.random()*totalPool;
-        let winnerId = players[0].userId;
-        for(const p of players){ rand -= p.bet; if(rand<=0){ winnerId = p.userId; break; } }
-        let cumul=0,winnerStart=0,winnerArc=0;
-        for(const p of players){
-            const arc=(p.bet/totalPool)*Math.PI*2;
-            if(String(p.userId)===String(winnerId)){ winnerStart=cumul; winnerArc=arc; break; }
-            cumul+=arc;
-        }
-        const winnerMidOffset = winnerStart + winnerArc/2;
-        const finalAngle = -Math.PI/2 - winnerMidOffset;
-
-        round.set('status','spinning');
-        round.set('winnerId', String(winnerId));
-        round.set('finalAngle', finalAngle);
-        await round.save();
-
-        setTimeout(async () => {
-            try {
-                round.set('status','done');
-                await round.save();
-                pvpHandlePayout(winnerId, players, totalPool);
-            } catch(e) {}
-        }, 5000);
-    } catch(e) { console.error('Host spin error:', e); }
 }
 
 function pvpHandlePayout(winnerId, players, totalPool){
