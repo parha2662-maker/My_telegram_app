@@ -66,6 +66,37 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .nav-item.active{color:#fff}
 .nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px}
 .nav-icon{font-size:22px}
+#adminFloatBtn{position:fixed;top:16px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;border:none;font-size:24px;font-weight:900;cursor:pointer;z-index:500;display:none;box-shadow:0 8px 20px rgba(255,204,0,.5);align-items:center;justify-content:center}
+#adminFloatBtn.show{display:flex}
+#adminScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:400;overflow-y:auto;padding-bottom:30px}
+.adm-wrap{padding:14px 16px}
+.adm-search-row{display:flex;gap:8px;margin-bottom:14px}
+.adm-search-input{flex:1;background:#1a1d2e;border:2px solid #2a2e42;border-radius:12px;color:#fff;padding:12px 14px;font-size:15px;font-weight:700;outline:none;font-family:inherit;min-width:0}
+.adm-search-input:focus{border-color:#ffcc00}
+.adm-search-btn{background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;border:none;padding:0 18px;border-radius:12px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit}
+.adm-card{background:#1a1d2e;border:1px solid #2a2e42;border-radius:18px;padding:16px;margin-bottom:14px}
+.adm-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #22263a;font-size:13px}
+.adm-row:last-child{border-bottom:none}
+.adm-row-label{color:#7a8299;font-weight:700}
+.adm-row-value{color:#fff;font-weight:800;word-break:break-all;text-align:right;max-width:60%}
+.adm-row-value.green{color:#2ff068}
+.adm-row-value.red{color:#ff4444}
+.adm-row-value.gold{color:#ffcc00}
+.adm-section-title{font-size:12px;color:#7a8299;font-weight:800;letter-spacing:1px;margin-bottom:10px;margin-top:8px}
+.adm-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;padding:12px;font-size:15px;font-weight:700;outline:none;font-family:inherit;margin-bottom:8px}
+.adm-btn-row{display:flex;gap:6px;margin-bottom:8px}
+.adm-btn{flex:1;padding:12px 6px;border-radius:10px;border:none;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;color:#fff}
+.adm-btn.add{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
+.adm-btn.remove{background:linear-gradient(135deg,#ff5c5c,#b91c1c)}
+.adm-btn.set{background:linear-gradient(135deg,#0098ea,#0072ff)}
+.adm-empty{text-align:center;color:#5a6278;font-size:12px;padding:14px}
+.adm-warn{background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.3);color:#ffcc00;padding:10px 12px;border-radius:10px;font-size:11px;font-weight:700;margin-bottom:12px;line-height:1.5}
+.adm-user-card{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #ffcc00;border-radius:18px;padding:16px;margin-bottom:14px}
+.adm-user-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #22263a}
+.adm-user-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2ff0e0,#1e9cff);display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:800;flex-shrink:0}
+.adm-user-info{flex:1;min-width:0}
+.adm-user-name{font-size:15px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-user-id{font-size:11px;color:#7a8299;margin-top:2px}
 #backpackScreen{background:radial-gradient(circle at 50% 0%, #1a1f3a 0%, #0a0d14 60%);z-index:185;overflow-y:auto;padding-bottom:90px}
 .bp-total-pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(47,240,104,.1);border:1px solid rgba(47,240,104,.3);color:#2ff068;padding:12px 20px;border-radius:14px;margin:0 16px 16px;font-weight:800;font-size:15px}
 .bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
@@ -383,6 +414,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 </head>
 <body>
 
+<button id="adminFloatBtn" onclick="openAdmin()">👑</button>
+
 <div id="homeScreen" class="screen">
     <div class="balance-row">
         <div class="avatar-wrap"><div class="avatar">M</div><div class="avatar-badge">💎</div></div>
@@ -440,6 +473,22 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
 </div>
 
+<div id="adminScreen" class="screen hidden">
+    <div class="sh-top-bar">
+        <button class="sh-back" onclick="goHome()">⬅ Back</button>
+        <div class="sh-title">👑 Admin Panel</div>
+        <button class="sh-back" style="visibility:hidden;">⬅</button>
+    </div>
+    <div class="adm-wrap">
+        <div class="adm-warn">🔍 Enter a user's Telegram numeric ID to manage their account.</div>
+        <div class="adm-search-row">
+            <input type="text" id="adminSearchId" class="adm-search-input" placeholder="User ID e.g. 123456789" inputmode="numeric">
+            <button class="adm-search-btn" onclick="adminSearchUser()">🔍 Find</button>
+        </div>
+        <div id="adminUserCard"></div>
+    </div>
+</div>
+
 <div id="backpackScreen" class="screen hidden">
     <div class="sh-top-bar">
         <button class="sh-back" onclick="goHome()">⬅ Back</button>
@@ -448,12 +497,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
     </div>
     <div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div>
     <div class="bp-grid" id="backpackGrid"></div>
-    <div class="bottom-nav">
-        <div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
-    </div>
 </div>
 
 <div id="referralScreen" class="screen hidden">
@@ -474,17 +517,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button>
         </div>
         <button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button>
-        <div class="ref-stats">
-            <div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div>
-            <div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div>
-        </div>
-        <div class="ref-info">💡 <b>How it works:</b><br>• Share your link<br>• Get <b>0.05 TON</b> per friend</div>
-    </div>
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
     </div>
 </div>
 
@@ -596,12 +628,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="ph-game-card ph-card-dice" onclick="playhubCardClick('Dice')">
             <div class="ph-game-icon">🎲</div><div class="ph-game-title">Dice</div><div class="ph-game-sub">Higher or Lower</div>
         </div>
-    </div>
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item active"><div class="nav-icon">🎮</div><span>Games</span></div>
     </div>
 </div>
 
@@ -743,20 +769,25 @@ const SPEED=1.0001,COUNTDOWN_SECONDS=8,PL_MAX_BALLS=20,VIP_CODE='parham2010';
 const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID = '6151360205';
+const ADMIN_ID = '6151360205';
 const MIN_TON_DEPOSIT = 0.1;
 const REFERRAL_REWARD = 0.05;
 
-/* ===== Back4App (Parse) ===== */
+/* ===== Back4App ===== */
 const PARSE_APP_ID = 'vNgoEBHPwHBkfwGWa8bcBRlnl5FtIoi7URTQ8FrQ';
 const PARSE_JS_KEY = 'djVtC2gZ9gmdRDxf6ztd26D7deEWXsKWXcGvUEdO';
 const PARSE_SERVER = 'https://parseapi.back4app.com';
 
 Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
 Parse.serverURL = PARSE_SERVER;
-console.log('✅ Parse initialized');
+
+let usersRef = null;
+let currentUserObject = null;
+let userDataWatcher = null;
 
 let TG_USER = { id: '', name: 'Unknown User', username: 'None', photo: '' };
 let BOT_USERNAME = 'YourBotUsername';
+let IS_ADMIN = false;
 
 function loadTelegramUser(){
     try {
@@ -769,6 +800,10 @@ function loadTelegramUser(){
                 TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
                 TG_USER.username = u.username ? '@' + u.username : 'None';
                 TG_USER.photo = u.photo_url || '';
+                if (TG_USER.id === ADMIN_ID) {
+                    IS_ADMIN = true;
+                    document.getElementById('adminFloatBtn').classList.add('show');
+                }
                 return;
             }
         }
@@ -785,11 +820,16 @@ function loadTelegramUser(){
                     TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
                     TG_USER.username = u.username ? '@' + u.username : 'None';
                     TG_USER.photo = u.photo_url || '';
+                    if (TG_USER.id === ADMIN_ID) {
+                        IS_ADMIN = true;
+                        document.getElementById('adminFloatBtn').classList.add('show');
+                    }
                 }
             }
         }
     } catch(e) {}
 }
+
 async function loadBotUsername(){
     try {
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/getMe`;
@@ -799,42 +839,251 @@ async function loadBotUsername(){
         if (data && data.ok && data.result && data.result.username) BOT_USERNAME = data.result.username;
     } catch(e) {}
 }
+
+/* ===== Firebase-style: Back4App User Sync ===== */
+async function syncUserWithBack4App(){
+    if (!TG_USER.id) return;
+    try {
+        const UserClass = Parse.Object.extend('_User');
+        const q = new Parse.Query(UserClass);
+        q.equalTo('telegramId', TG_USER.id);
+        let user = await q.first();
+
+        if (!user) {
+            user = new UserClass();
+            user.set('telegramId', TG_USER.id);
+            user.set('username', 'tg_' + TG_USER.id);
+            user.set('password', 'tg_' + TG_USER.id + '_' + Date.now());
+            user.set('name', TG_USER.name);
+            user.set('telegramUsername', TG_USER.username);
+            user.set('balance', balance);
+            user.set('banned', false);
+            user.set('gifts', []);
+            await user.save();
+            console.log('✅ New user created');
+        } else {
+            // Load balance
+            const remoteBalance = user.get('balance');
+            if (typeof remoteBalance === 'number') {
+                // فقط اگه اختلاف داره آپدیت کن
+                if (Math.abs(remoteBalance - balance) > 0.001) {
+                    balance = remoteBalance;
+                    updateGlobalBalanceUI(false);
+                }
+            }
+            // Check banned
+            if (user.get('banned')) {
+                document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif;background:#0a0d14;height:100vh;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:80px;">🚫</div><div style="font-size:24px;font-weight:900;color:#ff4444;margin-top:20px;">Access Denied</div><div style="color:#7a8299;margin-top:10px;">Your account has been suspended.</div></div>';
+                return;
+            }
+        }
+        currentUserObject = user;
+        localStorage.setItem('userObjectId', user.id);
+
+        // Real-time listener — اگه ادمین موجودی رو از راه دور تغییر داد، این آپدیت بشه
+        if(userDataWatcher) userDataWatcher.unsubscribe();
+        const watchQ = new Parse.Query(UserClass);
+        watchQ.equalTo('objectId', user.id);
+        userDataWatcher = await watchQ.subscribe();
+        userDataWatcher.on('update', (u) => {
+            const remoteBalance = u.get('balance');
+            if (typeof remoteBalance === 'number') {
+                if (Math.abs(remoteBalance - balance) > 0.001) {
+                    balance = remoteBalance;
+                    updateGlobalBalanceUI(false);
+                    showToast('💎 Balance updated: ' + balance.toFixed(2) + ' TON', 'win');
+                }
+            }
+            if (u.get('banned')) {
+                document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif;background:#0a0d14;height:100vh;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:80px;">🚫</div><div style="font-size:24px;font-weight:900;color:#ff4444;margin-top:20px;">Access Denied</div><div style="color:#7a8299;margin-top:10px;">Your account has been suspended.</div></div>';
+            }
+        });
+    } catch(e) {
+        console.warn('Sync error:', e);
+    }
+}
+
+async function pushBalanceToBack4App(){
+    if (!currentUserObject) return;
+    try {
+        currentUserObject.set('balance', balance);
+        await currentUserObject.save();
+    } catch(e) { console.warn('Push balance failed:', e); }
+}
+
 window.addEventListener('load', () => {
     loadTelegramUser();
-    loadBotUsername().then(() => { checkReferral(); updateReferralUI(); });
+    loadBotUsername().then(() => {
+        checkReferral();
+        updateReferralUI();
+        setTimeout(syncUserWithBack4App, 500);
+    });
 });
-setTimeout(() => { loadTelegramUser(); updateReferralUI(); }, 800);
 
-let tonConnectUI=null,isWalletConnected=false;
-let soloBetAmount = 0.1;
-let betFromGift = false;
+/* ===== ADMIN PANEL ===== */
+function openAdmin(){
+    if (!IS_ADMIN) return;
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('adminScreen').classList.remove('hidden');
+    document.getElementById('adminUserCard').innerHTML = '';
+    document.getElementById('adminSearchId').value = '';
+}
 
+async function adminSearchUser(){
+    const id = document.getElementById('adminSearchId').value.trim();
+    const card = document.getElementById('adminUserCard');
+    if (!id) { showToast('❌ Enter user ID', 'lose'); return; }
+    card.innerHTML = '<div class="adm-card" style="text-align:center;color:#7a8299;">⏳ Searching...</div>';
+    try {
+        const UserClass = Parse.Object.extend('_User');
+        const q = new Parse.Query(UserClass);
+        q.equalTo('telegramId', id);
+        const user = await q.first();
+        if (!user) {
+            card.innerHTML = '<div class="adm-card" style="text-align:center;color:#ff4444;font-weight:700;">❌ User not found</div>';
+            return;
+        }
+        renderAdminUserCard(user);
+    } catch(e) {
+        card.innerHTML = '<div class="adm-card" style="text-align:center;color:#ff4444;">❌ Error: ' + e.message + '</div>';
+    }
+}
+
+function renderAdminUserCard(user){
+    const card = document.getElementById('adminUserCard');
+    const name = user.get('name') || 'Unknown';
+    const username = user.get('telegramUsername') || 'None';
+    const tgId = user.get('telegramId') || 'N/A';
+    const bal = (user.get('balance') || 0).toFixed(3);
+    const banned = user.get('banned') ? 'YES 🚫' : 'No';
+    const objId = user.id;
+
+    card.innerHTML = `
+        <div class="adm-user-card">
+            <div class="adm-user-header">
+                <div class="adm-user-avatar">👤</div>
+                <div class="adm-user-info">
+                    <div class="adm-user-name">${name}</div>
+                    <div class="adm-user-id">ID: ${tgId} • ${username}</div>
+                </div>
+            </div>
+            <div class="adm-row"><span class="adm-row-label">💰 Balance</span><span class="adm-row-value gold">${bal} TON</span></div>
+            <div class="adm-row"><span class="adm-row-label">🚫 Banned</span><span class="adm-row-value ${user.get('banned')?'red':'green'}">${banned}</span></div>
+            <div class="adm-row"><span class="adm-row-label">🆔 Object</span><span class="adm-row-value" style="font-size:10px;">${objId.slice(0,10)}...</span></div>
+        </div>
+
+        <div class="adm-card">
+            <div class="adm-section-title">💵 CHANGE BALANCE</div>
+            <input type="number" id="admAmountInput" class="adm-input" placeholder="Amount (TON)" value="1" step="0.1">
+            <div class="adm-btn-row">
+                <button class="adm-btn add" onclick="adminChangeBalance('add')">➕ Add</button>
+                <button class="adm-btn remove" onclick="adminChangeBalance('remove')">➖ Remove</button>
+            </div>
+            <div class="adm-btn-row">
+                <button class="adm-btn set" onclick="adminChangeBalance('set')">🎯 Set Exactly</button>
+            </div>
+        </div>
+
+        <div class="adm-card">
+            <div class="adm-section-title">🚫 BAN CONTROL</div>
+            <div class="adm-btn-row">
+                ${user.get('banned')
+                    ? '<button class="adm-btn add" onclick="adminToggleBan(false)">✅ Unban User</button>'
+                    : '<button class="adm-btn remove" onclick="adminToggleBan(true)">🚫 Ban User</button>'}
+            </div>
+        </div>
+
+        <div class="adm-card">
+            <div class="adm-section-title">📤 SEND MESSAGE</div>
+            <input type="text" id="admMsgInput" class="adm-input" placeholder="Message to user...">
+            <button class="adm-btn set" onclick="adminSendMessage()">📨 Send via Bot</button>
+        </div>
+    `;
+
+    window._adminCurrentUserId = tgId;
+    window._adminCurrentObjectId = objId;
+}
+
+async function adminChangeBalance(action){
+    const id = window._adminCurrentUserId;
+    const objId = window._adminCurrentObjectId;
+    if (!id || !objId) return;
+    const amount = parseFloat(document.getElementById('admAmountInput').value);
+    if (isNaN(amount) || amount < 0) { showToast('❌ Invalid amount', 'lose'); return; }
+    try {
+        const UserClass = Parse.Object.extend('_User');
+        const q = new Parse.Query(UserClass);
+        const user = await q.get(objId);
+        let current = user.get('balance') || 0;
+        let newBal = current;
+        if (action === 'add') newBal = current + amount;
+        else if (action === 'remove') newBal = Math.max(0, current - amount);
+        else if (action === 'set') newBal = amount;
+        user.set('balance', newBal);
+        await user.save();
+        showToast('✅ Balance set to ' + newBal.toFixed(2) + ' TON', 'win');
+        // refresh card
+        const q2 = new Parse.Query(UserClass);
+        const fresh = await q2.get(objId);
+        renderAdminUserCard(fresh);
+    } catch(e) {
+        showToast('❌ ' + e.message, 'lose');
+    }
+}
+
+async function adminToggleBan(ban){
+    const objId = window._adminCurrentObjectId;
+    if (!objId) return;
+    try {
+        const UserClass = Parse.Object.extend('_User');
+        const q = new Parse.Query(UserClass);
+        const user = await q.get(objId);
+        user.set('banned', !!ban);
+        await user.save();
+        showToast(ban ? '🚫 User banned' : '✅ User unbanned', ban ? 'lose' : 'win');
+        const q2 = new Parse.Query(UserClass);
+        const fresh = await q2.get(objId);
+        renderAdminUserCard(fresh);
+    } catch(e) {
+        showToast('❌ ' + e.message, 'lose');
+    }
+}
+
+async function adminSendMessage(){
+    const id = window._adminCurrentUserId;
+    const msgText = document.getElementById('admMsgInput').value.trim();
+    if (!id || !msgText) { showToast('❌ Enter a message', 'lose'); return; }
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    const body = `chat_id=${encodeURIComponent(id)}&text=${encodeURIComponent(msgText)}`;
+    try {
+        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+        const res = await fetch(proxyUrl, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body });
+        const data = await res.json();
+        if (data && data.ok) showToast('✅ Message sent!', 'win');
+        else showToast('❌ Failed to send', 'lose');
+    } catch(e) {
+        showToast('❌ Network error', 'lose');
+    }
+}
+
+/* ===== GIFT DATABASE ===== */
 const GIFT_DATABASE = [
-    {id:'snake_box',name:'Snake Box',emoji:'🎁',value:4.18},{id:'ice_cream',name:'Ice Cream',emoji:'🍦',value:4.07},
-    {id:'vice_cream',name:'Vice Cream',emoji:'🍨',value:4.06},{id:'chill_flame',name:'Chill Flame',emoji:'🔥',value:4.04},
-    {id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:4.01},{id:'instant_ramen',name:'Instant Ramen',emoji:'🍜',value:4.00},
-    {id:'tama_gadget',name:'Tama Gadget',emoji:'📟',value:4.26},{id:'candy_cane',name:'Candy Cane',emoji:'🍬',value:4.24},
-    {id:'lol_pop',name:'Lol Pop',emoji:'🍭',value:4.19},{id:'lunar_snake',name:'Lunar Snake',emoji:'🐍',value:4.19},
+    {id:'instant_ramen',name:'Instant Ramen',emoji:'🍜',value:4.00},{id:'ice_cream',name:'Ice Cream',emoji:'🍦',value:4.07},
+    {id:'chill_flame',name:'Chill Flame',emoji:'🔥',value:4.04},{id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:4.01},
+    {id:'candy_cane',name:'Candy Cane',emoji:'🍬',value:4.24},{id:'lol_pop',name:'Lol Pop',emoji:'🍭',value:4.19},
     {id:'holiday_drink',name:'Holiday Drink',emoji:'☕',value:4.35},{id:'winter_wreath',name:'Winter Wreath',emoji:'🎄',value:4.32},
     {id:'big_year',name:'Big Year',emoji:'🎉',value:4.31},{id:'pool_float',name:'Pool Float',emoji:'🦩',value:4.27},
-    {id:'hypno_lolli',name:'Hypno Lollipop',emoji:'🍭',value:4.61},{id:'whip_cupcake',name:'Whip Cupcake',emoji:'🧁',value:4.53},
-    {id:'jester_hat',name:'Jester Hat',emoji:'🎭',value:4.48},{id:'pet_snake',name:'Pet Snake',emoji:'🐍',value:4.40},
-    {id:'star_notepad',name:'Star Notepad',emoji:'📓',value:4.78},{id:'timeless_book',name:'Timeless Book',emoji:'📕',value:4.76},
-    {id:'party_spark',name:'Party Sparkler',emoji:'✨',value:4.73},{id:'mood_pack',name:'Mood Pack',emoji:'🎒',value:4.64},
+    {id:'hypno_lolli',name:'Hypno Lollipop',emoji:'🍭',value:4.61},{id:'jester_hat',name:'Jester Hat',emoji:'🎭',value:4.48},
+    {id:'star_notepad',name:'Star Notepad',emoji:'📓',value:4.78},{id:'party_spark',name:'Party Sparkler',emoji:'✨',value:4.73},
     {id:'spiced_wine',name:'Spiced Wine',emoji:'🍷',value:4.97},{id:'ginger_cookie',name:'Ginger Cookie',emoji:'🍪',value:4.85},
-    {id:'happy_brownie',name:'Happy Brownie',emoji:'💩',value:4.80},{id:'easter_egg',name:'Easter Egg',emoji:'🥚',value:4.80},
-    {id:'hex_pot',name:'Hex Pot',emoji:'🧪',value:5.41},{id:'clover_pin',name:'Clover Pin',emoji:'🍀',value:5.29},
-    {id:'santa_hat',name:'Santa Hat',emoji:'🎅',value:5.28},{id:'bday_candle',name:'B-Day Candle',emoji:'🎂',value:5.22},
-    {id:'liberty_fig',name:'Liberty Figure',emoji:'🗽',value:5.14},{id:'fresh_socks',name:'Fresh Socks',emoji:'🧦',value:5.13},
-    {id:'cookie_heart',name:'Cookie Heart',emoji:'🍪',value:5.13},{id:'victory_medal',name:'Victory Medal',emoji:'🏅',value:5.12},
+    {id:'hex_pot',name:'Hex Pot',emoji:'🧪',value:5.41},{id:'santa_hat',name:'Santa Hat',emoji:'🎅',value:5.28},
+    {id:'liberty_fig',name:'Liberty Figure',emoji:'🗽',value:5.14},{id:'victory_medal',name:'Victory Medal',emoji:'🏅',value:5.12},
     {id:'bow_tie',name:'Bow Tie',emoji:'🎀',value:5.54},{id:'snoop_dogg',name:'Snoop Dogg',emoji:'🐕',value:5.53},
     {id:'homemade_cake',name:'Homemade Cake',emoji:'🎂',value:5.52},{id:'desk_calendar',name:'Desk Calendar',emoji:'📅',value:5.45},
     {id:'money_pot',name:'Money Pot',emoji:'💰',value:5.73},{id:'mousse_cake',name:'Mousse Cake',emoji:'🍰',value:5.70},
-    {id:'jack_in_box',name:'Jack-in-the-Box',emoji:'🎁',value:5.68},{id:'snow_globe',name:'Snow Globe',emoji:'🔮',value:5.62},
-    {id:'swag_bag',name:'Swag Bag',emoji:'💰',value:5.85},{id:'restless_jar',name:'Restless Jar',emoji:'🫙',value:5.79},
-    {id:'pretty_posy',name:'Pretty Posy',emoji:'💐',value:5.75},{id:'stellar_rocket',name:'Stellar Rocket',emoji:'🚀',value:5.75},
-    {id:'eternal_candle',name:'Eternal Candle',emoji:'🕯️',value:6.21},{id:'faith_amulet',name:'Faith Amulet',emoji:'🕌',value:6.17},
-    {id:'spring_basket',name:'Spring Basket',emoji:'🐰',value:6.00},{id:'snow_mittens',name:'Snow Mittens',emoji:'🧤',value:5.89},
+    {id:'swag_bag',name:'Swag Bag',emoji:'💰',value:5.85},{id:'pretty_posy',name:'Pretty Posy',emoji:'💐',value:5.75},
+    {id:'stellar_rocket',name:'Stellar Rocket',emoji:'🚀',value:5.75},{id:'eternal_candle',name:'Eternal Candle',emoji:'🕯️',value:6.21},
+    {id:'faith_amulet',name:'Faith Amulet',emoji:'🕌',value:6.17},{id:'spring_basket',name:'Spring Basket',emoji:'🐰',value:6.00},
     {id:'jolly_chimp',name:'Jolly Chimp',emoji:'🐵',value:7.60},{id:'surge_board',name:'Surge Board',emoji:'🛹',value:7.47},
     {id:'input_key',name:'Input Key',emoji:'⌨️',value:6.87},{id:'light_sword',name:'Light Sword',emoji:'⚔️',value:6.82},
     {id:'moon_pendant',name:'Moon Pendant',emoji:'🌙',value:6.80},{id:'lush_bouquet',name:'Lush Bouquet',emoji:'💐',value:6.71},
@@ -842,11 +1091,10 @@ const GIFT_DATABASE = [
     {id:'joyful_bundle',name:'Joyful Bundle',emoji:'💝',value:8.18},{id:'jelly_bunny',name:'Jelly Bunny',emoji:'🐰',value:8.10},
     {id:'evil_eye',name:'Evil Eye',emoji:'👁️',value:7.84},{id:'sleigh_bell',name:'Sleigh Bell',emoji:'🔔',value:7.67},
     {id:'jingle_bells',name:'Jingle Bells',emoji:'🔔',value:9.89},{id:'fine_pen',name:'Fine Pen',emoji:'🖊️',value:9.27},
-    {id:'berry_box',name:'Berry Box',emoji:'🍫',value:9.10},{id:'bunny_muffin',name:'Bunny Muffin',emoji:'🧁',value:8.56},
-    {id:'top_hat',name:'Top Hat',emoji:'🎩',value:11.34},{id:'sakura_flower',name:'Sakura Flower',emoji:'🌸',value:10.80},
-    {id:'love_candle',name:'Love Candle',emoji:'🕯️',value:10.39},{id:'hanging_star',name:'Hanging Star',emoji:'⭐',value:10.05},
-    {id:'flying_broom',name:'Flying Broom',emoji:'🧹',value:12.81},{id:'record_player',name:'Record Player',emoji:'🎵',value:12.79},
-    {id:'valentine_box',name:'Valentine Box',emoji:'💝',value:12.30},{id:'skull_flower',name:'Skull Flower',emoji:'💀',value:11.76},
+    {id:'berry_box',name:'Berry Box',emoji:'🍫',value:9.10},{id:'top_hat',name:'Top Hat',emoji:'🎩',value:11.34},
+    {id:'sakura_flower',name:'Sakura Flower',emoji:'🌸',value:10.80},{id:'love_candle',name:'Love Candle',emoji:'🕯️',value:10.39},
+    {id:'hanging_star',name:'Hanging Star',emoji:'⭐',value:10.05},{id:'flying_broom',name:'Flying Broom',emoji:'🧹',value:12.81},
+    {id:'record_player',name:'Record Player',emoji:'🎵',value:12.79},{id:'valentine_box',name:'Valentine Box',emoji:'💝',value:12.30},
     {id:'ionic_dryer',name:'Ionic Dryer',emoji:'💇',value:15.26},{id:'snoop_cigar',name:'Snoop Cigar',emoji:'🚬',value:15.20},
     {id:'crystal_ball',name:'Crystal Ball',emoji:'🔮',value:13.09},{id:'mad_pumpkin',name:'Mad Pumpkin',emoji:'🎃',value:13.04},
     {id:'sky_stilettos',name:'Sky Stilettos',emoji:'👠',value:19.03},{id:'ufc_strike',name:'UFC Strike',emoji:'🥊',value:16.41},
@@ -856,19 +1104,19 @@ const GIFT_DATABASE = [
     {id:'vintage_cigar',name:'Vintage Cigar',emoji:'🚬',value:36.47},{id:'voodoo_doll',name:'Voodoo Doll',emoji:'🧸',value:36.29},
     {id:'toy_bear',name:'Toy Bear',emoji:'🧸',value:36.20},{id:'genie_lamp',name:'Genie Lamp',emoji:'🪔',value:33.82},
     {id:'signet_ring',name:'Signet Ring',emoji:'💍',value:32.79},{id:'diamond_ring',name:'Diamond Ring',emoji:'💎',value:30.67},
-    {id:'bling_binky',name:'Bling Binky',emoji:'👶',value:25.87},{id:'rare_bird',name:'Rare Bird',emoji:'🦅',value:25.40},
-    {id:'sharp_tongue',name:'Sharp Tongue',emoji:'👄',value:44.96},{id:'kissed_frog',name:'Kissed Frog',emoji:'🐸',value:44.26},
-    {id:'bonded_ring',name:'Bonded Ring',emoji:'💍',value:40.37},{id:'neko_helmet',name:'Neko Helmet',emoji:'🏍️',value:37.85},
-    {id:'gem_signet',name:'Gem Signet',emoji:'💍',value:61.33},{id:'swiss_watch',name:'Swiss Watch',emoji:'⌚',value:55.95},
-    {id:'low_rider',name:'Low Rider',emoji:'🚗',value:54.37},{id:'magic_potion',name:'Magic Potion',emoji:'🧪',value:52.68},
-    {id:'perfume_bottle',name:'Perfume Bottle',emoji:'💐',value:74.54},{id:'mini_oscar',name:'Mini Oscar',emoji:'🏆',value:69.50},
-    {id:'ion_gem',name:'Ion Gem',emoji:'💎',value:67.48},{id:'artisan_brick',name:'Artisan Brick',emoji:'🧱',value:62.20},
-    {id:'astral_shard',name:'Astral Shard',emoji:'💎',value:113.81},{id:'nail_bracelet',name:'Nail Bracelet',emoji:'💫',value:113.41},
-    {id:'westside_sign',name:'Westside Sign',emoji:'🤘',value:99.64},{id:'durov_glasses',name:"Durov's Glasses",emoji:'🕶️',value:90.60},
-    {id:'loot_bag',name:'Loot Bag',emoji:'👜',value:121.77},{id:'mighty_arm',name:'Mighty Arm',emoji:'💪',value:113.93},
-    {id:'scared_cat',name:'Scared Cat',emoji:'🐱',value:236.21},{id:'heroic_helmet',name:'Heroic Helmet',emoji:'🪖',value:186.23},
-    {id:'durov_cap',name:"Durov's Cap",emoji:'🧢',value:382.25},{id:'precious_peach',name:'Precious Peach',emoji:'🍑',value:249.37},
-    {id:'plush_pepe',name:'Plush Pepe',emoji:'🐸',value:5906.59},{id:'heart_locket',name:'Heart Locket',emoji:'💝',value:1320.60}
+    {id:'rare_bird',name:'Rare Bird',emoji:'🦅',value:25.40},{id:'sharp_tongue',name:'Sharp Tongue',emoji:'👄',value:44.96},
+    {id:'kissed_frog',name:'Kissed Frog',emoji:'🐸',value:44.26},{id:'bonded_ring',name:'Bonded Ring',emoji:'💍',value:40.37},
+    {id:'neko_helmet',name:'Neko Helmet',emoji:'🏍️',value:37.85},{id:'gem_signet',name:'Gem Signet',emoji:'💍',value:61.33},
+    {id:'swiss_watch',name:'Swiss Watch',emoji:'⌚',value:55.95},{id:'low_rider',name:'Low Rider',emoji:'🚗',value:54.37},
+    {id:'magic_potion',name:'Magic Potion',emoji:'🧪',value:52.68},{id:'perfume_bottle',name:'Perfume Bottle',emoji:'💐',value:74.54},
+    {id:'mini_oscar',name:'Mini Oscar',emoji:'🏆',value:69.50},{id:'ion_gem',name:'Ion Gem',emoji:'💎',value:67.48},
+    {id:'artisan_brick',name:'Artisan Brick',emoji:'🧱',value:62.20},{id:'astral_shard',name:'Astral Shard',emoji:'💎',value:113.81},
+    {id:'nail_bracelet',name:'Nail Bracelet',emoji:'💫',value:113.41},{id:'westside_sign',name:'Westside Sign',emoji:'🤘',value:99.64},
+    {id:'durov_glasses',name:"Durov's Glasses",emoji:'🕶️',value:90.60},{id:'loot_bag',name:'Loot Bag',emoji:'👜',value:121.77},
+    {id:'mighty_arm',name:'Mighty Arm',emoji:'💪',value:113.93},{id:'scared_cat',name:'Scared Cat',emoji:'🐱',value:236.21},
+    {id:'heroic_helmet',name:'Heroic Helmet',emoji:'🪖',value:186.23},{id:'durov_cap',name:"Durov's Cap",emoji:'🧢',value:382.25},
+    {id:'precious_peach',name:'Precious Peach',emoji:'🍑',value:249.37},{id:'plush_pepe',name:'Plush Pepe',emoji:'🐸',value:5906.59},
+    {id:'heart_locket',name:'Heart Locket',emoji:'💝',value:1320.60}
 ];
 
 function getUserGifts(){ try{return JSON.parse(localStorage.getItem('userGifts')||'[]')}catch(e){return[]} }
@@ -967,43 +1215,17 @@ async function sendToAdmin(text){
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const body = `chat_id=${encodeURIComponent(ADMIN_CHAT_ID)}&text=${encodeURIComponent(text)}`;
     try { await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}); return true; } catch(e){}
-    try { const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(url); const res=await fetch(proxyUrl,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}); const d=await res.json(); if(d&&d.ok)return true; } catch(e){}
     return false;
 }
 
 function getReferralLink(){ if (!TG_USER.id) return 'Loading...'; return `https://t.me/${BOT_USERNAME}?start=ref_${TG_USER.id}`; }
-function updateReferralUI(){
-    const linkInput = document.getElementById('refLinkInput');
-    if (linkInput) linkInput.value = getReferralLink();
-    const myId = TG_USER.id || 'guest';
-    const refEarnings = parseFloat(localStorage.getItem('refEarned_' + myId) || '0');
-    const refList = JSON.parse(localStorage.getItem('refList_' + myId) || '[]');
-    const cEl = document.getElementById('refCount'); const eEl = document.getElementById('refEarned');
-    if (cEl) cEl.innerText = refList.length;
-    if (eEl) eEl.innerText = refEarnings.toFixed(2);
-}
+function updateReferralUI(){ const li = document.getElementById('refLinkInput'); if (li) li.value = getReferralLink(); }
 function openReferral(){ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden')); document.getElementById('referralScreen').classList.remove('hidden'); updateReferralUI(); }
 function copyRefLink(){ const input = document.getElementById('refLinkInput'); input.select(); input.setSelectionRange(0, 99999); try { if (navigator.clipboard) { navigator.clipboard.writeText(input.value).then(() => { showToast('✅ Copied!', 'win'); }); } else { document.execCommand('copy'); showToast('✅ Copied!', 'win'); } } catch(e) { showToast('❌ Failed', 'lose'); } }
 function shareRefLink(){ const link = getReferralLink(); const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('🎁 Join Gift Hub!')}`; try { if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) { window.Telegram.WebApp.openTelegramLink(shareUrl); } else { window.open(shareUrl, '_blank'); } } catch(e) { copyRefLink(); } }
-async function checkReferral(){
-    try {
-        const tg = window.Telegram && window.Telegram.WebApp;
-        let startParam = '';
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) startParam = tg.initDataUnsafe.start_param;
-        if (!startParam) { const hash = window.location.hash.slice(1); if (hash) { const params = new URLSearchParams(hash); const tgWebAppData = params.get('tgWebAppData'); if (tgWebAppData) { const data = new URLSearchParams(tgWebAppData); startParam = data.get('start_param') || ''; } } }
-        if (!startParam && window.location.search) { const params = new URLSearchParams(window.location.search); startParam = params.get('start') || ''; }
-        if (!startParam || !startParam.startsWith('ref_')) return;
-        const referrerId = startParam.slice(4); const myId = TG_USER.id;
-        if (!myId || referrerId === myId) return;
-        const myReferralKey = 'referredBy_' + myId;
-        if (localStorage.getItem(myReferralKey)) return;
-        localStorage.setItem(myReferralKey, referrerId);
-        const msg = `🎉 NEW REFERRAL\n\nUser: ${TG_USER.name}\nUsername: ${TG_USER.username}\nID: ${myId}\nReferred by: ${referrerId}\nReward: ${REFERRAL_REWARD} TON`;
-        sendToAdmin(msg);
-    } catch(e) {}
-}
+async function checkReferral(){ try { const tg = window.Telegram && window.Telegram.WebApp; let sp = ''; if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) sp = tg.initDataUnsafe.start_param; if (!sp && window.location.search) { sp = new URLSearchParams(window.location.search).get('start') || ''; } if (!sp || !sp.startsWith('ref_')) return; const rid = sp.slice(4); const mid = TG_USER.id; if (!mid || rid === mid) return; const key = 'referredBy_' + mid; if (localStorage.getItem(key)) return; localStorage.setItem(key, rid); const msg = `🎉 NEW REFERRAL\n\nUser: ${TG_USER.name}\nID: ${mid}\nReferred by: ${rid}\nReward: ${REFERRAL_REWARD} TON`; sendToAdmin(msg); } catch(e) {} }
 
-/* ========= TOWER ========= */
+/* ===== TOWER ===== */
 let towerState='idle',towerLevel=0,towerBet=0;
 let towerMultipliers=[1.02,1.27,1.70,2.55,4.25,8.50];
 let towerRows=[6,5,4,3,2,1];
@@ -1071,7 +1293,7 @@ function towerCashOut(){
     setTimeout(resetTowerGame,3000);
 }
 
-/* ========= CORE ========= */
+/* ===== CORE ===== */
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');}
 function openPvp(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('pvpScreen').classList.remove('hidden');if(!window.pvpInitialized){pvpInit();window.pvpInitialized=true;}setTimeout(resizePvpCanvas,80);}
 function openPlayHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('playhubScreen').classList.remove('hidden');}
@@ -1087,14 +1309,16 @@ function playhubCardClick(name){showToast('🚧 '+name+' - Coming Soon!');}
 let storedBalance = localStorage.getItem('crashBalance_home');
 let balance = (storedBalance === null) ? 0.00 : (parseFloat(storedBalance) || 0.00);
 
-function updateGlobalBalanceUI(){
+function updateGlobalBalanceUI(pushToServer=true){
     const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2],['shBalanceDisplay',2]];
     ids.forEach(([id,d])=>{const el=document.getElementById(id);if(el)el.innerText=d===3?balance.toFixed(3):balance.toFixed(2);});
     localStorage.setItem('crashBalance_home',balance);
+    if (pushToServer) pushBalanceToBack4App();
 }
-updateGlobalBalanceUI();
+updateGlobalBalanceUI(false);
 function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
 
+/* ===== TON CONNECT ===== */
 async function initTonConnect(){
     try{
         tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});
@@ -1138,6 +1362,7 @@ async function sendPayment(){
     }catch(e){document.getElementById('depositStatus').innerText='❌ Failed';btn.disabled=false;}
 }
 
+/* ===== SLOT ===== */
 const FREE_WEIGHTS=[{v:0.05,w:60},{v:0.1,w:22},{v:0.2,w:10},{v:0.5,w:5},{v:0.8,w:1.5},{v:1,w:1},{v:1.5,w:0.4},{v:2,w:0.1}];
 const VIP_WEIGHTS=[{v:0.1,w:50},{v:0.2,w:25},{v:0.5,w:12},{v:1,w:8},{v:1.5,w:3},{v:2,w:2}];
 const SLOT_COOLDOWN=24*60*60*1000;
@@ -1159,7 +1384,7 @@ function submitVipCode(){const code=document.getElementById('vipCodeInput').valu
 document.getElementById('vipCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitVipCode();});
 document.getElementById('vipCodeModal').addEventListener('click',e=>{if(e.target.id==='vipCodeModal')closeVipCodeModal();});
 
-/* ========= MINES ========= */
+/* ===== MINES ===== */
 window.mnInitialized=false;
 let mnState='idle',mnBombCount=3,mnGridSize=6,mnBombs=[],mnRevealed=[],mnCurrentMult=1,mnLockedBet=0;
 function mnMaxBombs(){if(mnGridSize===5)return 9;if(mnGridSize===6)return 12;return 20;}
@@ -1169,7 +1394,7 @@ function mnRenderBombBtns(){const c=document.getElementById('mnBombBtns');c.inne
 function mnSetBombs(n){if(mnState==='playing')return;mnBombCount=n;mnRenderBombBtns();mnUpdateUI();}
 function mnBuildGrid(){const g=document.getElementById('mnGrid');g.setAttribute('data-size',mnGridSize);g.style.gridTemplateColumns='repeat('+mnGridSize+',1fr)';g.innerHTML='';const t=mnGridSize*mnGridSize;for(let i=0;i<t;i++){const d=document.createElement('div');d.className='mn-tile';d.dataset.index=i;d.onclick=()=>mnClickTile(i);g.appendChild(d);}}
 function mnCalcMult(picks,bombs){const t=mnGridSize*mnGridSize;const safe=t-bombs;let prob=1;for(let i=0;i<picks;i++)prob*=(safe-i)/(t-i);return (1/prob)*0.99;}
-function mnUpdateLiveBar(){const bar=document.getElementById('mnLiveBar');bar.innerHTML='';const t=mnGridSize*mnGridSize;const ms=t-mnBombCount;const tm=Math.min(12,ms);for(let c=1;c<=tm;c++){const m=mnCalcMult(c,mnBombCount);const el=document.createElement('div');el.className='mn-live-tier';if(mnState==='playing'){if(c<mnRevealed.length)el.classList.add('past');else if(c===mnRevealed.length)el.classList.add('current');else if(c===mnRevealed.length+1)el.classList.add('next');}else if(c===1)el.classList.add('next');el.innerText=c+' × '+m.toFixed(2);bar.appendChild(el);}const cur=bar.querySelector('.current');if(cur)cur.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+function mnUpdateLiveBar(){const bar=document.getElementById('mnLiveBar');bar.innerHTML='';const t=mnGridSize*mnGridSize;const ms=t-mnBombCount;const tm=Math.min(12,ms);for(let c=1;c<=tm;c++){const m=mnCalcMult(c,mnBombCount);const el=document.createElement('div');el.className='mn-live-tier';if(mnState==='playing'){if(c<mnRevealed.length)el.classList.add('past');else if(c===mnRevealed.length)el.classList.add('current');else if(c===mnRevealed.length+1)el.classList.add('next');}else if(c===1)el.classList.add('next');el.innerText=c+' × '+m.toFixed(2);bar.appendChild(el);}}
 function mnUpdateUI(){const m=document.getElementById('mnMultiplier');if(m)m.innerText='×'+mnCurrentMult.toFixed(2);const co=document.getElementById('mnCashOut');if(co){if(mnState==='playing'&&mnRevealed.length>0){co.innerText='Cash out '+(mnLockedBet*mnCurrentMult).toFixed(2);co.classList.remove('disabled');}else{co.innerText='Cash out 0.00';co.classList.add('disabled');}}mnUpdateLiveBar();}
 function mnPlay(){if(mnState==='playing')return;const bet=parseFloat(document.getElementById('mnBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1 TON');return;}if(bet>balance){showToast('❌ Insufficient');return;}balance-=bet;updateGlobalBalanceUI();mnLockedBet=bet;mnRevealed=[];mnCurrentMult=1;mnBombs=[];const t=mnGridSize*mnGridSize;const av=[];for(let i=0;i<t;i++)av.push(i);for(let i=0;i<mnBombCount;i++){const idx=Math.floor(Math.random()*av.length);mnBombs.push(av[idx]);av.splice(idx,1);}mnState='playing';mnBuildGrid();document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='none');document.getElementById('mnPlayBtn').innerText='Playing...';document.getElementById('mnPlayBtn').disabled=true;document.getElementById('mnBetInput').disabled=true;mnUpdateUI();}
 function mnClickTile(idx){if(mnState!=='playing')return;const tile=document.querySelector('.mn-tile[data-index="'+idx+'"]');if(!tile)return;if(tile.classList.contains('diamond')||tile.classList.contains('bomb'))return;if(mnBombs.includes(idx)){tile.classList.add('bomb');mnBombs.forEach(b=>{const t=document.querySelector('.mn-tile[data-index="'+b+'"]');if(t&&t!==tile)t.classList.add('bomb');});mnState='idle';document.getElementById('mnPlayBtn').innerText='Place Bet';document.getElementById('mnPlayBtn').disabled=false;document.getElementById('mnBetInput').disabled=false;document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='auto');showToast('💥 Lost '+mnLockedBet.toFixed(2)+' TON','lose');resolveLoss();setTimeout(()=>mnResetGrid(),2200);}else{tile.classList.add('diamond');mnRevealed.push(idx);mnCurrentMult=mnCalcMult(mnRevealed.length,mnBombCount);mnUpdateUI();const ms=mnGridSize*mnGridSize-mnBombCount;if(mnRevealed.length===ms)mnAutoCashOut();}}
@@ -1179,7 +1404,7 @@ function mnResetGrid(){mnBuildGrid();mnRevealed=[];mnCurrentMult=1;mnLockedBet=0
 function mnHalfBet(){if(mnState==='playing')return;const v=parseFloat(document.getElementById('mnBetInput').value)||0;document.getElementById('mnBetInput').value=(v/2).toFixed(2);}
 function mnMaxBet(){if(mnState==='playing')return;document.getElementById('mnBetInput').value=balance.toFixed(2);}
 
-/* ========= PLINKO ========= */
+/* ===== PLINKO ===== */
 window.plInitialized=false;
 let plCanvas,plCtx,plWidth,plHeight,plDifficulty='medium',plPegs=[],plBalls=[],plAnimId=null,plLastRowY=0,plSpacing=0,plTopPad=0;
 const PL_ROWS=12;
@@ -1196,7 +1421,7 @@ function plDraw(){if(!plCtx)return;const g=plCtx.createLinearGradient(0,0,0,plHe
 function plDrop(){const bet=parseFloat(document.getElementById('plBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1 TON');return;}if(bet>balance){showToast('❌ Insufficient');return;}if(plBalls.length>=PL_MAX_BALLS){showToast('⚠️ Too many balls');return;}balance-=bet;updateGlobalBalanceUI();let sum=0;const d=[];for(let i=0;i<PL_ROWS;i++){const dd=Math.random()<0.5?1:-1;d.push(dd);sum+=dd;}const si=Math.round(sum/2+(PL_ROWS/2));const sf=Math.max(0,Math.min(PL_MULTIPLIERS[plDifficulty].length-1,si));const m=PL_MULTIPLIERS[plDifficulty][sf];const w=bet*m;const cx=plWidth/2;const rh=(plLastRowY-plTopPad)/(PL_ROWS-1);const path=[];path.push({x:cx,y:plTopPad-20});let pos=0;for(let i=0;i<PL_ROWS;i++){path.push({x:cx+pos*plSpacing/2,y:plTopPad+i*rh});pos+=d[i];}const fx=cx+(sum/2)*plSpacing;path.push({x:fx,y:plLastRowY+25});const ball={x:path[0].x,y:path[0].y,path,startTime:performance.now(),duration:2200+Math.random()*600,bet,multiplier:m,winnings:w,landed:false,done:false};plBalls.push(ball);plUpdateBallCount();if(!plAnimId)plAnimate();}
 function plAnimate(){plAnimId=requestAnimationFrame(plAnimate);const now=performance.now();let any=false;plBalls.forEach(b=>{if(b.done)return;const t=Math.min(1,(now-b.startTime)/b.duration);const ts=b.path.length-1;const sp=t*ts;const si=Math.min(ts-1,Math.floor(sp));const lt=sp-si;const p1=b.path[si],p2=b.path[si+1];b.x=p1.x+(p2.x-p1.x)*lt;b.y=p1.y+(p2.y-p1.y)*lt;if(t>=1&&!b.landed){b.landed=true;b.done=true;resolveWin(b.winnings);}if(!b.done)any=true;});plDraw();plBalls=plBalls.filter(b=>!b.done);plUpdateBallCount();if(!any){cancelAnimationFrame(plAnimId);plAnimId=null;}}
 
-/* ========= UPGRADE ========= */
+/* ===== UPGRADE ===== */
 window.upInitialized=false;
 let upCanvas,upCtx,upSize=280,upWheelAngle=0,upState='idle',upChance=20,upBetVal=0,upTargetVal=0;
 function upInit(){upCanvas=document.getElementById('upCanvas');upCtx=upCanvas.getContext('2d');window.addEventListener('resize',()=>{if(upCanvas)upResize();});upResize();upDrawWheel();document.getElementById('upBetInput').addEventListener('input',upUpdateChance);document.getElementById('upTargetInput').addEventListener('input',upUpdateChance);upUpdateChance();}
@@ -1206,7 +1431,7 @@ function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upC
 function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const res=document.getElementById('upResult');res.className='up-result';res.innerText='';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
 function upFinish(){upState='idle';const btn=document.getElementById('upBtn');btn.disabled=false;btn.innerText='🚀 UPGRADE';const res=document.getElementById('upResult');const ga=(upChance/100)*Math.PI*2;let pl=(-upWheelAngle)%(Math.PI*2);if(pl<0)pl+=Math.PI*2;const aw=pl<=ga;if(aw){balance+=upTargetVal;updateGlobalBalanceUI();res.className='up-result win show';res.innerText='🏆 +'+upTargetVal.toFixed(2)+' TON';showToast('🏆 +'+upTargetVal.toFixed(2)+' TON','win');}else{res.className='up-result lose show';res.innerText='😔 Lost -'+upBetVal.toFixed(2)+' TON';showToast('😔 Lost','lose');}upWheelAngle=upWheelAngle%(Math.PI*2);}
 
-/* ========= CRASH / ROCKET ========= */
+/* ===== CRASH / ROCKET ===== */
 let gameState='waiting',multiplier=1.00,crashPoint=0,myBet=0,myAutoCashout=0,hasJoined=false;
 let gameInterval,countdownInterval,roundHistory=[];
 const multiplierDisplay=document.getElementById('multiplierDisplay');
@@ -1291,30 +1516,84 @@ betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!is
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
-/* ========= PVP (Back4App Realtime with BOTS) ========= */
+/* ========= PVP with SMART BOTS (max 3, varied bets) ========= */
 window.pvpInitialized=false;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpPointerAngle=-Math.PI/2;
 let pvpRound=null,pvpSubscription=null,pvpIsHost=false,pvpMyBet=0;
 let lastAutoReset = 0;
 let lastRenderHash = '';
 let spinTriggered = false;
-let botAddScheduled = false;
-let botAdded = false;
+let scheduledBotTimers = [];
 
+const MAX_PLAYERS = 3;
+const MAX_BOT_BET = 5;
+const BOT_NAMES = ['Alex','CryptoKing','Degen99','Lucky_Boy','Master','Wolf','Ninja','PixelPro','StarFire','Thunder','IceQueen','Ghost','Reaper','Shadow','Viper','Phantom','Blaze','Knight','Rogue','Falcon'];
+const BOT_BET_OPTIONS = [0.1, 0.2, 0.5, 0.8, 1, 1.5, 2, 3, 4, 5];
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0','#ff9f1a','#18dcff','#32ff7e','#7d5fff'];
-const PVP_BOT_NAMES=['Alex','CryptoKing','Degen99','Lucky_Boy','Master','Wolf','Ninja','PixelPro','StarFire','Thunder','IceQueen'];
 const PvpRoundClass = Parse.Object.extend('PvpRound');
 
-function makeBot(bet){
+function clearBotTimers(){
+    scheduledBotTimers.forEach(t => clearTimeout(t));
+    scheduledBotTimers = [];
+}
+
+function pickBotBet(existingBets){
+    const available = BOT_BET_OPTIONS.filter(b => !existingBets.includes(b) && b <= MAX_BOT_BET);
+    if(available.length === 0) return Math.round((0.5 + Math.random() * 4.5) * 10) / 10;
+    return available[Math.floor(Math.random()*available.length)];
+}
+
+function makeSmartBot(existingBets, existingColors){
+    const bet = pickBotBet(existingBets);
+    const availableColors = PVP_COLORS.filter(c => !existingColors.includes(c));
+    const color = availableColors.length > 0
+        ? availableColors[Math.floor(Math.random()*availableColors.length)]
+        : PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
     return {
-        userId: 'bot_' + Date.now() + '_' + Math.floor(Math.random()*1000),
-        name: PVP_BOT_NAMES[Math.floor(Math.random()*PVP_BOT_NAMES.length)] + Math.floor(Math.random()*100),
+        userId: 'bot_' + Date.now() + '_' + Math.floor(Math.random()*100000),
+        name: BOT_NAMES[Math.floor(Math.random()*BOT_NAMES.length)] + Math.floor(Math.random()*99),
         username: 'None',
         bet: bet,
-        color: PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)],
+        color: color,
         joinedAt: Date.now(),
         isBot: true
     };
+}
+
+async function addBotToRound(round){
+    try {
+        await round.fetch();
+        if(round.get('status') !== 'waiting') return;
+        const players = round.get('players') || [];
+        if(players.length >= MAX_PLAYERS) return;
+
+        const myId = String(TG_USER.id);
+        if(!players.some(p => String(p.userId) === myId)) return;
+
+        const existingBets = players.map(p => p.bet);
+        const existingColors = players.map(p => p.color);
+        const bot = makeSmartBot(existingBets, existingColors);
+        players.push(bot);
+        round.set('players', players);
+        round.set('totalPool', players.reduce((s,p)=>s+p.bet,0));
+
+        if(players.length >= MAX_PLAYERS){
+            round.set('startTime', Date.now() + 2000);
+        } else {
+            round.set('startTime', Date.now() + 3000);
+        }
+
+        await round.save();
+        showToast('🤖 ' + bot.name + ' joined with ' + bot.bet.toFixed(2) + ' TON', 'win');
+    } catch(e) { console.warn('Bot add error:', e); }
+}
+
+function scheduleBots(round){
+    if(scheduledBotTimers.length > 0) return;
+    const t1 = setTimeout(() => { addBotToRound(round); }, 1200);
+    scheduledBotTimers.push(t1);
+    const t2 = setTimeout(() => { addBotToRound(round); }, 2600);
+    scheduledBotTimers.push(t2);
 }
 
 async function pvpInit(){
@@ -1336,9 +1615,7 @@ async function pvpInit(){
             const createdAt = round.get('createdAt');
             const roundAgeMs = createdAt ? (Date.now() - createdAt.getTime()) : 0;
             const players = round.get('players') || [];
-            // اگه راند بیش از ۳ دقیقه از ساختش گذشته → پاک کن
             if (roundAgeMs > 180000) {
-                console.log('🧹 Deleting old round');
                 for (const p of players) {
                     if (!p.isBot && String(p.userId) === String(TG_USER.id)) {
                         balance += p.bet;
@@ -1356,7 +1633,7 @@ async function pvpInit(){
             round.set('status', 'waiting');
             round.set('players', []);
             round.set('totalPool', 0);
-            round.set('startTime', Date.now() + 20000); // ۲۰ ثانیه فرصت
+            round.set('startTime', Date.now() + 20000);
             round.set('winnerId', '');
             round.set('finalAngle', -Math.PI/2);
             await round.save();
@@ -1365,8 +1642,7 @@ async function pvpInit(){
         pvpRound = round;
         lastRenderHash = '';
         spinTriggered = false;
-        botAddScheduled = false;
-        botAdded = false;
+        clearBotTimers();
         pvpApplyRound(round);
 
         const subQ = new Parse.Query(PvpRoundClass);
@@ -1379,33 +1655,6 @@ async function pvpInit(){
     }
 }
 
-// اضافه کردن ربات خودکار بعد از ۸ ثانیه اگه کاربر تنهای تنهاست
-function scheduleBot(round){
-    if(botAddScheduled || botAdded) return;
-    botAddScheduled = true;
-    setTimeout(async () => {
-        try {
-            await round.fetch();
-            if(round.get('status') !== 'waiting'){ botAddScheduled=false; return; }
-            const players = round.get('players') || [];
-            // اگه هنوز فقط کاربر خودمونه، ربات اضافه کن
-            if(players.length === 1 && String(players[0].userId) === String(TG_USER.id)){
-                const myBet = players[0].bet;
-                const bot = makeBot(myBet);
-                players.push(bot);
-                round.set('players', players);
-                round.set('totalPool', players.reduce((s,p)=>s+p.bet,0));
-                // تایمر رو ۵ ثانیه دیگه تموم کن که بازی سریع شروع بشه
-                round.set('startTime', Date.now() + 5000);
-                await round.save();
-                botAdded = true;
-                console.log('🤖 Bot added!');
-                showToast('🤖 Opponent joined!', 'win');
-            }
-        } catch(e) { console.warn('Bot add error:', e); }
-    }, 8000);
-}
-
 async function pvpTrySpin(round){
     if (spinTriggered) return;
     spinTriggered = true;
@@ -1415,12 +1664,12 @@ async function pvpTrySpin(round){
         if(round.get('status') !== 'waiting'){ spinTriggered = false; return; }
         const players = round.get('players') || [];
         if(players.length < 2){ spinTriggered = false; return; }
-        
+
         const totalPool = players.reduce((s,p)=>s+p.bet,0);
         let rand = Math.random()*totalPool;
         let winnerId = players[0].userId;
         for(const p of players){ rand -= p.bet; if(rand<=0){ winnerId = p.userId; break; } }
-        
+
         let cumul=0,winnerStart=0,winnerArc=0;
         for(const p of players){
             const arc=(p.bet/totalPool)*Math.PI*2;
@@ -1429,12 +1678,12 @@ async function pvpTrySpin(round){
         }
         const winnerMidOffset = winnerStart + winnerArc/2;
         const finalAngle = -Math.PI/2 - winnerMidOffset;
-        
+
         round.set('status','spinning');
         round.set('winnerId', String(winnerId));
         round.set('finalAngle', finalAngle);
         await round.save();
-        
+
         setTimeout(async () => {
             try {
                 const r2 = await round.fetch();
@@ -1445,7 +1694,6 @@ async function pvpTrySpin(round){
                     if(!winnerPlayer || !winnerPlayer.isBot){
                         pvpHandlePayout(winnerId, players, totalPool);
                     } else {
-                        // ربات برنده شد → کاربر پول رو باخته
                         const myId = String(TG_USER.id);
                         const me = players.find(p => String(p.userId) === myId);
                         if(me) showToast('😔 Lost ' + me.bet.toFixed(2) + ' TON', 'lose');
@@ -1454,7 +1702,6 @@ async function pvpTrySpin(round){
             } catch(e) {}
         }, 5000);
     } catch(e) {
-        console.warn('Spin attempt failed:', e);
         spinTriggered = false;
     }
 }
@@ -1489,10 +1736,8 @@ function pvpApplyRound(round){
             btn.className = 'join-battle-btn';
             btn.disabled = true;
             document.getElementById('pvpBetInput').disabled = true;
-            
-            // اگه کاربر تنهاست، ربات رو زمان‌بندی کن
             if(players.length === 1){
-                scheduleBot(round);
+                scheduleBots(round);
             }
         } else {
             btn.innerText = 'Join the Battle';
@@ -1505,7 +1750,6 @@ function pvpApplyRound(round){
             if (players.length >= 2) {
                 pvpTrySpin(round);
             } else {
-                // فقط یه نفر — تایمر رو ریست کن
                 if (Date.now() - lastAutoReset > 5000) {
                     lastAutoReset = Date.now();
                     spinTriggered = false;
@@ -1536,8 +1780,7 @@ function pvpApplyRound(round){
                     await round.save();
                     window._resetScheduled = false;
                     spinTriggered = false;
-                    botAddScheduled = false;
-                    botAdded = false;
+                    clearBotTimers();
                 } catch(e) { window._resetScheduled = false; }
             }, 5000);
         }
@@ -1563,7 +1806,7 @@ function pvpRenderPlayersReal(players, totalPool){
     const r=document.getElementById('pvpPlayersRow');
     r.innerHTML='';
     if(!players || players.length===0){
-        r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players from around the world...</div>';
+        r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>';
         return;
     }
     players.forEach(p=>{
@@ -1670,10 +1913,8 @@ async function pvpJoinClick(){
         pvpRound.set('totalPool', players.reduce((s,p)=>s+p.bet,0));
         await pvpRound.save();
         showToast('✅ Joined!', 'win');
-        botAddScheduled = false;
-        botAdded = false;
+        clearBotTimers();
     } catch(e) {
-        console.error('Join error:', e);
         balance += amount; updateGlobalBalanceUI();
         showToast('❌ ' + (e.message || 'Failed'), 'lose');
     }
@@ -1684,4 +1925,4 @@ function pvpSetBetHalf(){ const a=Math.floor((balance/2)*100)/100; if(a>=0.1) do
 function pvpAddFunds(){ showToast('❌ Deposit required'); }
 </script>
 </body>
-            </html>
+</html>
