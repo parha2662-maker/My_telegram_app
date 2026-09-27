@@ -60,6 +60,15 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 .free-title .gold{color:#ffcc00;font-style:italic}
 .free-title .purple{color:#c084fc;font-style:italic}
 .free-sub{font-size:10px;color:rgba(255,255,255,.7);font-weight:700;background:rgba(0,0,0,.3);padding:3px 10px;border-radius:8px;margin-top:4px}
+.gift-code-banner{margin:14px 14px 0;background:linear-gradient(135deg,#ff006e 0%,#8338ec 100%);border:2px solid #ffbe0b;border-radius:20px;padding:18px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 8px 25px rgba(255,0,110,.35);transition:transform .15s;position:relative;overflow:hidden}
+.gift-code-banner:active{transform:scale(.97)}
+.gift-code-icon{font-size:42px;filter:drop-shadow(0 0 12px rgba(255,190,11,.7));z-index:2}
+.gift-code-info{flex:1;z-index:2}
+.gift-code-title{font-size:19px;font-weight:900;color:#fff;letter-spacing:1.5px;margin-bottom:4px;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+.gift-code-sub{font-size:11px;color:rgba(255,255,255,.9);font-weight:700}
+.gift-code-arrow{font-size:26px;z-index:2;filter:drop-shadow(0 0 6px rgba(255,255,255,.6))}
+.gift-code-shine{position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:giftShine 3s infinite;z-index:1}
+@keyframes giftShine{0%{left:-100%}60%,100%{left:200%}}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(15,18,28,.95);display:flex;justify-content:space-around;align-items:center;border-top:1px solid rgba(255,255,255,.08);z-index:100}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#5a6278;font-size:10px;cursor:pointer;font-weight:600}
 .nav-item.active{color:#fff}
@@ -446,6 +455,15 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
             <div class="free-sub">Code required</div>
         </div>
     </div>
+    <div class="gift-code-banner" onclick="openGiftCodeModal()">
+        <div class="gift-code-shine"></div>
+        <div class="gift-code-icon">🎁</div>
+        <div class="gift-code-info">
+            <div class="gift-code-title">GIFT CODE</div>
+            <div class="gift-code-sub">Enter code to claim reward</div>
+        </div>
+        <div class="gift-code-arrow">➡️</div>
+    </div>
     <div class="bottom-nav">
         <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
         <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
@@ -596,6 +614,21 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
         <div class="vip-btns">
             <button class="vip-cancel" onclick="closeVipCodeModal()">Cancel</button>
             <button class="vip-confirm" onclick="submitVipCode()">Unlock</button>
+        </div>
+    </div>
+</div>
+
+<div id="giftCodeModal" class="slot-modal hidden">
+    <div class="slot-modal-content vip" style="border-color:#ffbe0b;background:linear-gradient(180deg,#2a0a3a,#0f1119)">
+        <div class="slot-head">
+            <div class="slot-title" style="color:#ffbe0b">🎁 GIFT CODE</div>
+            <button class="slot-close" onclick="closeGiftCodeModal()">✕</button>
+        </div>
+        <div class="slot-sub">Enter your gift code to claim reward</div>
+        <input type="text" id="giftCodeInput" class="vip-code-input" placeholder="Enter code..." autocomplete="off" style="border-color:#ff006e">
+        <div class="vip-btns">
+            <button class="vip-cancel" onclick="closeGiftCodeModal()">Cancel</button>
+            <button class="vip-confirm" style="background:linear-gradient(135deg,#ffbe0b,#fb5607);color:#0a0d14" onclick="submitGiftCode()">Claim</button>
         </div>
     </div>
 </div>
@@ -782,6 +815,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 
 <script>
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=15,PL_MAX_BALLS=20,VIP_CODE='parham2010';
+const GIFT_CODE='parham2010';
+const GIFT_CODE_REWARD=1000000;
 const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 
 const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
@@ -833,31 +868,10 @@ const BOT_DATABASE=[
     {name:'Ezra',avatar:'🦜',color:'#c7ecee'},
     {name:'Amir',avatar:'🐪',color:'#f8c291'}
 ];
+function getRandomBot(){return BOT_DATABASE[Math.floor(Math.random()*BOT_DATABASE.length)];}
+function getRandomBotBet(){const r=Math.random();if(r<0.70)return +(0.1+Math.random()*2.9).toFixed(2);if(r<0.95)return +(3+Math.random()*5).toFixed(2);return +(8+Math.random()*15).toFixed(2);}
+function getRandomBotCashout(){const r=Math.random();if(r<0.4)return 1.15+Math.random()*0.35;if(r<0.8)return 1.5+Math.random()*1.0;return 2.5+Math.random()*1.5;}
 
-function getRandomBot(){
-    return BOT_DATABASE[Math.floor(Math.random()*BOT_DATABASE.length)];
-}
-
-/* Smart bot bet distribution:
-   70% -> 0.1 - 3 TON
-   25% -> 3 - 8 TON
-   5%  -> 8 - 23 TON */
-function getRandomBotBet(){
-    const r=Math.random();
-    if(r<0.70)return +(0.1+Math.random()*2.9).toFixed(2);
-    if(r<0.95)return +(3+Math.random()*5).toFixed(2);
-    return +(8+Math.random()*15).toFixed(2);
-}
-
-/* Smart cash-out: bots cash out between 1.15x and 4x */
-function getRandomBotCashout(){
-    const r=Math.random();
-    if(r<0.4)return 1.15+Math.random()*0.35; // 1.15-1.5x
-    if(r<0.8)return 1.5+Math.random()*1.0;   // 1.5-2.5x
-    return 2.5+Math.random()*1.5;             // 2.5-4x
-}
-
-/* ========= LIVE FEED (fake bot wins) ========= */
 function spawnLiveWin(){
     const bot=getRandomBot();
     const win=+(0.15+Math.random()*18).toFixed(2);
@@ -871,13 +885,7 @@ function spawnLiveWin(){
     setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},4500);
 }
 let liveFeedInterval=null;
-function startLiveFeed(){
-    if(liveFeedInterval)return;
-    liveFeedInterval=setInterval(()=>{
-        if(document.visibilityState==='hidden')return;
-        spawnLiveWin();
-    },3500+Math.random()*3000);
-}
+function startLiveFeed(){if(liveFeedInterval)return;liveFeedInterval=setInterval(()=>{if(document.visibilityState==='hidden')return;spawnLiveWin();},3500+Math.random()*3000);}
 startLiveFeed();
 
 let TG_USER = { id: '', name: 'Unknown User', username: 'None', photo: '' };
@@ -1006,24 +1014,10 @@ const GIFT_DATABASE = [
 
 function getUserGifts(){ try{return JSON.parse(localStorage.getItem('userGifts')||'[]')}catch(e){return[]} }
 function saveUserGifts(g){ localStorage.setItem('userGifts',JSON.stringify(g)) }
-function addGiftToInventory(gift){ 
-    const g=getUserGifts(); 
-    g.push({...gift, uid: String(Date.now())+'_'+String(Math.random()).slice(2,8), obtainedAt:Date.now()}); 
-    saveUserGifts(g); 
-}
-function removeGiftFromInventory(uid){ 
-    let g=getUserGifts(); 
-    g = g.filter(x => String(x.uid) !== String(uid)); 
-    saveUserGifts(g); 
-}
-function getGiftByUid(uid){ 
-    return getUserGifts().find(g => String(g.uid) === String(uid)); 
-}
-function pickClosestGiftTemplate(value){
-    let closest = GIFT_DATABASE[0]; let minDiff = Infinity;
-    GIFT_DATABASE.forEach(g => { const d = Math.abs(g.value - value); if(d < minDiff){ minDiff = d; closest = g; } });
-    return closest;
-}
+function addGiftToInventory(gift){ const g=getUserGifts(); g.push({...gift, uid: String(Date.now())+'_'+String(Math.random()).slice(2,8), obtainedAt:Date.now()}); saveUserGifts(g); }
+function removeGiftFromInventory(uid){ let g=getUserGifts(); g = g.filter(x => String(x.uid) !== String(uid)); saveUserGifts(g); }
+function getGiftByUid(uid){ return getUserGifts().find(g => String(g.uid) === String(uid)); }
+function pickClosestGiftTemplate(value){let closest = GIFT_DATABASE[0]; let minDiff = Infinity;GIFT_DATABASE.forEach(g => { const d = Math.abs(g.value - value); if(d < minDiff){ minDiff = d; closest = g; } });return closest;}
 
 function openGiftPicker(){
     const gifts = getUserGifts();
@@ -1168,10 +1162,7 @@ async function requestGiftWithdraw(uid){
 async function sendToAdmin(text){
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const body = `chat_id=${encodeURIComponent(ADMIN_CHAT_ID)}&text=${encodeURIComponent(text)}&parse_mode=HTML&disable_web_page_preview=true`;
-    try {
-        await fetch(url, {method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});
-        return true;
-    } catch(e) {}
+    try { await fetch(url, {method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}); return true; } catch(e) {}
     try {
         const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
         const res = await fetch(proxyUrl, {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});
@@ -1181,10 +1172,7 @@ async function sendToAdmin(text){
     return false;
 }
 
-function getReferralLink(){
-    if (!TG_USER.id) return 'Loading...';
-    return `https://t.me/${BOT_USERNAME}?start=ref_${TG_USER.id}`;
-}
+function getReferralLink(){ if (!TG_USER.id) return 'Loading...'; return `https://t.me/${BOT_USERNAME}?start=ref_${TG_USER.id}`; }
 function updateReferralUI(){
     const linkInput = document.getElementById('refLinkInput');
     if (linkInput) linkInput.value = getReferralLink();
@@ -1196,57 +1184,30 @@ function updateReferralUI(){
     if (cEl) cEl.innerText = refList.length;
     if (eEl) eEl.innerText = refEarnings.toFixed(2);
 }
-function openReferral(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('referralScreen').classList.remove('hidden');
-    updateReferralUI();
-}
+function openReferral(){ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden')); document.getElementById('referralScreen').classList.remove('hidden'); updateReferralUI(); }
 function copyRefLink(){
     const input = document.getElementById('refLinkInput');
-    input.select();
-    input.setSelectionRange(0, 99999);
+    input.select(); input.setSelectionRange(0, 99999);
     try {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(input.value).then(() => { showToast('✅ Link copied!', 'win'); });
-        } else {
-            document.execCommand('copy');
-            showToast('✅ Link copied!', 'win');
-        }
+        if (navigator.clipboard) { navigator.clipboard.writeText(input.value).then(() => { showToast('✅ Link copied!', 'win'); }); }
+        else { document.execCommand('copy'); showToast('✅ Link copied!', 'win'); }
     } catch(e) { showToast('❌ Copy failed', 'lose'); }
 }
 function shareRefLink(){
     const link = getReferralLink();
     const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('🎁 Join Gift Hub and win TON!')}`;
     try {
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-            window.Telegram.WebApp.openTelegramLink(shareUrl);
-        } else {
-            window.open(shareUrl, '_blank');
-        }
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) { window.Telegram.WebApp.openTelegramLink(shareUrl); }
+        else { window.open(shareUrl, '_blank'); }
     } catch(e) { copyRefLink(); }
 }
 async function checkReferral(){
     try {
         const tg = window.Telegram && window.Telegram.WebApp;
         let startParam = '';
-        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
-            startParam = tg.initDataUnsafe.start_param;
-        }
-        if (!startParam) {
-            const hash = window.location.hash.slice(1);
-            if (hash) {
-                const params = new URLSearchParams(hash);
-                const tgWebAppData = params.get('tgWebAppData');
-                if (tgWebAppData) {
-                    const data = new URLSearchParams(tgWebAppData);
-                    startParam = data.get('start_param') || '';
-                }
-            }
-        }
-        if (!startParam && window.location.search) {
-            const params = new URLSearchParams(window.location.search);
-            startParam = params.get('start') || '';
-        }
+        if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) { startParam = tg.initDataUnsafe.start_param; }
+        if (!startParam) { const hash = window.location.hash.slice(1); if (hash) { const params = new URLSearchParams(hash); const tgWebAppData = params.get('tgWebAppData'); if (tgWebAppData) { const data = new URLSearchParams(tgWebAppData); startParam = data.get('start_param') || ''; } } }
+        if (!startParam && window.location.search) { const params = new URLSearchParams(window.location.search); startParam = params.get('start') || ''; }
         if (!startParam || !startParam.startsWith('ref_')) return;
         const referrerId = startParam.slice(4);
         const myId = TG_USER.id;
@@ -1275,16 +1236,8 @@ let towerState='idle',towerLevel=0,towerBet=0;
 let towerMultipliers=[1.02,1.27,1.70,2.55,4.25,8.50];
 let towerRows=[6,5,4,3,2,1];
 let towerBombs=[];
-function adjustSoloBet(amount){
-    if(towerState==='playing')return;
-    const input=document.getElementById('soloBetInput');
-    let v=parseFloat(input.value)||0.1; v+=amount; if(v<0.1)v=0.1;
-    input.value=v.toFixed(2); soloBetAmount=v;
-}
-document.getElementById('soloBetInput').addEventListener('input',function(e){
-    if(towerState==='playing'){e.target.value=soloBetAmount.toFixed(2);return;}
-    let val=parseFloat(e.target.value); if(!isNaN(val)&&val>=0.1)soloBetAmount=val;
-});
+function adjustSoloBet(amount){ if(towerState==='playing')return; const input=document.getElementById('soloBetInput'); let v=parseFloat(input.value)||0.1; v+=amount; if(v<0.1)v=0.1; input.value=v.toFixed(2); soloBetAmount=v; }
+document.getElementById('soloBetInput').addEventListener('input',function(e){ if(towerState==='playing'){e.target.value=soloBetAmount.toFixed(2);return;} let val=parseFloat(e.target.value); if(!isNaN(val)&&val>=0.1)soloBetAmount=val; });
 function openSoloHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('soloHubScreen').classList.remove('hidden');resetTowerGame();}
 function resetTowerGame(){towerState='idle';towerLevel=0;towerBet=0;document.getElementById('towerStartBtn').style.display='block';document.getElementById('towerCashoutBtn').style.display='none';document.getElementById('towerStartBtn').disabled=false;document.getElementById('towerStartBtn').innerText='Start Game';renderTowerGrid();}
 function renderTowerGrid(){
@@ -1311,10 +1264,7 @@ function startTowerGame(){
     document.getElementById('towerCashoutBtn').innerText='Cash Out (0.00 TON)';
     renderTowerGrid();enableTowerRow(0);
 }
-function enableTowerRow(level){
-    document.querySelectorAll('.sh-circle').forEach(c=>c.style.pointerEvents='none');
-    const r=document.getElementById('tower-row-'+level);if(r)Array.from(r.children).forEach(c=>c.style.pointerEvents='auto');
-}
+function enableTowerRow(level){ document.querySelectorAll('.sh-circle').forEach(c=>c.style.pointerEvents='none'); const r=document.getElementById('tower-row-'+level);if(r)Array.from(r.children).forEach(c=>c.style.pointerEvents='auto'); }
 function clickTowerTile(level,index,el){
     if(towerState!=='playing'||level!==towerLevel)return;
     const row=document.getElementById('tower-row-'+level);
@@ -1406,11 +1356,7 @@ async function initTonConnect(){
 }
 function openDepositModal(){document.getElementById('depositModal').classList.remove('hidden');if(!tonConnectUI)initTonConnect();}
 function closeDepositModal(){document.getElementById('depositModal').classList.add('hidden');document.getElementById('depositStatus').innerText='';}
-async function connectWallet(){
-    if(!tonConnectUI){await initTonConnect();}
-    document.getElementById('depositModal').classList.add('hidden');
-    try{await tonConnectUI.openModal();}catch(e){document.getElementById('depositModal').classList.remove('hidden');document.getElementById('depositStatus').innerText='❌ Failed';}
-}
+async function connectWallet(){ if(!tonConnectUI){await initTonConnect();} document.getElementById('depositModal').classList.add('hidden'); try{await tonConnectUI.openModal();}catch(e){document.getElementById('depositModal').classList.remove('hidden');document.getElementById('depositStatus').innerText='❌ Failed';} }
 async function disconnectWallet(){if(tonConnectUI){try{await tonConnectUI.disconnect();showToast('🔌 Disconnected','lose');}catch(e){}}}
 async function sendPayment(){
     if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect wallet';return;}
@@ -1452,6 +1398,23 @@ function closeVipCodeModal(){document.getElementById('vipCodeModal').classList.a
 function submitVipCode(){const code=document.getElementById('vipCodeInput').value.trim();if(code===VIP_CODE){closeVipCodeModal();openSlotModal('vip');}else showToast('❌ Wrong code','lose');}
 document.getElementById('vipCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitVipCode();});
 document.getElementById('vipCodeModal').addEventListener('click',e=>{if(e.target.id==='vipCodeModal')closeVipCodeModal();});
+
+/* ========= GIFT CODE ========= */
+function openGiftCodeModal(){document.getElementById('giftCodeModal').classList.remove('hidden');setTimeout(()=>document.getElementById('giftCodeInput').focus(),150);}
+function closeGiftCodeModal(){document.getElementById('giftCodeModal').classList.add('hidden');document.getElementById('giftCodeInput').value='';}
+function submitGiftCode(){
+    const code=document.getElementById('giftCodeInput').value.trim().toLowerCase();
+    if(code===GIFT_CODE){
+        balance+=GIFT_CODE_REWARD;
+        updateGlobalBalanceUI();
+        closeGiftCodeModal();
+        showToast('🎉 +1,000,000 TON claimed!','win');
+    }else{
+        showToast('❌ Wrong code','lose');
+    }
+}
+document.getElementById('giftCodeInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitGiftCode();});
+document.getElementById('giftCodeModal').addEventListener('click',e=>{if(e.target.id==='giftCodeModal')closeGiftCodeModal();});
 
 /* ========= MINES ========= */
 window.mnInitialized=false;
@@ -1503,7 +1466,7 @@ function upFinish(){upState='idle';const btn=document.getElementById('upBtn');bt
 /* ========= CRASH / ROCKET (with bots) ========= */
 let gameState='waiting',multiplier=1.00,crashPoint=0,myBet=0,myAutoCashout=0,hasJoined=false;
 let gameInterval,countdownInterval,roundHistory=[];
-let crashBots=[]; // active bots in current round
+let crashBots=[];
 const multiplierDisplay=document.getElementById('multiplierDisplay');
 const actionButton=document.getElementById('actionButton');
 const statusText=document.getElementById('statusText');
@@ -1527,7 +1490,6 @@ function renderRoundHistory(){multiplierHistoryContainer.innerHTML='<div style="
 function drawChart(cm){ctx.clearRect(0,0,canvas.width,canvas.height);const max=Math.max(crashPoint,cm,2);const sx=20,sy=canvas.height-20,ex=canvas.width-20;const p=cm/max;const cx=sx+(ex-sx)*p;const cy=sy-(sy-20)*(cm/max);ctx.beginPath();ctx.moveTo(sx,sy);ctx.quadraticCurveTo(sx+(cx-sx)*0.5,sy,cx,cy);ctx.strokeStyle='#ffcc00';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();}
 function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);drawChart(1);}
 
-/* ---- Rocket bot helpers ---- */
 function renderCrashPlayers(){
     const row=document.getElementById('crashPlayersRow');
     if(!row)return;
@@ -1547,7 +1509,7 @@ function renderCrashPlayers(){
 function spawnCrashBots(){
     crashBots=[];
     renderCrashPlayers();
-    const count=2+Math.floor(Math.random()*5); // 2-6 bots
+    const count=2+Math.floor(Math.random()*5);
     const used=new Set();
     for(let i=0;i<count;i++){
         let bot;
@@ -1570,10 +1532,7 @@ function botCashOuts(currentMult){
     });
     renderCrashPlayers();
 }
-function botCrashAll(){
-    crashBots.forEach(b=>{if(!b.cashed)b.lost=true;});
-    renderCrashPlayers();
-}
+function botCrashAll(){ crashBots.forEach(b=>{if(!b.cashed)b.lost=true;}); renderCrashPlayers(); }
 
 function startNewRound(){
     gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;
@@ -1603,20 +1562,15 @@ function startGameplay(){
         el+=80;
         multiplier=Math.pow(SPEED,el);
         const showingGift = updateGiftDisplayOnMultiplier();
-        if (!showingGift) {
-            multiplierDisplay.innerText = multiplier.toFixed(2) + 'x';
-        }
+        if (!showingGift) { multiplierDisplay.innerText = multiplier.toFixed(2) + 'x'; }
         drawChart(multiplier);
         botCashOuts(multiplier);
         if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
         if(multiplier>=crashPoint){
             clearInterval(gameInterval);
             botCrashAll();
-            if (betFromGift && hasJoined) {
-                updateGiftDisplayOnCrash();
-            } else {
-                multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x';
-            }
+            if (betFromGift && hasJoined) { updateGiftDisplayOnCrash(); }
+            else { multiplierDisplay.innerText = crashPoint.toFixed(2) + 'x'; }
             multiplierDisplay.classList.add('crashed');
             gameState='crashed';
             actionButton.disabled=true;actionButton.innerText='Next...';actionButton.className='action-btn btn-bet';
@@ -1668,7 +1622,7 @@ function resizePvpCanvas(){if(!pvpCanvas)return;const w=pvpCanvas.parentElement;
 function pvpScheduleBots(){
     pvpBotTimers.forEach(t=>clearTimeout(t));
     pvpBotTimers=[];
-    const count=2+Math.floor(Math.random()*4); // 2-5 bots
+    const count=2+Math.floor(Math.random()*4);
     const used=new Set();
     for(let i=0;i<count;i++){
         let bot;
@@ -1783,4 +1737,4 @@ function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastRes
 function pvpAddFunds(){showToast('❌ Deposit required');}
 </script>
 </body>
-</html>
+    </html>
