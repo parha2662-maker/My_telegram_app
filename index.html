@@ -767,7 +767,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;f
 <script>
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PL_MAX_BALLS=20,VIP_CODE='parham2010';
 const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
-const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14'; // ⚠️ توکن خودت رو بذار
+const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14'; // ⚠️ توکن جدیدت رو اینجا بذار
 const ADMIN_CHAT_ID = '6151360205';
 const ADMIN_ID = '6151360205';
 const MIN_TON_DEPOSIT = 0.1;
@@ -840,7 +840,7 @@ async function loadBotUsername(){
     } catch(e) {}
 }
 
-/* ===== Firebase-style: Back4App User Sync ===== */
+/* ===== Back4App User Sync ===== */
 async function syncUserWithBack4App(){
     if (!TG_USER.id) return;
     try {
@@ -862,16 +862,13 @@ async function syncUserWithBack4App(){
             await user.save();
             console.log('✅ New user created');
         } else {
-            // Load balance
             const remoteBalance = user.get('balance');
             if (typeof remoteBalance === 'number') {
-                // فقط اگه اختلاف داره آپدیت کن
                 if (Math.abs(remoteBalance - balance) > 0.001) {
                     balance = remoteBalance;
                     updateGlobalBalanceUI(false);
                 }
             }
-            // Check banned
             if (user.get('banned')) {
                 document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif;background:#0a0d14;height:100vh;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:80px;">🚫</div><div style="font-size:24px;font-weight:900;color:#ff4444;margin-top:20px;">Access Denied</div><div style="color:#7a8299;margin-top:10px;">Your account has been suspended.</div></div>';
                 return;
@@ -880,7 +877,6 @@ async function syncUserWithBack4App(){
         currentUserObject = user;
         localStorage.setItem('userObjectId', user.id);
 
-        // Real-time listener — اگه ادمین موجودی رو از راه دور تغییر داد، این آپدیت بشه
         if(userDataWatcher) userDataWatcher.unsubscribe();
         const watchQ = new Parse.Query(UserClass);
         watchQ.equalTo('objectId', user.id);
@@ -971,7 +967,6 @@ function renderAdminUserCard(user){
             <div class="adm-row"><span class="adm-row-label">🚫 Banned</span><span class="adm-row-value ${user.get('banned')?'red':'green'}">${banned}</span></div>
             <div class="adm-row"><span class="adm-row-label">🆔 Object</span><span class="adm-row-value" style="font-size:10px;">${objId.slice(0,10)}...</span></div>
         </div>
-
         <div class="adm-card">
             <div class="adm-section-title">💵 CHANGE BALANCE</div>
             <input type="number" id="admAmountInput" class="adm-input" placeholder="Amount (TON)" value="1" step="0.1">
@@ -983,7 +978,6 @@ function renderAdminUserCard(user){
                 <button class="adm-btn set" onclick="adminChangeBalance('set')">🎯 Set Exactly</button>
             </div>
         </div>
-
         <div class="adm-card">
             <div class="adm-section-title">🚫 BAN CONTROL</div>
             <div class="adm-btn-row">
@@ -992,14 +986,12 @@ function renderAdminUserCard(user){
                     : '<button class="adm-btn remove" onclick="adminToggleBan(true)">🚫 Ban User</button>'}
             </div>
         </div>
-
         <div class="adm-card">
             <div class="adm-section-title">📤 SEND MESSAGE</div>
             <input type="text" id="admMsgInput" class="adm-input" placeholder="Message to user...">
             <button class="adm-btn set" onclick="adminSendMessage()">📨 Send via Bot</button>
         </div>
     `;
-
     window._adminCurrentUserId = tgId;
     window._adminCurrentObjectId = objId;
 }
@@ -1022,7 +1014,6 @@ async function adminChangeBalance(action){
         user.set('balance', newBal);
         await user.save();
         showToast('✅ Balance set to ' + newBal.toFixed(2) + ' TON', 'win');
-        // refresh card
         const q2 = new Parse.Query(UserClass);
         const fresh = await q2.get(objId);
         renderAdminUserCard(fresh);
@@ -1516,7 +1507,7 @@ betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!is
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
-/* ========= PVP with SMART BOTS (max 3, varied bets) ========= */
+/* ========= PVP with SMART BOTS ========= */
 window.pvpInitialized=false;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpPointerAngle=-Math.PI/2;
 let pvpRound=null,pvpSubscription=null,pvpIsHost=false,pvpMyBet=0;
@@ -1530,7 +1521,7 @@ const MAX_BOT_BET = 5;
 const BOT_NAMES = ['Alex','CryptoKing','Degen99','Lucky_Boy','Master','Wolf','Ninja','PixelPro','StarFire','Thunder','IceQueen','Ghost','Reaper','Shadow','Viper','Phantom','Blaze','Knight','Rogue','Falcon'];
 const BOT_BET_OPTIONS = [0.1, 0.2, 0.5, 0.8, 1, 1.5, 2, 3, 4, 5];
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0','#ff9f1a','#18dcff','#32ff7e','#7d5fff'];
-const PvpRoundClass = Parse.Object.extend('GameRush'); // 👈 تغییر یافت
+const PvpRoundClass = Parse.Object.extend('GameRush');
 
 function clearBotTimers(){
     scheduledBotTimers.forEach(t => clearTimeout(t));
@@ -1546,18 +1537,8 @@ function pickBotBet(existingBets){
 function makeSmartBot(existingBets, existingColors){
     const bet = pickBotBet(existingBets);
     const availableColors = PVP_COLORS.filter(c => !existingColors.includes(c));
-    const color = availableColors.length > 0
-        ? availableColors[Math.floor(Math.random()*availableColors.length)]
-        : PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
-    return {
-        userId: 'bot_' + Date.now() + '_' + Math.floor(Math.random()*100000),
-        name: BOT_NAMES[Math.floor(Math.random()*BOT_NAMES.length)] + Math.floor(Math.random()*99),
-        username: 'None',
-        bet: bet,
-        color: color,
-        joinedAt: Date.now(),
-        isBot: true
-    };
+    const color = availableColors.length > 0 ? availableColors[Math.floor(Math.random()*availableColors.length)] : PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
+    return { userId: 'bot_' + Date.now() + '_' + Math.floor(Math.random()*100000), name: BOT_NAMES[Math.floor(Math.random()*BOT_NAMES.length)] + Math.floor(Math.random()*99), username: 'None', bet: bet, color: color, joinedAt: Date.now(), isBot: true };
 }
 
 async function addBotToRound(round){
@@ -1566,23 +1547,15 @@ async function addBotToRound(round){
         if(round.get('status') !== 'waiting') return;
         const players = round.get('players') || [];
         if(players.length >= MAX_PLAYERS) return;
-
         const myId = String(TG_USER.id);
         if(!players.some(p => String(p.userId) === myId)) return;
-
         const existingBets = players.map(p => p.bet);
         const existingColors = players.map(p => p.color);
         const bot = makeSmartBot(existingBets, existingColors);
         players.push(bot);
         round.set('players', players);
         round.set('totalPool', players.reduce((s,p)=>s+p.bet,0));
-
-        if(players.length >= MAX_PLAYERS){
-            round.set('startTime', Date.now() + 2000);
-        } else {
-            round.set('startTime', Date.now() + 3000);
-        }
-
+        if(players.length >= MAX_PLAYERS){ round.set('startTime', Date.now() + 2000); } else { round.set('startTime', Date.now() + 3000); }
         await round.save();
         showToast('🤖 ' + bot.name + ' joined with ' + bot.bet.toFixed(2) + ' TON', 'win');
     } catch(e) { console.warn('Bot add error:', e); }
@@ -1590,275 +1563,171 @@ async function addBotToRound(round){
 
 function scheduleBots(round){
     if(scheduledBotTimers.length > 0) return;
-    const t1 = setTimeout(() => { addBotToRound(round); }, 1200);
-    scheduledBotTimers.push(t1);
-    const t2 = setTimeout(() => { addBotToRound(round); }, 2600);
-    scheduledBotTimers.push(t2);
+    const t1 = setTimeout(() => { addBotToRound(round); }, 1200); scheduledBotTimers.push(t1);
+    const t2 = setTimeout(() => { addBotToRound(round); }, 2600); scheduledBotTimers.push(t2);
 }
 
 async function pvpInit(){
-    pvpCanvas=document.getElementById('pvpCanvas');
-    pvpCtx=pvpCanvas.getContext('2d');
-    window.addEventListener('resize',resizePvpCanvas);
-    resizePvpCanvas();
-
+    pvpCanvas=document.getElementById('pvpCanvas'); pvpCtx=pvpCanvas.getContext('2d');
+    window.addEventListener('resize',resizePvpCanvas); resizePvpCanvas();
     try {
         try { await Parse.Cloud.run('initPvpClass'); } catch(e) { console.warn('Cloud init:', e); }
-
-        const q = new Parse.Query(PvpRoundClass);
-        q.equalTo('status', 'waiting');
-        q.descending('createdAt');
-        q.limit(1);
+        const q = new Parse.Query(PvpRoundClass); q.equalTo('status', 'waiting'); q.descending('createdAt'); q.limit(1);
         let round = await q.first();
-
         if (round) {
-            const createdAt = round.get('createdAt');
-            const roundAgeMs = createdAt ? (Date.now() - createdAt.getTime()) : 0;
+            const createdAt = round.get('createdAt'); const roundAgeMs = createdAt ? (Date.now() - createdAt.getTime()) : 0;
             const players = round.get('players') || [];
             if (roundAgeMs > 180000) {
-                for (const p of players) {
-                    if (!p.isBot && String(p.userId) === String(TG_USER.id)) {
-                        balance += p.bet;
-                        updateGlobalBalanceUI();
-                        showToast('💰 Refunded ' + p.bet.toFixed(2) + ' TON', 'win');
-                    }
-                }
+                for (const p of players) { if (!p.isBot && String(p.userId) === String(TG_USER.id)) { balance += p.bet; updateGlobalBalanceUI(); showToast('💰 Refunded ' + p.bet.toFixed(2) + ' TON', 'win'); } }
                 try { await round.destroy(); } catch(e) {}
                 round = null;
             }
         }
-
         if (!round) {
             round = new PvpRoundClass();
-            round.set('status', 'waiting');
-            round.set('players', []);
-            round.set('totalPool', 0);
-            round.set('startTime', Date.now() + 20000);
-            round.set('winner_id', ''); // 👈 تغییر یافت
-            round.set('finalAngle', -Math.PI/2);
+            round.set('status', 'waiting'); round.set('players', []); round.set('totalPool', 0); round.set('startTime', Date.now() + 20000); round.set('winner_id', ''); round.set('finalAngle', -Math.PI/2);
             await round.save();
         }
-
-        pvpRound = round;
-        lastRenderHash = '';
-        spinTriggered = false;
-        clearBotTimers();
-        pvpApplyRound(round);
-
-        const subQ = new Parse.Query(PvpRoundClass);
-        subQ.equalTo('objectId', round.id);
+        pvpRound = round; lastRenderHash = ''; spinTriggered = false; clearBotTimers(); pvpApplyRound(round);
+        const subQ = new Parse.Query(PvpRoundClass); subQ.equalTo('objectId', round.id);
         pvpSubscription = await subQ.subscribe();
         pvpSubscription.on('update', (r) => { pvpApplyRound(r); });
-    } catch(e) {
-        console.error('PVP init error:', e);
-        showToast('❌ PVP: ' + (e.message || 'unknown'), 'lose');
-    }
+    } catch(e) { console.error('PVP init error:', e); showToast('❌ PVP: ' + (e.message || 'unknown'), 'lose'); }
 }
 
 async function pvpTrySpin(round){
-    if (spinTriggered) return;
-    spinTriggered = true;
+    if (spinTriggered) return; spinTriggered = true;
     try {
         await new Promise(r => setTimeout(r, Math.random() * 500));
         await round.fetch();
         if(round.get('status') !== 'waiting'){ spinTriggered = false; return; }
         const players = round.get('players') || [];
         if(players.length < 2){ spinTriggered = false; return; }
-
         const totalPool = players.reduce((s,p)=>s+p.bet,0);
-        let rand = Math.random()*totalPool;
-        let winnerId = players[0].userId;
+        let rand = Math.random()*totalPool; let winnerId = players[0].userId;
         for(const p of players){ rand -= p.bet; if(rand<=0){ winnerId = p.userId; break; } }
-
         let cumul=0,winnerStart=0,winnerArc=0;
-        for(const p of players){
-            const arc=(p.bet/totalPool)*Math.PI*2;
-            if(String(p.userId)===String(winnerId)){ winnerStart=cumul; winnerArc=arc; break; }
-            cumul+=arc;
-        }
+        for(const p of players){ const arc=(p.bet/totalPool)*Math.PI*2; if(String(p.userId)===String(winnerId)){ winnerStart=cumul; winnerArc=arc; break; } cumul+=arc; }
         const winnerMidOffset = winnerStart + winnerArc/2;
         const finalAngle = -Math.PI/2 - winnerMidOffset;
-
-        round.set('status','spinning');
-        round.set('winner_id', String(winnerId)); // 👈 تغییر یافت
-        round.set('finalAngle', finalAngle);
+        round.set('status','spinning'); round.set('winner_id', String(winnerId)); round.set('finalAngle', finalAngle);
         await round.save();
-
         setTimeout(async () => {
             try {
                 const r2 = await round.fetch();
                 if(r2.get('status') === 'spinning'){
-                    r2.set('status','done');
-                    await r2.save();
+                    r2.set('status','done'); await r2.save();
                     const winnerPlayer = players.find(p => String(p.userId) === String(winnerId));
-                    if(!winnerPlayer || !winnerPlayer.isBot){
-                        pvpHandlePayout(winnerId, players, totalPool);
-                    } else {
-                        const myId = String(TG_USER.id);
-                        const me = players.find(p => String(p.userId) === myId);
-                        if(me) showToast('😔 Lost ' + me.bet.toFixed(2) + ' TON', 'lose');
-                    }
+                    if(!winnerPlayer || !winnerPlayer.isBot){ pvpHandlePayout(winnerId, players, totalPool); }
+                    else { const myId = String(TG_USER.id); const me = players.find(p => String(p.userId) === myId); if(me) showToast('😔 Lost ' + me.bet.toFixed(2) + ' TON', 'lose'); }
                 }
             } catch(e) {}
         }, 5000);
-    } catch(e) {
-        spinTriggered = false;
-    }
+    } catch(e) { spinTriggered = false; }
 }
 
 function pvpApplyRound(round){
-    const players = round.get('players') || [];
-    const status = round.get('status');
-    const totalPool = round.get('totalPool') || 0;
-
+    const players = round.get('players') || []; const status = round.get('status'); const totalPool = round.get('totalPool') || 0;
     document.getElementById('pvpPoolValue').innerText = totalPool.toFixed(2);
     document.getElementById('pvpPlayersCount').innerText = '👥 ' + players.length;
     document.getElementById('pvpGameNum').innerText = 'Game #' + round.id.slice(-5);
-
     pvpIsHost = players.length > 0 && String(players[0].userId) === String(TG_USER.id);
-
     const playersHash = JSON.stringify(players) + '_' + totalPool;
-    if (playersHash !== lastRenderHash) {
-        lastRenderHash = playersHash;
-        pvpRenderPlayersReal(players, totalPool);
-    }
-
+    if (playersHash !== lastRenderHash) { lastRenderHash = playersHash; pvpRenderPlayersReal(players, totalPool); }
     const btn = document.getElementById('joinBattleBtn');
     const alreadyJoined = players.some(p => String(p.userId) === String(TG_USER.id));
     const myPlayer = players.find(p => String(p.userId) === String(TG_USER.id));
-
     if (status === 'waiting') {
         const remain = Math.max(0, Math.ceil((round.get('startTime') - Date.now()) / 1000));
         document.getElementById('pvpTimer').innerText = '00:' + String(remain).padStart(2, '0');
-
         if (alreadyJoined) {
             btn.innerText = '✅ Joined (' + (myPlayer ? myPlayer.bet.toFixed(2) : '0') + ' TON)';
-            btn.className = 'join-battle-btn';
-            btn.disabled = true;
-            document.getElementById('pvpBetInput').disabled = true;
-            if(players.length === 1){
-                scheduleBots(round);
-            }
+            btn.className = 'join-battle-btn'; btn.disabled = true; document.getElementById('pvpBetInput').disabled = true;
+            if(players.length === 1){ scheduleBots(round); }
         } else {
-            btn.innerText = 'Join the Battle';
-            btn.className = 'join-battle-btn active';
-            btn.disabled = false;
+            btn.innerText = 'Join the Battle'; btn.className = 'join-battle-btn active'; btn.disabled = false;
             document.getElementById('pvpBetInput').disabled = false;
         }
-
         if (remain <= 0) {
-            if (players.length >= 2) {
-                pvpTrySpin(round);
-            } else {
+            if (players.length >= 2) { pvpTrySpin(round); }
+            else {
                 if (Date.now() - lastAutoReset > 5000) {
-                    lastAutoReset = Date.now();
-                    spinTriggered = false;
-                    round.set('startTime', Date.now() + 15000);
-                    round.save().catch(e => {});
+                    lastAutoReset = Date.now(); spinTriggered = false;
+                    round.set('startTime', Date.now() + 15000); round.save().catch(e => {});
                 }
             }
         }
     } else if (status === 'spinning') {
-        document.getElementById('pvpTimer').innerText = '🎰';
-        btn.innerText = 'Spinning...';
-        btn.disabled = true;
+        document.getElementById('pvpTimer').innerText = '🎰'; btn.innerText = 'Spinning...'; btn.disabled = true;
         pvpAnimateSpin(round.get('finalAngle'));
     } else if (status === 'done') {
         document.getElementById('pvpTimer').innerText = '🏆';
-        const winnerId = round.get('winner_id'); // 👈 تغییر یافت
+        const winnerId = round.get('winner_id');
         pvpShowResult(winnerId, players, totalPool);
         if (!window._resetScheduled) {
             window._resetScheduled = true;
             setTimeout(async () => {
                 try {
-                    round.set('status', 'waiting');
-                    round.set('players', []);
-                    round.set('totalPool', 0);
-                    round.set('startTime', Date.now() + 20000);
-                    round.set('winner_id', ''); // 👈 تغییر یافت
-                    round.set('finalAngle', -Math.PI/2);
-                    await round.save();
-                    window._resetScheduled = false;
-                    spinTriggered = false;
-                    clearBotTimers();
+                    round.set('status', 'waiting'); round.set('players', []); round.set('totalPool', 0); round.set('startTime', Date.now() + 20000); round.set('winner_id', ''); round.set('finalAngle', -Math.PI/2);
+                    await round.save(); window._resetScheduled = false; spinTriggered = false; clearBotTimers();
                 } catch(e) { window._resetScheduled = false; }
             }, 5000);
         }
     }
-
     pvpDrawWheelReal(players, totalPool, pvpPointerAngle);
 }
 
 function resizePvpCanvas(){
-    if(!pvpCanvas)return;
-    const w=pvpCanvas.parentElement;
-    const aw=w.clientWidth-40, ah=w.clientHeight-20;
-    const s=Math.max(220,Math.min(aw,ah,340));
-    const dpr=window.devicePixelRatio||1;
-    pvpSize=s;
-    pvpCanvas.width=s*dpr; pvpCanvas.height=s*dpr;
-    pvpCanvas.style.width=s+'px'; pvpCanvas.style.height=s+'px';
+    if(!pvpCanvas)return; const w=pvpCanvas.parentElement;
+    const aw=w.clientWidth-40, ah=w.clientHeight-20; const s=Math.max(220,Math.min(aw,ah,340));
+    const dpr=window.devicePixelRatio||1; pvpSize=s;
+    pvpCanvas.width=s*dpr; pvpCanvas.height=s*dpr; pvpCanvas.style.width=s+'px'; pvpCanvas.style.height=s+'px';
     pvpCtx.setTransform(dpr,0,0,dpr,0,0);
     if(pvpRound) pvpDrawWheelReal(pvpRound.get('players')||[], pvpRound.get('totalPool')||0, pvpPointerAngle);
 }
 
 function pvpRenderPlayersReal(players, totalPool){
-    const r=document.getElementById('pvpPlayersRow');
-    r.innerHTML='';
-    if(!players || players.length===0){
-        r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>';
-        return;
-    }
+    const r=document.getElementById('pvpPlayersRow'); r.innerHTML='';
+    if(!players || players.length===0){ r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>'; return; }
     players.forEach(p=>{
         const pct = totalPool>0 ? ((p.bet/totalPool)*100).toFixed(1) : '0.0';
         const isMe = String(p.userId) === String(TG_USER.id);
         const avatarEmoji = isMe ? '👤' : (p.isBot ? '🤖' : '🌍');
-        const c=document.createElement('div');
-        c.className='pvp-pcard'+(isMe?' isMe':'');
+        const c=document.createElement('div'); c.className='pvp-pcard'+(isMe?' isMe':'');
         c.innerHTML='<div class="pvp-pcard-top" style="background:'+p.color+'"></div><div class="pvp-pav" style="border-color:'+p.color+'">'+avatarEmoji+'</div><div class="pvp-pname">'+p.name+'</div><div class="pvp-ppct" style="color:'+p.color+'">'+pct+'%</div><div class="pvp-pbet">'+p.bet.toFixed(2)+' TON</div>';
         r.appendChild(c);
     });
 }
 
 function pvpDrawWheelReal(players, totalPool, angle){
-    if(!pvpCanvas||!pvpCtx)return;
-    const s=pvpSize,cx=s/2,cy=s/2,R=s/2-6,ir=s*0.27;
+    if(!pvpCanvas||!pvpCtx)return; const s=pvpSize,cx=s/2,cy=s/2,R=s/2-6,ir=s*0.27;
     pvpCtx.clearRect(0,0,s,s);
     if(!players||players.length===0||totalPool===0){
         pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();
-        pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#0f1119';pvpCtx.fill();
-        return;
+        pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#0f1119';pvpCtx.fill(); return;
     }
     let a=-Math.PI/2;
     players.forEach(p=>{
         const arc=(p.bet/totalPool)*Math.PI*2;
         pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);pvpCtx.arc(cx,cy,R,a,a+arc);pvpCtx.closePath();
-        pvpCtx.fillStyle=p.color;pvpCtx.fill();
-        pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke();
-        a+=arc;
+        pvpCtx.fillStyle=p.color;pvpCtx.fill();pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke(); a+=arc;
     });
     pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();
     const px=cx+Math.cos(angle)*R,py=cy+Math.sin(angle)*R;
-    pvpCtx.beginPath();
-    pvpCtx.moveTo(cx+Math.cos(angle)*ir,cy+Math.sin(angle)*ir);
-    pvpCtx.lineTo(px,py);
+    pvpCtx.beginPath(); pvpCtx.moveTo(cx+Math.cos(angle)*ir,cy+Math.sin(angle)*ir); pvpCtx.lineTo(px,py);
     pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';
     pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;
 }
 
 function pvpAnimateSpin(finalAngle){
-    if(window.pvpSpinAnimating) return;
-    window.pvpSpinAnimating = true;
-    const startAngle = pvpPointerAngle;
-    let target = finalAngle;
+    if(window.pvpSpinAnimating) return; window.pvpSpinAnimating = true;
+    const startAngle = pvpPointerAngle; let target = finalAngle;
     while(target < startAngle + 6*Math.PI*2) target += Math.PI*2;
     const dur=4500, st=performance.now();
     function frame(now){
-        const t=Math.min(1,(now-st)/dur);
-        const e=1-Math.pow(1-t,3.2);
+        const t=Math.min(1,(now-st)/dur); const e=1-Math.pow(1-t,3.2);
         pvpPointerAngle = startAngle + (target-startAngle)*e;
-        const players = pvpRound.get('players')||[];
-        const totalPool = pvpRound.get('totalPool')||1;
+        const players = pvpRound.get('players')||[]; const totalPool = pvpRound.get('totalPool')||1;
         pvpDrawWheelReal(players, totalPool, pvpPointerAngle);
         if(t<1) requestAnimationFrame(frame);
         else { pvpPointerAngle = finalAngle; window.pvpSpinAnimating = false; }
@@ -1867,21 +1736,14 @@ function pvpAnimateSpin(finalAngle){
 }
 
 function pvpHandlePayout(winnerId, players, totalPool){
-    const myId = String(TG_USER.id);
-    const me = players.find(p => String(p.userId) === myId);
+    const myId = String(TG_USER.id); const me = players.find(p => String(p.userId) === myId);
     if(!me) return;
-    if(String(winnerId) === myId){
-        balance += totalPool;
-        updateGlobalBalanceUI();
-        showToast('🏆 You won ' + totalPool.toFixed(2) + ' TON!', 'win');
-    } else {
-        showToast('😔 Lost ' + me.bet.toFixed(2) + ' TON', 'lose');
-    }
+    if(String(winnerId) === myId){ balance += totalPool; updateGlobalBalanceUI(); showToast('🏆 You won ' + totalPool.toFixed(2) + ' TON!', 'win'); }
+    else { showToast('😔 Lost ' + me.bet.toFixed(2) + ' TON', 'lose'); }
 }
 
 function pvpShowResult(winnerId, players, totalPool){
-    const myId = String(TG_USER.id);
-    const winner = players.find(p => String(p.userId) === String(winnerId));
+    const myId = String(TG_USER.id); const winner = players.find(p => String(p.userId) === String(winnerId));
     if(winner){
         const isMe = String(winner.userId) === myId;
         document.getElementById('pvpLast').innerText = isMe ? '+' + totalPool.toFixed(2) + ' TON' : '0.00 TON';
@@ -1898,26 +1760,12 @@ async function pvpJoinClick(){
         await pvpRound.fetch();
         const players = pvpRound.get('players') || [];
         if(players.some(p=>String(p.userId)===String(TG_USER.id))){ showToast('Already joined'); return; }
-        balance -= amount;
-        updateGlobalBalanceUI();
+        balance -= amount; updateGlobalBalanceUI();
         const color = PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
-        players.push({
-            userId: String(TG_USER.id),
-            name: TG_USER.name.split(' ')[0] || 'Player',
-            username: TG_USER.username,
-            bet: amount,
-            color: color,
-            joinedAt: Date.now()
-        });
-        pvpRound.set('players', players);
-        pvpRound.set('totalPool', players.reduce((s,p)=>s+p.bet,0));
-        await pvpRound.save();
-        showToast('✅ Joined!', 'win');
-        clearBotTimers();
-    } catch(e) {
-        balance += amount; updateGlobalBalanceUI();
-        showToast('❌ ' + (e.message || 'Failed'), 'lose');
-    }
+        players.push({ userId: String(TG_USER.id), name: TG_USER.name.split(' ')[0] || 'Player', username: TG_USER.username, bet: amount, color: color, joinedAt: Date.now() });
+        pvpRound.set('players', players); pvpRound.set('totalPool', players.reduce((s,p)=>s+p.bet,0));
+        await pvpRound.save(); showToast('✅ Joined!', 'win'); clearBotTimers();
+    } catch(e) { balance += amount; updateGlobalBalanceUI(); showToast('❌ ' + (e.message || 'Failed'), 'lose'); }
 }
 
 function pvpSetBetAll(){ const a=Math.floor(balance*100)/100; if(a>=0.1) document.getElementById('pvpBetInput').value=a.toFixed(2); }
@@ -1925,1070 +1773,4 @@ function pvpSetBetHalf(){ const a=Math.floor((balance/2)*100)/100; if(a>=0.1) do
 function pvpAddFunds(){ showToast('❌ Deposit required'); }
 </script>
 </body>
-    </html><!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Gift Hub</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;width:100%;overflow:hidden;background:#0a0d14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
-::-webkit-scrollbar{display:none}
-.screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;transition:transform .3s,opacity .3s;overflow:hidden}
-.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
-#homeScreen{background:radial-gradient(circle at 50% 0%,#1a1f3a 0%,#0a0d14 60%);overflow-y:auto;padding-bottom:90px;padding-top:20px}
-.balance-row{display:flex;align-items:center;padding:12px 16px 18px;gap:8px}
-.avatar-wrap{position:relative;width:52px;height:52px;flex-shrink:0}
-.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2ff0e0,#1e9cff);display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:800}
-.avatar-badge{position:absolute;bottom:-2px;right:-4px;font-size:14px;background:#0a0d14;border-radius:50%;width:20px;height:20px;display:flex;justify-content:center;align-items:center}
-.balance-info{flex:1}
-.balance-label{font-size:12px;color:#7a8299;margin-bottom:4px}
-.balance-value{font-size:22px;font-weight:800;display:flex;align-items:center;gap:8px}
-.ton-icon{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:800}
-.deposit-btn{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:11px 18px;border-radius:14px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
-.banners{padding:20px 14px 0;display:flex;flex-direction:column;gap:14px}
-.banner{border-radius:22px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;box-shadow:0 10px 30px rgba(0,0,0,.5);min-height:110px}
-.banner:active{transform:scale(.98)}
-.banner-badge{position:absolute;top:14px;left:16px;background:rgba(255,255,255,.95);color:#333;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:4px;z-index:10}
-.banner-title{position:absolute;bottom:16px;left:20px;font-size:24px;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;z-index:10}
-.rocket-banner{background:radial-gradient(circle at 75% 50%,rgba(255,255,255,.3) 0%,transparent 45%),linear-gradient(135deg,#4aa8ff 0%,#6bb8ff 50%,#3d8ce8 100%);min-height:130px}
-.rocket-scene{position:absolute;right:0;top:0;bottom:0;width:55%;pointer-events:none}
-.rocket-ship{position:absolute;right:20px;top:50%;transform:translateY(-50%) rotate(-8deg);font-size:74px;animation:rocketFloat 2.5s ease-in-out infinite;z-index:2}
-@keyframes rocketFloat{0%,100%{transform:translateY(-50%) rotate(-8deg)}50%{transform:translateY(-58%) rotate(-6deg)}}
-.mult-pill{position:absolute;padding:5px 10px;border-radius:10px;font-size:12px;font-weight:900;color:#fff;animation:pillFloat 3s ease-in-out infinite;z-index:3}
-.mult-pill.green{background:linear-gradient(135deg,#2ff068,#00b848)}
-.mult-pill.yellow{background:linear-gradient(135deg,#ffcb2b,#ff9d00)}
-.mult-pill.red{background:linear-gradient(135deg,#ff5c5c,#d92b2b)}
-.pm-1{top:14px;right:90px}.pm-2{top:55px;right:130px;animation-delay:.6s}.pm-3{bottom:14px;right:70px;animation-delay:1.2s}
-@keyframes pillFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-6px) rotate(3deg)}}
-.pvp-banner{background:linear-gradient(135deg,#ffc14d 0%,#ff9d3d 100%)}
-.pvp-players{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:6px;z-index:2}
-.pvp-card{width:60px;height:80px;border-radius:14px;background:rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 4px;border:1px solid rgba(255,255,255,.15)}
-.pvp-card .pc-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6b7280,#374151);display:flex;justify-content:center;align-items:center;font-size:15px}
-.pvp-card .pc-name{font-size:8px;font-weight:800;color:#fff}
-.pvp-card .pc-pct{font-size:10px;font-weight:800;color:#4ade80}
-.playhub-banner{background:linear-gradient(135deg,#6a1b9a 0%,#3d0a63 100%);min-height:120px}
-.game-cards{position:absolute;right:-10px;top:0;bottom:0;display:flex;align-items:center;z-index:2;pointer-events:none}
-.game-card{width:78px;height:90px;border-radius:12px;display:flex;justify-content:center;align-items:center;font-size:34px;flex-shrink:0;margin-left:-30px;transform:rotate(-8deg);position:relative}
-.gc-upgrade{background:linear-gradient(135deg,#2ff068,#00a03d);z-index:3}
-.gc-crash{background:linear-gradient(135deg,#ff5c5c,#b91c1c);z-index:2}
-.gc-plinko{background:linear-gradient(135deg,#c084fc,#7c3aed);z-index:1}
-.game-card-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;font-weight:800;color:#fff}
-.free-banners{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 14px 0}
-.free-banner{border-radius:20px;padding:14px 10px;position:relative;overflow:hidden;cursor:pointer;min-height:130px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;transition:transform .15s;box-shadow:0 8px 20px rgba(0,0,0,.4)}
-.free-banner:active{transform:scale(.97)}
-.free-banner-1{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border:2px solid #ffcc00}
-.free-banner-2{background:linear-gradient(135deg,#2d1a4a 0%,#4a148c 50%,#7c3aed 100%);border:2px solid #c084fc}
-.free-icon{font-size:42px;margin-bottom:4px}
-.free-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:4px}
-.free-title .gold{color:#ffcc00;font-style:italic}
-.free-title .purple{color:#c084fc;font-style:italic}
-.free-sub{font-size:10px;color:rgba(255,255,255,.7);font-weight:700;background:rgba(0,0,0,.3);padding:3px 10px;border-radius:8px;margin-top:4px}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(15,18,28,.95);display:flex;justify-content:space-around;align-items:center;border-top:1px solid rgba(255,255,255,.08);z-index:100}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:#5a6278;font-size:10px;cursor:pointer;font-weight:600}
-.nav-item.active{color:#fff}
-.nav-item.active .nav-icon{background:linear-gradient(135deg,#9b5cff,#7c3aed);padding:8px 12px;border-radius:14px}
-.nav-icon{font-size:22px}
-#adminFloatBtn{position:fixed;top:16px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;border:none;font-size:24px;font-weight:900;cursor:pointer;z-index:500;display:none;box-shadow:0 8px 20px rgba(255,204,0,.5);align-items:center;justify-content:center}
-#adminFloatBtn.show{display:flex}
-#adminScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:400;overflow-y:auto;padding-bottom:30px}
-.adm-wrap{padding:14px 16px}
-.adm-search-row{display:flex;gap:8px;margin-bottom:14px}
-.adm-search-input{flex:1;background:#1a1d2e;border:2px solid #2a2e42;border-radius:12px;color:#fff;padding:12px 14px;font-size:15px;font-weight:700;outline:none;font-family:inherit;min-width:0}
-.adm-search-input:focus{border-color:#ffcc00}
-.adm-search-btn{background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;border:none;padding:0 18px;border-radius:12px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit}
-.adm-card{background:#1a1d2e;border:1px solid #2a2e42;border-radius:18px;padding:16px;margin-bottom:14px}
-.adm-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #22263a;font-size:13px}
-.adm-row:last-child{border-bottom:none}
-.adm-row-label{color:#7a8299;font-weight:700}
-.adm-row-value{color:#fff;font-weight:800;word-break:break-all;text-align:right;max-width:60%}
-.adm-row-value.green{color:#2ff068}
-.adm-row-value.red{color:#ff4444}
-.adm-row-value.gold{color:#ffcc00}
-.adm-section-title{font-size:12px;color:#7a8299;font-weight:800;letter-spacing:1px;margin-bottom:10px;margin-top:8px}
-.adm-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;padding:12px;font-size:15px;font-weight:700;outline:none;font-family:inherit;margin-bottom:8px}
-.adm-btn-row{display:flex;gap:6px;margin-bottom:8px}
-.adm-btn{flex:1;padding:12px 6px;border-radius:10px;border:none;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;color:#fff}
-.adm-btn.add{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
-.adm-btn.remove{background:linear-gradient(135deg,#ff5c5c,#b91c1c)}
-.adm-btn.set{background:linear-gradient(135deg,#0098ea,#0072ff)}
-.adm-empty{text-align:center;color:#5a6278;font-size:12px;padding:14px}
-.adm-warn{background:rgba(255,204,0,.1);border:1px solid rgba(255,204,0,.3);color:#ffcc00;padding:10px 12px;border-radius:10px;font-size:11px;font-weight:700;margin-bottom:12px;line-height:1.5}
-.adm-user-card{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #ffcc00;border-radius:18px;padding:16px;margin-bottom:14px}
-.adm-user-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #22263a}
-.adm-user-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2ff0e0,#1e9cff);display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:800;flex-shrink:0}
-.adm-user-info{flex:1;min-width:0}
-.adm-user-name{font-size:15px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.adm-user-id{font-size:11px;color:#7a8299;margin-top:2px}
-#backpackScreen{background:radial-gradient(circle at 50% 0%, #1a1f3a 0%, #0a0d14 60%);z-index:185;overflow-y:auto;padding-bottom:90px}
-.bp-total-pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(47,240,104,.1);border:1px solid rgba(47,240,104,.3);color:#2ff068;padding:12px 20px;border-radius:14px;margin:0 16px 16px;font-weight:800;font-size:15px}
-.bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
-.bp-gift-card{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #ffcc00;border-radius:18px;padding:16px 10px;position:relative;display:flex;flex-direction:column;align-items:center;box-shadow:0 0 15px rgba(255,204,0,.15)}
-.bp-gift-value{position:absolute;top:10px;right:10px;background:#0a0d14;color:#fff;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:800;display:flex;align-items:center;gap:3px;border:1px solid #2a2e42}
-.bp-gift-emoji{font-size:60px;margin:20px 0 10px;filter:drop-shadow(0 0 10px rgba(255,204,0,.3))}
-.bp-gift-name{font-size:13px;font-weight:800;color:#fff;text-align:center;margin-bottom:10px;min-height:18px}
-.bp-gift-sell{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;border:none;padding:8px 12px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;width:100%;margin-bottom:6px}
-.bp-gift-withdraw{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;border:none;padding:8px 12px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;width:100%}
-#referralScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:195;overflow-y:auto;padding-bottom:90px}
-.ref-content{padding:16px}
-.ref-hero{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-radius:22px;padding:28px 20px;text-align:center;margin-bottom:16px;box-shadow:0 10px 30px rgba(124,58,237,.4)}
-.ref-emoji{font-size:60px;margin-bottom:10px}
-.ref-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:6px}
-.ref-sub{font-size:13px;color:rgba(255,255,255,.85);font-weight:600}
-.ref-link-box{display:flex;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;border-radius:14px;padding:6px;margin-bottom:12px}
-.ref-link-input{flex:1;background:transparent;border:none;color:#fff;font-size:12px;padding:10px;outline:none;font-family:inherit;min-width:0}
-.ref-copy-btn{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;border:none;padding:0 16px;border-radius:10px;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit}
-.ref-share-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:16px}
-.ref-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.ref-stat{background:#1a1d2e;border:1px solid #2a2e42;border-radius:16px;padding:16px;text-align:center}
-.ref-stat-val{font-size:24px;font-weight:900;color:#2ff068;margin-bottom:4px}
-.ref-stat-lbl{font-size:11px;color:#7a8299;font-weight:700;letter-spacing:1px}
-.ref-info{background:rgba(47,240,104,.08);border:1px solid rgba(47,240,104,.25);border-radius:14px;padding:14px;font-size:12px;color:#2ff068;font-weight:600;line-height:1.6}
-.sh-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0}
-.sh-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
-.sh-title{font-size:16px;font-weight:800}
-#soloHubScreen{background:radial-gradient(circle at 50% 0%, #1a2a4a 0%, #0a0d14 60%);z-index:190;display:flex;flex-direction:column;height:100%}
-.sh-balance-pill{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 16px;border-radius:14px;font-weight:800;font-size:15px;margin:0 16px 10px;justify-content:center;flex-shrink:0}
-.sh-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.sh-game-area{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:10px 16px;gap:8px;overflow-y:auto;margin-bottom:10px}
-.sh-row{display:flex;align-items:center;justify-content:center;width:100%;max-width:350px;transition:opacity 0.3s;margin-bottom:4px}
-.sh-row.inactive-row{opacity:0.2;pointer-events:none}
-.sh-row.active-row{opacity:1}
-.sh-mult{font-size:13px;font-weight:800;color:#7a8299;width:48px;text-align:right;flex-shrink:0;margin-right:12px}
-.sh-circles{display:flex;gap:6px;justify-content:center}
-.sh-circle{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle, #4a6fa5 0%, #1e3a5f 100%);border:1px solid #3a5a8a;box-shadow:inset 0 0 10px rgba(0,0,0,.5);cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:18px;transition:transform .1s;flex-shrink:0}
-.sh-circle:active{transform:scale(.95)}
-.sh-circle.revealed-tick{background:radial-gradient(circle, #2ff068 0%, #00a838 100%);border-color:#2ff068;box-shadow:0 0 15px #2ff068;cursor:default;color:#0a0d14}
-.sh-circle.revealed-bomb{background:radial-gradient(circle, #ff4444 0%, #b91c1c 100%);border-color:#ff4444;box-shadow:0 0 15px #ff4444;cursor:default;color:#fff}
-.sh-controls{padding:16px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg, transparent 0%, #0a0d14 30%);flex-shrink:0;padding-bottom:85px}
-.sh-btn-row{display:flex;align-items:center;gap:10px;justify-content:center}
-.sh-icon-btn{background:#1a1d2e;border:1px solid #2a2e42;color:#fff;width:46px;height:46px;border-radius:50%;font-size:18px;display:flex;justify-content:center;align-items:center;cursor:pointer}
-.sh-currency-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border:none;color:#fff;padding:0 20px;height:46px;border-radius:25px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px}
-.sh-bet-bar{display:flex;align-items:center;justify-content:space-between;background:#1a1d2e;border:2px solid #2a2e42;border-radius:25px;padding:4px;height:56px;width:100%;max-width:350px;margin:0 auto}
-.sh-bet-btn{width:44px;height:44px;border-radius:50%;background:#2a2e42;border:none;color:#fff;font-size:24px;font-weight:800;display:flex;justify-content:center;align-items:center;cursor:pointer;font-family:inherit}
-.sh-bet-value{flex:1;text-align:center;font-size:18px;font-weight:900;color:#fff;background:transparent;border:none;outline:none;font-family:inherit;width:100%;min-width:0}
-.sh-action-btn{width:100%;max-width:350px;padding:16px;border-radius:14px;font-size:16px;font-weight:900;border:none;cursor:pointer;font-family:inherit;margin:0 auto;display:block}
-.sh-action-btn.start{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
-.sh-action-btn.cashout{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;box-shadow:0 0 20px rgba(47,240,104,0.5)}
-.sh-action-btn:disabled{opacity:.5;background:#2a2e42;color:#6a6a7a;box-shadow:none;cursor:not-allowed}
-#gameScreen{background:#121212;z-index:200}
-.game-top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#1e1e1e;border-bottom:1px solid #333;flex-shrink:0}
-.back-btn{background:#333;color:#fff;border:none;padding:8px 15px;border-radius:8px;font-size:14px;cursor:pointer}
-.game-balance{background:#2a2a2a;padding:8px 15px;border-radius:10px;font-weight:bold;color:#00c853;font-size:16px}
-.reset-btn{background:#444;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer}
-.multiplier-history{display:flex;align-items:center;overflow-x:auto;padding:8px 10px;gap:8px;background:#1a1a1a;border-bottom:1px solid #333;white-space:nowrap;min-height:45px;flex-shrink:0}
-.history-badge{padding:5px 12px;border-radius:15px;font-size:13px;font-weight:bold;background:#2a2a2a;color:#ccc;flex-shrink:0}
-.history-badge.red{background:rgba(255,68,68,.2);color:#ff4444}
-.history-badge.green{background:rgba(0,200,83,.2);color:#00c853}
-.history-badge.blue{background:rgba(30,144,255,.2);color:#1e90ff}
-.history-badge.purple{background:rgba(156,39,176,.2);color:#9c27b0}
-.history-badge.yellow{background:rgba(255,204,0,.2);color:#ffcc00}
-.chart-container{width:100%;height:220px;background:#0a0a0a;position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;flex-shrink:0}
-#chartCanvas{width:100%;height:100%}
-.multiplier-text{position:absolute;font-size:60px;font-weight:bold;color:#ffcc00;z-index:10;display:flex;justify-content:center;align-items:center;width:100%;height:100%;pointer-events:none}
-.multiplier-text.crashed{color:#ff4444}
-.multiplier-text.counting{color:#ff9800;font-size:100px}
-.bet-controls{padding:12px;display:flex;flex-direction:column;gap:8px;background:#1e1e1e;border-top:1px solid #333;border-bottom:1px solid #333;flex-shrink:0}
-.bet-input-row{display:flex;justify-content:center;align-items:center;gap:6px}
-.input-label{font-size:12px;color:#aaa;width:85px;text-align:right;flex-shrink:0}
-.bet-input{background:#2a2a2a;border:2px solid #444;color:#fff;padding:10px 6px;border-radius:10px;width:90px;text-align:center;font-size:15px;font-weight:bold;min-width:0}
-.auto-cashout-input{border:2px solid #00c853!important;background:#0d1f0d!important;color:#00c853!important}
-.quick-btns{display:flex;gap:5px;flex-shrink:0}
-.quick-btn{background:#2a2a2a;border:1px solid #444;color:#fff;padding:9px 8px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0}
-.quick-btn.all-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff}
-.quick-btn.half-btn{background:linear-gradient(135deg,#0098ea,#0072ff);border-color:#0098ea}
-.quick-btn:disabled{opacity:.4}
-.action-btn{width:100%;padding:15px;font-size:20px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;color:#fff;margin-top:3px}
-.action-btn:disabled{opacity:.5}
-.btn-bet{background:linear-gradient(135deg,#1e90ff,#0056b3)}
-.btn-cashout{background:linear-gradient(135deg,#00c853,#009624)}
-#playhubScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);overflow-y:auto;padding-bottom:90px;z-index:150}
-.ph-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;background:rgba(10,14,23,.95);z-index:100}
-.ph-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
-.ph-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
-.ph-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
-.ph-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.ph-balance-pill .val{font-weight:800;font-size:14px}
-.ph-upgrade{margin:20px 16px 10px;border-radius:22px;padding:20px;position:relative;overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#00e676,#00a838);min-height:130px}
-.ph-upgrade-badge{position:absolute;top:14px;left:16px;background:#fff;color:#00a838;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:800;z-index:5}
-.ph-upgrade-title{font-size:28px;font-weight:900;margin-top:28px;color:#fff}
-.ph-upgrade-sub{font-size:13px;color:rgba(255,255,255,.9);margin-top:4px;font-weight:600}
-.ph-upgrade-circle{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:100px;height:100px;border-radius:50%;border:6px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin 3s linear infinite}
-@keyframes spin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
-.ph-upgrade-gift{position:absolute;right:38px;top:50%;transform:translateY(-50%);font-size:44px;z-index:5}
-.ph-upgrade-percent{position:absolute;right:52px;top:calc(50% + 40px);background:#fff;color:#00a838;padding:4px 12px;border-radius:12px;font-size:13px;font-weight:900;z-index:6}
-.ph-games-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 16px 20px}
-.ph-game-card{border-radius:22px;padding:16px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:0 8px 22px rgba(0,0,0,.4)}
-.ph-game-card:active{transform:scale(.97)}
-.ph-game-title{font-size:22px;font-weight:900;color:#fff}
-.ph-game-sub{font-size:11px;color:rgba(255,255,255,.85);margin-top:3px;font-weight:600}
-.ph-game-icon{position:absolute;top:14px;right:16px;font-size:46px}
-.ph-new-badge{position:absolute;top:14px;left:16px;background:#fff;color:#000;padding:3px 9px;border-radius:10px;font-size:10px;font-weight:800}
-.ph-card-mines{background:linear-gradient(135deg,#2196f3,#0d47a1)}
-.ph-card-plinko{background:linear-gradient(135deg,#9c27b0,#4a148c)}
-.ph-card-dice{background:linear-gradient(135deg,#03a9f4,#01579b)}
-.ph-card-tower{background:linear-gradient(135deg,#00bcd4,#006064)}
-.mines-mini{position:absolute;top:14px;right:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:15px}
-#upgradeScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:250;overflow-y:auto;padding-bottom:30px}
-.up-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0}
-.up-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
-.up-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
-.up-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
-.up-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
-.up-balance-pill .val{font-weight:800;font-size:14px}
-.up-head{margin:8px 16px 0;background:rgba(47,240,104,.06);border:1px solid rgba(47,240,104,.2);border-radius:20px;padding:18px}
-.up-head-title{font-size:24px;font-weight:900;color:#fff}
-.up-head-sub{font-size:13px;color:#2ff068;margin-top:6px;font-weight:600}
-.up-cards-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:18px 16px 0}
-.up-card{background:#131824;border:1px solid #2a2e42;border-radius:18px;padding:14px 10px;text-align:center}
-.up-card-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#2ff068;color:#0a0d14;font-size:12px;font-weight:900;margin-bottom:6px}
-.up-card-title{font-size:13px;font-weight:800;color:#fff;margin-bottom:12px}
-.up-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;text-align:center;font-size:16px;font-weight:800;padding:10px 4px;outline:none;font-family:inherit}
-.up-card-lbl{font-size:10px;color:#7a8299;margin-top:6px}
-.up-swap-icon{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2ff068,#00a838);display:flex;justify-content:center;align-items:center;font-size:20px;flex-shrink:0}
-.up-wheel-wrap{position:relative;display:flex;justify-content:center;align-items:center;margin:18px 0;min-height:280px}
-#upCanvas{display:block}
-.up-wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:130px}
-.up-chance{font-size:34px;font-weight:900;color:#2ff068}
-.up-chance.low{color:#ff4444}
-.up-chance.mid{color:#ffcc00}
-.up-chance-lbl{font-size:10px;color:#7a8299;letter-spacing:2px;font-weight:800;margin-top:4px}
-.up-stats{display:flex;justify-content:space-around;margin:0 16px 12px;background:#131824;border:1px solid #2a2e42;border-radius:14px;padding:12px}
-.up-stat{text-align:center}
-.up-stat-lbl{font-size:10px;color:#7a8299;margin-bottom:4px}
-.up-stat-val{font-size:16px;font-weight:900;color:#fff}
-.up-btn{margin:0 16px;width:calc(100% - 32px);padding:18px;font-size:18px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;letter-spacing:1px}
-.up-btn:disabled{opacity:.6;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6}
-.up-result{margin:14px 16px 0;padding:14px;border-radius:14px;text-align:center;font-size:15px;font-weight:800;opacity:0}
-.up-result.show{opacity:1}
-.up-result.win{background:rgba(47,240,104,.2);color:#2ff068;border:1px solid rgba(47,240,104,.4)}
-.up-result.lose{background:rgba(255,68,68,.2);color:#ff4444;border:1px solid rgba(255,68,68,.4)}
-#plinkoScreen{background:linear-gradient(180deg,#1a0f2e 0%,#2d1a4a 50%,#0a0d14 100%);z-index:260;overflow:hidden}
-.pl-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0;z-index:10}
-.pl-back{background:rgba(30,25,50,.8);color:#fff;border:none;padding:9px 14px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700;display:flex;align-items:center;gap:6px}
-.pl-title{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px}
-.pl-balance{display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.8);border:1px solid #3a2e5e;padding:8px 12px;border-radius:14px;font-weight:800;font-size:15px}
-.pl-balance .ton-icon{width:20px;height:20px;font-size:11px}
-.pl-canvas-wrap{flex:1;position:relative;overflow:hidden}
-#plinkoCanvas{display:block;width:100%;height:100%;touch-action:none}
-.pl-controls{padding:12px 16px 16px;background:linear-gradient(180deg,transparent 0%,#0a0d14 30%);flex-shrink:0}
-.pl-diff-row{display:flex;gap:6px;margin-bottom:10px;background:rgba(30,25,50,.7);padding:4px;border-radius:14px}
-.pl-diff-btn{flex:1;padding:11px 8px;border:none;background:transparent;color:#8a7ba8;font-size:13px;font-weight:800;border-radius:11px;cursor:pointer;font-family:inherit}
-.pl-diff-btn.active{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff}
-.pl-bet-row{display:flex;gap:8px;margin-bottom:10px}
-.pl-bet-wrap{flex:1;display:flex;align-items:center;gap:8px;background:rgba(30,25,50,.7);border:2px solid #3a2e5e;border-radius:14px;padding:0 12px}
-.pl-bet-input{flex:1;background:transparent;border:none;color:#fff;padding:13px 0;font-size:16px;font-weight:800;text-align:center;outline:none;min-width:0}
-.pl-bet-max{background:rgba(124,58,237,.3);border:1px solid #7c3aed;color:#c8b1ff;padding:0 10px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;height:26px}
-.pl-play-btn{width:100%;padding:16px;font-size:16px;font-weight:900;border:none;border-radius:14px;cursor:pointer;background:rgba(60,50,90,.7);color:#8a7ba8}
-.pl-play-btn.active{background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff}
-.pl-play-btn:disabled{cursor:not-allowed}
-.pl-count{position:absolute;top:14px;right:16px;background:rgba(30,25,50,.85);border:1px solid #3a2e5e;color:#c8b1ff;padding:6px 12px;border-radius:12px;font-size:12px;font-weight:800;z-index:20;display:none}
-#minesScreen{background:linear-gradient(180deg,#0a0e17 0%,#131824 100%);z-index:270;overflow-y:auto;overflow-x:hidden;padding-bottom:20px;width:100%;max-width:100vw}
-.mn-top-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;flex-shrink:0;width:100%}
-.mn-back{background:#2a2a3a;color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:700}
-.mn-balance{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:14px;font-weight:800;font-size:15px}
-.mn-balance .ton-icon{width:20px;height:20px;font-size:11px}
-.mn-header{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 20px 4px;width:100%}
-.mn-mult-label{font-size:11px;color:#7a8299;letter-spacing:1.5px;font-weight:700;margin-bottom:4px}
-.mn-mult-value{font-size:36px;font-weight:900;color:#fff;line-height:1}
-.mn-badges{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
-.mn-badge-cashout{background:linear-gradient(135deg,#2ff068,#00a838);padding:8px 14px;border-radius:10px;font-size:13px;font-weight:900;color:#0a0d14;cursor:pointer}
-.mn-badge-cashout.disabled{background:#2a2e42;color:#6a6a7a;cursor:not-allowed}
-.mn-live-bar{display:flex;gap:6px;padding:6px 12px;overflow-x:auto;overflow-y:hidden;background:#0a0e17;border-top:1px solid #1a1d2e;border-bottom:1px solid #1a1d2e;margin-bottom:6px;width:100%;max-width:100vw;box-sizing:border-box}
-.mn-live-bar::-webkit-scrollbar{display:none}
-.mn-live-tier{padding:6px 12px;border-radius:9px;background:#131824;border:1px solid #2a2e42;font-size:12px;font-weight:800;color:#7a8299;flex-shrink:0;white-space:nowrap;transition:all .3s}
-.mn-live-tier.past{color:#4a4a5a;background:#0a0e17;border-color:#1a1d2e}
-.mn-live-tier.current{background:rgba(47,240,104,.15);border-color:#2ff068;color:#2ff068;box-shadow:0 0 12px rgba(47,240,104,.4)}
-.mn-live-tier.next{color:#c8b1ff;border-color:rgba(120,100,200,.5);background:rgba(120,100,200,.1)}
-.mn-grid-wrap{padding:6px 10px;max-width:440px;margin:0 auto;width:100%}
-.mn-grid{display:grid;gap:6px;width:100%}
-.mn-tile{aspect-ratio:1;background:#131824;border:1px solid #2a2e42;border-radius:10px;display:flex;justify-content:center;align-items:center;cursor:pointer;user-select:none;position:relative;overflow:hidden}
-.mn-tile:active{transform:scale(.95)}
-.mn-tile.diamond{background:radial-gradient(circle,rgba(47,240,104,.25) 0%,rgba(47,240,104,.08) 70%);border-color:#2ff068}
-.mn-tile.diamond::before{content:'💎';font-size:20px;position:absolute}
-.mn-tile.bomb{background:radial-gradient(circle,rgba(255,68,68,.25) 0%,rgba(255,68,68,.08) 70%);border-color:#ff4444}
-.mn-tile.bomb::before{content:'💣';font-size:20px;position:absolute}
-.mn-tile.hidden-reveal{opacity:.4}
-.mn-grid[data-size="9"] .mn-tile{border-radius:6px}
-.mn-grid[data-size="9"] .mn-tile.diamond::before,.mn-grid[data-size="9"] .mn-tile.bomb::before{font-size:13px}
-.mn-config-row{display:flex;gap:10px;padding:4px 16px;width:100%}
-.mn-config-block{flex:1;min-width:0}
-.mn-config-label{font-size:11px;color:#7a8299;font-weight:700;letter-spacing:1px;margin-bottom:6px}
-.mn-size-btns{display:flex;gap:6px}
-.mn-size-btn{flex:1;padding:10px 0;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;color:#7a8299;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
-.mn-size-btn.active{background:linear-gradient(135deg,#2196f3,#0d47a1);border-color:#2196f3;color:#fff}
-.mn-bomb-btns{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;width:100%;max-width:100%;box-sizing:border-box}
-.mn-bomb-btns::-webkit-scrollbar{display:none}
-.mn-bomb-btn{min-width:36px;padding:9px 0;border-radius:10px;background:#1a1d2e;border:1px solid #2a2e42;color:#7a8299;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0}
-.mn-bomb-btn.active{background:linear-gradient(135deg,#ff5c5c,#d92b2b);border-color:#ff5c5c;color:#fff}
-.mn-bet-row{padding:8px 16px 12px;width:100%}
-.mn-bet-label{font-size:11px;color:#7a8299;font-weight:700;letter-spacing:1px;margin-bottom:6px}
-.mn-bet-input-wrap{display:flex;gap:6px;align-items:center;background:#1a1d2e;border:1px solid #2a2e42;border-radius:14px;padding:6px}
-.mn-bet-input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;font-weight:800;text-align:center;outline:none;padding:10px 0;min-width:0}
-.mn-half-btn,.mn-max-btn{background:#2a2e42;border:none;color:#c8b1ff;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
-.mn-max-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
-.mn-play-btn{margin:0 16px;width:calc(100% - 32px);padding:16px;font-size:17px;font-weight:900;border:none;border-radius:14px;cursor:pointer;background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;letter-spacing:1px}
-.mn-play-btn:disabled{background:#2a2e42;color:#6a6a7a;cursor:not-allowed}
-#pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
-.pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0}
-.pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px}
-.pvp-balance-pill{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 12px;border-radius:24px}
-.pvp-balance-pill .ton-icon{width:22px;height:22px;font-size:12px}
-.pvp-balance-pill .val{font-weight:800;font-size:15px}
-.pvp-plus{background:#2a2e42;border:none;color:#fff;width:26px;height:26px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
-.pvp-stats{display:flex;gap:8px;padding:4px 16px 12px;flex-shrink:0}
-.stat-block{flex:1;text-align:center;padding:10px 6px}
-.stat-block+.stat-block{border-left:1px solid #2a2e42}
-.stat-label{font-size:11px;color:#7a8299;margin-bottom:6px}
-.stat-value-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.stat-value{font-size:15px;font-weight:800;color:#0098ea}
-.stat-pct{font-size:12px;color:#7a8299;text-align:right}
-.pvp-wheel-wrap{position:relative;flex:1;min-height:280px;display:flex;justify-content:center;align-items:center;padding:8px 0}
-#pvpCanvas{display:block}
-.pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:130px}
-.pvp-timer{background:#1a1d2e;border:1px solid #2a2e42;color:#fff;font-size:20px;font-weight:800;padding:4px 14px;border-radius:14px;display:inline-block;margin-bottom:10px}
-.pvp-pool-label{font-size:10px;color:#7a8299;letter-spacing:1.5px;margin-bottom:4px}
-.pvp-pool{display:flex;justify-content:center;align-items:center;gap:5px;font-size:18px;font-weight:900;color:#fff}
-.pvp-pool .ton-icon{width:18px;height:18px;font-size:10px}
-.pvp-game-num{font-size:10px;color:#5a6278;margin-top:6px}
-.pvp-players-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;flex-shrink:0}
-.pvp-pcard{min-width:96px;padding:14px 10px;border-radius:16px;background:linear-gradient(180deg,#1a1d2e 0%,#14161f 100%);border:1px solid #2a2e42;text-align:center;flex-shrink:0;position:relative}
-.pvp-pcard.isMe{border-color:#ffcc00}
-.pvp-pcard.winner{border-color:#2ff068;transform:scale(1.05)}
-.pvp-pcard-top{position:absolute;top:-1px;left:14px;right:14px;height:3px;border-radius:0 0 4px 4px}
-.pvp-pav{width:46px;height:46px;border-radius:50%;background:#0f1119;border:2px solid #2a2e42;display:flex;justify-content:center;align-items:center;font-size:22px;margin:0 auto 8px}
-.pvp-pname{font-size:11px;font-weight:800;color:#fff;margin-bottom:4px}
-.pvp-ppct{font-size:13px;font-weight:900;color:#2ff068}
-.pvp-pbet{font-size:10px;color:#7a8299;margin-top:2px}
-.pvp-join-wrap{padding:8px 16px 12px;flex-shrink:0}
-.pvp-bet-label{font-size:12px;color:#7a8299;margin-bottom:6px;display:block}
-.pvp-bet-input-wrap{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:#1a1d2e;border:2px solid #2a2e42;border-radius:12px;padding:0 12px}
-.pvp-bet-input{flex:1;background:transparent;border:none;color:#fff;padding:12px 0;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0}
-.pvp-quick-row{display:flex;gap:6px;margin-bottom:10px}
-.pvp-quick-btn{flex:1;background:#1a1d2e;border:1px solid #3a3e52;color:#fff;padding:11px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
-.pvp-quick-btn.all-btn{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
-.pvp-quick-btn.half-btn{background:linear-gradient(135deg,#0098ea,#0072ff)}
-.pvp-quick-btn:disabled{opacity:.4}
-.join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#3a4258,#2a3040);color:#8a90a6}
-.join-battle-btn.active{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff}
-.pvp-players-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid #1a1d2e;flex-shrink:0}
-.pvp-players-header span{font-size:13px;font-weight:700;color:#8a90a6}
-.pvp-players-count{background:#1a1d2e;padding:4px 12px;border-radius:12px;font-size:12px!important}
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#1a1d2e;border:1px solid #2a2e42;color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;max-width:90vw}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
-.toast.win{background:linear-gradient(135deg,#00c853,#009624)}
-.toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c)}
-.slot-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:5000;display:flex;justify-content:center;align-items:center;padding:16px}
-.slot-modal.hidden{display:none}
-.slot-modal-content{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:1px solid #2a2e42;border-radius:24px;padding:18px;max-width:400px;width:100%;box-sizing:border-box}
-.slot-modal-content.vip{border:2px solid #c084fc}
-.slot-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.slot-title{font-size:20px;font-weight:900;color:#ffcc00;display:flex;align-items:center;gap:8px}
-.slot-title.vip{color:#c084fc}
-.slot-close{background:#2a2e42;border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit;flex-shrink:0}
-.slot-sub{font-size:12px;color:#7a8299;margin-bottom:14px;font-weight:600}
-.slot-wrap{padding:12px 0;margin-bottom:8px}
-.slot-container{position:relative;height:110px;overflow:hidden;border-radius:16px;background:#131824;border:1px solid #2a2e42;padding:8px 0}
-.slot-pointer{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);z-index:10;pointer-events:none;width:3px;background:linear-gradient(180deg,#9b5cff,#7c3aed);box-shadow:0 0 15px #7c3aed}
-.slot-pointer-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#c084fc;box-shadow:0 0 15px #c084fc;z-index:11}
-.slot-reel{display:flex;gap:6px;padding:0 8px;align-items:center;height:100%;will-change:transform}
-.slot-item{min-width:80px;height:94px;border-radius:12px;background:linear-gradient(135deg,#ffcc00,#ff9d00);display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:900;color:#0a0d14;flex-shrink:0}
-.slot-item.vip-item{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
-.slot-item .slot-value{font-size:22px;line-height:1;font-weight:900}
-.slot-item .slot-ton{font-size:11px;margin-top:2px;opacity:.75;font-weight:800}
-.slot-info{background:#131824;border:1px solid #2a2e42;border-radius:12px;padding:10px;margin-bottom:12px}
-.slot-info-row{display:flex;justify-content:center;align-items:center;gap:8px;font-size:14px;font-weight:800}
-.slot-spin{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;border:none;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:1px}
-.slot-spin.vip{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
-.slot-spin:disabled{background:#2a2e42;color:#6a6a7a;cursor:not-allowed}
-.vip-code-input{width:100%;background:#0a0d14;border:2px solid #3a2e5e;border-radius:12px;color:#fff;padding:14px;font-size:16px;font-weight:800;text-align:center;outline:none;letter-spacing:2px;margin-bottom:16px;font-family:inherit}
-.vip-code-input:focus{border-color:#c084fc}
-.vip-btns{display:flex;gap:8px}
-.vip-cancel{flex:1;padding:14px;border-radius:12px;background:#2a2e42;color:#8a90a6;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
-.vip-confirm{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
-.deposit-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);z-index:6000;display:flex;justify-content:center;align-items:center;padding:20px}
-.deposit-modal.hidden{display:none}
-.deposit-modal-content{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #0098ea;border-radius:24px;padding:24px;max-width:360px;width:100%;text-align:center;box-sizing:border-box;max-height:90vh;overflow-y:auto}
-.deposit-modal-title{font-size:22px;font-weight:900;color:#fff;margin-bottom:6px}
-.deposit-modal-sub{font-size:13px;color:#7a8299;margin-bottom:18px}
-.deposit-modal-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:10px}
-.deposit-modal-btn:disabled{opacity:.5;cursor:not-allowed}
-.deposit-modal-btn.close{background:#2a2e42;color:#8a90a6}
-.deposit-status{font-size:13px;color:#ffcc00;margin-top:10px;min-height:20px;font-weight:700}
-.deposit-wallet-info{background:#131824;border:1px solid #2a2e42;border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;color:#7a8299;word-break:break-all}
-.deposit-wallet-info b{color:#2ff068}
-.deposit-amount-input{width:100%;background:#0a0d14;border:1px solid #2a2e42;border-radius:10px;color:#fff;padding:10px;text-align:center;font-size:16px;font-weight:bold;outline:none;margin-bottom:6px;font-family:inherit}
-.deposit-min-hint{font-size:11px;color:#7a8299;margin-bottom:12px;font-weight:600}
-#giftPickerModal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:7000;display:flex;justify-content:center;align-items:center;padding:16px}
-#giftPickerModal.hidden{display:none}
-.gp-content{background:linear-gradient(180deg,#1a1d2e,#0f1119);border:2px solid #ffcc00;border-radius:24px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:85vh;display:flex;flex-direction:column}
-.gp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.gp-title{font-size:18px;font-weight:900;color:#ffcc00}
-.gp-close{background:#2a2e42;border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit}
-.gp-list{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px}
-.gp-item{background:#131824;border:1px solid #2a2e42;border-radius:14px;padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;transition:transform .1s;position:relative}
-.gp-item:active{transform:scale(.95)}
-.gp-item-val{position:absolute;top:6px;right:6px;background:#0a0d14;color:#2ff068;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:800}
-.gp-item-emoji{font-size:38px;margin:12px 0 4px}
-.gp-item-name{font-size:10px;font-weight:700;color:#fff;text-align:center;line-height:1.2}
-.gp-empty{text-align:center;padding:40px 10px;color:#7a8299;font-size:13px}
-.gift-bet-btn{background:linear-gradient(135deg,#ffcc00,#ff9d00);border:none;color:#0a0d14;padding:8px 12px;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
-</style>
-</head>
-<body>
-
-<button id="adminFloatBtn" onclick="openAdmin()">👑</button>
-
-<div id="homeScreen" class="screen">
-    <div class="balance-row">
-        <div class="avatar-wrap"><div class="avatar">M</div><div class="avatar-badge">💎</div></div>
-        <div class="balance-info">
-            <div class="balance-label">Your Balance</div>
-            <div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">0.000</span></div>
-        </div>
-        <button class="deposit-btn" onclick="openDepositModal()">💳 Deposit</button>
-    </div>
-    <div class="banners">
-        <div class="banner rocket-banner" onclick="openGame()">
-            <div class="banner-badge">⚡ HOT!</div>
-            <div class="banner-title">🚀 ROCKET</div>
-            <div class="rocket-scene"><div class="rocket-ship">🚀</div>
-                <div class="mult-pill green pm-1">x4.24</div>
-                <div class="mult-pill yellow pm-2">x2.02</div>
-                <div class="mult-pill red pm-3">x1.24</div>
-            </div>
-        </div>
-        <div class="banner pvp-banner" onclick="openPvp()">
-            <div class="banner-badge">🔥 NEW!</div>
-            <div class="banner-title">⚔️ PVP</div>
-            <div class="pvp-players">
-                <div class="pvp-card"><div class="pc-av">🌍</div><div class="pc-name">GLOBAL</div><div class="pc-pct">100%</div></div>
-                <div class="pvp-card"><div class="pc-av">👤</div><div class="pc-name">YOU</div><div class="pc-pct">?</div></div>
-            </div>
-        </div>
-        <div class="banner playhub-banner" onclick="openPlayHub()">
-            <div class="banner-badge">🔥 HOT</div>
-            <div class="banner-title">🎮 PLAY HUB</div>
-            <div class="game-cards">
-                <div class="game-card gc-upgrade">⬆️<div class="game-card-label">Upgrade</div></div>
-                <div class="game-card gc-crash">🚀<div class="game-card-label">Crash</div></div>
-                <div class="game-card gc-plinko">🎯<div class="game-card-label">Plinko</div></div>
-            </div>
-        </div>
-    </div>
-    <div class="free-banners">
-        <div class="free-banner free-banner-1" onclick="openSlotModal('free')">
-            <div class="free-icon">🎁</div>
-            <div class="free-title"><span class="gold">FREE24</span></div>
-            <div class="free-sub">Spin once / 24h</div>
-        </div>
-        <div class="free-banner free-banner-2" onclick="openVipCodeModal()">
-            <div class="free-icon">👑</div>
-            <div class="free-title"><span class="purple">FREE VIP</span></div>
-            <div class="free-sub">Code required</div>
-        </div>
-    </div>
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
-    </div>
-</div>
-
-<div id="adminScreen" class="screen hidden">
-    <div class="sh-top-bar">
-        <button class="sh-back" onclick="goHome()">⬅ Back</button>
-        <div class="sh-title">👑 Admin Panel</div>
-        <button class="sh-back" style="visibility:hidden;">⬅</button>
-    </div>
-    <div class="adm-wrap">
-        <div class="adm-warn">🔍 Enter a user's Telegram numeric ID to manage their account.</div>
-        <div class="adm-search-row">
-            <input type="text" id="adminSearchId" class="adm-search-input" placeholder="User ID e.g. 123456789" inputmode="numeric">
-            <button class="adm-search-btn" onclick="adminSearchUser()">🔍 Find</button>
-        </div>
-        <div id="adminUserCard"></div>
-    </div>
-</div>
-
-<div id="backpackScreen" class="screen hidden">
-    <div class="sh-top-bar">
-        <button class="sh-back" onclick="goHome()">⬅ Back</button>
-        <div class="sh-title">🎒 My Gifts</div>
-        <button class="sh-back" style="visibility:hidden;">⬅</button>
-    </div>
-    <div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div>
-    <div class="bp-grid" id="backpackGrid"></div>
-</div>
-
-<div id="referralScreen" class="screen hidden">
-    <div class="sh-top-bar">
-        <button class="sh-back" onclick="goHome()">⬅ Back</button>
-        <div class="sh-title">👥 Invite Friends</div>
-        <button class="sh-back" style="visibility:hidden;">⬅</button>
-    </div>
-    <div class="ref-content">
-        <div class="ref-hero">
-            <div class="ref-emoji">🎁</div>
-            <div class="ref-title">Invite & Earn</div>
-            <div class="ref-sub">Get 0.05 TON for each friend who joins</div>
-        </div>
-        <div style="font-size:12px;color:#7a8299;font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div>
-        <div class="ref-link-box">
-            <input type="text" id="refLinkInput" class="ref-link-input" readonly>
-            <button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button>
-        </div>
-        <button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button>
-    </div>
-</div>
-
-<div id="giftPickerModal" class="hidden">
-    <div class="gp-content">
-        <div class="gp-head">
-            <div class="gp-title">🎁 Pick a Gift to Play</div>
-            <button class="gp-close" onclick="closeGiftPicker()">✕</button>
-        </div>
-        <div class="gp-list" id="giftPickerList"></div>
-    </div>
-</div>
-
-<div id="depositModal" class="deposit-modal hidden">
-    <div class="deposit-modal-content">
-        <div class="deposit-modal-title">💎 Deposit</div>
-        <div class="deposit-modal-sub">Send TON → Get same amount (1:1)</div>
-        <div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div>
-        <input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
-        <div class="deposit-min-hint">Minimum: 0.1 TON</div>
-        <button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
-        <button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none;background:linear-gradient(135deg,#d92b2b,#b91c1c);">🔌 Disconnect</button>
-        <button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
-        <button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button>
-        <div class="deposit-status" id="depositStatus"></div>
-    </div>
-</div>
-
-<div id="soloHubScreen" class="screen hidden">
-    <div class="sh-top-bar">
-        <button class="sh-back" onclick="goHome()">⬅ Back</button>
-        <div class="sh-title">🎯 Tower Game</div>
-        <button class="sh-back" style="visibility:hidden;">⬅</button>
-    </div>
-    <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.00</span> TON</div>
-    <div class="sh-game-area" id="towerGameArea"></div>
-    <div class="sh-controls">
-        <div class="sh-btn-row">
-            <button class="sh-icon-btn">⭐</button>
-            <button class="sh-currency-btn"><span class="ton-icon" style="width:18px;height:18px;font-size:10px;">◈</span> TON</button>
-        </div>
-        <div style="display:flex;justify-content:center;gap:10px;">
-            <button class="gift-bet-btn" onclick="openGiftPicker()">🎁 Use Gift</button>
-        </div>
-        <div class="sh-bet-bar">
-            <button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">-</button>
-            <input type="number" id="soloBetInput" class="sh-bet-value" value="0.1" min="0.1" step="0.1" inputmode="decimal">
-            <button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button>
-        </div>
-        <button class="sh-action-btn start" id="towerStartBtn" onclick="startTowerGame()">Start Game</button>
-        <button class="sh-action-btn cashout" id="towerCashoutBtn" onclick="towerCashOut()" style="display:none;">Cash Out</button>
-    </div>
-</div>
-
-<div id="slotModal" class="slot-modal hidden">
-    <div class="slot-modal-content" id="slotModalContent">
-        <div class="slot-head">
-            <div class="slot-title" id="slotTitle">📅 Daily Box</div>
-            <button class="slot-close" onclick="closeSlotModal()">✕</button>
-        </div>
-        <div class="slot-sub" id="slotSub">🎁 Spin to win TON rewards</div>
-        <div class="slot-wrap"><div class="slot-container"><div class="slot-pointer"></div><div class="slot-pointer-dot"></div><div class="slot-reel" id="slotReel"></div></div></div>
-        <div class="slot-info"><div class="slot-info-row"><span>⏰</span><span id="slotTimerText">Ready to spin!</span></div></div>
-        <button class="slot-spin" id="slotSpinBtn" onclick="spinSlot()">🎰 SPIN</button>
-    </div>
-</div>
-
-<div id="vipCodeModal" class="slot-modal hidden">
-    <div class="slot-modal-content vip">
-        <div class="slot-head">
-            <div class="slot-title vip">👑 VIP ACCESS</div>
-            <button class="slot-close" onclick="closeVipCodeModal()">✕</button>
-        </div>
-        <div class="slot-sub">Enter secret code to unlock VIP slot</div>
-        <input type="text" id="vipCodeInput" class="vip-code-input" placeholder="Enter code..." autocomplete="off">
-        <div class="vip-btns">
-            <button class="vip-cancel" onclick="closeVipCodeModal()">Cancel</button>
-            <button class="vip-confirm" onclick="submitVipCode()">Unlock</button>
-        </div>
-    </div>
-</div>
-
-<div id="playhubScreen" class="screen hidden">
-    <div class="ph-top-bar">
-        <button class="ph-back" onclick="goHome()">⬅ Back</button>
-        <div class="ph-title">🎁 Gift Hub</div>
-        <div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="ph-upgrade" onclick="openUpgrade()">
-        <div class="ph-upgrade-badge">🔥 HOT</div>
-        <div class="ph-upgrade-title">Upgrade</div>
-        <div class="ph-upgrade-sub">Choose a dream gift</div>
-        <div class="ph-upgrade-circle"></div>
-        <div class="ph-upgrade-gift">💖</div>
-        <div class="ph-upgrade-percent">15%</div>
-    </div>
-    <div class="ph-games-grid">
-        <div class="ph-game-card ph-card-mines" onclick="openMines()">
-            <div class="ph-new-badge">⚙️ NEW</div>
-            <div class="mines-mini"><span>💎</span><span>💎</span><span>💎</span><span>💣</span><span>💎</span><span>💎</span><span>💎</span><span>💎</span><span>💣</span></div>
-            <div class="ph-game-title">Mines</div><div class="ph-game-sub">Dodge the mines</div>
-        </div>
-        <div class="ph-game-card ph-card-plinko" onclick="openPlinko()">
-            <div class="ph-game-icon">🎯</div><div class="ph-game-title">Plinko</div><div class="ph-game-sub">Win up to 1000x</div>
-        </div>
-        <div class="ph-game-card ph-card-tower" onclick="openSoloHub()">
-            <div class="ph-game-icon">🗼</div><div class="ph-game-title">Tower</div><div class="ph-game-sub">Climb & Win</div>
-        </div>
-        <div class="ph-game-card ph-card-dice" onclick="playhubCardClick('Dice')">
-            <div class="ph-game-icon">🎲</div><div class="ph-game-title">Dice</div><div class="ph-game-sub">Higher or Lower</div>
-        </div>
-    </div>
-</div>
-
-<div id="minesScreen" class="screen hidden">
-    <div class="mn-top-bar">
-        <button class="mn-back" onclick="closeMines()">⬅ Back</button>
-        <div class="mn-balance"><span class="ton-icon">◈</span><span id="mnBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="mn-header">
-        <div><div class="mn-mult-label">MULTIPLIER</div><div class="mn-mult-value" id="mnMultiplier">×1.00</div></div>
-        <div class="mn-badges"><div class="mn-badge-cashout disabled" id="mnCashOut" onclick="mnCashOut()">Cash out 0.00</div></div>
-    </div>
-    <div class="mn-config-row">
-        <div class="mn-config-block">
-            <div class="mn-config-label">📐 GRID SIZE</div>
-            <div class="mn-size-btns" id="mnSizeBtns">
-                <button class="mn-size-btn" data-size="5" onclick="mnSetSize(5)">5×5</button>
-                <button class="mn-size-btn active" data-size="6" onclick="mnSetSize(6)">6×6</button>
-                <button class="mn-size-btn" data-size="9" onclick="mnSetSize(9)">9×9</button>
-            </div>
-        </div>
-    </div>
-    <div class="mn-live-bar" id="mnLiveBar"></div>
-    <div class="mn-grid-wrap"><div class="mn-grid" id="mnGrid" data-size="6" style="grid-template-columns:repeat(6,1fr)"></div></div>
-    <div class="mn-config-row">
-        <div class="mn-config-block">
-            <div class="mn-config-label">💣 MINES COUNT</div>
-            <div class="mn-bomb-btns" id="mnBombBtns"></div>
-        </div>
-    </div>
-    <div class="mn-bet-row">
-        <div class="mn-bet-label">BET AMOUNT</div>
-        <div class="mn-bet-input-wrap">
-            <input type="number" id="mnBetInput" class="mn-bet-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
-            <button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button>
-            <button class="mn-half-btn" onclick="mnHalfBet()">½</button>
-            <button class="mn-max-btn" onclick="mnMaxBet()">MAX</button>
-        </div>
-    </div>
-    <button class="mn-play-btn" id="mnPlayBtn" onclick="mnPlay()">Place Bet</button>
-</div>
-
-<div id="plinkoScreen" class="screen hidden">
-    <div class="pl-top-bar">
-        <button class="pl-back" onclick="closePlinko()">⬅ Back</button>
-        <div class="pl-title">🎯 Plinko</div>
-        <div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="pl-canvas-wrap"><div class="pl-count" id="plBallCount">0 balls</div><canvas id="plinkoCanvas"></canvas></div>
-    <div class="pl-controls">
-        <div class="pl-diff-row">
-            <button class="pl-diff-btn" id="plDiffEasy" onclick="plSetDifficulty('easy')">Easy</button>
-            <button class="pl-diff-btn active" id="plDiffMedium" onclick="plSetDifficulty('medium')">Medium</button>
-            <button class="pl-diff-btn" id="plDiffHard" onclick="plSetDifficulty('hard')">Hard</button>
-        </div>
-        <div class="pl-bet-row"><div class="pl-bet-wrap"><span style="font-size:16px">🎁</span><input type="number" id="plBetInput" class="pl-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button><button class="pl-bet-max" onclick="plMaxBet()">MAX</button></div></div>
-        <button class="pl-play-btn active" id="plPlayBtn" onclick="plDrop()">Place 0.1 TON Bet</button>
-    </div>
-</div>
-
-<div id="upgradeScreen" class="screen hidden">
-    <div class="up-top-bar">
-        <button class="up-back" onclick="closeUpgrade()">⬅ Back</button>
-        <div class="up-title">🎁 Gift Hub</div>
-        <div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="up-head"><div class="up-head-title">Gift Upgrade</div><div class="up-head-sub">✨ Transform your gift</div></div>
-    <div class="up-cards-row">
-        <div class="up-card"><div class="up-card-num">1</div><div class="up-card-title">Your Gift</div><input type="number" id="upBetInput" class="up-input" value="10" min="1" step="0.1"><div class="up-card-lbl">Entry Amount</div></div>
-        <div class="up-swap-icon">⚡</div>
-        <div class="up-card"><div class="up-card-num" style="background:#ffcc00;">2</div><div class="up-card-title">Target Gift</div><input type="number" id="upTargetInput" class="up-input" value="50" min="2" step="0.1"><div class="up-card-lbl">Target Amount</div></div>
-    </div>
-    <div class="up-wheel-wrap"><canvas id="upCanvas"></canvas><div class="up-wheel-center"><div class="up-chance" id="upChanceDisplay">19.4%</div><div class="up-chance-lbl" id="upChanceLabel">LOW</div></div></div>
-    <div class="up-stats">
-        <div class="up-stat"><div class="up-stat-lbl">🎯 Win Chance</div><div class="up-stat-val" id="upChanceText">19.4%</div></div>
-        <div class="up-stat"><div class="up-stat-lbl">💰 Profit if Win</div><div class="up-stat-val" id="upProfitText">+40.00</div></div>
-    </div>
-    <button class="up-btn" id="upBtn" onclick="upStart()">🚀 UPGRADE</button>
-    <div class="up-result" id="upResult"></div>
-</div>
-
-<div id="gameScreen" class="screen hidden">
-    <div class="game-top-bar">
-        <button class="back-btn" onclick="goHome()">⬅ Back</button>
-        <div class="game-balance" id="balanceDisplay">0.00 TON</div>
-        <button class="reset-btn" onclick="resetBalance()">🔄 Refill</button>
-    </div>
-    <div class="multiplier-history" id="multiplierHistory"><div style="font-size:12px;color:#666;padding-left:10px">History:</div></div>
-    <div class="chart-container"><div class="multiplier-text" id="multiplierDisplay">1.00x</div><canvas id="chartCanvas"></canvas></div>
-    <div class="bet-controls">
-        <div class="bet-input-row">
-            <span class="input-label">Bet Amount:</span>
-            <input type="number" id="betInput" class="bet-input" value="0.1" min="0.1">
-            <button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button>
-            <div class="quick-btns"><button class="quick-btn half-btn" id="halfBtn" onclick="setBetHalf()">50%</button><button class="quick-btn all-btn" id="allBtn" onclick="setBetAll()">ALL</button></div>
-        </div>
-        <div class="bet-input-row">
-            <span class="input-label">Auto Cashout:</span>
-            <input type="number" id="autoCashoutInput" class="bet-input auto-cashout-input" value="2.00" min="1.01" step="0.1">
-            <span style="color:#00c853;font-weight:bold;font-size:13px">x</span>
-        </div>
-        <button class="action-btn btn-bet" id="actionButton">Join Game</button>
-        <div style="text-align:center;font-size:13px;color:#aaa;min-height:18px" id="statusText">Enter a bet amount to start</div>
-    </div>
-</div>
-
-<div id="pvpScreen" class="screen hidden">
-    <div class="pvp-header">
-        <button class="pvp-back" onclick="goHome()">← Back</button>
-        <div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">0.00</span><button class="pvp-plus" onclick="pvpAddFunds()">+</button></div>
-    </div>
-    <div class="pvp-stats">
-        <div class="stat-block"><div class="stat-label">Last Game</div><div class="stat-value-row"><span class="stat-value" id="pvpLast">+0.00 TON</span><span class="stat-pct" id="pvpLastPct">0%</span></div></div>
-        <div class="stat-block"><div class="stat-label">Top of the Day</div><div class="stat-value-row"><span class="stat-value" id="pvpTop">+0.00 TON</span><span class="stat-pct" id="pvpTopPct">0%</span></div></div>
-    </div>
-    <div class="pvp-wheel-wrap">
-        <canvas id="pvpCanvas"></canvas>
-        <div class="pvp-center">
-            <div class="pvp-timer" id="pvpTimer">00:15</div>
-            <div class="pvp-pool-label">TOTAL POOL</div>
-            <div class="pvp-pool"><span class="ton-icon">◈</span><span id="pvpPoolValue">0.00</span></div>
-            <div class="pvp-game-num" id="pvpGameNum">Game #00000</div>
-        </div>
-    </div>
-    <div class="pvp-players-row" id="pvpPlayersRow"></div>
-    <div class="pvp-join-wrap">
-        <label class="pvp-bet-label">Entry Amount (TON):</label>
-        <div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px;flex-shrink:0">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1"></div>
-        <div class="pvp-quick-row"><button class="pvp-quick-btn half-btn" id="pvpHalfBtn" onclick="pvpSetBetHalf()">50%</button><button class="pvp-quick-btn all-btn" id="pvpAllBtn" onclick="pvpSetBetAll()">ALL</button></div>
-        <button class="join-battle-btn active" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
-    </div>
-    <div class="pvp-players-header"><span>Players</span><span class="pvp-players-count" id="pvpPlayersCount">👥 0</span></div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-const SPEED=1.0001,COUNTDOWN_SECONDS=8,PL_MAX_BALLS=20,VIP_CODE='parham2010';
-const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
-const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
-const ADMIN_CHAT_ID = '6151360205';
-const ADMIN_ID = '6151360205';
-const MIN_TON_DEPOSIT = 0.1;
-const REFERRAL_REWARD = 0.05;
-
-/* ===== Back4App ===== */
-const PARSE_APP_ID = 'vNgoEBHPwHBkfwGWa8bcBRlnl5FtIoi7URTQ8FrQ';
-const PARSE_JS_KEY = 'djVtC2gZ9gmdRDxf6ztd26D7deEWXsKWXcGvUEdO';
-const PARSE_SERVER = 'https://parseapi.back4app.com';
-
-Parse.initialize(PARSE_APP_ID, PARSE_JS_KEY);
-Parse.serverURL = PARSE_SERVER;
-
-let usersRef = null;
-let currentUserObject = null;
-let userDataWatcher = null;
-
-let TG_USER = { id: '', name: 'Unknown User', username: 'None', photo: '' };
-let BOT_USERNAME = 'YourBotUsername';
-let IS_ADMIN = false;
-
-function loadTelegramUser(){
-    try {
-        const tg = window.Telegram && window.Telegram.WebApp;
-        if (tg) {
-            tg.ready(); tg.expand();
-            const u = tg.initDataUnsafe && tg.initDataUnsafe.user;
-            if (u) {
-                TG_USER.id = String(u.id || '');
-                TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
-                TG_USER.username = u.username ? '@' + u.username : 'None';
-                TG_USER.photo = u.photo_url || '';
-                if (TG_USER.id === ADMIN_ID) {
-                    IS_ADMIN = true;
-                    document.getElementById('adminFloatBtn').classList.add('show');
-                }
-                return;
-            }
-        }
-        const hash = window.location.hash.slice(1);
-        if (hash) {
-            const params = new URLSearchParams(hash);
-            const userStr = params.get('tgWebAppData');
-            if (userStr) {
-                const data = new URLSearchParams(userStr);
-                const userJson = data.get('user');
-                if (userJson) {
-                    const u = JSON.parse(decodeURIComponent(userJson));
-                    TG_USER.id = String(u.id || '');
-                    TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
-                    TG_USER.username = u.username ? '@' + u.username : 'None';
-                    TG_USER.photo = u.photo_url || '';
-                    if (TG_USER.id === ADMIN_ID) {
-                        IS_ADMIN = true;
-                        document.getElementById('adminFloatBtn').classList.add('show');
-                    }
-                }
-            }
-        }
-    } catch(e) {}
-}
-
-async function loadBotUsername(){
-    try {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/getMe`;
-        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-        const res = await fetch(proxyUrl);
-        const data = await res.json();
-        if (data && data.ok && data.result && data.result.username) BOT_USERNAME = data.result.username;
-    } catch(e) {}
-}
-
-/* ===== Firebase-style: Back4App User Sync ===== */
-async function syncUserWithBack4App(){
-    if (!TG_USER.id) return;
-    try {
-        const UserClass = Parse.Object.extend('_User');
-        const q = new Parse.Query(UserClass);
-        q.equalTo('tg_user_id', TG_USER.id);
-        let user = await q.first();
-
-        if (!user) {
-            user = new UserClass();
-            user.set('tg_user_id', TG_USER.id);
-            user.set('username', 'tg_' + TG_USER.id);
-            user.set('password', 'tg_' + TG_USER.id + '_' + Date.now());
-            user.set('name', TG_USER.name);
-            user.set('telegramUsername', TG_USER.username);
-            user.set('balance', balance);
-            user.set('banned', false);
-            user.set('gifts', []);
-            await user.save();
-            console.log('✅ New user created');
-        } else {
-            // Load balance
-            const remoteBalance = user.get('balance');
-            if (typeof remoteBalance === 'number') {
-                // فقط اگه اختلاف داره آپدیت کن
-                if (Math.abs(remoteBalance - balance) > 0.001) {
-                    balance = remoteBalance;
-                    updateGlobalBalanceUI(false);
-                }
-            }
-            // Check banned
-            if (user.get('banned')) {
-                document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif;background:#0a0d14;height:100vh;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:80px;">🚫</div><div style="font-size:24px;font-weight:900;color:#ff4444;margin-top:20px;">Access Denied</div><div style="color:#7a8299;margin-top:10px;">Your account has been suspended.</div></div>';
-                return;
-            }
-        }
-        currentUserObject = user;
-        localStorage.setItem('userObjectId', user.id);
-
-        // Real-time listener — اگه ادمین موجودی رو از راه دور تغییر داد، این آپدیت بشه
-        if(userDataWatcher) userDataWatcher.unsubscribe();
-        const watchQ = new Parse.Query(UserClass);
-        watchQ.equalTo('objectId', user.id);
-        userDataWatcher = await watchQ.subscribe();
-        userDataWatcher.on('update', (u) => {
-            const remoteBalance = u.get('balance');
-            if (typeof remoteBalance === 'number') {
-                if (Math.abs(remoteBalance - balance) > 0.001) {
-                    balance = remoteBalance;
-                    updateGlobalBalanceUI(false);
-                    showToast('💎 Balance updated: ' + balance.toFixed(2) + ' TON', 'win');
-                }
-            }
-            if (u.get('banned')) {
-                document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#fff;font-family:sans-serif;background:#0a0d14;height:100vh;display:flex;flex-direction:column;justify-content:center;"><div style="font-size:80px;">🚫</div><div style="font-size:24px;font-weight:900;color:#ff4444;margin-top:20px;">Access Denied</div><div style="color:#7a8299;margin-top:10px;">Your account has been suspended.</div></div>';
-            }
-        });
-    } catch(e) {
-        console.warn('Sync error:', e);
-    }
-}
-
-async function pushBalanceToBack4App(){
-    if (!currentUserObject) return;
-    try {
-        currentUserObject.set('balance', balance);
-        await currentUserObject.save();
-    } catch(e) { console.warn('Push balance failed:', e); }
-}
-
-window.addEventListener('load', () => {
-    loadTelegramUser();
-    loadBotUsername().then(() => {
-        checkReferral();
-        updateReferralUI();
-        setTimeout(syncUserWithBack4App, 500);
-    });
-});
-
-/* ===== ADMIN PANEL ===== */
-function openAdmin(){
-    if (!IS_ADMIN) return;
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('adminScreen').classList.remove('hidden');
-    document.getElementById('adminUserCard').innerHTML = '';
-    document.getElementById('adminSearchId').value = '';
-}
-
-async function adminSearchUser(){
-    const id = document.getElementById('adminSearchId').value.trim();
-    const card = document.getElementById('adminUserCard');
-    if (!id) { showToast('❌ Enter user ID', 'lose'); return; }
-    card.innerHTML = '<div class="adm-card" style="text-align:center;color:#7a8299;">⏳ Searching...</div>';
-    try {
-        const UserClass = Parse.Object.extend('_User');
-        const q = new Parse.Query(UserClass);
-        q.equalTo('tg_user_id', id);
-        const user = await q.first();
-        if (!user) {
-            card.innerHTML = '<div class="adm-card" style="text-align:center;color:#ff4444;font-weight:700;">❌ User not found</div>';
-            return;
-        }
-        renderAdminUserCard(user);
-    } catch(e) {
-        card.innerHTML = '<div class="adm-card" style="text-align:center;color:#ff4444;">❌ Error: ' + e.message + '</div>';
-    }
-}
-
-function renderAdminUserCard(user){
-    const card = document.getElementById('adminUserCard');
-    const name = user.get('name') || 'Unknown';
-    const username = user.get('telegramUsername') || 'None';
-    const tgId = user.get('tg_user_id') || 'N/A';
-    const bal = (user.get('balance') || 0).toFixed(3);
-    const banned = user.get('banned') ? 'YES 🚫' : 'No';
-    const objId = user.id;
-
-    card.innerHTML = `
-        <div class="adm-user-card">
-            <div class="adm-user-header">
-                <div class="adm-user-avatar">👤</div>
-                <div class="adm-user-info">
-                    <div class="adm-user-name">${name}</div>
-                    <div class="adm-user-id">ID: ${tgId} • ${username}</div>
-                </div>
-            </div>
-            <div class="adm-row"><span class="adm-row-label">💰 Balance</span><span class="adm-row-value gold">${bal} TON</span></div>
-            <div class="adm-row"><span class="adm-row-label">🚫 Banned</span><span class="adm-row-value ${user.get('banned')?'red':'green'}">${banned}</span></div>
-            <div class="adm-row"><span class="adm-row-label">🆔 Object</span><span class="adm-row-value" style="font-size:10px;">${objId.slice(0,10)}...</span></div>
-        </div>
-
-        <div class="adm-card">
-            <div class="adm-section-title">💵 CHANGE BALANCE</div>
-            <input type="number" id="admAmountInput" class="adm-input" placeholder="Amount (TON)" value="1" step="0.1">
-            <div class="adm-btn-row">
-                <button class="adm-btn add" onclick="adminChangeBalance('add')">➕ Add</button>
-                <button class="adm-btn remove" onclick="adminChangeBalance('remove')">➖ Remove</button>
-            </div>
-            <div class="adm-btn-row">
-                <button class="adm-btn set" onclick="adminChangeBalance('set')">🎯 Set Exactly</button>
-            </div>
-        </div>
-
-        <div class="adm-card">
-            <div class="adm-section-title">🚫 BAN CONTROL</div>
-            <div class="adm-btn-row">
-                ${user.get('banned')
-                    ? '<button class="adm-btn add" onclick="adminToggleBan(false)">✅ Unban User</button>'
-                    : '<button class="adm-btn remove" onclick="adminToggleBan(true)">🚫 Ban User</button>'}
-            </div>
-        </div>
-
-        <div class="adm-card">
-            <div class="adm-section-title">📤 SEND MESSAGE</div>
-            <input type="text" id="admMsgInput" class="adm-input" placeholder="Message to user...">
-            <button class="adm-btn set" onclick="adminSendMessage()">📨 Send via Bot</button>
-        </div>
-    `;
-
-    window._adminCurrentUserId = tgId;
-    window._adminCurrentObjectId = objId;
-}
-
-async function adminChangeBalance(action){
-    const id = window._adminCurrentUserId;
-    const objId = window._adminCurrentObjectId;
-    if (!id || !objId) return;
-    const amount = parseFloat(document.getElementById('admAmountInput').value);
-    if (isNaN(amount) || amount < 0) { showToast('❌ Invalid amount', 'lose'); return; }
-    try {
-        const UserClass = Parse.Object.extend('_User');
-        const q = new Parse.Query(UserClass);
-        const user = await q.get(objId);
-        let current = user.get('balance') || 0;
-        let newBal = current;
-        if (action === 'add') newBal = current + amount;
-        else if (action === 'remove') newBal = Math.max(0, current - amount);
-        else if (action === 'set') newBal = amount;
-        user.set('balance', newBal);
-        await user.save();
-        showToast('✅ Balance set to ' + newBal.toFixed(2) + ' TON', 'win');
-        // refresh card
-        const q2 = new Parse.Query(UserClass);
-        const fresh = await q2.get(objId);
-        renderAdminUserCard(fresh);
-    } catch(e) {
-        showToast('❌ ' + e.message, 'lose');
-    }
-}
-
-async function adminToggleBan(ban){
-    const objId = window._adminCurrentObjectId;
-    if (!objId) return;
-    try {
-        const UserClass = Parse.Object.extend('_User');
-        const q = new Parse.Query(UserClass);
-        const user = await q.get(objId);
-        user.set('banned', !!ban);
-        await user.save();
-        showToast(ban ? '🚫 User banned' : '✅ User unbanned', ban ? 'lose' : 'win');
-        const q2 = new Parse.Query(UserClass);
-        const fresh = await q2.get(objId);
-        renderAdminUserCard(fresh);
-    } catch(e) {
-        showToast('❌ ' + e.message, 'lose');
-    }
-}
-
-async function adminSendMessage(){
-    const id = window._adminCurrentUserId;
-    const msgText = document.getElementById('admMsgInput').value.trim();
-    if (!id || !msgText) { showToast('❌ Enter a message', 'lose'); return; }
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    const body = `chat_id=${encodeURIComponent(id)}&text=${encodeURIComponent(msgText)}`;
-    try {
-        const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-        const res = await fetch(proxyUrl, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: body });
-        const data = await res.json();
-        if (data && data.ok) showToast('✅ Message sent!', 'win');
-        else showToast('❌ Failed to send', 'lose');
-    } catch(e) {
-        showToast('❌ Network error', 'lose');
-    }
-}
+                                                                                                                              </html>
