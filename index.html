@@ -349,7 +349,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
 .toast.win{background:linear-gradient(135deg,#00c853,#009624)}
 .toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c)}
-.live-feed{position:fixed;top:70px;right:8px;z-index:60;display:flex;flex-direction:column;gap:5px;pointer-events:none;max-width:220px}
 .slot-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:5000;display:flex;justify-content:center;align-items:center;padding:16px}
 .slot-modal.hidden{display:none}
 .slot-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border:1px solid var(--border-2);border-radius:24px;padding:18px;max-width:400px;width:100%;box-sizing:border-box}
@@ -792,10 +791,40 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 </div>
 
 <div class="toast" id="toast"></div>
-<div class="live-feed" id="liveFeed"></div>
 
 <script>
 const BOTS_ENABLED = false;
+
+function refundPendingBets() {
+    try {
+        if (typeof gameState !== 'undefined' && gameState === 'playing' && typeof hasJoined !== 'undefined' && hasJoined) {
+            balance += myBet;
+            hasJoined = false;
+            localStorage.setItem('crashBalance_home', balance);
+        }
+        if (typeof towerState !== 'undefined' && towerState === 'playing' && towerLevel > 0) {
+            balance += towerBet;
+            towerState = 'idle';
+            localStorage.setItem('crashBalance_home', balance);
+        }
+        if (typeof mnState !== 'undefined' && mnState === 'playing' && mnRevealed.length > 0) {
+            balance += mnLockedBet;
+            mnState = 'idle';
+            localStorage.setItem('crashBalance_home', balance);
+        }
+        if (typeof pvpUserJoined !== 'undefined' && pvpUserJoined && pvpState === 'waiting') {
+            balance += pvpMyBet;
+            pvpUserJoined = false;
+            pvpMyBet = 0;
+            localStorage.setItem('crashBalance_home', balance);
+        }
+    } catch(e) {}
+}
+
+window.addEventListener('beforeunload', refundPendingBets);
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) refundPendingBets();
+});
 
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=15,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';
@@ -806,13 +835,6 @@ const BOT_TOKEN='8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;
 const REFERRAL_REWARD=0.05;
-
-const BOT_DATABASE=[
-    {name:'Alex',avatar:'🦁',color:'#ff4757'},{name:'Sara',avatar:'🐱',color:'#2e86de'},
-    {name:'Max',avatar:'🐺',color:'#2ed573'},{name:'Nina',avatar:'🦊',color:'#ffa502'},
-    {name:'John',avatar:'🐻',color:'#a55eea'},{name:'Emma',avatar:'🐰',color:'#26de81'}
-];
-function getRandomBot(){return BOT_DATABASE[Math.floor(Math.random()*BOT_DATABASE.length)];}
 
 let TG_USER={id:'',name:'Unknown User',username:'None',photo:''};
 let BOT_USERNAME='Gift08epqbot';
@@ -1513,12 +1535,15 @@ function pvpStartTimer(){
     pvpUpdateTimerUI();
     pvpTimerInterval=setInterval(()=>{
         if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}
+        if(pvpPlayers.length < 2){
+            document.getElementById('pvpTimer').innerText='⏳ Need 2+';
+            return;
+        }
         pvpTimer--;
         pvpUpdateTimerUI();
         if(pvpTimer<=0){
             clearInterval(pvpTimerInterval);pvpTimerInterval=null;
-            if(pvpPlayers.length>=2) pvpSpin();
-            else { pvpTimer=5; pvpUpdateTimerUI(); }
+            pvpSpin();
         }
     },1000);
 }
