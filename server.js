@@ -7,11 +7,15 @@ const TelegramBot = require('node-telegram-bot-api');
 
 const PORT = 3000;
 const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
+const PROXY_URL = 'https://gamerush-proxy.parha2662.workers.dev';
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+const bot = new TelegramBot(BOT_TOKEN, {
+  polling: true,
+  baseApiUrl: PROXY_URL
+});
 
 const db = new Pool({
   user: 'admin',
