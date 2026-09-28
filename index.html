@@ -280,10 +280,13 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .history-badge.purple{background:rgba(156,39,176,.2);color:#9c27b0}
 .history-badge.yellow{background:rgba(255,204,0,.2);color:#ffcc00}
 .crash-players-row{display:flex;gap:6px;padding:8px 10px;overflow-x:auto;background:#141414;border-bottom:1px solid #2a2a2a;min-height:60px;flex-shrink:0;align-items:center}
-.crash-player-card{min-width:64px;padding:6px 5px;border-radius:10px;background:#232323;text-align:center;flex-shrink:0;border:1.5px solid #333}
+.crash-player-card{min-width:64px;padding:6px 5px;border-radius:10px;background:#232323;text-align:center;flex-shrink:0;border:1.5px solid #333;transition:all .3s}
+.crash-player-card.cashed{border-color:#00c853;background:rgba(0,200,83,.12);transform:scale(.95)}
+.crash-player-card.lost{border-color:#ff4444;opacity:.4}
 .crash-player-card .cp-av{font-size:20px}
-.crash-player-card .cp-name{font-size:9px;font-weight:800;color:#fff;margin-top:2px}
+.crash-player-card .cp-name{font-size:9px;font-weight:800;color:#fff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58px}
 .crash-player-card .cp-bet{font-size:9px;color:#ffcc00;font-weight:800;margin-top:1px}
+.crash-player-card .cp-cashed{font-size:9px;color:#00c853;font-weight:900;margin-top:1px}
 .chart-container{width:100%;height:220px;background:#0a0a0a;position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;flex-shrink:0}
 #chartCanvas{width:100%;height:100%}
 .multiplier-text{position:absolute;font-size:60px;font-weight:bold;color:#ffcc00;z-index:10;display:flex;justify-content:center;align-items:center;width:100%;height:100%;pointer-events:none}
@@ -349,6 +352,12 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
 .toast.win{background:linear-gradient(135deg,#00c853,#009624)}
 .toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c)}
+.live-feed{position:fixed;top:70px;right:8px;z-index:60;display:flex;flex-direction:column;gap:5px;pointer-events:none;max-width:220px}
+.live-feed-item{background:rgba(20,25,40,.95);border:1px solid var(--border-2);border-radius:12px;padding:6px 10px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;animation:slideIn .4s ease-out}
+.live-feed-item .lf-av{font-size:16px;line-height:1}
+.live-feed-item .lf-name{font-weight:800;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.live-feed-item .lf-win{color:var(--green);font-weight:900;margin-left:auto}
+@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
 .slot-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:5000;display:flex;justify-content:center;align-items:center;padding:16px}
 .slot-modal.hidden{display:none}
 .slot-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border:1px solid var(--border-2);border-radius:24px;padding:18px;max-width:400px;width:100%;box-sizing:border-box}
@@ -502,7 +511,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
         <div class="ref-hero">
             <div class="ref-emoji">🎁</div>
             <div class="ref-title">Invite & Earn</div>
-            <div class="ref-sub">Get 0.05 TON for each friend who joins</div>
+            <div class="ref-sub">Get 0.01 TON for each friend who joins</div>
         </div>
         <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div>
         <div class="ref-link-box">
@@ -514,7 +523,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
             <div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div>
             <div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div>
         </div>
-        <div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they join, you get <b>0.05 TON</b><br>• Reward credited automatically</div>
+        <div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they join, you get <b>0.01 TON</b><br>• Reward credited automatically</div>
     </div>
     <div class="bottom-nav">
         <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
@@ -791,40 +800,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="live-feed" id="liveFeed"></div>
 
 <script>
-const BOTS_ENABLED = false;
-
-function refundPendingBets() {
-    try {
-        if (typeof gameState !== 'undefined' && gameState === 'playing' && typeof hasJoined !== 'undefined' && hasJoined) {
-            balance += myBet;
-            hasJoined = false;
-            localStorage.setItem('crashBalance_home', balance);
-        }
-        if (typeof towerState !== 'undefined' && towerState === 'playing' && towerLevel > 0) {
-            balance += towerBet;
-            towerState = 'idle';
-            localStorage.setItem('crashBalance_home', balance);
-        }
-        if (typeof mnState !== 'undefined' && mnState === 'playing' && mnRevealed.length > 0) {
-            balance += mnLockedBet;
-            mnState = 'idle';
-            localStorage.setItem('crashBalance_home', balance);
-        }
-        if (typeof pvpUserJoined !== 'undefined' && pvpUserJoined && pvpState === 'waiting') {
-            balance += pvpMyBet;
-            pvpUserJoined = false;
-            pvpMyBet = 0;
-            localStorage.setItem('crashBalance_home', balance);
-        }
-    } catch(e) {}
-}
-
-window.addEventListener('beforeunload', refundPendingBets);
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) refundPendingBets();
-});
+const BOTS_ENABLED = true;
 
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=15,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';
@@ -834,7 +813,48 @@ const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 const BOT_TOKEN='8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;
-const REFERRAL_REWARD=0.05;
+const REFERRAL_REWARD=0.01;
+
+const BOT_DATABASE=[
+    {name:'Alex',avatar:'🦁',color:'#ff4757'},{name:'Sara',avatar:'🐱',color:'#2e86de'},
+    {name:'Max',avatar:'🐺',color:'#2ed573'},{name:'Nina',avatar:'🦊',color:'#ffa502'},
+    {name:'John',avatar:'🐻',color:'#a55eea'},{name:'Emma',avatar:'🐰',color:'#26de81'},
+    {name:'David',avatar:'🐯',color:'#fc5c65'},{name:'Lily',avatar:'🦄',color:'#45aaf2'},
+    {name:'Tom',avatar:'🐧',color:'#fed330'},{name:'Mia',avatar:'🐨',color:'#eb3b5a'},
+    {name:'Leo',avatar:'🐼',color:'#4ecdc4'},{name:'Zoe',avatar:'🐸',color:'#f7b731'},
+    {name:'Ryan',avatar:'🦉',color:'#5f27cd'},{name:'Anna',avatar:'🐝',color:'#ff6b6b'},
+    {name:'Mike',avatar:'🦅',color:'#00d2d3'},{name:'Ella',avatar:'🦋',color:'#c56cf0'},
+    {name:'Ben',avatar:'🐢',color:'#ff9f1a'},{name:'Chloe',avatar:'🐙',color:'#18dcff'},
+    {name:'Sam',avatar:'🦈',color:'#32ff7e'},{name:'Ruby',avatar:'🐬',color:'#7d5fff'},
+    {name:'Kai',avatar:'🐲',color:'#e84118'},{name:'Ivy',avatar:'🌺',color:'#c23616'},
+    {name:'Noah',avatar:'🔥',color:'#e1b12c'},{name:'Aria',avatar:'⭐',color:'#f0932b'},
+    {name:'Jake',avatar:'⚡',color:'#be2edd'},{name:'Maya',avatar:'💎',color:'#6ab04c'},
+    {name:'Owen',avatar:'👑',color:'#eb4d4b'},{name:'Luna',avatar:'🌙',color:'#4834d4'},
+    {name:'Finn',avatar:'🎯',color:'#f9ca24'},{name:'Iris',avatar:'🎨',color:'#22a6b3'},
+    {name:'Cole',avatar:'🚀',color:'#7ed6df'},{name:'Rose',avatar:'🌹',color:'#e056fd'},
+    {name:'Dean',avatar:'🎸',color:'#badc58'},{name:'Vera',avatar:'🎭',color:'#ff7979'},
+    {name:'Luke',avatar:'🏆',color:'#f6e58d'},{name:'Cora',avatar:'🎪',color:'#ffbe76'},
+    {name:'Nate',avatar:'🦖',color:'#686de0'},{name:'Faye',avatar:'🦚',color:'#22a6b3'},
+    {name:'Ezra',avatar:'🦜',color:'#c7ecee'},{name:'Amir',avatar:'🐪',color:'#f8c291'}
+];
+function getRandomBot(){return BOT_DATABASE[Math.floor(Math.random()*BOT_DATABASE.length)];}
+function getRandomBotBet(){return +(0.1 + Math.random() * 0.9).toFixed(2);}
+function getRandomBotCashout(){const r=Math.random();if(r<0.4)return 1.15+Math.random()*0.35;if(r<0.8)return 1.5+Math.random()*1.0;return 2.5+Math.random()*1.5;}
+
+function spawnLiveWin(){
+    if(!BOTS_ENABLED) return;
+    const bot=getRandomBot();
+    const win=+(0.15+Math.random()*18).toFixed(2);
+    const feed=document.getElementById('liveFeed');
+    if(!feed)return;
+    if(feed.children.length>=4)feed.removeChild(feed.firstChild);
+    const el=document.createElement('div');
+    el.className='live-feed-item';
+    el.innerHTML=`<span class="lf-av">${bot.avatar}</span><span class="lf-name">${bot.name}</span><span class="lf-win">+${win}◈</span>`;
+    feed.appendChild(el);
+    setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},4500);
+}
+setInterval(()=>{if(BOTS_ENABLED && document.visibilityState!=='hidden')spawnLiveWin();},3500+Math.random()*3000);
 
 let TG_USER={id:'',name:'Unknown User',username:'None',photo:''};
 let BOT_USERNAME='Gift08epqbot';
@@ -877,6 +897,34 @@ function loadTelegramUser(){
 window.addEventListener('load',()=>{
     loadTelegramUser();
     updateReferralUI();
+    // چک رفرال
+    try{
+        const tg=window.Telegram&&window.Telegram.WebApp;
+        let startParam='';
+        if(tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) startParam=tg.initDataUnsafe.start_param;
+        if(!startParam){
+            const hash=window.location.hash.slice(1);
+            if(hash){const p=new URLSearchParams(hash);const d=p.get('tgWebAppData');if(d){const dd=new URLSearchParams(d);startParam=dd.get('start_param')||'';}}
+        }
+        if(startParam && startParam.startsWith('ref_') && TG_USER.id){
+            const referrerId=startParam.slice(4);
+            if(referrerId!==TG_USER.id){
+                const myRefKey='referredBy_'+TG_USER.id;
+                if(!localStorage.getItem(myRefKey)){
+                    localStorage.setItem(myRefKey,referrerId);
+                    // ذخیره که این کاربر به کی رفرال شده (برای رفرالر، اگه همون دستگاه باشه)
+                    const refCount=parseInt(localStorage.getItem('refCount_'+referrerId)||'0')+1;
+                    const refEarned=parseFloat(localStorage.getItem('refEarned_'+referrerId)||'0')+REFERRAL_REWARD;
+                    localStorage.setItem('refCount_'+referrerId,refCount);
+                    localStorage.setItem('refEarned_'+referrerId,refEarned);
+                    // اگر خود کاربر رفرالر باشه روی این دستگاه، به بالانسش اضافه می‌شه
+                    if(referrerId===TG_USER.id){
+                        // نادیده بگیر
+                    }
+                }
+            }
+        }
+    }catch(e){}
 });
 setTimeout(()=>{loadTelegramUser();updateReferralUI();},800);
 
@@ -1097,10 +1145,10 @@ function updateReferralUI(){
     if(linkInput)linkInput.value=getReferralLink();
     const myId=TG_USER.id||'guest';
     const refEarnings=parseFloat(localStorage.getItem('refEarned_'+myId)||'0');
-    const refList=JSON.parse(localStorage.getItem('refList_'+myId)||'[]');
+    const refCount=parseInt(localStorage.getItem('refCount_'+myId)||'0');
     const cEl=document.getElementById('refCount');
     const eEl=document.getElementById('refEarned');
-    if(cEl)cEl.innerText=refList.length;
+    if(cEl)cEl.innerText=refCount;
     if(eEl)eEl.innerText=refEarnings.toFixed(2);
 }
 function openReferral(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('referralScreen').classList.remove('hidden');updateReferralUI();}
@@ -1436,12 +1484,23 @@ function renderCrashPlayers(){
     row.innerHTML='';
     crashBots.forEach((b,i)=>{
         const c=document.createElement('div');
-        c.className='crash-player-card';
-        c.innerHTML=`<div class="cp-av">${b.avatar}</div><div class="cp-name">${b.name}</div><div class="cp-bet">${b.bet.toFixed(2)}◈</div>`;
+        c.className='crash-player-card'+(b.cashed?' cashed':'')+(b.lost?' lost':'');
+        c.innerHTML=`<div class="cp-av">${b.avatar}</div><div class="cp-name">${b.name}</div>`+(b.cashed?`<div class="cp-cashed">+${b.cashedAt.toFixed(2)}x</div>`:`<div class="cp-bet">${b.bet.toFixed(2)}◈</div>`);
         row.appendChild(c);
     });
 }
-function spawnCrashBots(){crashBots=[];renderCrashPlayers();}
+function spawnCrashBots(){
+    if(!BOTS_ENABLED){crashBots=[];renderCrashPlayers();return;}
+    crashBots=[];renderCrashPlayers();
+    const count=2+Math.floor(Math.random()*5);const used=new Set();
+    for(let i=0;i<count;i++){
+        let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
+        const delay=400+Math.random()*(COUNTDOWN_SECONDS*1000-1000);
+        setTimeout(()=>{if(gameState!=='waiting')return;crashBots.push({...bot,bet:getRandomBotBet(),cashout:getRandomBotCashout(),cashed:false,lost:false});renderCrashPlayers();},delay);
+    }
+}
+function botCashOuts(currentMult){if(!BOTS_ENABLED)return;crashBots.forEach(b=>{if(!b.cashed&&!b.lost&&currentMult>=b.cashout){b.cashed=true;b.cashedAt=currentMult;}});renderCrashPlayers();}
+function botCrashAll(){if(!BOTS_ENABLED)return;crashBots.forEach(b=>{if(!b.cashed)b.lost=true;});renderCrashPlayers();}
 function updateGiftDisplayOnMultiplier(){
     if(!hasJoined)return false;
     const potentialWin=myBet*multiplier;
@@ -1475,10 +1534,10 @@ function startGameplay(){
         el+=80;multiplier=Math.pow(SPEED,el);
         const showingGift=updateGiftDisplayOnMultiplier();
         if(!showingGift)multiplierDisplay.innerText=multiplier.toFixed(2)+'x';
-        drawChart(multiplier);
+        drawChart(multiplier);botCashOuts(multiplier);
         if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
         if(multiplier>=crashPoint){
-            clearInterval(gameInterval);
+            clearInterval(gameInterval);botCrashAll();
             if(betFromGift&&hasJoined)updateGiftDisplayOnCrash();
             else multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';
             multiplierDisplay.classList.add('crashed');
@@ -1513,8 +1572,25 @@ window.pvpInitialized=false;
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0','#ff9f1a','#18dcff','#32ff7e','#7d5fff'];
 let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
+let pvpBotTimers=[];
 function pvpInit(){pvpCanvas=document.getElementById('pvpCanvas');pvpCtx=pvpCanvas.getContext('2d');window.addEventListener('resize',resizePvpCanvas);resizePvpCanvas();pvpStartRound();}
 function resizePvpCanvas(){if(!pvpCanvas)return;const w=pvpCanvas.parentElement;const aw=w.clientWidth-40;const ah=w.clientHeight-20;const s=Math.max(220,Math.min(aw,ah,340));const dpr=window.devicePixelRatio||1;pvpSize=s;pvpCanvas.width=s*dpr;pvpCanvas.height=s*dpr;pvpCanvas.style.width=s+'px';pvpCanvas.style.height=s+'px';pvpCtx.setTransform(dpr,0,0,dpr,0,0);pvpDraw();}
+function pvpScheduleBots(){
+    if(!BOTS_ENABLED) return;
+    pvpBotTimers.forEach(t=>clearTimeout(t));pvpBotTimers=[];
+    const count=2+Math.floor(Math.random()*4);const used=new Set();
+    for(let i=0;i<count;i++){
+        let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
+        const delay=800+Math.random()*(PVP_COUNTDOWN_SECONDS*1000-2500);
+        const t=setTimeout(()=>{
+            if(pvpState!=='waiting')return;
+            const bet=getRandomBotBet();const color=PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
+            pvpPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});
+            pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+        },delay);
+        pvpBotTimers.push(t);
+    }
+}
 function pvpStartRound(){
     pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
     pvpPointerAngle=-Math.PI/2;pvpLastResult=null;
@@ -1526,26 +1602,17 @@ function pvpStartRound(){
     document.getElementById('pvpBetInput').disabled=false;
     document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||0.1;
     document.getElementById('pvpHalfBtn').disabled=false;document.getElementById('pvpAllBtn').disabled=false;
-    clearInterval(pvpTimerInterval);pvpTimerInterval=null;
-    document.getElementById('pvpTimer').innerText='--:--';
-}
-function pvpStartTimer(){
-    if(pvpTimerInterval) return;
-    pvpTimer=PVP_COUNTDOWN_SECONDS;
-    pvpUpdateTimerUI();
+    pvpScheduleBots();clearInterval(pvpTimerInterval);
     pvpTimerInterval=setInterval(()=>{
-        if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}
-        if(pvpPlayers.length < 2){
-            document.getElementById('pvpTimer').innerText='⏳ Need 2+';
-            return;
-        }
-        pvpTimer--;
-        pvpUpdateTimerUI();
+        if(pvpState!=='waiting')return;
+        pvpTimer--;pvpUpdateTimerUI();
         if(pvpTimer<=0){
-            clearInterval(pvpTimerInterval);pvpTimerInterval=null;
-            pvpSpin();
+            clearInterval(pvpTimerInterval);
+            if(pvpPlayers.length>=2)pvpSpin();
+            else{pvpTimer=5;pvpUpdateTimerUI();pvpTimerInterval=setInterval(()=>{if(pvpState==='waiting'){pvpTimer--;pvpUpdateTimerUI();if(pvpTimer<=0&&pvpPlayers.length>=2){clearInterval(pvpTimerInterval);pvpSpin();}else if(pvpTimer<=0){pvpTimer=5;pvpUpdateTimerUI();}}},1000);}
         }
     },1000);
+    pvpUpdateTimerUI();
 }
 function pvpUpdateTimerUI(){const t=Math.max(0,pvpTimer);document.getElementById('pvpTimer').innerText='00:'+String(t).padStart(2,'0');}
 function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length;}
@@ -1564,7 +1631,6 @@ function pvpJoinClick(){
     document.getElementById('pvpHalfBtn').disabled=true;
     document.getElementById('pvpAllBtn').disabled=true;
     showToast('Joined with '+a+' TON');
-    pvpStartTimer();
 }
 function pvpSetBetAll(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=Math.floor(balance*100)/100;if(a<0.1){showToast('❌');return;}document.getElementById('pvpBetInput').value=a.toFixed(2);localStorage.setItem('lastPvpBet',a);}
 function pvpSetBetHalf(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=Math.floor((balance/2)*100)/100;if(a<0.1){showToast('❌');return;}document.getElementById('pvpBetInput').value=a.toFixed(2);localStorage.setItem('lastPvpBet',a);}
