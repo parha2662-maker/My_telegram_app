@@ -285,39 +285,34 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .btn-bet{background:linear-gradient(135deg,#1e90ff,#0056b3)}
 .btn-cashout{background:linear-gradient(135deg,#00c853,#009624)}
 
-/* ============ ARENA PVP (New) ============ */
+/* ============ ARENA PVP ============ */
 #pvpScreen{background:#0a0b10;z-index:300;overflow-y:auto;padding-bottom:20px}
 .arena-topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#0a0b10}
-.arena-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px;font-family:inherit}
+.arena-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;padding:8px 4px;font-family:inherit}
 .arena-balance{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:8px 14px;border-radius:20px;font-weight:800;font-size:14px}
 .arena-balance .ton-icon{width:20px;height:20px;font-size:11px}
-.arena-tournament{margin:6px 12px 10px;padding:12px 16px;background:linear-gradient(90deg,#5a1e9e,#7c3aed);border-radius:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 20px rgba(124,58,237,.35)}
-.arena-tt-title{font-size:15px;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px}
+.arena-tournament{margin:6px 12px 10px;padding:12px 16px;background:linear-gradient(90deg,#5a1e9e,#7c3aed);border-radius:18px;display:flex;align-items:center;justify-content:space-between}
+.arena-tt-title{font-size:15px;font-weight:900;color:#fff}
 .arena-tt-timer{font-size:14px;font-weight:900;color:#ffcc00;letter-spacing:.5px}
-
-.arena-stats{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 6px;background:linear-gradient(180deg,#1a1d2e,#0f1119);margin:0 12px;border-radius:20px 20px 0 0;border:1px solid #2a2e42;border-bottom:none}
+.arena-stats{display:flex;justify-content:space-between;align-items:center;padding:14px 18px 6px;background:#0f1119;margin:0 12px;border-radius:20px 20px 0 0;border:1px solid #2a2e42;border-bottom:none}
 .arena-stats-left{font-size:13px;color:#7a8299;font-weight:700}
-.arena-stats-left b{color:#fff;font-size:20px;font-weight:900;margin-left:6px}
-.arena-stats-left b.ton-blue{color:#0098ea}
+.arena-stats-left b{color:#0098ea;font-size:20px;font-weight:900;margin-left:6px}
 .arena-stats-right{display:flex;align-items:center;gap:6px;font-size:13px;color:#7a8299;font-weight:700}
 .arena-stats-right .live-dot{width:8px;height:8px;border-radius:50%;background:#2ff068;box-shadow:0 0 10px #2ff068;animation:livePulse 1.5s infinite}
 @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}
 .arena-stats-right b{color:#2ff068;font-weight:900}
-
-.arena-chart-wrap{margin:0 12px;background:#0f1119;border:1px solid #2a2e42;border-top:none;border-radius:0 0 20px 20px;padding:10px;position:relative;min-height:340px;display:flex;justify-content:center;align-items:center;overflow:hidden}
-#pvpCanvas{display:block}
-
+.arena-chart-wrap{margin:0 12px;background:#0f1119;border:1px solid #2a2e42;border-top:none;border-radius:0 0 20px 20px;position:relative;overflow:hidden;height:340px}
+#pvpCanvas{display:block;width:100%;height:100%}
 .arena-players-head{display:flex;justify-content:space-between;align-items:center;padding:18px 18px 8px}
 .arena-players-head .t{font-size:22px;font-weight:900;color:#fff;display:flex;align-items:center;gap:10px}
 .arena-players-head .t .ico{font-size:22px;opacity:.6}
 .arena-players-head .c{font-size:14px;color:#7a8299;font-weight:800}
 .arena-players-head .c b{color:#fff}
-
 .arena-players-list{display:flex;flex-direction:column;gap:8px;padding:0 14px;margin-bottom:12px}
-.arena-player-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#161926;border:1px solid #232735;border-radius:16px;transition:all .3s;position:relative;overflow:hidden}
+.arena-player-row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#161926;border:1px solid #232735;border-radius:16px;position:relative;overflow:hidden}
 .arena-player-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--pc,#666)}
-.arena-player-row.isMe{border-color:#ffcc00;background:linear-gradient(90deg,#2a2100,#161926);box-shadow:0 0 20px rgba(255,204,0,.15)}
-.arena-player-row.winner{border-color:#2ff068;background:linear-gradient(90deg,#0a2a15,#161926);box-shadow:0 0 25px rgba(47,240,104,.3)}
+.arena-player-row.isMe{border-color:#ffcc00;background:linear-gradient(90deg,#2a2100,#161926)}
+.arena-player-row.winner{border-color:#2ff068;background:linear-gradient(90deg,#0a2a15,#161926)}
 .arena-pav{width:46px;height:46px;border-radius:50%;background:#0a0b10;border:2px solid var(--pc,#2a2e42);display:flex;justify-content:center;align-items:center;font-size:24px;flex-shrink:0}
 .arena-pinfo{flex:1;min-width:0}
 .arena-pname{font-size:14px;font-weight:900;color:#fff;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -325,32 +320,22 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .arena-pbet-box{text-align:right;flex-shrink:0}
 .arena-pbet{font-size:15px;font-weight:900;color:#fff}
 .arena-pbet-lbl{font-size:10px;color:#7a8299;font-weight:700;letter-spacing:.5px;margin-top:2px}
-
 .arena-bottom{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(10,11,16,.9),#0a0b10 30%);backdrop-filter:blur(20px);padding:14px 14px 20px;border-top:1px solid #1a1d2e;z-index:10}
 .arena-quick-row{display:flex;gap:6px;margin-bottom:10px}
-.arena-qbtn{flex:1;padding:14px 6px;background:#1a1d2e;border:1px solid #2a2e42;color:#fff;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s}
+.arena-qbtn{flex:1;padding:14px 6px;background:#1a1d2e;border:1px solid #2a2e42;color:#fff;border-radius:14px;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s}
 .arena-qbtn:active{transform:scale(.96)}
-.arena-qbtn.allin{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff;box-shadow:0 6px 18px rgba(124,58,237,.35)}
-.arena-qbtn .ton-s{font-size:11px;color:#0098ea;font-weight:900}
-.arena-qbtn.allin .ton-s{color:#c8b1ff}
-
+.arena-qbtn.allin{background:linear-gradient(135deg,#7c3aed,#5b21b6);border-color:#9b5cff}
 .arena-input-row{display:flex;align-items:center;gap:10px;background:#1a1d2e;border:2px solid #2a2e42;border-radius:16px;padding:6px 14px;margin-bottom:12px}
 .arena-input-row .ton-icon{width:24px;height:24px;font-size:12px}
-.arena-bet-input{flex:1;background:transparent;border:none;color:#fff;font-size:18px;font-weight:900;outline:none;font-family:inherit;min-width:0;padding:12px 0;text-align:left}
+.arena-bet-input{flex:1;background:transparent;border:none;color:#fff;font-size:18px;font-weight:900;outline:none;font-family:inherit;min-width:0;padding:12px 0}
 .arena-clear-btn{width:32px;height:32px;border-radius:50%;background:#2a2e42;border:none;color:#8a90a6;font-size:14px;cursor:pointer;font-family:inherit;flex-shrink:0}
-
-.arena-join-btn{width:100%;padding:20px;background:linear-gradient(135deg,#9b5cff,#7c3aed);border:none;border-radius:18px;color:#fff;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.3px;box-shadow:0 10px 30px rgba(124,58,237,.5);transition:all .2s}
-.arena-join-btn:active{transform:scale(.98)}
+.arena-join-btn{width:100%;padding:20px;background:linear-gradient(135deg,#9b5cff,#7c3aed);border:none;border-radius:18px;color:#fff;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.3px;box-shadow:0 10px 30px rgba(124,58,237,.5)}
 .arena-join-btn:disabled{background:#232735;color:#5a6278;box-shadow:none;cursor:not-allowed}
 .arena-join-btn.joined{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;box-shadow:0 10px 30px rgba(47,240,104,.4)}
-
-.arena-timer-badge{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(15,17,25,.95);border:2px solid #ffcc00;color:#ffcc00;font-size:22px;font-weight:900;padding:6px 22px;border-radius:16px;z-index:30;display:none;letter-spacing:1px;box-shadow:0 0 30px rgba(255,204,0,.5)}
+.arena-timer-badge{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(15,17,25,.95);border:2px solid #ffcc00;color:#ffcc00;font-size:22px;font-weight:900;padding:6px 22px;border-radius:16px;z-index:30;display:none;letter-spacing:1px}
 .arena-timer-badge.show{display:block}
 .arena-timer-badge.warn{border-color:#ff4444;color:#ff4444;animation:timerWarn 1s infinite}
 @keyframes timerWarn{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.1)}}
-
-.arena-empty{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#5a6278;font-size:13px;font-weight:700;z-index:5;pointer-events:none;width:80%}
-.arena-empty .ico{font-size:48px;opacity:.35;margin-bottom:8px;display:block}
 
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border-2);color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;max-width:90vw}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
@@ -373,8 +358,8 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .slot-sub{font-size:12px;color:var(--text-dim);margin-bottom:14px;font-weight:600}
 .slot-wrap{padding:12px 0;margin-bottom:8px}
 .slot-container{position:relative;height:110px;overflow:hidden;border-radius:16px;background:var(--card-2);border:1px solid var(--border-2);padding:8px 0}
-.slot-pointer{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);z-index:10;width:3px;background:linear-gradient(180deg,#9b5cff,#7c3aed);box-shadow:0 0 15px #7c3aed}
-.slot-pointer-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#c084fc;box-shadow:0 0 15px #c084fc;z-index:11}
+.slot-pointer{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);z-index:10;width:3px;background:linear-gradient(180deg,#9b5cff,#7c3aed)}
+.slot-pointer-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#c084fc;z-index:11}
 .slot-reel{display:flex;gap:6px;padding:0 8px;align-items:center;height:100%}
 .slot-item{min-width:80px;height:94px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-2));display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:900;color:#0a0d14;flex-shrink:0}
 .slot-item.vip-item{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
@@ -732,16 +717,12 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
     </div>
 
     <div class="arena-stats">
-        <div class="arena-stats-left">Total <b class="ton-blue" id="pvpTotalDisplay">0.00</b></div>
+        <div class="arena-stats-left">Total <b id="pvpTotalDisplay">0.00</b></div>
         <div class="arena-stats-right"><span class="live-dot"></span> <b>LIVE</b></div>
     </div>
 
     <div class="arena-chart-wrap">
         <div class="arena-timer-badge" id="arenaTimerBadge">15</div>
-        <div class="arena-empty" id="arenaEmpty">
-            <span class="ico">⏳</span>
-            Waiting for players (need 2+)
-        </div>
         <canvas id="pvpCanvas"></canvas>
     </div>
 
@@ -754,9 +735,9 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 
     <div class="arena-bottom">
         <div class="arena-quick-row">
-            <button class="arena-qbtn" onclick="pvpQuickAdd(1)">1 <span class="ton-s">◈</span></button>
-            <button class="arena-qbtn" onclick="pvpQuickAdd(5)">5 <span class="ton-s">◈</span></button>
-            <button class="arena-qbtn" onclick="pvpQuickAdd(10)">10 <span class="ton-s">◈</span></button>
+            <button class="arena-qbtn" onclick="pvpQuickAdd(1)">1 ◈</button>
+            <button class="arena-qbtn" onclick="pvpQuickAdd(5)">5 ◈</button>
+            <button class="arena-qbtn" onclick="pvpQuickAdd(10)">10 ◈</button>
             <button class="arena-qbtn allin" onclick="pvpSetBetAll()">All-in</button>
         </div>
         <div class="arena-input-row">
@@ -784,9 +765,9 @@ const MIN_TON_DEPOSIT=0.1;
 const REFERRAL_REWARD=0.01;
 
 const BOT_DATABASE=[
-    {name:'Alex',avatar:'🦁',color:'#ff4757'},{name:'Sara',avatar:'🐱',color:'#2e86de'},
-    {name:'Max',avatar:'🐺',color:'#2ed573'},{name:'Nina',avatar:'🦊',color:'#ffa502'},
-    {name:'John',avatar:'🐻',color:'#a55eea'},{name:'Emma',avatar:'🐰',color:'#26de81'},
+    {name:'Alex',avatar:'🦁',color:'#7c3aed'},{name:'Sara',avatar:'🐱',color:'#0098ea'},
+    {name:'Max',avatar:'🐺',color:'#2ff068'},{name:'Nina',avatar:'🦊',color:'#ff9d00'},
+    {name:'John',avatar:'🐻',color:'#ec4899'},{name:'Emma',avatar:'🐰',color:'#26de81'},
     {name:'David',avatar:'🐯',color:'#fc5c65'},{name:'Lily',avatar:'🦄',color:'#45aaf2'},
     {name:'Tom',avatar:'🐧',color:'#fed330'},{name:'Mia',avatar:'🐨',color:'#eb3b5a'},
     {name:'Leo',avatar:'🐼',color:'#4ecdc4'},{name:'Zoe',avatar:'🐸',color:'#f7b731'},
@@ -1351,13 +1332,14 @@ betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!is
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
-/* ============ PVP ARENA - PIE CHART ============ */
+/* ============ PVP ARENA ============ */
 window.pvpInitialized=false;
-const PVP_COLORS=['#7c3aed','#0098ea','#2ff068','#ff9d00','#ec4899','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0'];
+const PVP_COLORS=['#2ff068','#7c3aed','#0098ea','#ff9d00','#ec4899','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0'];
 let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpGameNum=67842;
-let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
+let pvpCanvas=null,pvpCtx=null,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
 let pvpBall={x:0,y:0,active:false};
 let pvpAnimFrame=null;
+let pvpCW=320,pvpCH=340;
 
 function pvpInit(){
     pvpCanvas=document.getElementById('pvpCanvas');
@@ -1381,14 +1363,13 @@ function pvpStartTournamentTimer(){
 
 function resizePvpCanvas(){
     if(!pvpCanvas)return;
-    const w=pvpCanvas.parentElement;
-    const aw=w.clientWidth-20;
-    const ah=Math.min(300, w.clientHeight-20);
-    const s=Math.max(240,Math.min(aw,ah));
+    const wrap=pvpCanvas.parentElement;
+    const w=wrap.clientWidth;
+    const h=wrap.clientHeight;
     const dpr=window.devicePixelRatio||1;
-    pvpSize=s;
-    pvpCanvas.width=s*dpr;pvpCanvas.height=s*dpr;
-    pvpCanvas.style.width=s+'px';pvpCanvas.style.height=s+'px';
+    pvpCW=w;pvpCH=h;
+    pvpCanvas.width=w*dpr;pvpCanvas.height=h*dpr;
+    pvpCanvas.style.width=w+'px';pvpCanvas.style.height=h+'px';
     pvpCtx.setTransform(dpr,0,0,dpr,0,0);
     pvpDraw();
 }
@@ -1423,7 +1404,6 @@ function pvpStartRound(){
     document.getElementById('pvpBetInput').disabled=false;
     document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||0.1;
     document.getElementById('arenaTimerBadge').classList.remove('show','warn');
-    document.getElementById('arenaEmpty').style.display='flex';
     pvpScheduleBots();clearInterval(pvpTimerInterval);pvpTimerInterval=null;
 }
 function pvpCheckAndStartTimer(){
@@ -1431,11 +1411,9 @@ function pvpCheckAndStartTimer(){
     if(pvpPlayers.length >= 2 && !pvpTimerInterval){
         pvpTimer=PVP_COUNTDOWN_SECONDS;
         const badge=document.getElementById('arenaTimerBadge');
-        badge.style.display='block';
         badge.classList.add('show');
         badge.classList.remove('warn');
         badge.innerText=pvpTimer;
-        document.getElementById('arenaEmpty').style.display='none';
         pvpTimerInterval=setInterval(()=>{
             if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}
             pvpTimer--;
@@ -1519,38 +1497,67 @@ function pvpRenderPlayers(){
 
 function pvpDraw(){
     if(!pvpCtx)return;
-    const s=pvpSize,cx=s/2,cy=s/2,R=s/2-14;
-    pvpCtx.clearRect(0,0,s,s);
+    const w=pvpCW,h=pvpCH;
+    pvpCtx.clearRect(0,0,w,h);
+    // background
+    pvpCtx.fillStyle='#0f1119';
+    pvpCtx.fillRect(0,0,w,h);
+    
     if(pvpPlayers.length===0){
-        pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);
-        pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();
-        pvpCtx.strokeStyle='#2a2e42';pvpCtx.lineWidth=2;pvpCtx.stroke();
+        // empty hint
+        pvpCtx.fillStyle='#2a2e42';
+        pvpCtx.font='bold 14px sans-serif';
+        pvpCtx.textAlign='center';
+        pvpCtx.textBaseline='middle';
+        pvpCtx.fillText('Waiting for players (need 2+)',w/2,h/2);
         return;
     }
-    // draw pie
-    let a=-Math.PI/2;
+    
+    // Pie chart with center at bottom center, huge radius
+    // So visible area shows sections like vertical stripes radiating from bottom
+    const cx=w/2;
+    const cy=h; // center at bottom
+    const R=Math.max(w,h)*1.5;
+    
+    // We want the pie to fully cover the visible rect from top
+    // Start angle: from left side (-180deg)
+    let a=-Math.PI;
     pvpPlayers.forEach((p,i)=>{
-        const sh=p.bet/pvpPool,arc=sh*Math.PI*2;
-        pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);
-        pvpCtx.arc(cx,cy,R,a,a+arc);pvpCtx.closePath();
-        pvpCtx.fillStyle=p.color;pvpCtx.fill();
-        pvpCtx.strokeStyle='rgba(0,0,0,0.5)';pvpCtx.lineWidth=3;pvpCtx.stroke();
+        const sh=p.bet/pvpPool;
+        const arc=sh*Math.PI*2;
+        pvpCtx.beginPath();
+        pvpCtx.moveTo(cx,cy);
+        pvpCtx.arc(cx,cy,R,a,a+arc);
+        pvpCtx.closePath();
+        pvpCtx.fillStyle=p.color;
+        pvpCtx.fill();
+        pvpCtx.strokeStyle='rgba(0,0,0,0.35)';
+        pvpCtx.lineWidth=3;
+        pvpCtx.stroke();
         a+=arc;
     });
-    // center hole
-    pvpCtx.beginPath();pvpCtx.arc(cx,cy,s*0.18,0,Math.PI*2);
-    pvpCtx.fillStyle='#0f1119';pvpCtx.fill();
-    pvpCtx.strokeStyle='#2a2e42';pvpCtx.lineWidth=2;pvpCtx.stroke();
+    
+    // dark gradient overlay from top for depth
+    const g=pvpCtx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'rgba(0,0,0,0.15)');
+    g.addColorStop(1,'rgba(0,0,0,0.4)');
+    pvpCtx.fillStyle=g;
+    pvpCtx.fillRect(0,0,w,h);
+    
     // ball
     if(pvpBall.active){
         pvpCtx.beginPath();
-        pvpCtx.arc(pvpBall.x,pvpBall.y,12,0,Math.PI*2);
-        const grd=pvpCtx.createRadialGradient(pvpBall.x-3,pvpBall.y-3,2,pvpBall.x,pvpBall.y,14);
-        grd.addColorStop(0,'#fff');grd.addColorStop(1,'#ffcc00');
-        pvpCtx.fillStyle=grd;
-        pvpCtx.shadowBlur=25;pvpCtx.shadowColor='#ffcc00';
+        pvpCtx.arc(pvpBall.x,pvpBall.y,14,0,Math.PI*2);
+        pvpCtx.fillStyle='#0a0a0a';
+        pvpCtx.shadowBlur=18;
+        pvpCtx.shadowColor='rgba(0,0,0,0.9)';
         pvpCtx.fill();
         pvpCtx.shadowBlur=0;
+        // white dot on ball
+        pvpCtx.beginPath();
+        pvpCtx.arc(pvpBall.x-4,pvpBall.y-4,4,0,Math.PI*2);
+        pvpCtx.fillStyle='rgba(255,255,255,0.5)';
+        pvpCtx.fill();
     }
 }
 
@@ -1568,32 +1575,82 @@ function pvpDropBall(){
     if(pvpState!=='waiting')return;
     pvpState='dropping';
     const winner=pvpDetermineWinner();
-    const s=pvpSize,cx=s/2,cy=s/2,R=s/2-14;
+    const w=pvpCW,h=pvpCH;
     const winnerIdx=pvpPlayers.indexOf(winner);
+    
+    // Calculate winner's section center angle
+    // Pie starts at -180deg (pointing left)
     let cum=0;
-    for(let i=0;i<winnerIdx;i++){cum+=pvpPlayers[i].bet/pvpPool*Math.PI*2;}
-    cum+=pvpPlayers[winnerIdx].bet/pvpPool*Math.PI;
-    const targetAngle=-Math.PI/2+cum;
-    const targetX=cx+Math.cos(targetAngle)*(R-20);
-    const targetY=cy+Math.sin(targetAngle)*(R-20);
-    pvpBall={x:cx,y:cy-s*0.35,active:true};
-    let t=0;
-    const totalFrames=80;
+    for(let i=0;i<winnerIdx;i++){cum+=pvpPlayers[i].bet/pvpPool;}
+    cum+=pvpPlayers[winnerIdx].bet/pvpPool/2;
+    const winnerAngle = -Math.PI + cum*Math.PI*2;
+    
+    // Ball starts at top center
+    const startX = w/2;
+    const startY = -20;
+    
+    // Ball target: somewhere in the winner's section near the bottom of visible area
+    // At angle winnerAngle, at distance R such that y = h-40
+    // cy = h, so we need cy - y = 40 → distance along the vertical
+    // target at (cx + cos(angle)*R', h-40)
+    // We need to find R' such that the point is at y = h-40
+    // y - cy = -40, so sin(angle)*R' = -40 → R' = -40/sin(angle)
+    // This breaks for angles near 0 or π. Let's instead pick a horizontal distance.
+    
+    // Simpler: pick target based on the winner's angle, place at bottom of arena
+    // Let angle be winnerAngle, targetX = cx + cos(winnerAngle) * (w*0.4)
+    // targetY = h - 40
+    
+    // Actually, since sections radiate from bottom-center, each section occupies
+    // an angular range. To be visually inside the winner's section, at y = h-40
+    // (which is far from center), we can just use the angle.
+    // At y=h-40, cy-y = 40. So if we take a point at angle `winnerAngle`,
+    // its y offset from center is sin(winnerAngle) * R'. We need sin * R' = -40.
+    // But if angle is such that sin is near 0, this is impossible.
+    
+    // Alternative: pick a horizontal x-coordinate. At y=h-40, distance from cy is 40.
+    // tan(angle) = (x - cx)/(y - cy) = (x-cx)/(-40)
+    // So x = cx - 40*tan(winnerAngle)
+    
+    let targetX, targetY;
+    const dy = -40; // 40 above center
+    const sinA = Math.sin(winnerAngle);
+    const cosA = Math.cos(winnerAngle);
+    
+    if(Math.abs(sinA) > 0.1){
+        const R2 = dy / sinA; // negative when sin>0
+        targetX = w/2 + cosA * R2;
+        targetY = h + dy;
+    } else {
+        // angle is nearly horizontal, use a large R
+        targetX = w/2 + (cosA>0 ? w : -w);
+        targetY = h + dy;
+    }
+    
+    // Clamp
+    targetX = Math.max(30, Math.min(w-30, targetX));
+    targetY = h - 40;
+    
+    pvpBall = {x:startX, y:startY, active:true};
+    let t = 0;
+    const totalFrames = 70;
+    const startX0 = startX, startY0 = startY;
+    
     function anim(){
         t++;
-        const prog=t/totalFrames;
-        const e=1-Math.pow(1-prog,2.5);
-        const startX=cx,startY=cy-s*0.35;
-        pvpBall.x=startX+(targetX-startX)*e;
-        pvpBall.y=startY+(targetY-startY)*e;
+        const prog = t/totalFrames;
+        // ease with slight bounce
+        const e = 1 - Math.pow(1-prog, 2.2);
+        pvpBall.x = startX0 + (targetX - startX0) * e;
+        pvpBall.y = startY0 + (targetY - startY0) * e;
         pvpDraw();
-        if(t<totalFrames){
-            pvpAnimFrame=requestAnimationFrame(anim);
-        }else{
+        if(t < totalFrames){
+            pvpAnimFrame = requestAnimationFrame(anim);
+        } else {
             pvpFinishSpin(winner);
         }
     }
-    pvpAnimFrame=requestAnimationFrame(anim);
+    pvpAnimFrame = requestAnimationFrame(anim);
 }
 
 function pvpFinishSpin(winner){
