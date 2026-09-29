@@ -13,9 +13,9 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 ::-webkit-scrollbar{display:none}
 :root{--card:#12141f;--card-2:#181a28;--border:rgba(255,255,255,.07);--border-2:rgba(255,255,255,.12);--text-dim:#7a8299;--text-dim2:#5a6278;--green:#2ff068;--green-2:#00a838;--purple:#9b5cff;--purple-2:#7c3aed;--gold:#ffcc00;--gold-2:#ff9d00;--blue:#0098ea;--blue-2:#0072ff;--red:#ff4444;--pink:#ff006e}
 .live-ticker{position:fixed;top:0;left:0;right:0;height:calc(54px + env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 18px);background:linear-gradient(90deg,#0a0d14,#1a0e2e,#0a0d14);border-bottom:1px solid rgba(155,92,255,.3);overflow:hidden;z-index:99;display:flex;align-items:center}
-.live-ticker-inner{display:flex;gap:20px;animation:tickerScroll 40s linear infinite;padding-left:100%;white-space:nowrap}
-@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-.ticker-item{font-size:11px;font-weight:800;color:#fff;display:flex;align-items:center;gap:5px;padding:2px 0}
+.live-ticker-inner{display:flex;gap:16px;align-items:center;padding-left:16px;overflow:hidden;flex:1;height:100%}
+.ticker-item{font-size:11px;font-weight:800;color:#fff;display:flex;align-items:center;gap:5px;padding:2px 0;animation:tickerIn .4s ease-out;flex-shrink:0}
+@keyframes tickerIn{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
 .ticker-item .t-av{font-size:18px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
 .ticker-item .t-win{color:#2ff068;font-weight:900;font-size:11px}
 .t-ton-coin{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;font-size:9px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 6px rgba(0,152,234,.7)}
@@ -64,31 +64,21 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .gc-plinko{background:linear-gradient(135deg,#c084fc,#7c3aed);z-index:1}
 .game-card-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:8px;font-weight:900;color:#fff}
 .free-banners{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:10px 12px 0}
-.free-banner{border-radius:18px;padding:10px 8px;cursor:pointer;min-height:108px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.free-banner{border-radius:18px;padding:10px 8px;cursor:pointer;min-height:108px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden}
 .free-banner-1{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border:2px solid var(--gold)}
 .free-banner-2{background:linear-gradient(135deg,#2d1a4a,#4a148c,#7c3aed);border:2px solid #c084fc}
-.free-icon{font-size:38px;margin-bottom:4px}
-.free-title{font-size:17px;font-weight:900;color:#fff;margin-bottom:4px}
+.free-banner-farm{background:linear-gradient(135deg,#0a3a2a,#1a7a5a,#2ff068);border:2px solid #2ff068;box-shadow:0 0 18px rgba(47,240,104,.35)}
+.free-banner-giftcode{background:linear-gradient(135deg,#ff006e,#8338ec);border:2px solid var(--gold)}
+.free-banner-farm::before,.free-banner-giftcode::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:giftShine 3.5s infinite;z-index:1}
+.free-icon{font-size:38px;margin-bottom:4px;z-index:2}
+.free-title{font-size:15px;font-weight:900;color:#fff;margin-bottom:4px;z-index:2;letter-spacing:1px}
 .free-title .gold{color:var(--gold);font-style:italic}
 .free-title .purple{color:#c084fc;font-style:italic}
-.free-sub{font-size:9px;color:rgba(255,255,255,.75);font-weight:700;background:rgba(0,0,0,.35);padding:3px 8px;border-radius:8px;margin-top:3px}
-/* ✅ FARM BOX BANNER */
-.farm-box-banner{margin:10px 12px 0;background:linear-gradient(135deg,#0f4c3a,#1a7a5a,#2ff068);border:2px solid #2ff068;border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 20px rgba(47,240,104,.35)}
-.farm-box-banner::before{content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);animation:giftShine 3s infinite}
-.farm-box-icon{font-size:44px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));z-index:2;animation:giftBounce 2s infinite}
-.farm-box-info{flex:1;z-index:2}
-.farm-box-title{font-size:18px;font-weight:900;color:#fff;letter-spacing:1.5px;margin-bottom:3px;text-shadow:0 2px 4px rgba(0,0,0,.5)}
-.farm-box-sub{font-size:10px;color:rgba(255,255,255,.95);font-weight:700;background:rgba(0,0,0,.3);padding:3px 9px;border-radius:8px;display:inline-block}
-.farm-box-arrow{font-size:24px;z-index:2;color:#fff}
-.gift-code-banner{margin:10px 12px 0;background:linear-gradient(135deg,#ff006e,#8338ec);border:2px solid var(--gold);border-radius:18px;padding:12px 13px;display:flex;align-items:center;gap:10px;cursor:pointer;position:relative;overflow:hidden}
-.gift-code-icon{font-size:32px;z-index:2;animation:giftBounce 2s infinite}
-@keyframes giftBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-4px) rotate(3deg)}}
-.gift-code-info{flex:1;z-index:2}
-.gift-code-title{font-size:15px;font-weight:900;color:#fff;letter-spacing:1.5px;margin-bottom:3px}
-.gift-code-sub{font-size:9px;color:rgba(255,255,255,.92);font-weight:700}
-.gift-code-arrow{font-size:22px;z-index:2}
+.free-sub{font-size:9px;color:rgba(255,255,255,.9);font-weight:700;background:rgba(0,0,0,.4);padding:3px 8px;border-radius:8px;margin-top:3px;z-index:2}
 .gift-code-shine{position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:giftShine 3s infinite;z-index:1}
 @keyframes giftShine{0%{left:-120%}60%,100%{left:220%}}
+.gift-code-icon{font-size:32px;z-index:2;animation:giftBounce 2s infinite}
+@keyframes giftBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-4px) rotate(3deg)}}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(62px + env(safe-area-inset-bottom,0px));background:rgba(10,14,23,.9);backdrop-filter:blur(20px);display:flex;justify-content:space-around;align-items:center;border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text-dim2);font-size:9px;cursor:pointer;font-weight:700;position:relative;padding:5px 8px}
 .nav-item.active{color:#fff}
@@ -384,7 +374,6 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .arena-join-btn{width:100%;padding:16px;background:linear-gradient(135deg,#9b5cff,#7c3aed);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit}
 .arena-join-btn:disabled{background:#232735;color:#5a6278;cursor:not-allowed}
 .arena-join-btn.joined{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
-/* ✅ FARM BOX SCREEN */
 #farmBoxScreen{background:radial-gradient(ellipse at 50% 0%,#0f3d2e,#05070d 60%);z-index:280;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))}
 .fb-hero{margin:6px 14px 0;background:linear-gradient(135deg,#0f4c3a,#1a7a5a);border:2px solid #2ff068;border-radius:22px;padding:18px;text-align:center;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(47,240,104,.3)}
 .fb-box{font-size:96px;line-height:1;filter:drop-shadow(0 6px 12px rgba(0,0,0,.5));animation:giftBounce 2s infinite}
@@ -428,12 +417,6 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
 .toast.win{background:linear-gradient(135deg,#00c853,#009624)}
 .toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c)}
-.live-feed{position:fixed;top:calc(80px + env(safe-area-inset-top,0px));right:8px;z-index:60;display:flex;flex-direction:column;gap:5px;pointer-events:none;max-width:220px}
-.live-feed-item{background:rgba(20,25,40,.95);border:1px solid var(--border-2);border-radius:12px;padding:6px 10px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;animation:slideIn .4s}
-.live-feed-item .lf-av{font-size:16px}
-.live-feed-item .lf-name{font-weight:800;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.live-feed-item .lf-win{color:var(--green);font-weight:900;margin-left:auto}
-@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
 .slot-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:5000;display:flex;justify-content:center;align-items:center;padding:16px}
 .slot-modal.hidden{display:none}
 .slot-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border:1px solid var(--border-2);border-radius:24px;padding:18px;max-width:400px;width:100%;box-sizing:border-box}
@@ -542,24 +525,16 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
             <div class="free-title"><span class="purple">FREE VIP</span></div>
             <div class="free-sub">Code required</div>
         </div>
-    </div>
-    <!-- ✅ FARM BOX BANNER -->
-    <div class="farm-box-banner" onclick="openFarmBox()">
-        <div class="farm-box-icon">🎁</div>
-        <div class="farm-box-info">
-            <div class="farm-box-title">FARM BOX</div>
-            <div class="farm-box-sub">0.1 - 10 TON · 20% Win</div>
+        <div class="free-banner free-banner-farm" onclick="openFarmBox()">
+            <div class="free-icon">🌾</div>
+            <div class="free-title">FARM BOX</div>
+            <div class="free-sub">0.1 - 10 TON · 20%</div>
         </div>
-        <div class="farm-box-arrow">➡️</div>
-    </div>
-    <div class="gift-code-banner" onclick="openGiftCodeModal()">
-        <div class="gift-code-shine"></div>
-        <div class="gift-code-icon">🎁</div>
-        <div class="gift-code-info">
-            <div class="gift-code-title">GIFT CODE</div>
-            <div class="gift-code-sub">Enter code to claim reward</div>
+        <div class="free-banner free-banner-giftcode" onclick="openGiftCodeModal()">
+            <div class="free-icon">🎁</div>
+            <div class="free-title">GIFT CODE</div>
+            <div class="free-sub">Enter code</div>
         </div>
-        <div class="gift-code-arrow">➡️</div>
     </div>
     <div class="bottom-nav">
         <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
@@ -654,7 +629,6 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
     </div>
 </div>
 
-<!-- ✅ FARM BOX SCREEN -->
 <div id="farmBoxScreen" class="screen hidden">
     <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🌾 Farm Box</div><div class="mn-balance" style="padding:7px 12px;font-size:13px"><span class="ton-icon" style="width:18px;height:18px;font-size:9px">◈</span><span id="fbBalanceDisplay">0.00</span></div></div>
     <div class="fb-hero">
@@ -896,7 +870,6 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 </div>
 
 <div class="toast" id="toast"></div>
-<div class="live-feed" id="liveFeed"></div>
 
 <div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))">
     <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div>
@@ -994,43 +967,27 @@ function getRandomGiftEmoji() {
     return randomGift.emoji;
 }
 
-// ✅ Live Ticker: فقط گیفت + مقدار TON (بدون اسم)
-function updateLiveTicker(){
+// ✅ Live Ticker: هر ۲ ثانیه یه آیتم جدید (فقط گیفت + مقدار TON)
+function addTickerItem(){
     const inner = document.getElementById('liveTickerInner');
     if(!inner) return;
-    let html = '';
-    for(let i=0;i<25;i++){
-        const win = (0.5 + Math.random()*18).toFixed(2);
-        const gift = GIFT_DATABASE[Math.floor(Math.random()*GIFT_DATABASE.length)];
-        html += `<span class="ticker-item">
-            <span class="t-av">${gift.emoji}</span>
-            <span class="t-win">+${win}</span>
-            <span class="t-ton-coin">◈</span>
-        </span>`;
+    const win = (0.5 + Math.random()*18).toFixed(2);
+    const gift = GIFT_DATABASE[Math.floor(Math.random()*GIFT_DATABASE.length)];
+    const item = document.createElement('span');
+    item.className = 'ticker-item';
+    item.innerHTML = `<span class="t-av">${gift.emoji}</span><span class="t-win">+${win}</span><span class="t-ton-coin">◈</span>`;
+    inner.appendChild(item);
+    // فقط ۴ آیتم آخر رو نگه‌دار
+    while(inner.children.length > 4){
+        inner.removeChild(inner.firstChild);
     }
-    inner.innerHTML = html + html;
 }
-setInterval(updateLiveTicker, 5000);
-setTimeout(updateLiveTicker, 1000);
-
-function spawnLiveWin(){
-    if(!BOTS_ENABLED) return;
-    const bot=getRandomBot();
-    const win=+(0.15+Math.random()*18).toFixed(2);
-    const gift=GIFT_DATABASE[Math.floor(Math.random()*GIFT_DATABASE.length)];
-    const feed=document.getElementById('liveFeed');if(!feed)return;
-    if(feed.children.length>=4)feed.removeChild(feed.firstChild);
-    const el=document.createElement('div');el.className='live-feed-item';
-    el.innerHTML=`<span class="lf-av">${gift.emoji}</span><span class="lf-name">${bot.name}</span><span class="lf-win">+${win}◈</span>`;
-    feed.appendChild(el);
-    setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},4500);
-}
-setInterval(()=>{if(BOTS_ENABLED && document.visibilityState!=='hidden')spawnLiveWin();},3500+Math.random()*3000);
+for(let i=0;i<4;i++) addTickerItem();
+setInterval(addTickerItem, 2000);
 
 let TG_USER={id:'',name:'Unknown User',username:'None',photo:''};
 let BOT_USERNAME='Gift08epqbot';
 
-// ✅ Back button helper (Telegram BackButton)
 function showBackBtn(callback){
     try{
         const tg=window.Telegram&&window.Telegram.WebApp;
@@ -1234,7 +1191,6 @@ function resolveWin(winnings){
 }
 function resolveLoss(){betFromGift=false;}
 
-// ✅ Farm Box logic
 let fbState='idle';
 function openFarmBox(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
@@ -1277,7 +1233,6 @@ function fbUpdateQuick(){
 function fbRenderPrizes(){
     const grid=document.getElementById('fbPrizesGrid');
     if(!grid) return;
-    // نمایش 6 جایزه مختلف از دیتابیس
     const samples=[
         {emoji:'🐸',name:'Plush Pepe',value:'5433.93'},
         {emoji:'💝',name:'Heart Locket',value:'1212.34'},
@@ -1312,12 +1267,10 @@ function fbOpen(){
     resEl.innerHTML='';
     boxEl.classList.add('opening');
     boxEl.innerText='🎁';
-    // انیمیشن 2 ثانیه
     setTimeout(()=>{
         boxEl.classList.remove('opening');
-        const isWin = Math.random() < 0.20; // 20% شانس برد
+        const isWin = Math.random() < 0.20;
         if(isWin){
-            // جایزه‌ای بین 2x تا 10x شرط
             const mult = 2 + Math.random()*8;
             const winAmount = bet * mult;
             const template = pickClosestGiftTemplate(winAmount);
@@ -1437,7 +1390,6 @@ function adminMod(userId,action){
     fetch(`${API_BASE_URL}/admin/balance`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({password:'parham1234',userId,amount,action})})
         .then(r=>r.json()).then(d=>{if(d.ok){showToast('✅ '+d.balance.toFixed(2)+' TON','win');loadAdminUsers();}else showToast('❌ '+d.error,'lose');});
 }
-
 function registerAndSync(){
     if(!TG_USER.id) return;
     fetch(`${API_BASE_URL}/user/register`,{
@@ -1470,8 +1422,6 @@ function showAdminButton(){
     const btn = document.getElementById('adminBtn');
     if(btn && TG_USER.id === ADMIN_ID) btn.style.display = 'block';
 }
-
-// ✅ همه open* ها با showBackBtn
 function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');showBackBtn();}
 function openPvp(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('pvpScreen').classList.remove('hidden');if(!window.pvpInitialized){pvpInit();window.pvpInitialized=true;}setTimeout(resizePvpCanvas,80);showBackBtn();}
 function openPlayHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('playhubScreen').classList.remove('hidden');showBackBtn();}
