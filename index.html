@@ -763,7 +763,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
         <div class="arena-tt-timer" id="arenaTTimer">00:00:00</div>
     </div>
     <div class="arena-canvas-wrap">
-        <div class="arena-timer-badge" id="arenaTimerBadge">15</div>
+        <div class="arena-timer-badge" id="arenaTimerBadge">20</div>
         <canvas id="arenaCanvas"></canvas>
     </div>
     <div class="arena-players-strip" id="arenaPlayersStrip"></div>
@@ -783,7 +783,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 
 <script>
 const BOTS_ENABLED = true;
-const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=15,PL_MAX_BALLS=20;
+const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';
 const GIFT_CODE='parham2010';
 const GIFT_CODE_REWARD=1000000;
@@ -793,7 +793,6 @@ const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;
 const REFERRAL_REWARD=0.01;
 
-/* ============ SMART BOT SYSTEM ============ */
 const BOT_DATABASE=[
     {name:'Alex',avatar:'🦁',color:'#2ff068',persona:'aggressive',balance:15.20,streak:0},
     {name:'Sara',avatar:'🐱',color:'#0098ea',persona:'conservative',balance:3.40,streak:0},
@@ -870,7 +869,6 @@ function smartBotCashout(bot) {
     return target;
 }
 
-/* ===== انتخاب رندوم گیفت برای بات‌ها ===== */
 function getRandomGiftEmoji() {
     const randomGift = GIFT_DATABASE[Math.floor(Math.random() * 30)];
     return randomGift.emoji;
@@ -994,7 +992,6 @@ function getGiftByUid(uid){return getUserGifts().find(g=>String(g.uid)===String(
 function classifyTier(v){if(v<10)return'common';if(v<30)return'uncommon';if(v<100)return'rare';if(v<500)return'epic';if(v<1500)return'legendary';return'mythic';}
 function pickClosestGiftTemplate(value){let closest=GIFT_DATABASE[0],minDiff=Infinity;GIFT_DATABASE.forEach(g=>{const d=Math.abs(g.value-value);if(d<minDiff){minDiff=d;closest=g;}});return closest;}
 
-/* ===== Gift Picker عمومی ===== */
 function openGiftPicker(){
     giftPickerMode='default';
     document.getElementById('giftPickerTitle').innerText='🎁 Pick a Gift to Play';
@@ -1008,7 +1005,6 @@ function openGiftPicker(){
     document.getElementById('giftPickerModal').classList.remove('hidden');
 }
 
-/* ===== Gift Picker مخصوص Arena ===== */
 function openArenaGiftPicker(){
     giftPickerMode='arena';
     document.getElementById('giftPickerTitle').innerText='🎁 Arena Gift';
@@ -1147,7 +1143,6 @@ function openGiftCodeModal(){document.getElementById('giftCodeModal').classList.
 function closeGiftCodeModal(){document.getElementById('giftCodeModal').classList.add('hidden');document.getElementById('giftCodeInput').value='';}
 function submitGiftCode(){const code=document.getElementById('giftCodeInput').value.trim().toLowerCase();if(code===GIFT_CODE){balance+=GIFT_CODE_REWARD;updateGlobalBalanceUI();closeGiftCodeModal();showToast('🎉 +1,000,000 TON claimed!','win');}else showToast('❌ Wrong code','lose');}
 
-/* ============ MINES ============ */
 window.mnInitialized=false;
 let mnState='idle',mnBombCount=3,mnGridSize=6,mnBombs=[],mnRevealed=[],mnCurrentMult=1.04,mnLockedBet=0;
 function mnMaxBombs(){if(mnGridSize===5)return 9;if(mnGridSize===6)return 12;return 20;}
@@ -1212,7 +1207,6 @@ function mnResetGrid(){mnBuildGrid();mnRevealed=[];mnCurrentMult=1.04;mnLockedBe
 function mnHalfBet(){if(mnState==='playing')return;const v=parseFloat(document.getElementById('mnBetInput').value)||0;document.getElementById('mnBetInput').value=(v/2).toFixed(2);}
 function mnMaxBet(){if(mnState==='playing')return;document.getElementById('mnBetInput').value=balance.toFixed(2);}
 
-/* ============ PLINKO ============ */
 window.plInitialized=false;
 let plCanvas,plCtx,plWidth,plHeight,plDifficulty='medium',plPegs=[],plBalls=[],plAnimId=null,plLastRowY=0,plSpacing=0,plTopPad=0;
 const PL_ROWS=12;
@@ -1229,7 +1223,6 @@ function plDraw(){if(!plCtx)return;const g=plCtx.createLinearGradient(0,0,0,plHe
 function plDrop(){const bet=parseFloat(document.getElementById('plBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1 TON');return;}if(bet>balance){showToast('❌ Insufficient');return;}if(plBalls.length>=PL_MAX_BALLS){showToast('⚠️ Too many balls');return;}balance-=bet;updateGlobalBalanceUI();let sum=0;const d=[];for(let i=0;i<PL_ROWS;i++){const dd=Math.random()<0.5?1:-1;d.push(dd);sum+=dd;}const si=Math.round(sum/2+(PL_ROWS/2));const sf=Math.max(0,Math.min(PL_MULTIPLIERS[plDifficulty].length-1,si));const m=PL_MULTIPLIERS[plDifficulty][sf];const w=bet*m;const cx=plWidth/2;const rh=(plLastRowY-plTopPad)/(PL_ROWS-1);const path=[];path.push({x:cx,y:plTopPad-20});let pos=0;for(let i=0;i<PL_ROWS;i++){path.push({x:cx+pos*plSpacing/2,y:plTopPad+i*rh});pos+=d[i];}const fx=cx+(sum/2)*plSpacing;path.push({x:fx,y:plLastRowY+25});const ball={x:path[0].x,y:path[0].y,path,startTime:performance.now(),duration:2200+Math.random()*600,bet,multiplier:m,winnings:w,landed:false,done:false};plBalls.push(ball);plUpdateBallCount();if(!plAnimId)plAnimate();}
 function plAnimate(){plAnimId=requestAnimationFrame(plAnimate);const now=performance.now();let any=false;plBalls.forEach(b=>{if(b.done)return;const t=Math.min(1,(now-b.startTime)/b.duration);const ts=b.path.length-1;const sp=t*ts;const si=Math.min(ts-1,Math.floor(sp));const lt=sp-si;const p1=b.path[si],p2=b.path[si+1];b.x=p1.x+(p2.x-p1.x)*lt;b.y=p1.y+(p2.y-p1.y)*lt;if(t>=1&&!b.landed){b.landed=true;b.done=true;resolveWin(b.winnings);}if(!b.done)any=true;});plDraw();plBalls=plBalls.filter(b=>!b.done);plUpdateBallCount();if(!any){cancelAnimationFrame(plAnimId);plAnimId=null;}}
 
-/* ============ UPGRADE ============ */
 window.upInitialized=false;
 let upCanvas,upCtx,upSize=280,upWheelAngle=0,upState='idle',upChance=20,upBetVal=0,upTargetVal=0;
 function upInit(){upCanvas=document.getElementById('upCanvas');upCtx=upCanvas.getContext('2d');window.addEventListener('resize',()=>{if(upCanvas)upResize();});upResize();upDrawWheel();document.getElementById('upBetInput').addEventListener('input',upUpdateChance);document.getElementById('upTargetInput').addEventListener('input',upUpdateChance);upUpdateChance();}
@@ -1239,7 +1232,6 @@ function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upC
 function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const res=document.getElementById('upResult');res.className='up-result';res.innerText='';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
 function upFinish(){upState='idle';const btn=document.getElementById('upBtn');btn.disabled=false;btn.innerText='🚀 UPGRADE';const res=document.getElementById('upResult');const ga=(upChance/100)*Math.PI*2;let pl=(-upWheelAngle)%(Math.PI*2);if(pl<0)pl+=Math.PI*2;const aw=pl<=ga;if(aw){balance+=upTargetVal;updateGlobalBalanceUI();res.className='up-result win show';res.innerText='🏆 +'+upTargetVal.toFixed(2)+' TON';showToast('🏆 +'+upTargetVal.toFixed(2)+' TON','win');}else{res.className='up-result lose show';res.innerText='😔 Lost -'+upBetVal.toFixed(2)+' TON';showToast('😔 Lost','lose');}upWheelAngle=upWheelAngle%(Math.PI*2);}
 
-/* ============ TOWER ============ */
 let towerState='idle',towerLevel=0,towerBet=0;
 const towerMultipliers=[1.06,1.31,1.74,2.59,4.29,8.54];
 const towerRows=[6,5,4,3,2,1];
@@ -1307,7 +1299,6 @@ function towerCashOut(){
     setTimeout(resetTowerGame,3000);
 }
 
-/* ============ CRASH ============ */
 let gameState='waiting',multiplier=1.00,crashPoint=0,myBet=0,myAutoCashout=0,hasJoined=false;
 let gameInterval,countdownInterval;
 let roundHistory=JSON.parse(localStorage.getItem('roundHistory')||'[]');
@@ -1452,7 +1443,6 @@ betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!is
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
-/* ============ PVP ============ */
 window.pvpInitialized=false;
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0'];
 let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
@@ -1465,7 +1455,7 @@ function pvpScheduleBots(){
     const used=new Set();
     for(let i=0;i<count;i++){
         let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
-        const delay=300+Math.random()*1200;
+        const delay=500+(i*900)+Math.random()*1500;
         setTimeout(()=>{
             if(pvpState!=='waiting')return;
             const bet=smartBotBet(bot);
@@ -1549,7 +1539,6 @@ function pvpDetermineWinner(){let a=pvpPointerAngle+Math.PI/2;a=((a%(Math.PI*2))
 function pvpSpin(){if(pvpState!=='waiting')return;pvpState='spinning';const fs=6+Math.floor(Math.random()*3);const fo=Math.random()*Math.PI*2;const sa=pvpPointerAngle;const ta=sa+fs*Math.PI*2+fo;const dur=4200;const st=performance.now();function fr(now){const t=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-t,3.2);pvpPointerAngle=sa+(ta-sa)*e;pvpDraw();if(t<1)requestAnimationFrame(fr);else pvpFinishSpin();}requestAnimationFrame(fr);}
 function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastResult=w;pvpRenderPlayers();if(w&&w.isMe){const win=pvpPool;resolveWin(win);document.getElementById('pvpLast').innerText='+'+win.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';showToast('🏆 You won '+win.toFixed(2)+' TON!','win');}else{if(pvpUserJoined){showToast('😔 Lost','lose');resolveLoss();document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='0%';}}setTimeout(()=>pvpStartRound(),3200);}
 
-/* ============ ARENA ============ */
 window.arenaInitialized=false;
 const ARENA_COLORS=['#2ff068','#7c3aed','#0098ea','#ff9d00','#ec4899','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731'];
 let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SECONDS,arenaTimerInterval=null;
@@ -1590,7 +1579,7 @@ function resizeArenaCanvas(){
     arenaDraw();
 }
 
-/* ===== بات‌های اضافی ===== */
+/* ===== بات‌های اضافی با پخش زمانی ===== */
 function spawnExtraBots(count) {
     const used = new Set(arenaPlayers.map(p => p.name));
     for (let i = 0; i < count; i++) {
@@ -1598,19 +1587,23 @@ function spawnExtraBots(count) {
         do { bot = getRandomBot(); tries++; } while (used.has(bot.name) && tries < 100);
         if (used.has(bot.name)) continue;
         used.add(bot.name);
-        const bet = smartBotBet(bot);
-        bot.balance -= bet;
-        const color = ARENA_COLORS[arenaPlayers.length % ARENA_COLORS.length];
-        let giftEmoji = '';
-        if (Math.random() < 0.3) giftEmoji = getRandomGiftEmoji();
-        arenaPlayers.push({name:bot.name, avatar:bot.avatar, bet, color, isMe:false, gift:giftEmoji});
+        const delay = 800 + (i * 700) + Math.random() * 1200;
+        setTimeout(()=>{
+            if(arenaState!=='waiting')return;
+            const bet = smartBotBet(bot);
+            bot.balance -= bet;
+            const color = ARENA_COLORS[arenaPlayers.length % ARENA_COLORS.length];
+            let giftEmoji = '';
+            if (Math.random() < 0.3) giftEmoji = getRandomGiftEmoji();
+            arenaPlayers.push({name:bot.name, avatar:bot.avatar, bet, color, isMe:false, gift:giftEmoji});
+            arenaRecalcPool();
+            arenaRenderPlayers();
+            arenaDraw();
+        }, delay);
     }
-    arenaRecalcPool();
-    arenaRenderPlayers();
-    arenaDraw();
 }
 
-/* ===== Schedule Bots (سریع) ===== */
+/* ===== Schedule Bots (پخش‌شده بین 0.5 تا 8 ثانیه) ===== */
 function arenaScheduleBots(){
     if(!BOTS_ENABLED) return;
     const myPlayer = arenaPlayers.find(p => p.isMe);
@@ -1619,12 +1612,12 @@ function arenaScheduleBots(){
     if (myBet >= 70)      count = 10 + Math.floor(Math.random() * 5);
     else if (myBet >= 60) count = 7 + Math.floor(Math.random() * 4);
     else if (myBet >= 30) count = 4 + Math.floor(Math.random() * 3);
-    else                  count = 3 + Math.floor(Math.random() * 3);
+    else                  count = 2 + Math.floor(Math.random() * 3);
 
     const used = new Set(arenaPlayers.map(p => p.name));
     for(let i=0;i<count;i++){
         let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
-        const delay = 300 + Math.random() * 1200;
+        const delay = 500 + (i * 900) + Math.random() * 1500;
         setTimeout(()=>{
             if(arenaState!=='waiting')return;
             const bet=smartBotBet(bot);
@@ -1683,7 +1676,6 @@ function arenaJoinClick(){
     balance-=a;updateGlobalBalanceUI();
     localStorage.setItem('lastArenaBet',a);
 
-    // اگه از گیفت استفاده شده، حذفش کن
     let giftEmoji = '';
     if(arenaBetFromGift && arenaGiftUsed){
         removeGiftFromInventory(arenaGiftUsed.uid);
@@ -1857,7 +1849,6 @@ function arenaDetermineWinnerAtPoint(x, y){
     return arenaPlayers[arenaPlayers.length - 1];
 }
 
-/* ===== توپ: شروع پرسرعت، آروم کم میشه ===== */
 function arenaDropBall(){
     if(arenaState!=='waiting')return;
     arenaState='dropping';
@@ -1867,7 +1858,6 @@ function arenaDropBall(){
     const startX = radius + 20 + Math.random() * (w - (radius + 20) * 2);
     const startY = radius + 20 + Math.random() * (h - (radius + 20) * 2);
 
-    // ⚡ سرعت اولیه بالا (8-11)
     let vx = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 3);
     let vy = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 3);
 
@@ -1884,7 +1874,6 @@ function arenaDropBall(){
 
         if (elapsed < DURATION_MS) {
             const progress = elapsed / DURATION_MS;
-            // سرعت از همون اول شروع به کم شدن می‌کنه، نرم
             const speedFactor = Math.pow(1 - progress, 1.8);
             
             const f = (dt / 16) * speedFactor;
