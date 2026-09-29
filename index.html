@@ -285,6 +285,48 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .btn-bet{background:linear-gradient(135deg,#1e90ff,#0056b3)}
 .btn-cashout{background:linear-gradient(135deg,#00c853,#009624)}
 
+/* ============ PVP ============ */
+#pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
+.pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px;font-family:inherit}
+.pvp-balance-pill{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-2);padding:8px 12px;border-radius:24px}
+.pvp-balance-pill .ton-icon{width:22px;height:22px;font-size:12px}
+.pvp-balance-pill .val{font-weight:800;font-size:15px}
+.pvp-stats{display:flex;gap:8px;padding:4px 16px 12px}
+.stat-block{flex:1;text-align:center;padding:10px 6px}
+.stat-block+.stat-block{border-left:1px solid var(--border-2)}
+.stat-label{font-size:11px;color:var(--text-dim);margin-bottom:6px}
+.stat-value-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.stat-value{font-size:15px;font-weight:800;color:#0098ea}
+.stat-pct{font-size:12px;color:var(--text-dim);text-align:right}
+.pvp-wheel-wrap{position:relative;flex:1;min-height:340px;display:flex;justify-content:center;align-items:center;padding:8px 0}
+#pvpCanvas{display:block}
+.pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;width:140px}
+.pvp-timer{background:var(--card);border:1px solid var(--border-2);color:#fff;font-size:20px;font-weight:800;padding:4px 14px;border-radius:14px;display:inline-block;margin-bottom:10px}
+.pvp-pool-label{font-size:10px;color:var(--text-dim);letter-spacing:1.5px;margin-bottom:4px}
+.pvp-pool{display:flex;justify-content:center;align-items:center;gap:5px;font-size:18px;font-weight:900;color:#fff}
+.pvp-pool .ton-icon{width:18px;height:18px;font-size:10px}
+.pvp-game-num{font-size:10px;color:var(--text-dim2);margin-top:6px}
+.pvp-players-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto}
+.pvp-pcard{min-width:96px;padding:14px 10px;border-radius:16px;background:linear-gradient(180deg,var(--card) 0%,#14161f 100%);border:1px solid var(--border-2);text-align:center;flex-shrink:0;position:relative}
+.pvp-pcard.isMe{border-color:var(--gold)}
+.pvp-pcard.winner{border-color:var(--green);transform:scale(1.05)}
+.pvp-pcard-top{position:absolute;top:-1px;left:14px;right:14px;height:3px;border-radius:0 0 4px 4px}
+.pvp-pav{width:46px;height:46px;border-radius:50%;background:#0f1119;border:2px solid var(--border-2);display:flex;justify-content:center;align-items:center;font-size:22px;margin:0 auto 8px}
+.pvp-pname{font-size:11px;font-weight:800;color:#fff;margin-bottom:4px}
+.pvp-ppct{font-size:13px;font-weight:900;color:var(--green)}
+.pvp-pbet{font-size:10px;color:var(--text-dim);margin-top:2px}
+.pvp-join-wrap{padding:8px 16px 12px}
+.pvp-bet-label{font-size:12px;color:var(--text-dim);margin-bottom:6px;display:block}
+.pvp-bet-input-wrap{display:flex;align-items:center;gap:8px;margin-bottom:8px;background:var(--card);border:2px solid var(--border-2);border-radius:12px;padding:0 12px}
+.pvp-bet-input{flex:1;background:transparent;border:none;color:#fff;padding:12px 0;font-size:15px;font-weight:700;text-align:center;outline:none;min-width:0;font-family:inherit}
+.join-battle-btn{width:100%;padding:18px;font-size:17px;font-weight:900;border:none;border-radius:16px;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-family:inherit}
+.join-battle-btn:disabled{background:#2a3040;color:#6a6a7a;cursor:not-allowed}
+.join-battle-btn.joined{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
+.pvp-players-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--border-2)}
+.pvp-players-header span{font-size:13px;font-weight:700;color:#8a90a6}
+.pvp-players-count{background:var(--card);padding:4px 12px;border-radius:12px;font-size:12px!important}
+
 /* ============ ARENA ============ */
 #arenaScreen{background:#0a0b10;z-index:310;display:flex;flex-direction:column;overflow:hidden}
 .arena-topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;flex-shrink:0}
@@ -300,6 +342,9 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .arena-timer-badge.show{display:block}
 .arena-timer-badge.warn{border-color:#ff4444;color:#ff4444;animation:timerWarn 1s infinite}
 @keyframes timerWarn{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
+.arena-chat{position:absolute;left:8px;bottom:8px;max-width:65%;display:flex;flex-direction:column;gap:4px;pointer-events:none;z-index:20}
+.arena-chat-item{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:5px 10px;font-size:11px;font-weight:700;color:#fff;animation:chatIn .3s}
+@keyframes chatIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 .arena-players-strip{margin:10px 12px 0;flex-shrink:0;max-height:80px;overflow-y:auto}
 .arena-players-strip::-webkit-scrollbar{display:none}
 .arena-strip-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#161926;border:1px solid #232735;border-radius:12px;margin-bottom:6px;position:relative;overflow:hidden}
@@ -319,9 +364,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .arena-join-btn{width:100%;padding:16px;background:linear-gradient(135deg,#9b5cff,#7c3aed);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit}
 .arena-join-btn:disabled{background:#232735;color:#5a6278;cursor:not-allowed}
 .arena-join-btn.joined{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
-.arena-chat{position:absolute;left:8px;bottom:8px;max-width:60%;display:flex;flex-direction:column;gap:4px;pointer-events:none;z-index:20}
-.arena-chat-item{background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:5px 10px;font-size:11px;font-weight:700;color:#fff;animation:chatIn .3s}
-@keyframes chatIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border-2);color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;max-width:90vw}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
@@ -372,6 +414,18 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .deposit-wallet-info{background:var(--card-2);border:1px solid var(--border-2);border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--text-dim);word-break:break-all}
 .deposit-amount-input{width:100%;background:#0a0d14;border:1px solid var(--border-2);border-radius:10px;color:#fff;padding:10px;text-align:center;font-size:16px;font-weight:bold;outline:none;margin-bottom:6px;font-family:inherit}
 .deposit-min-hint{font-size:11px;color:var(--text-dim);margin-bottom:12px;font-weight:600}
+#giftPickerModal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:7000;display:flex;justify-content:center;align-items:center;padding:16px}
+#giftPickerModal.hidden{display:none}
+.gp-content{background:linear-gradient(180deg,var(--card),#0f1119);border:2px solid var(--gold);border-radius:24px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:85vh;display:flex;flex-direction:column}
+.gp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.gp-title{font-size:18px;font-weight:900;color:var(--gold)}
+.gp-close{background:var(--card-2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit}
+.gp-list{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px}
+.gp-item{background:var(--card-2);border:1px solid var(--border-2);border-radius:14px;padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;position:relative}
+.gp-item-val{position:absolute;top:6px;right:6px;background:#0a0d14;color:var(--green);padding:2px 6px;border-radius:6px;font-size:10px;font-weight:800}
+.gp-item-emoji{font-size:38px;margin:12px 0 4px}
+.gp-item-name{font-size:10px;font-weight:700;text-align:center;line-height:1.2}
+.gp-empty{text-align:center;padding:40px 10px;color:var(--text-dim);font-size:13px}
 .gift-bet-btn{background:linear-gradient(135deg,var(--gold),var(--gold-2));border:none;color:#0a0d14;padding:8px 12px;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
 </style>
 </head>
@@ -472,6 +526,13 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
         <div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div>
         <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
         <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
+    </div>
+</div>
+
+<div id="giftPickerModal" class="hidden">
+    <div class="gp-content">
+        <div class="gp-head"><div class="gp-title">🎁 Pick a Gift to Play</div><button class="gp-close" onclick="closeGiftPicker()">✕</button></div>
+        <div class="gp-list" id="giftPickerList"></div>
     </div>
 </div>
 
@@ -728,9 +789,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 <div class="live-feed" id="liveFeed"></div>
 
 <script>
-/* ============================================================
-   SMART BOT ENGINE
-   ============================================================ */
+const BOTS_ENABLED = true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=15,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';
 const GIFT_CODE='parham2010';
@@ -739,8 +798,9 @@ const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 const BOT_TOKEN='8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
 const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;
+const REFERRAL_REWARD=0.01;
 
-/* ============ BOT DATABASE با شخصیت ============ */
+/* ============ SMART BOT SYSTEM ============ */
 const BOT_DATABASE=[
     {name:'Alex',avatar:'🦁',color:'#2ff068',persona:'aggressive',balance:15.20,streak:0},
     {name:'Sara',avatar:'🐱',color:'#0098ea',persona:'conservative',balance:3.40,streak:0},
@@ -784,29 +844,26 @@ const BOT_DATABASE=[
     {name:'Amir',avatar:'🐪',color:'#f8c291',persona:'lucky',balance:15.40,streak:0}
 ];
 
-function getRandomBot(){
-    // فقط بات‌هایی که موجودی کافی دارن
-    const active = BOT_DATABASE.filter(b => b.balance > 0.15);
-    if (active.length === 0) return BOT_DATABASE[0];
-    return active[Math.floor(Math.random() * active.length)];
-}
-
-/* ============ BOT PERSONALITY MATRIX ============ */
 const BOT_PERSONAS = {
-    conservative: { betPct: 0.03, minCash: 1.1, maxCash: 1.6, joinChance: 0.55, chatRate: 0.10, leaveOnLose: 0.15 },
-    balanced:     { betPct: 0.05, minCash: 1.3, maxCash: 2.4, joinChance: 0.80, chatRate: 0.20, leaveOnLose: 0.08 },
-    aggressive:   { betPct: 0.10, minCash: 1.8, maxCash: 4.5, joinChance: 0.75, chatRate: 0.25, leaveOnLose: 0.05 },
-    whale:        { betPct: 0.15, minCash: 1.4, maxCash: 3.0, joinChance: 0.60, chatRate: 0.35, leaveOnLose: 0.03 },
-    lucky:        { betPct: 0.08, minCash: 2.0, maxCash: 6.0, joinChance: 0.85, chatRate: 0.30, leaveOnLose: 0.10 }
+    conservative: { betPct: 0.03, minCash: 1.1, maxCash: 1.6, joinChance: 0.55, chatRate: 0.10 },
+    balanced:     { betPct: 0.05, minCash: 1.3, maxCash: 2.4, joinChance: 0.80, chatRate: 0.20 },
+    aggressive:   { betPct: 0.10, minCash: 1.8, maxCash: 4.5, joinChance: 0.75, chatRate: 0.25 },
+    whale:        { betPct: 0.15, minCash: 1.4, maxCash: 3.0, joinChance: 0.60, chatRate: 0.35 },
+    lucky:        { betPct: 0.08, minCash: 2.0, maxCash: 6.0, joinChance: 0.85, chatRate: 0.30 }
 };
 
-/* ============ BOT CHAT ============ */
 const BOT_CHAT = {
-    join: ['بزن بریم! 🚀','موفق باشیم','ایول', 'بازی شروع شد', 'شانس بیار', 'منم هستم', 'پول بیار 🤑', 'کدوم می‌بره؟'],
+    join: ['بزن بریم! 🚀','موفق باشیم','ایول','بازی شروع شد','شانس بیار','منم هستم','پول بیار 🤑','کدوم می‌بره؟'],
     win:  ['ایول بردم! 🎉','خدا رو شکر','دست پُر 🤑','عالی بود','زدم تو هدف','آخ جون 🎯','بیا تو جیبم 💰'],
     lose: ['آخ سوخت 😭','باختم','دفعه بعد','حیف شد','شانس نبود','دلم گرفت','اوف'],
     hype: ['🔥🔥🔥','چه بازی‌ای!','همه پول من بود','بزن!','اینجا جای بزرگان 💪']
 };
+
+function getRandomBot(){
+    const active = BOT_DATABASE.filter(b => b.balance > 0.15);
+    if (active.length === 0) return BOT_DATABASE[0];
+    return active[Math.floor(Math.random() * active.length)];
+}
 
 function botSay(bot, type) {
     const pool = BOT_CHAT[type] || BOT_CHAT.hype;
@@ -818,77 +875,64 @@ function botSay(bot, type) {
     item.innerHTML = `<b>${bot.avatar} ${bot.name}:</b> ${msg}`;
     el.appendChild(item);
     setTimeout(() => item.remove(), 3000);
-    // حداکثر ۳ پیام روی صفحه
     while (el.children.length > 3) el.removeChild(el.firstChild);
 }
 
-/* ============ BOT BET LOGIC (هوشمند) ============ */
 function smartBotBet(bot) {
     const persona = BOT_PERSONAS[bot.persona] || BOT_PERSONAS.balanced;
     let base = Math.max(0.1, bot.balance * persona.betPct);
-    
-    // استریک تأثیرگذار: اگه ۲ بار باخت، محتاط‌تر می‌شه
     if (bot.streak <= -2) base *= 0.5;
-    // اگه ۲ بار برد، جسورتر می‌شه
     if (bot.streak >= 2) base *= 1.6;
-    
-    // نوسان انسانی
     base *= 0.8 + Math.random() * 0.4;
-    
     return Math.round(Math.max(0.1, Math.min(bot.balance * 0.3, base)) * 100) / 100;
 }
 
 function smartBotCashout(bot) {
     const persona = BOT_PERSONAS[bot.persona] || BOT_PERSONAS.balanced;
     let target = persona.minCash + Math.random() * (persona.maxCash - persona.minCash);
-    // اگه برد پشت سر هم داره، حریص‌تر می‌شه
     if (bot.streak >= 2) target *= 1.3;
-    // اگه باخت پشت سر هم داره، زودتر در می‌ره
     if (bot.streak <= -2) target *= 0.7;
     return target;
 }
 
-/* ============ LIVE FEED ============ */
 function spawnLiveWin(){
-    const bot = BOT_DATABASE[Math.floor(Math.random() * BOT_DATABASE.length)];
-    const win = +(0.15 + Math.random() * 18).toFixed(2);
-    const feed = document.getElementById('liveFeed'); if (!feed) return;
-    if (feed.children.length >= 4) feed.removeChild(feed.firstChild);
-    const el = document.createElement('div'); el.className = 'live-feed-item';
-    el.innerHTML = `<span class="lf-av">${bot.avatar}</span><span class="lf-name">${bot.name}</span><span class="lf-win">+${win}◈</span>`;
+    if(!BOTS_ENABLED) return;
+    const bot=getRandomBot();
+    const win=+(0.15+Math.random()*18).toFixed(2);
+    const feed=document.getElementById('liveFeed');if(!feed)return;
+    if(feed.children.length>=4)feed.removeChild(feed.firstChild);
+    const el=document.createElement('div');el.className='live-feed-item';
+    el.innerHTML=`<span class="lf-av">${bot.avatar}</span><span class="lf-name">${bot.name}</span><span class="lf-win">+${win}◈</span>`;
     feed.appendChild(el);
-    setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 4500);
+    setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},4500);
 }
-setInterval(() => { if (document.visibilityState !== 'hidden') spawnLiveWin(); }, 3500 + Math.random() * 3000);
+setInterval(()=>{if(BOTS_ENABLED && document.visibilityState!=='hidden')spawnLiveWin();},3500+Math.random()*3000);
 
-/* ============ TELEGRAM USER ============ */
-let TG_USER = { id: '', name: 'Unknown User', username: 'None', photo: '' };
-const BOT_USERNAME = 'Gift08epqbot';
+let TG_USER={id:'',name:'Unknown User',username:'None',photo:''};
+let BOT_USERNAME='Gift08epqbot';
 function loadTelegramUser(){
-    try {
-        const tg = window.Telegram && window.Telegram.WebApp;
-        if (tg) {
-            tg.ready(); tg.expand();
-            const u = tg.initDataUnsafe && tg.initDataUnsafe.user;
-            if (u) {
-                TG_USER.id = String(u.id || '');
-                TG_USER.name = ((u.first_name || '') + (u.last_name ? ' ' + u.last_name : '')).trim() || 'Unknown User';
-                TG_USER.username = u.username ? '@' + u.username : 'None';
-                TG_USER.photo = u.photo_url || '';
-                const av = document.getElementById('userAvatar');
-                if (av) av.innerText = (u.first_name || 'M').charAt(0).toUpperCase();
+    try{
+        const tg=window.Telegram&&window.Telegram.WebApp;
+        if(tg){
+            tg.ready();tg.expand();
+            const u=tg.initDataUnsafe&&tg.initDataUnsafe.user;
+            if(u){
+                TG_USER.id=String(u.id||'');
+                TG_USER.name=((u.first_name||'')+(u.last_name?' '+u.last_name:'')).trim()||'Unknown User';
+                TG_USER.username=u.username?'@'+u.username:'None';
+                TG_USER.photo=u.photo_url||'';
+                const av=document.getElementById('userAvatar');if(av) av.innerText=(u.first_name||'M').charAt(0).toUpperCase();
                 return;
             }
         }
-    } catch (e) {}
+    }catch(e){}
 }
-window.addEventListener('load', () => { loadTelegramUser(); updateReferralUI(); });
-setTimeout(() => { loadTelegramUser(); updateReferralUI(); }, 800);
+window.addEventListener('load',()=>{loadTelegramUser();updateReferralUI();});
+setTimeout(()=>{loadTelegramUser();updateReferralUI();},800);
 
-/* ============ TON CONNECT ============ */
-let tonConnectUI = null, isWalletConnected = false;
-let soloBetAmount = 0.1;
-let betFromGift = false;
+let tonConnectUI=null,isWalletConnected=false;
+let soloBetAmount=0.1;
+let betFromGift=false;
 
 const GIFT_DATABASE=[
     {id:'happy_brownie',name:'Happy Brownie',emoji:'💩',value:4.14,tier:'common'},
@@ -901,26 +945,62 @@ const GIFT_DATABASE=[
     {id:'snoop_dogg',name:'Snoop Dogg',emoji:'🐕',value:4.99,tier:'common'},
     {id:'desk_calendar',name:'Desk Calendar',emoji:'📅',value:5.20,tier:'common'},
     {id:'instant_ramen_1',name:'Instant Ramen',emoji:'🍜',value:5.28,tier:'common'},
+    {id:'tama_gadget_2',name:'Tama Gadget',emoji:'📟',value:5.43,tier:'common'},
+    {id:'stellar_rocket_1',name:'Stellar Rocket',emoji:'🚀',value:5.84,tier:'common'},
+    {id:'spy_agaric_1',name:'Spy Agaric',emoji:'🍄',value:5.89,tier:'common'},
+    {id:'big_year',name:'Big Year',emoji:'🎉',value:6.07,tier:'common'},
+    {id:'money_pot_1',name:'Money Pot',emoji:'💰',value:6.09,tier:'common'},
+    {id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:6.18,tier:'common'},
+    {id:'input_key_1',name:'Input Key',emoji:'⌨️',value:6.48,tier:'common'},
+    {id:'light_sword_1',name:'Light Sword',emoji:'⚔️',value:6.65,tier:'common'},
+    {id:'swag_bag_1',name:'Swag Bag',emoji:'💰',value:6.78,tier:'common'},
+    {id:'jolly_chimp_1',name:'Jolly Chimp',emoji:'🐵',value:6.91,tier:'common'},
+    {id:'pretty_posy_1',name:'Pretty Posy',emoji:'💐',value:7.55,tier:'common'},
+    {id:'hanging_star',name:'Hanging Star',emoji:'⭐',value:8.88,tier:'common'},
+    {id:'fine_pen_1',name:'Fine Pen',emoji:'🖊️',value:9.05,tier:'common'},
+    {id:'bday_candle_1',name:'B-Day Candle',emoji:'🎂',value:9.59,tier:'common'},
+    {id:'sakura_flower_1',name:'Sakura Flower',emoji:'🌸',value:9.71,tier:'common'},
     {id:'whip_cupcake_1',name:'Whip Cupcake',emoji:'🧁',value:10.70,tier:'common'},
     {id:'skull_flower_1',name:'Skull Flower',emoji:'💀',value:11.13,tier:'uncommon'},
+    {id:'restless_jar_1',name:'Restless Jar',emoji:'🫙',value:11.31,tier:'uncommon'},
     {id:'valentine_box_1',name:'Valentine Box',emoji:'💝',value:11.65,tier:'uncommon'},
+    {id:'spring_basket_1',name:'Spring Basket',emoji:'🐰',value:11.74,tier:'uncommon'},
+    {id:'swag_bag_2',name:'Swag Bag',emoji:'💰',value:12.09,tier:'uncommon'},
     {id:'mad_pumpkin_1',name:'Mad Pumpkin',emoji:'🎃',value:12.64,tier:'uncommon'},
+    {id:'jolly_chimp_2',name:'Jolly Chimp',emoji:'🐵',value:15.88,tier:'uncommon'},
     {id:'jack_in_box_1',name:'Jack-in-the-Box',emoji:'🎁',value:16.80,tier:'uncommon'},
+    {id:'input_key_3',name:'Input Key',emoji:'⌨️',value:17.45,tier:'uncommon'},
     {id:'cupid_charm_1',name:'Cupid Charm',emoji:'💘',value:20.50,tier:'uncommon'},
+    {id:'cupid_charm_2',name:'Cupid Charm',emoji:'💘',value:21.82,tier:'uncommon'},
     {id:'eternal_rose_1',name:'Eternal Rose',emoji:'🌹',value:22.57,tier:'uncommon'},
+    {id:'khabib_papakha_1',name:"Khabib's Papakha",emoji:'🧢',value:22.70,tier:'uncommon'},
+    {id:'bling_binky_1',name:'Bling Binky',emoji:'👶',value:23.81,tier:'uncommon'},
+    {id:'rare_bird_1',name:'Rare Bird',emoji:'🦅',value:26.23,tier:'uncommon'},
     {id:'diamond_ring_1',name:'Diamond Ring',emoji:'💍',value:26.58,tier:'uncommon'},
+    {id:'bow_tie_1',name:'Bow Tie',emoji:'🎀',value:28.53,tier:'uncommon'},
+    {id:'signet_ring_1',name:'Signet Ring',emoji:'💍',value:28.60,tier:'uncommon'},
     {id:'snow_globe_1',name:'Snow Globe',emoji:'🔮',value:30.29,tier:'uncommon'},
     {id:'ufc_strike_1',name:'UFC Strike',emoji:'🥊',value:31.41,tier:'rare'},
     {id:'voodoo_doll_1',name:'Voodoo Doll',emoji:'🧸',value:34.60,tier:'rare'},
+    {id:'neko_helmet_1',name:'Neko Helmet',emoji:'🏍️',value:34.93,tier:'rare'},
     {id:'toy_bear_1',name:'Toy Bear',emoji:'🧸',value:35.14,tier:'rare'},
+    {id:'vintage_cigar_1',name:'Vintage Cigar',emoji:'🚬',value:35.19,tier:'rare'},
+    {id:'party_sparkler_1',name:'Party Sparkler',emoji:'✨',value:35.60,tier:'rare'},
     {id:'jingle_bells_1',name:'Jingle Bells',emoji:'🔔',value:35.90,tier:'rare'},
+    {id:'bonded_ring_1',name:'Bonded Ring',emoji:'💍',value:37.98,tier:'rare'},
+    {id:'neko_helmet_2',name:'Neko Helmet',emoji:'🏍️',value:50.63,tier:'rare'},
     {id:'swiss_watch_1',name:'Swiss Watch',emoji:'⌚',value:52.67,tier:'rare'},
+    {id:'rare_bird_2',name:'Rare Bird',emoji:'🦅',value:53.63,tier:'rare'},
+    {id:'timeless_book_2',name:'Timeless Book',emoji:'📕',value:54.65,tier:'rare'},
+    {id:'gem_signet_1',name:'Gem Signet',emoji:'💎',value:56.94,tier:'rare'},
     {id:'perfume_bottle_1',name:'Perfume Bottle',emoji:'💐',value:66.60,tier:'rare'},
     {id:'mini_oscar_1',name:'Mini Oscar',emoji:'🏆',value:66.69,tier:'rare'},
     {id:'money_pot_3',name:'Money Pot',emoji:'💰',value:70.92,tier:'rare'},
+    {id:'jolly_chimp_3',name:'Jolly Chimp',emoji:'🐵',value:74.29,tier:'rare'},
     {id:'durov_glasses_1',name:"Durov's Glasses",emoji:'🕶️',value:81.06,tier:'rare'},
     {id:'genie_lamp_1',name:'Genie Lamp',emoji:'🪔',value:97.82,tier:'rare'},
     {id:'astral_shard_1',name:'Astral Shard',emoji:'💎',value:105.62,tier:'epic'},
+    {id:'nail_bracelet_1',name:'Nail Bracelet',emoji:'💫',value:105.66,tier:'epic'},
     {id:'mighty_arm_1',name:'Mighty Arm',emoji:'💪',value:112.05,tier:'epic'},
     {id:'stellar_rocket_2',name:'Stellar Rocket',emoji:'🚀',value:114.70,tier:'epic'},
     {id:'loot_bag_1',name:'Loot Bag',emoji:'👜',value:115.77,tier:'epic'},
@@ -1089,12 +1169,56 @@ function mnRenderBombBtns(){const c=document.getElementById('mnBombBtns');c.inne
 function mnSetBombs(n){if(mnState==='playing')return;mnBombCount=n;mnRenderBombBtns();mnUpdateUI();}
 function mnBuildGrid(){const g=document.getElementById('mnGrid');g.setAttribute('data-size',mnGridSize);g.style.gridTemplateColumns='repeat('+mnGridSize+',1fr)';g.innerHTML='';const t=mnGridSize*mnGridSize;for(let i=0;i<t;i++){const d=document.createElement('div');d.className='mn-tile';d.dataset.index=i;d.onclick=()=>mnClickTile(i);g.appendChild(d);}}
 function mnCalcMult(picks,bombs){const t=mnGridSize*mnGridSize;const safe=t-bombs;let prob=1;for(let i=0;i<picks;i++)prob*=(safe-i)/(t-i);return(1/prob)*0.99+0.04;}
-function mnUpdateLiveBar(){const bar=document.getElementById('mnLiveBar');bar.innerHTML='';const t=mnGridSize*mnGridSize;const ms=t-mnBombCount;const tm=Math.min(12,ms);for(let c=1;c<=tm;c++){const m=mnCalcMult(c,mnBombCount);const el=document.createElement('div');el.className='mn-live-tier';if(mnState==='playing'){if(c<mnRevealed.length)el.classList.add('past');else if(c===mnRevealed.length)el.classList.add('current');else if(c===mnRevealed.length+1)el.classList.add('next');}else if(c===1)el.classList.add('next');el.innerText=c+' × '+m.toFixed(2);bar.appendChild(el);}}
-function mnUpdateUI(){const m=document.getElementById('mnMultiplier');if(m)m.innerText='×'+mnCurrentMult.toFixed(2);const btn=document.getElementById('mnPlayBtn');if(btn){if(mnState==='playing'){if(mnRevealed.length>0){btn.innerText='💰 Cash Out '+(mnLockedBet*mnCurrentMult).toFixed(2)+' TON';btn.classList.add('cashout');btn.disabled=false;}else{btn.innerText='👆 Pick a tile...';btn.classList.remove('cashout');btn.disabled=true;}}else{btn.innerText='Place Bet';btn.classList.remove('cashout');btn.disabled=false;}}mnUpdateLiveBar();}
+function mnUpdateLiveBar(){const bar=document.getElementById('mnLiveBar');bar.innerHTML='';const t=mnGridSize*mnGridSize;const ms=t-mnBombCount;const tm=Math.min(12,ms);for(let c=1;c<=tm;c++){const m=mnCalcMult(c,mnBombCount);const el=document.createElement('div');el.className='mn-live-tier';if(mnState==='playing'){if(c<mnRevealed.length)el.classList.add('past');else if(c===mnRevealed.length)el.classList.add('current');else if(c===mnRevealed.length+1)el.classList.add('next');}else if(c===1)el.classList.add('next');el.innerText=c+' × '+m.toFixed(2);bar.appendChild(el);}const cur=bar.querySelector('.current');if(cur)cur.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+function mnUpdateUI(){
+    const m=document.getElementById('mnMultiplier');if(m)m.innerText='×'+mnCurrentMult.toFixed(2);
+    const btn=document.getElementById('mnPlayBtn');
+    if(btn){
+        if(mnState==='playing'){
+            if(mnRevealed.length>0){btn.innerText='💰 Cash Out '+(mnLockedBet*mnCurrentMult).toFixed(2)+' TON';btn.classList.add('cashout');btn.disabled=false;}
+            else{btn.innerText='👆 Pick a tile...';btn.classList.remove('cashout');btn.disabled=true;}
+        }else{btn.innerText='Place Bet';btn.classList.remove('cashout');btn.disabled=false;}
+    }
+    mnUpdateLiveBar();
+}
 function mnPlayBtnClick(){if(mnState==='playing'){if(mnRevealed.length>0)mnCashOut();}else mnPlay();}
-function mnPlay(){if(mnState==='playing')return;const bet=parseFloat(document.getElementById('mnBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1 TON');return;}if(bet>balance){showToast('❌ Insufficient');return;}balance-=bet;updateGlobalBalanceUI();mnLockedBet=bet;mnRevealed=[];mnCurrentMult=1.04;mnBombs=[];const t=mnGridSize*mnGridSize;const av=[];for(let i=0;i<t;i++)av.push(i);for(let i=0;i<mnBombCount;i++){const idx=Math.floor(Math.random()*av.length);mnBombs.push(av[idx]);av.splice(idx,1);}mnState='playing';mnBuildGrid();document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='none');document.getElementById('mnBetInput').disabled=true;mnUpdateUI();}
-function mnClickTile(idx){if(mnState!=='playing')return;const tile=document.querySelector('.mn-tile[data-index="'+idx+'"]');if(!tile)return;if(tile.classList.contains('diamond')||tile.classList.contains('bomb'))return;if(mnBombs.includes(idx)){tile.classList.add('bomb');mnBombs.forEach(b=>{const t=document.querySelector('.mn-tile[data-index="'+b+'"]');if(t&&t!==tile)t.classList.add('bomb');});mnState='idle';document.getElementById('mnBetInput').disabled=false;document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='auto');showToast('💥 Lost '+mnLockedBet.toFixed(2)+' TON','lose');resolveLoss();mnUpdateUI();setTimeout(()=>mnResetGrid(),2200);}else{tile.classList.add('diamond');mnRevealed.push(idx);mnCurrentMult=mnCalcMult(mnRevealed.length,mnBombCount);mnUpdateUI();const ms=mnGridSize*mnGridSize-mnBombCount;if(mnRevealed.length===ms)mnAutoCashOut();}}
-function mnCashOut(){if(mnState!=='playing'||mnRevealed.length===0)return;const w=mnLockedBet*mnCurrentMult;resolveWin(w);mnBombs.forEach(b=>{const t=document.querySelector('.mn-tile[data-index="'+b+'"]');if(t){t.classList.add('bomb');t.style.opacity='.4';}});mnState='idle';document.getElementById('mnBetInput').disabled=false;document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='auto');mnUpdateUI();setTimeout(()=>mnResetGrid(),2200);}
+function mnPlay(){
+    if(mnState==='playing')return;
+    const bet=parseFloat(document.getElementById('mnBetInput').value);
+    if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1 TON');return;}
+    if(bet>balance){showToast('❌ Insufficient');return;}
+    balance-=bet;updateGlobalBalanceUI();
+    mnLockedBet=bet;mnRevealed=[];mnCurrentMult=1.04;mnBombs=[];
+    const t=mnGridSize*mnGridSize;const av=[];for(let i=0;i<t;i++)av.push(i);
+    for(let i=0;i<mnBombCount;i++){const idx=Math.floor(Math.random()*av.length);mnBombs.push(av[idx]);av.splice(idx,1);}
+    mnState='playing';mnBuildGrid();
+    document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='none');
+    document.getElementById('mnBetInput').disabled=true;mnUpdateUI();
+}
+function mnClickTile(idx){
+    if(mnState!=='playing')return;
+    const tile=document.querySelector('.mn-tile[data-index="'+idx+'"]');if(!tile)return;
+    if(tile.classList.contains('diamond')||tile.classList.contains('bomb'))return;
+    if(mnBombs.includes(idx)){
+        tile.classList.add('bomb');
+        mnBombs.forEach(b=>{const t=document.querySelector('.mn-tile[data-index="'+b+'"]');if(t&&t!==tile)t.classList.add('bomb');});
+        mnState='idle';document.getElementById('mnBetInput').disabled=false;
+        document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='auto');
+        showToast('💥 Lost '+mnLockedBet.toFixed(2)+' TON','lose');resolveLoss();mnUpdateUI();
+        setTimeout(()=>mnResetGrid(),2200);
+    }else{
+        tile.classList.add('diamond');mnRevealed.push(idx);mnCurrentMult=mnCalcMult(mnRevealed.length,mnBombCount);mnUpdateUI();
+        const ms=mnGridSize*mnGridSize-mnBombCount;if(mnRevealed.length===ms)mnAutoCashOut();
+    }
+}
+function mnCashOut(){
+    if(mnState!=='playing'||mnRevealed.length===0)return;
+    const w=mnLockedBet*mnCurrentMult;resolveWin(w);
+    mnBombs.forEach(b=>{const t=document.querySelector('.mn-tile[data-index="'+b+'"]');if(t){t.classList.add('bomb');t.style.opacity='.4';}});
+    mnState='idle';document.getElementById('mnBetInput').disabled=false;
+    document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='auto');
+    mnUpdateUI();setTimeout(()=>mnResetGrid(),2200);
+}
 function mnAutoCashOut(){const w=mnLockedBet*mnCurrentMult;resolveWin(w);mnState='idle';document.getElementById('mnBetInput').disabled=false;document.querySelectorAll('.mn-bomb-btn,.mn-size-btn').forEach(b=>b.style.pointerEvents='auto');mnUpdateUI();setTimeout(()=>mnResetGrid(),2200);}
 function mnResetGrid(){mnBuildGrid();mnRevealed=[];mnCurrentMult=1.04;mnLockedBet=0;mnUpdateUI();}
 function mnHalfBet(){if(mnState==='playing')return;const v=parseFloat(document.getElementById('mnBetInput').value)||0;document.getElementById('mnBetInput').value=(v/2).toFixed(2);}
@@ -1122,9 +1246,9 @@ window.upInitialized=false;
 let upCanvas,upCtx,upSize=280,upWheelAngle=0,upState='idle',upChance=20,upBetVal=0,upTargetVal=0;
 function upInit(){upCanvas=document.getElementById('upCanvas');upCtx=upCanvas.getContext('2d');window.addEventListener('resize',()=>{if(upCanvas)upResize();});upResize();upDrawWheel();document.getElementById('upBetInput').addEventListener('input',upUpdateChance);document.getElementById('upTargetInput').addEventListener('input',upUpdateChance);upUpdateChance();}
 function upResize(){if(!upCanvas)return;const w=upCanvas.parentElement;const aw=w.clientWidth-40;const ah=w.clientHeight-20;const s=Math.max(200,Math.min(aw,ah,300));const dpr=window.devicePixelRatio||1;upSize=s;upCanvas.width=s*dpr;upCanvas.height=s*dpr;upCanvas.style.width=s+'px';upCanvas.style.height=s+'px';upCtx.setTransform(dpr,0,0,dpr,0,0);upDrawWheel();}
-function upUpdateChance(){const b=parseFloat(document.getElementById('upBetInput').value)||0;const t=parseFloat(document.getElementById('upTargetInput').value)||0;if(b>0&&t>b){const r=(b/t)*100;upChance=Math.max(1,Math.min(96,r*0.97+0.04));}else upChance=0;const ce=document.getElementById('upChanceDisplay');const cl=document.getElementById('upChanceLabel');if(ce){ce.innerText=upChance.toFixed(1)+'%';}if(cl){let l='LOW';if(upChance>=90)l='EXTREME';else if(upChance>=70)l='VERY HIGH';else if(upChance>=50)l='HIGH';else if(upChance>=30)l='MEDIUM';cl.innerText=l;}const ct=document.getElementById('upChanceText');if(ct)ct.innerText=upChance.toFixed(1)+'%';const pt=document.getElementById('upProfitText');if(pt){const p=t>b?(t-b):0;pt.innerText='+'+p.toFixed(2);}upDrawWheel();}
-function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upCtx.clearRect(0,0,s,s);const ga=(upChance/100)*Math.PI*2;const sa=upWheelAngle-Math.PI/2;if(ga>0){upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,sa,sa+ga);upCtx.closePath();upCtx.fillStyle='#2ff068';upCtx.fill();}if(ga<Math.PI*2){upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,sa+ga,sa+Math.PI*2);upCtx.closePath();upCtx.fillStyle='#ff4444';upCtx.fill();}upCtx.beginPath();upCtx.arc(cx,cy,s*0.22,0,Math.PI*2);upCtx.fillStyle='#1a1d2e';upCtx.fill();upCtx.beginPath();upCtx.moveTo(cx-10,4);upCtx.lineTo(cx+10,4);upCtx.lineTo(cx,24);upCtx.closePath();upCtx.fillStyle='#ffcc00';upCtx.fill();}
-function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
+function upUpdateChance(){const b=parseFloat(document.getElementById('upBetInput').value)||0;const t=parseFloat(document.getElementById('upTargetInput').value)||0;if(b>0&&t>b){const r=(b/t)*100;upChance=Math.max(1,Math.min(96,r*0.97+0.04));}else upChance=0;const ce=document.getElementById('upChanceDisplay');const cl=document.getElementById('upChanceLabel');if(ce){ce.innerText=upChance.toFixed(1)+'%';ce.classList.remove('low','mid');if(upChance<25)ce.classList.add('low');else if(upChance<55)ce.classList.add('mid');}if(cl){let l='VERY LOW';if(upChance>=90)l='EXTREME';else if(upChance>=70)l='VERY HIGH';else if(upChance>=50)l='HIGH';else if(upChance>=30)l='MEDIUM';else if(upChance>=15)l='LOW';cl.innerText=l;}const ct=document.getElementById('upChanceText');if(ct)ct.innerText=upChance.toFixed(1)+'%';const pt=document.getElementById('upProfitText');if(pt){const p=t>b?(t-b):0;pt.innerText='+'+p.toFixed(2);}upDrawWheel();}
+function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upCtx.clearRect(0,0,s,s);const ga=(upChance/100)*Math.PI*2;const sa=upWheelAngle-Math.PI/2;if(ga>0){upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,sa,sa+ga);upCtx.closePath();upCtx.fillStyle='#2ff068';upCtx.fill();}if(ga<Math.PI*2){upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,sa+ga,sa+Math.PI*2);upCtx.closePath();upCtx.fillStyle='#ff4444';upCtx.fill();}upCtx.beginPath();upCtx.arc(cx,cy,s*0.22,0,Math.PI*2);upCtx.fillStyle='#1a1d2e';upCtx.fill();upCtx.strokeStyle='#2a2e42';upCtx.lineWidth=3;upCtx.stroke();upCtx.beginPath();upCtx.moveTo(cx-10,4);upCtx.lineTo(cx+10,4);upCtx.lineTo(cx,24);upCtx.closePath();upCtx.fillStyle='#ffcc00';upCtx.shadowBlur=15;upCtx.shadowColor='#ffcc00';upCtx.fill();upCtx.shadowBlur=0;}
+function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const res=document.getElementById('upResult');res.className='up-result';res.innerText='';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
 function upFinish(){upState='idle';const btn=document.getElementById('upBtn');btn.disabled=false;btn.innerText='🚀 UPGRADE';const res=document.getElementById('upResult');const ga=(upChance/100)*Math.PI*2;let pl=(-upWheelAngle)%(Math.PI*2);if(pl<0)pl+=Math.PI*2;const aw=pl<=ga;if(aw){balance+=upTargetVal;updateGlobalBalanceUI();res.className='up-result win show';res.innerText='🏆 +'+upTargetVal.toFixed(2)+' TON';showToast('🏆 +'+upTargetVal.toFixed(2)+' TON','win');}else{res.className='up-result lose show';res.innerText='😔 Lost -'+upBetVal.toFixed(2)+' TON';showToast('😔 Lost','lose');}upWheelAngle=upWheelAngle%(Math.PI*2);}
 
 /* ============ TOWER ============ */
@@ -1136,11 +1260,64 @@ function adjustSoloBet(amount){if(towerState==='playing')return;const input=docu
 document.getElementById('soloBetInput').addEventListener('input',function(e){if(towerState==='playing'){e.target.value=soloBetAmount.toFixed(2);return;}let val=parseFloat(e.target.value);if(!isNaN(val)&&val>=0.1)soloBetAmount=val;});
 function openSoloHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('soloHubScreen').classList.remove('hidden');resetTowerGame();}
 function resetTowerGame(){towerState='idle';towerLevel=0;towerBet=0;document.getElementById('towerStartBtn').style.display='block';document.getElementById('towerCashoutBtn').style.display='none';document.getElementById('towerStartBtn').disabled=false;document.getElementById('towerStartBtn').innerText='Start Game';renderTowerGrid();}
-function renderTowerGrid(){const c=document.getElementById('towerGameArea');c.innerHTML='';for(let level=towerRows.length-1;level>=0;level--){const row=document.createElement('div');row.className='sh-row inactive-row';row.id='tower-row-div-'+level;const lbl=document.createElement('div');lbl.className='sh-mult';lbl.innerText=towerMultipliers[level].toFixed(2)+'x';row.appendChild(lbl);const circ=document.createElement('div');circ.className='sh-circles';circ.id='tower-row-'+level;for(let i=0;i<towerRows[level];i++){const d=document.createElement('div');d.className='sh-circle';d.dataset.level=level;d.dataset.index=i;d.onclick=()=>clickTowerTile(level,i,d);circ.appendChild(d);}row.appendChild(circ);c.appendChild(row);}const first=document.getElementById('tower-row-div-0');if(first){first.classList.remove('inactive-row');first.classList.add('active-row');}}
-function startTowerGame(){if(towerState==='playing')return;soloBetAmount=parseFloat(document.getElementById('soloBetInput').value)||0.1;if(soloBetAmount>balance){showToast('❌ Insufficient balance');return;}balance-=soloBetAmount;updateGlobalBalanceUI();towerBet=soloBetAmount;towerState='playing';towerLevel=0;towerBombs=[];for(let i=0;i<towerRows.length;i++)towerBombs.push(Math.floor(Math.random()*towerRows[i]));document.getElementById('towerStartBtn').style.display='none';document.getElementById('towerCashoutBtn').style.display='block';document.getElementById('towerCashoutBtn').disabled=true;document.getElementById('towerCashoutBtn').innerText='Cash Out (0.00 TON)';renderTowerGrid();enableTowerRow(0);}
+function renderTowerGrid(){
+    const c=document.getElementById('towerGameArea');c.innerHTML='';
+    for(let level=towerRows.length-1;level>=0;level--){
+        const row=document.createElement('div');row.className='sh-row inactive-row';row.id='tower-row-div-'+level;
+        const lbl=document.createElement('div');lbl.className='sh-mult';lbl.innerText=towerMultipliers[level].toFixed(2)+'x';row.appendChild(lbl);
+        const circ=document.createElement('div');circ.className='sh-circles';circ.id='tower-row-'+level;
+        for(let i=0;i<towerRows[level];i++){const d=document.createElement('div');d.className='sh-circle';d.dataset.level=level;d.dataset.index=i;d.onclick=()=>clickTowerTile(level,i,d);circ.appendChild(d);}
+        row.appendChild(circ);c.appendChild(row);
+    }
+    const first=document.getElementById('tower-row-div-0');if(first){first.classList.remove('inactive-row');first.classList.add('active-row');}
+}
+function startTowerGame(){
+    if(towerState==='playing')return;
+    soloBetAmount=parseFloat(document.getElementById('soloBetInput').value)||0.1;
+    if(soloBetAmount>balance){showToast('❌ Insufficient balance');return;}
+    balance-=soloBetAmount;updateGlobalBalanceUI();
+    towerBet=soloBetAmount;towerState='playing';towerLevel=0;towerBombs=[];
+    for(let i=0;i<towerRows.length;i++)towerBombs.push(Math.floor(Math.random()*towerRows[i]));
+    document.getElementById('towerStartBtn').style.display='none';
+    document.getElementById('towerCashoutBtn').style.display='block';
+    document.getElementById('towerCashoutBtn').disabled=true;
+    document.getElementById('towerCashoutBtn').innerText='Cash Out (0.00 TON)';
+    renderTowerGrid();enableTowerRow(0);
+}
 function enableTowerRow(level){document.querySelectorAll('.sh-circle').forEach(c=>c.style.pointerEvents='none');const r=document.getElementById('tower-row-'+level);if(r)Array.from(r.children).forEach(c=>c.style.pointerEvents='auto');}
-function clickTowerTile(level,index,el){if(towerState!=='playing'||level!==towerLevel)return;const row=document.getElementById('tower-row-'+level);Array.from(row.children).forEach(c=>c.style.pointerEvents='none');if(index===towerBombs[level]){el.classList.add('revealed-bomb');el.innerText='✕';towerState='ended';showToast('💥 Bomb! Lost '+towerBet.toFixed(2)+' TON','lose');resolveLoss();document.getElementById('towerCashoutBtn').style.display='none';document.getElementById('towerStartBtn').style.display='block';document.getElementById('towerStartBtn').innerText='Play Again';setTimeout(resetTowerGame,3000);}else{el.classList.add('revealed-tick');el.innerText='✓';Array.from(row.children).forEach((c,i)=>{if(i===towerBombs[level]){c.classList.add('revealed-bomb');c.innerText='✕';}});towerLevel++;if(towerLevel>=towerRows.length){towerCashOut();return;}const mult=towerMultipliers[towerLevel-1];const win=towerBet*mult;const btn=document.getElementById('towerCashoutBtn');btn.disabled=false;btn.innerText='Cash Out ('+win.toFixed(2)+' TON)';const nextRow=document.getElementById('tower-row-div-'+towerLevel);nextRow.classList.remove('inactive-row');nextRow.classList.add('active-row');enableTowerRow(towerLevel);setTimeout(()=>nextRow.scrollIntoView({behavior:'smooth',block:'center'}),100);}}
-function towerCashOut(){if(towerState!=='playing'||towerLevel===0)return;const mult=towerMultipliers[towerLevel-1];const win=towerBet*mult;resolveWin(win);towerState='ended';document.getElementById('towerCashoutBtn').style.display='none';document.getElementById('towerStartBtn').style.display='block';document.getElementById('towerStartBtn').innerText='Play Again';setTimeout(resetTowerGame,3000);}
+function clickTowerTile(level,index,el){
+    if(towerState!=='playing'||level!==towerLevel)return;
+    const row=document.getElementById('tower-row-'+level);
+    Array.from(row.children).forEach(c=>c.style.pointerEvents='none');
+    if(index===towerBombs[level]){
+        el.classList.add('revealed-bomb');el.innerText='✕';towerState='ended';
+        showToast('💥 Bomb! Lost '+towerBet.toFixed(2)+' TON','lose');resolveLoss();
+        document.getElementById('towerCashoutBtn').style.display='none';
+        document.getElementById('towerStartBtn').style.display='block';
+        document.getElementById('towerStartBtn').innerText='Play Again';
+        setTimeout(resetTowerGame,3000);
+    }else{
+        el.classList.add('revealed-tick');el.innerText='✓';
+        Array.from(row.children).forEach((c,i)=>{if(i===towerBombs[level]){c.classList.add('revealed-bomb');c.innerText='✕';}});
+        towerLevel++;
+        if(towerLevel>=towerRows.length){towerCashOut();return;}
+        const mult=towerMultipliers[towerLevel-1];const win=towerBet*mult;
+        const btn=document.getElementById('towerCashoutBtn');btn.disabled=false;btn.innerText='Cash Out ('+win.toFixed(2)+' TON)';
+        const nextRow=document.getElementById('tower-row-div-'+towerLevel);
+        nextRow.classList.remove('inactive-row');nextRow.classList.add('active-row');
+        enableTowerRow(towerLevel);
+        setTimeout(()=>nextRow.scrollIntoView({behavior:'smooth',block:'center'}),100);
+    }
+}
+function towerCashOut(){
+    if(towerState!=='playing'||towerLevel===0)return;
+    const mult=towerMultipliers[towerLevel-1];const win=towerBet*mult;
+    resolveWin(win);towerState='ended';
+    document.getElementById('towerCashoutBtn').style.display='none';
+    document.getElementById('towerStartBtn').style.display='block';
+    document.getElementById('towerStartBtn').innerText='Play Again';
+    setTimeout(resetTowerGame,3000);
+}
 
 /* ============ CRASH ============ */
 let gameState='waiting',multiplier=1.00,crashPoint=0,myBet=0,myAutoCashout=0,hasJoined=false;
@@ -1155,6 +1332,8 @@ const autoCashoutInput=document.getElementById('autoCashoutInput');
 const multiplierHistoryContainer=document.getElementById('multiplierHistory');
 const canvas=document.getElementById('chartCanvas');
 const ctx=canvas.getContext('2d');
+const halfBtn=document.getElementById('halfBtn');
+const allBtn=document.getElementById('allBtn');
 function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
 function resetBalance(){showToast('❌ No free refill available');}
@@ -1168,8 +1347,19 @@ function renderRoundHistory(){multiplierHistoryContainer.innerHTML='<div style="
 renderRoundHistory();
 function drawChart(cm){ctx.clearRect(0,0,canvas.width,canvas.height);const max=Math.max(crashPoint,cm,2);const sx=20,sy=canvas.height-20,ex=canvas.width-20;const p=cm/max;const cx=sx+(ex-sx)*p;const cy=sy-(sy-20)*(cm/max);ctx.beginPath();ctx.moveTo(sx,sy);ctx.quadraticCurveTo(sx+(cx-sx)*0.5,sy,cx,cy);ctx.strokeStyle='#ffcc00';ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(cx,cy,6,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();}
 function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);drawChart(1);}
-function renderCrashPlayers(){const row=document.getElementById('crashPlayersRow');if(!row)return;if(crashBots.length===0){row.innerHTML='<div style="color:#555;font-size:11px;padding:6px;font-weight:600;">⏳ Waiting for players...</div>';return;}row.innerHTML='';crashBots.forEach((b)=>{const c=document.createElement('div');c.className='crash-player-card'+(b.cashed?' cashed':'')+(b.lost?' lost':'');c.innerHTML=`<div class="cp-av">${b.avatar}</div><div class="cp-name">${b.name}</div>`+(b.cashed?`<div class="cp-cashed">+${b.cashedAt.toFixed(2)}x</div>`:`<div class="cp-bet">${b.bet.toFixed(2)}◈</div>`);row.appendChild(c);});}
+function renderCrashPlayers(){
+    const row=document.getElementById('crashPlayersRow');if(!row)return;
+    if(crashBots.length===0){row.innerHTML='<div style="color:#555;font-size:11px;padding:6px;font-weight:600;">⏳ Waiting for players...</div>';return;}
+    row.innerHTML='';
+    crashBots.forEach((b,i)=>{
+        const c=document.createElement('div');
+        c.className='crash-player-card'+(b.cashed?' cashed':'')+(b.lost?' lost':'');
+        c.innerHTML=`<div class="cp-av">${b.avatar}</div><div class="cp-name">${b.name}</div>`+(b.cashed?`<div class="cp-cashed">+${b.cashedAt.toFixed(2)}x</div>`:`<div class="cp-bet">${b.bet.toFixed(2)}◈</div>`);
+        row.appendChild(c);
+    });
+}
 function spawnCrashBots(){
+    if(!BOTS_ENABLED){crashBots=[];renderCrashPlayers();return;}
     crashBots=[];renderCrashPlayers();
     const count=2+Math.floor(Math.random()*3);
     const used=new Set();
@@ -1179,13 +1369,11 @@ function spawnCrashBots(){
         const delay=400+Math.random()*(COUNTDOWN_SECONDS*1000-1000);
         setTimeout(()=>{
             if(gameState!=='waiting')return;
-            if(Math.random()>persona.joinChance)return; // بعضی وقتا نمیاد
+            if(Math.random()>persona.joinChance)return;
             const bet=smartBotBet(bot);
             bot.balance-=bet;
-            bot.streak=0;
-            crashBots.push({...bot,bet,cashout:smartBotCashout(bot),cashed:false,lost:false,justJoined:true});
+            crashBots.push({...bot,bet,cashout:smartBotCashout(bot),cashed:false,lost:false});
             renderCrashPlayers();
-            if(Math.random()<persona.chatRate) botSay(bot,'join');
         },delay);
     }
 }
@@ -1193,10 +1381,8 @@ function botCashOuts(currentMult){
     crashBots.forEach(b=>{
         if(!b.cashed&&!b.lost&&currentMult>=b.cashout){
             b.cashed=true;b.cashedAt=currentMult;
-            // برنده
             const dbBot=BOT_DATABASE.find(x=>x.name===b.name);
             if(dbBot){dbBot.balance+=b.bet*currentMult;dbBot.streak=Math.max(0,dbBot.streak)+1;}
-            if(Math.random()<(BOT_PERSONAS[b.persona]||BOT_PERSONAS.balanced).chatRate) botSay(b,'win');
         }
     });
     renderCrashPlayers();
@@ -1207,36 +1393,216 @@ function botCrashAll(){
             b.lost=true;
             const dbBot=BOT_DATABASE.find(x=>x.name===b.name);
             if(dbBot){dbBot.streak=Math.min(0,dbBot.streak)-1;}
-            if(Math.random()<(BOT_PERSONAS[b.persona]||BOT_PERSONAS.balanced).chatRate*0.7) botSay(b,'lose');
         }
     });
     renderCrashPlayers();
 }
-function updateGiftDisplayOnMultiplier(){if(!hasJoined)return false;const potentialWin=myBet*multiplier;const willBeGift=betFromGift||potentialWin>=4;if(!willBeGift)return false;const gift=pickClosestGiftTemplate(potentialWin);multiplierDisplay.innerHTML='<div style="text-align:center"><div style="font-size:56px;line-height:1">'+gift.emoji+'</div><div style="font-size:14px;margin-top:8px;color:#2ff068;font-weight:800">'+gift.name+'</div><div style="font-size:11px;color:#7a8299;margin-top:4px;font-weight:700">'+multiplier.toFixed(2)+'x • '+potentialWin.toFixed(2)+' TON</div></div>';return true;}
+function updateGiftDisplayOnMultiplier(){
+    if(!hasJoined)return false;
+    const potentialWin=myBet*multiplier;
+    const willBeGift=betFromGift||potentialWin>=4;
+    if(!willBeGift)return false;
+    const gift=pickClosestGiftTemplate(potentialWin);
+    multiplierDisplay.innerHTML='<div style="text-align:center;max-width:100%;padding:0 10px"><div style="font-size:56px;line-height:1">'+gift.emoji+'</div><div style="font-size:14px;margin-top:8px;color:#2ff068;font-weight:800">'+gift.name+'</div><div style="font-size:11px;color:#7a8299;margin-top:4px;font-weight:700">'+multiplier.toFixed(2)+'x • '+potentialWin.toFixed(2)+' TON</div></div>';
+    return true;
+}
 function updateGiftDisplayOnCrash(){multiplierDisplay.innerHTML='<div style="text-align:center"><div style="font-size:56px;line-height:1">💥</div><div style="font-size:15px;color:#ff4444;font-weight:900;margin-top:6px">CRASHED</div><div style="font-size:12px;color:#7a8299;margin-top:4px;font-weight:700">at '+crashPoint.toFixed(2)+'x</div></div>';}
-function startNewRound(){gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;multiplier=1.00;crashPoint=getRandomCrashPoint();clearChart();spawnCrashBots();multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');betInput.disabled=false;autoCashoutInput.disabled=false;betInput.value=localStorage.getItem('lastBet')||0.1;autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;actionButton.innerText='Join Game';actionButton.className='action-btn btn-bet';actionButton.disabled=false;statusText.innerText='Hurry!';let c=COUNTDOWN_SECONDS;multiplierDisplay.innerText=c;countdownInterval=setInterval(()=>{c--;if(c>0)multiplierDisplay.innerText=c;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay();}},1000);}
-function startGameplay(){gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;if(hasJoined){statusText.innerText='✅ Joined with '+myBet+' TON.';actionButton.innerText='Cash Out';actionButton.className='action-btn btn-cashout';actionButton.disabled=false;}else{statusText.innerText='Watching...';actionButton.innerText='Not Joined';actionButton.className='action-btn btn-bet';actionButton.disabled=true;}let el=0;gameInterval=setInterval(()=>{el+=80;multiplier=Math.pow(SPEED,el);const showingGift=updateGiftDisplayOnMultiplier();if(!showingGift)multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);botCashOuts(multiplier);if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);if(multiplier>=crashPoint){clearInterval(gameInterval);botCrashAll();if(betFromGift&&hasJoined)updateGiftDisplayOnCrash();else multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');gameState='crashed';actionButton.disabled=true;actionButton.innerText='Next...';actionButton.className='action-btn btn-bet';addRoundToHistory(crashPoint);statusText.innerText=hasJoined?'💥 Lost '+myBet+' TON.':'💥 Crashed!';if(hasJoined)resolveLoss();setTimeout(startNewRound,2500);}},80);}
-function joinGame(){if(gameState!=='waiting')return;const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<0.1){statusText.innerText='❌ Min 0.1 TON';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined!';actionButton.innerText='Waiting...';actionButton.disabled=true;}
-function cashOut(isAuto=false){if(!hasJoined||gameState!=='playing')return;const willBeGift=betFromGift||(myBet*multiplier>=4);const winnings=myBet*multiplier;hasJoined=false;actionButton.disabled=true;actionButton.innerText='Next...';actionButton.className='action-btn btn-bet';const msg=resolveWin(winnings);statusText.innerText=msg;if(willBeGift){const gift=pickClosestGiftTemplate(winnings);multiplierDisplay.innerHTML='<div style="text-align:center"><div style="font-size:56px;line-height:1">'+gift.emoji+'</div><div style="font-size:13px;margin-top:8px;color:#2ff068;font-weight:800">🎉 WON!</div><div style="font-size:12px;color:#fff;font-weight:700">'+gift.name+'</div></div>';}}
+function startNewRound(){
+    gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;
+    multiplier=1.00;crashPoint=getRandomCrashPoint();clearChart();
+    spawnCrashBots();
+    multiplierDisplay.classList.remove('crashed');multiplierDisplay.classList.add('counting');
+    betInput.disabled=false;autoCashoutInput.disabled=false;halfBtn.disabled=false;allBtn.disabled=false;
+    betInput.value=localStorage.getItem('lastBet')||0.1;
+    autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;
+    actionButton.innerText='Join Game';actionButton.className='action-btn btn-bet';actionButton.disabled=false;
+    statusText.innerText='Hurry!';
+    let c=COUNTDOWN_SECONDS;multiplierDisplay.innerText=c;
+    countdownInterval=setInterval(()=>{c--;if(c>0)multiplierDisplay.innerText=c;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.innerText='1.00x';startGameplay();}},1000);
+}
+function startGameplay(){
+    gameState='playing';
+    betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;
+    if(hasJoined){statusText.innerText='✅ Joined with '+myBet+' TON.';actionButton.innerText='Cash Out';actionButton.className='action-btn btn-cashout';actionButton.disabled=false;}
+    else{statusText.innerText='Watching...';actionButton.innerText='Not Joined';actionButton.className='action-btn btn-bet';actionButton.disabled=true;}
+    let el=0;
+    gameInterval=setInterval(()=>{
+        el+=80;multiplier=Math.pow(SPEED,el);
+        const showingGift=updateGiftDisplayOnMultiplier();
+        if(!showingGift)multiplierDisplay.innerText=multiplier.toFixed(2)+'x';
+        drawChart(multiplier);botCashOuts(multiplier);
+        if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
+        if(multiplier>=crashPoint){
+            clearInterval(gameInterval);botCrashAll();
+            if(betFromGift&&hasJoined)updateGiftDisplayOnCrash();
+            else multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';
+            multiplierDisplay.classList.add('crashed');
+            gameState='crashed';
+            actionButton.disabled=true;actionButton.innerText='Next...';actionButton.className='action-btn btn-bet';
+            addRoundToHistory(crashPoint);
+            statusText.innerText=hasJoined?'💥 Lost '+myBet+' TON.':'💥 Crashed!';
+            if(hasJoined)resolveLoss();
+            setTimeout(startNewRound,2500);
+        }
+    },80);
+}
+function joinGame(){if(gameState!=='waiting')return;const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<0.1){statusText.innerText='❌ Min 0.1 TON';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined!';actionButton.innerText='Waiting...';actionButton.disabled=true;}
+function cashOut(isAuto=false){
+    if(!hasJoined||gameState!=='playing')return;
+    const willBeGift=betFromGift||(myBet*multiplier>=4);
+    const winnings=myBet*multiplier;
+    hasJoined=false;
+    actionButton.disabled=true;actionButton.innerText='Next...';actionButton.className='action-btn btn-bet';
+    const msg=resolveWin(winnings);
+    statusText.innerText=msg;
+    if(willBeGift){const gift=pickClosestGiftTemplate(winnings);multiplierDisplay.innerHTML='<div style="text-align:center;max-width:100%;padding:0 10px"><div style="font-size:56px;line-height:1">'+gift.emoji+'</div><div style="font-size:13px;margin-top:8px;color:#2ff068;font-weight:800">🎉 WON!</div><div style="font-size:12px;color:#fff;font-weight:700">'+gift.name+'</div><div style="font-size:11px;color:#7a8299;font-weight:700">'+multiplier.toFixed(2)+'x • '+winnings.toFixed(2)+' TON</div></div>';}
+}
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false);});
-function setBetAll(){if(gameState!=='waiting')return;const a=Math.floor(balance*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);}
-function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor((balance/2)*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);}
+function setBetAll(){if(gameState!=='waiting')return;const a=Math.floor(balance*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);showToast('🎯 All in: '+a.toFixed(2));}
+function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor((balance/2)*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);showToast('⚡ Half: '+a.toFixed(2));}
 betInput.addEventListener('input',()=>{const v=parseFloat(betInput.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastBet',v);});
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
 
+/* ============ PVP ============ */
+window.pvpInitialized=false;
+const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0'];
+let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
+let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
+function pvpInit(){pvpCanvas=document.getElementById('pvpCanvas');pvpCtx=pvpCanvas.getContext('2d');window.addEventListener('resize',resizePvpCanvas);resizePvpCanvas();pvpStartRound();}
+function resizePvpCanvas(){if(!pvpCanvas)return;const w=pvpCanvas.parentElement;const aw=w.clientWidth-40;const ah=w.clientHeight-20;const s=Math.max(220,Math.min(aw,ah,340));const dpr=window.devicePixelRatio||1;pvpSize=s;pvpCanvas.width=s*dpr;pvpCanvas.height=s*dpr;pvpCanvas.style.width=s+'px';pvpCanvas.style.height=s+'px';pvpCtx.setTransform(dpr,0,0,dpr,0,0);pvpDraw();}
+function pvpScheduleBots(){
+    if(!BOTS_ENABLED) return;
+    const count=2+Math.floor(Math.random()*3);
+    const used=new Set();
+    for(let i=0;i<count;i++){
+        let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
+        const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;
+        const delay=800+Math.random()*(PVP_COUNTDOWN_SECONDS*1000-2500);
+        setTimeout(()=>{
+            if(pvpState!=='waiting')return;
+            if(Math.random()>persona.joinChance)return;
+            const bet=smartBotBet(bot);
+            const color=PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
+            pvpPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});
+            pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+            pvpCheckStart();
+        },delay);
+    }
+}
+function pvpStartRound(){
+    pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;
+    pvpPointerAngle=-Math.PI/2;pvpLastResult=null;
+    pvpGameNum=Math.floor(60000+Math.random()*10000);
+    document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;
+    pvpPlayers=[];pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+    const btn=document.getElementById('joinBattleBtn');
+    btn.innerText='Join the Battle';btn.className='join-battle-btn';btn.disabled=false;
+    document.getElementById('pvpBetInput').disabled=false;
+    document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||0.1;
+    pvpScheduleBots();clearInterval(pvpTimerInterval);pvpTimerInterval=null;
+    document.getElementById('pvpTimer').innerText='--:--';
+}
+function pvpCheckStart(){
+    if(pvpState!=='waiting')return;
+    if(pvpPlayers.length>=2 && !pvpTimerInterval){
+        pvpTimer=PVP_COUNTDOWN_SECONDS;
+        document.getElementById('pvpTimer').innerText='00:'+String(pvpTimer).padStart(2,'0');
+        pvpTimerInterval=setInterval(()=>{
+            if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}
+            pvpTimer--;
+            document.getElementById('pvpTimer').innerText='00:'+String(Math.max(0,pvpTimer)).padStart(2,'0');
+            if(pvpTimer<=0){
+                clearInterval(pvpTimerInterval);pvpTimerInterval=null;
+                pvpSpin();
+            }
+        },1000);
+    }
+}
+function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length;}
+function pvpJoinClick(){
+    if(pvpState!=='waiting'||pvpUserJoined)return;
+    const a=parseFloat(document.getElementById('pvpBetInput').value);
+    if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}
+    if(a>balance){showToast('❌ Insufficient');return;}
+    balance-=a;updateGlobalBalanceUI();
+    pvpUserJoined=true;pvpMyBet=a;localStorage.setItem('lastPvpBet',a);
+    pvpPlayers.push({name:'You',avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
+    pvpRecalcPool();pvpRenderPlayers();pvpDraw();
+    const btn=document.getElementById('joinBattleBtn');
+    btn.innerText='✅ Joined ('+a+' TON)';btn.className='join-battle-btn joined';btn.disabled=true;
+    document.getElementById('pvpBetInput').disabled=true;
+    showToast('Joined with '+a+' TON');
+    pvpCheckStart();
+}
+document.getElementById('pvpBetInput').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastPvpBet',v);});
+function pvpRenderPlayers(){
+    const r=document.getElementById('pvpPlayersRow');r.innerHTML='';
+    if(pvpPlayers.length===0){r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>';return;}
+    pvpPlayers.forEach(p=>{
+        const pct=pvpPool>0?((p.bet/pvpPool)*100).toFixed(1):0;
+        const c=document.createElement('div');
+        c.className='pvp-pcard'+(p.isMe?' isMe':'');
+        if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe)c.classList.add('winner');
+        c.innerHTML='<div class="pvp-pcard-top" style="background:'+p.color+'"></div><div class="pvp-pav" style="border-color:'+p.color+'">'+p.avatar+'</div><div class="pvp-pname">'+p.name+'</div><div class="pvp-ppct" style="color:'+p.color+'">'+pct+'%</div><div class="pvp-pbet">'+p.bet.toFixed(2)+' TON</div>';
+        r.appendChild(c);
+    });
+}
+function pvpDraw(){
+    if(!pvpCtx)return;
+    const s=pvpSize,cx=s/2,cy=s/2,R=s/2-6,ir=s*0.27;
+    pvpCtx.clearRect(0,0,s,s);
+    if(pvpPlayers.length===0){pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#0f1119';pvpCtx.fill();return;}
+    let a=-Math.PI/2;
+    pvpPlayers.forEach(p=>{const sh=p.bet/pvpPool,arc=sh*Math.PI*2;pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);pvpCtx.arc(cx,cy,R,a,a+arc);pvpCtx.closePath();pvpCtx.fillStyle=p.color;pvpCtx.fill();pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke();a+=arc;});
+    pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();
+    const px=cx+Math.cos(pvpPointerAngle)*R,py=cy+Math.sin(pvpPointerAngle)*R;
+    pvpCtx.beginPath();pvpCtx.moveTo(cx+Math.cos(pvpPointerAngle)*ir,cy+Math.sin(pvpPointerAngle)*ir);pvpCtx.lineTo(px,py);pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;
+}
+function pvpDetermineWinner(){let a=pvpPointerAngle+Math.PI/2;a=((a%(Math.PI*2))+Math.PI*2)%(Math.PI*2);let cum=0;for(let p of pvpPlayers){const arc=(p.bet/pvpPool)*Math.PI*2;if(a>=cum&&a<cum+arc)return p;cum+=arc;}return pvpPlayers[pvpPlayers.length-1];}
+function pvpSpin(){if(pvpState!=='waiting')return;pvpState='spinning';const fs=6+Math.floor(Math.random()*3);const fo=Math.random()*Math.PI*2;const sa=pvpPointerAngle;const ta=sa+fs*Math.PI*2+fo;const dur=4200;const st=performance.now();function fr(now){const t=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-t,3.2);pvpPointerAngle=sa+(ta-sa)*e;pvpDraw();if(t<1)requestAnimationFrame(fr);else pvpFinishSpin();}requestAnimationFrame(fr);}
+function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastResult=w;pvpRenderPlayers();if(w&&w.isMe){const win=pvpPool;resolveWin(win);document.getElementById('pvpLast').innerText='+'+win.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';showToast('🏆 You won '+win.toFixed(2)+' TON!','win');}else{if(pvpUserJoined){showToast('😔 Lost','lose');resolveLoss();document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='0%';}}setTimeout(()=>pvpStartRound(),3200);}
+
 /* ============ ARENA ============ */
 window.arenaInitialized=false;
 const ARENA_COLORS=['#2ff068','#7c3aed','#0098ea','#ff9d00','#ec4899','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731'];
-let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SECONDS,arenaTimerInterval=null;
+let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SECONDS,arenaTimerInterval=null,arenaGameNum=451529;
 let arenaCanvas=null,arenaCtx=null,arenaCW=320,arenaCH=340,arenaUserJoined=false,arenaMyBet=0,arenaLastResult=null;
 let arenaBall={x:0,y:0,active:false};
 let arenaAnimFrame=null;
 
-function arenaInit(){arenaCanvas=document.getElementById('arenaCanvas');arenaCtx=arenaCanvas.getContext('2d');window.addEventListener('resize',resizeArenaCanvas);resizeArenaCanvas();arenaStartRound();arenaStartTournamentTimer();}
-function arenaStartTournamentTimer(){let total=3*3600+20*60+26;setInterval(()=>{total--;if(total<0)total=3*3600+20*60+26;const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),s=total%60;const el=document.getElementById('arenaTTimer');if(el)el.innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;},1000);}
-function resizeArenaCanvas(){if(!arenaCanvas)return;const wrap=arenaCanvas.parentElement;const w=wrap.clientWidth;const h=wrap.clientHeight;const dpr=window.devicePixelRatio||1;arenaCW=w;arenaCH=h;arenaCanvas.width=w*dpr;arenaCanvas.height=h*dpr;arenaCanvas.style.width=w+'px';arenaCanvas.style.height=h+'px';arenaCtx.setTransform(dpr,0,0,dpr,0,0);arenaDraw();}
+function arenaInit(){
+    arenaCanvas=document.getElementById('arenaCanvas');
+    arenaCtx=arenaCanvas.getContext('2d');
+    window.addEventListener('resize',resizeArenaCanvas);
+    resizeArenaCanvas();
+    arenaStartRound();
+    arenaStartTournamentTimer();
+}
+function arenaStartTournamentTimer(){
+    let total=3*3600+20*60+26;
+    setInterval(()=>{
+        total--;
+        if(total<0)total=3*3600+20*60+26;
+        const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),s=total%60;
+        const el=document.getElementById('arenaTTimer');
+        if(el) el.innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    },1000);
+}
+function resizeArenaCanvas(){
+    if(!arenaCanvas)return;
+    const wrap=arenaCanvas.parentElement;
+    const w=wrap.clientWidth;
+    const h=wrap.clientHeight;
+    const dpr=window.devicePixelRatio||1;
+    arenaCW=w;arenaCH=h;
+    arenaCanvas.width=w*dpr;arenaCanvas.height=h*dpr;
+    arenaCanvas.style.width=w+'px';arenaCanvas.style.height=h+'px';
+    arenaCtx.setTransform(dpr,0,0,dpr,0,0);
+    arenaDraw();
+}
 function arenaScheduleBots(){
+    if(!BOTS_ENABLED) return;
     const count=2+Math.floor(Math.random()*4);
     const used=new Set();
     for(let i=0;i<count;i++){
@@ -1260,6 +1626,7 @@ function arenaStartRound(){
     arenaState='waiting';arenaTimer=PVP_COUNTDOWN_SECONDS;arenaUserJoined=false;arenaMyBet=0;arenaPool=0;
     arenaLastResult=null;arenaBall={x:0,y:0,active:false};
     if(arenaAnimFrame){cancelAnimationFrame(arenaAnimFrame);arenaAnimFrame=null;}
+    arenaGameNum=Math.floor(400000+Math.random()*100000);
     arenaPlayers=[];arenaRecalcPool();arenaRenderPlayers();arenaDraw();
     const btn=document.getElementById('arenaJoinBtn');
     btn.innerText='Join Arena';btn.className='arena-join-btn';btn.disabled=false;
@@ -1269,13 +1636,69 @@ function arenaStartRound(){
     const chat=document.getElementById('arenaChat');if(chat)chat.innerHTML='';
     arenaScheduleBots();clearInterval(arenaTimerInterval);arenaTimerInterval=null;
 }
-function arenaCheckStart(){if(arenaState!=='waiting')return;if(arenaPlayers.length>=2 && !arenaTimerInterval){arenaTimer=PVP_COUNTDOWN_SECONDS;const badge=document.getElementById('arenaTimerBadge');badge.classList.add('show');badge.classList.remove('warn');badge.innerText=arenaTimer;arenaTimerInterval=setInterval(()=>{if(arenaState!=='waiting'){clearInterval(arenaTimerInterval);arenaTimerInterval=null;return;}arenaTimer--;badge.innerText=arenaTimer;if(arenaTimer<=5)badge.classList.add('warn');if(arenaTimer<=0){clearInterval(arenaTimerInterval);arenaTimerInterval=null;badge.classList.remove('show');arenaDropBall();}},1000);}}
-function arenaRecalcPool(){arenaPool=arenaPlayers.reduce((s,p)=>s+p.bet,0);}
-function arenaJoinClick(){if(arenaState!=='waiting'||arenaUserJoined)return;const a=parseFloat(document.getElementById('arenaBetInput').value);if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}if(a>balance){showToast('❌ Insufficient');return;}balance-=a;updateGlobalBalanceUI();arenaUserJoined=true;arenaMyBet=a;localStorage.setItem('lastArenaBet',a);const myName=(TG_USER.name && TG_USER.name!=='Unknown User')?TG_USER.name:'You';arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});arenaRecalcPool();arenaRenderPlayers();arenaDraw();const btn=document.getElementById('arenaJoinBtn');btn.innerText='✅ Joined ('+a+' TON)';btn.className='arena-join-btn joined';btn.disabled=true;document.getElementById('arenaBetInput').disabled=true;showToast('Joined with '+a+' TON');arenaCheckStart();}
-function arenaClearBet(){if(arenaState!=='waiting'||arenaUserJoined)return;document.getElementById('arenaBetInput').value='0.1';localStorage.setItem('lastArenaBet','0.1');}
+function arenaCheckStart(){
+    if(arenaState!=='waiting')return;
+    if(arenaPlayers.length>=2 && !arenaTimerInterval){
+        arenaTimer=PVP_COUNTDOWN_SECONDS;
+        const badge=document.getElementById('arenaTimerBadge');
+        badge.classList.add('show');badge.classList.remove('warn');
+        badge.innerText=arenaTimer;
+        arenaTimerInterval=setInterval(()=>{
+            if(arenaState!=='waiting'){clearInterval(arenaTimerInterval);arenaTimerInterval=null;return;}
+            arenaTimer--;
+            badge.innerText=arenaTimer;
+            if(arenaTimer<=5)badge.classList.add('warn');
+            if(arenaTimer<=0){
+                clearInterval(arenaTimerInterval);arenaTimerInterval=null;
+                badge.classList.remove('show');
+                arenaDropBall();
+            }
+        },1000);
+    }
+}
+function arenaRecalcPool(){
+    arenaPool=arenaPlayers.reduce((s,p)=>s+p.bet,0);
+}
+function arenaJoinClick(){
+    if(arenaState!=='waiting'||arenaUserJoined)return;
+    const a=parseFloat(document.getElementById('arenaBetInput').value);
+    if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}
+    if(a>balance){showToast('❌ Insufficient');return;}
+    balance-=a;updateGlobalBalanceUI();
+    arenaUserJoined=true;arenaMyBet=a;localStorage.setItem('lastArenaBet',a);
+    const myName = (TG_USER.name && TG_USER.name !== 'Unknown User') ? TG_USER.name : 'You';
+    arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
+    arenaRecalcPool();arenaRenderPlayers();arenaDraw();
+    const btn=document.getElementById('arenaJoinBtn');
+    btn.innerText='✅ Joined ('+a+' TON)';btn.className='arena-join-btn joined';btn.disabled=true;
+    document.getElementById('arenaBetInput').disabled=true;
+    showToast('Joined with '+a+' TON');
+    arenaCheckStart();
+}
+function arenaClearBet(){
+    if(arenaState!=='waiting'||arenaUserJoined)return;
+    document.getElementById('arenaBetInput').value='0.1';
+    localStorage.setItem('lastArenaBet','0.1');
+}
 document.getElementById('arenaBetInput').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastArenaBet',v);});
 
-function arenaRenderPlayers(){const list=document.getElementById('arenaPlayersStrip');list.innerHTML='';if(arenaPlayers.length===0){list.innerHTML='<div class="arena-empty-strip">⏳ Waiting for players...</div>';return;}arenaPlayers.forEach(p=>{const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(1):'0';const row=document.createElement('div');row.className='arena-strip-row'+(p.isMe?' isMe':'');if(arenaLastResult&&arenaLastResult.name===p.name&&arenaLastResult.isMe===p.isMe)row.classList.add('winner');row.style.setProperty('--pc',p.color);row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;list.appendChild(row);});}
+function arenaRenderPlayers(){
+    const list=document.getElementById('arenaPlayersStrip');
+    list.innerHTML='';
+    if(arenaPlayers.length===0){
+        list.innerHTML='<div class="arena-empty-strip">⏳ Waiting for players...</div>';
+        return;
+    }
+    arenaPlayers.forEach(p=>{
+        const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(1):'0';
+        const row=document.createElement('div');
+        row.className='arena-strip-row'+(p.isMe?' isMe':'');
+        if(arenaLastResult&&arenaLastResult.name===p.name&&arenaLastResult.isMe===p.isMe)row.classList.add('winner');
+        row.style.setProperty('--pc',p.color);
+        row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;
+        list.appendChild(row);
+    });
+}
 
 function arenaDraw(){
     if(!arenaCtx)return;
@@ -1283,22 +1706,39 @@ function arenaDraw(){
     arenaCtx.clearRect(0,0,w,h);
     arenaCtx.fillStyle='#0f1119';
     arenaCtx.fillRect(0,0,w,h);
-    if(arenaPlayers.length===0){arenaCtx.fillStyle='#5a6278';arenaCtx.font='bold 13px sans-serif';arenaCtx.textAlign='center';arenaCtx.textBaseline='middle';arenaCtx.fillText('⏳ Waiting for players (need 2+)',w/2,h/2);return;}
-    const cx=w/2,cy=h;const R=Math.max(w,h)*2;
+    if(arenaPlayers.length===0){
+        arenaCtx.fillStyle='#5a6278';
+        arenaCtx.font='bold 13px sans-serif';
+        arenaCtx.textAlign='center';arenaCtx.textBaseline='middle';
+        arenaCtx.fillText('⏳ Waiting for players (need 2+)',w/2,h/2);
+        return;
+    }
+    const cx=w/2,cy=h;
+    const R=Math.max(w,h)*2;
     const sections=[];
     let a=-Math.PI;
     arenaPlayers.forEach(p=>{
-        const sh=p.bet/arenaPool;const arc=sh*Math.PI*2;
-        arenaCtx.beginPath();arenaCtx.moveTo(cx,cy);arenaCtx.arc(cx,cy,R,a,a+arc);arenaCtx.closePath();
-        arenaCtx.fillStyle=p.color;arenaCtx.fill();
-        arenaCtx.strokeStyle='rgba(0,0,0,0.35)';arenaCtx.lineWidth=3;arenaCtx.stroke();
+        const sh=p.bet/arenaPool;
+        const arc=sh*Math.PI*2;
+        arenaCtx.beginPath();
+        arenaCtx.moveTo(cx,cy);
+        arenaCtx.arc(cx,cy,R,a,a+arc);
+        arenaCtx.closePath();
+        arenaCtx.fillStyle=p.color;
+        arenaCtx.fill();
+        arenaCtx.strokeStyle='rgba(0,0,0,0.35)';
+        arenaCtx.lineWidth=3;
+        arenaCtx.stroke();
         const midAngle=a+arc/2;
         sections.push({player:p,midAngle:midAngle});
         a+=arc;
     });
     const g=arenaCtx.createLinearGradient(0,0,0,h);
-    g.addColorStop(0,'rgba(0,0,0,0.25)');g.addColorStop(0.6,'rgba(0,0,0,0.05)');g.addColorStop(1,'rgba(0,0,0,0.35)');
-    arenaCtx.fillStyle=g;arenaCtx.fillRect(0,0,w,h);
+    g.addColorStop(0,'rgba(0,0,0,0.25)');
+    g.addColorStop(0.6,'rgba(0,0,0,0.05)');
+    g.addColorStop(1,'rgba(0,0,0,0.35)');
+    arenaCtx.fillStyle=g;
+    arenaCtx.fillRect(0,0,w,h);
     sections.forEach(sec=>{
         const sinM=Math.sin(sec.midAngle);
         if(sinM >= -0.08) return;
@@ -1309,27 +1749,40 @@ function arenaDraw(){
         nx=Math.max(24,Math.min(w-24,nx));
         const p=sec.player;
         const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(0):'0';
-        let label=p.name;
-        if(label.length>8) label=label.slice(0,7)+'…';
+        let label = p.name;
+        if(label.length>8) label = label.slice(0,7)+'…';
         arenaCtx.save();
-        arenaCtx.textAlign='center';arenaCtx.textBaseline='middle';
-        arenaCtx.shadowColor='rgba(0,0,0,0.9)';arenaCtx.shadowBlur=6;
-        arenaCtx.font='bold 14px -apple-system,sans-serif';
-        arenaCtx.fillStyle='#fff';
-        arenaCtx.fillText(label,nx,targetY-9);
-        arenaCtx.font='bold 11px -apple-system,sans-serif';
+        arenaCtx.textAlign='center';
+        arenaCtx.textBaseline='middle';
+        arenaCtx.shadowColor='rgba(0,0,0,0.9)';
+        arenaCtx.shadowBlur=6;
+        arenaCtx.font='bold 14px -apple-system,BlinkMacSystemFont,sans-serif';
+        arenaCtx.fillStyle='#ffffff';
+        arenaCtx.fillText(label, nx, targetY-9);
+        arenaCtx.font='bold 11px -apple-system,BlinkMacSystemFont,sans-serif';
         arenaCtx.fillStyle='rgba(255,255,255,0.9)';
-        arenaCtx.fillText(pct+'%',nx,targetY+9);
+        arenaCtx.fillText(pct+'%', nx, targetY+9);
         arenaCtx.restore();
     });
     if(arenaBall.active){
-        arenaCtx.beginPath();arenaCtx.arc(arenaBall.x,arenaBall.y,20,0,Math.PI*2);
+        arenaCtx.beginPath();
+        arenaCtx.arc(arenaBall.x,arenaBall.y,20,0,Math.PI*2);
         const rg=arenaCtx.createRadialGradient(arenaBall.x,arenaBall.y,2,arenaBall.x,arenaBall.y,20);
-        rg.addColorStop(0,'rgba(255,255,255,0.5)');rg.addColorStop(1,'rgba(255,255,255,0)');
-        arenaCtx.fillStyle=rg;arenaCtx.fill();
-        arenaCtx.beginPath();arenaCtx.arc(arenaBall.x,arenaBall.y,14,0,Math.PI*2);
-        arenaCtx.fillStyle='#0a0a0a';arenaCtx.shadowBlur=18;arenaCtx.shadowColor='rgba(0,0,0,0.9)';arenaCtx.fill();arenaCtx.shadowBlur=0;
-        arenaCtx.beginPath();arenaCtx.arc(arenaBall.x-4,arenaBall.y-4,4,0,Math.PI*2);arenaCtx.fillStyle='rgba(255,255,255,0.6)';arenaCtx.fill();
+        rg.addColorStop(0,'rgba(255,255,255,0.5)');
+        rg.addColorStop(1,'rgba(255,255,255,0)');
+        arenaCtx.fillStyle=rg;
+        arenaCtx.fill();
+        arenaCtx.beginPath();
+        arenaCtx.arc(arenaBall.x,arenaBall.y,14,0,Math.PI*2);
+        arenaCtx.fillStyle='#0a0a0a';
+        arenaCtx.shadowBlur=18;
+        arenaCtx.shadowColor='rgba(0,0,0,0.9)';
+        arenaCtx.fill();
+        arenaCtx.shadowBlur=0;
+        arenaCtx.beginPath();
+        arenaCtx.arc(arenaBall.x-4,arenaBall.y-4,4,0,Math.PI*2);
+        arenaCtx.fillStyle='rgba(255,255,255,0.6)';
+        arenaCtx.fill();
     }
 }
 
@@ -1365,11 +1818,12 @@ function arenaDropBall(){
         lastTime = now;
         if (elapsed < DURATION_MS) {
             const f = dt / 16;
-            arenaBall.x += vx * f; arenaBall.y += vy * f;
-            if (arenaBall.x < radius){arenaBall.x = radius; vx = Math.abs(vx);}
-            if (arenaBall.x > w - radius){arenaBall.x = w - radius; vx = -Math.abs(vx);}
-            if (arenaBall.y < radius){arenaBall.y = radius; vy = Math.abs(vy);}
-            if (arenaBall.y > h - radius){arenaBall.y = h - radius; vy = -Math.abs(vy);}
+            arenaBall.x += vx * f;
+            arenaBall.y += vy * f;
+            if (arenaBall.x < radius)        { arenaBall.x = radius;        vx =  Math.abs(vx); }
+            if (arenaBall.x > w - radius)    { arenaBall.x = w - radius;    vx = -Math.abs(vx); }
+            if (arenaBall.y < radius)        { arenaBall.y = radius;        vy =  Math.abs(vy); }
+            if (arenaBall.y > h - radius)    { arenaBall.y = h - radius;    vy = -Math.abs(vy); }
             arenaDraw();
             arenaAnimFrame = requestAnimationFrame(anim);
         } else {
@@ -1395,39 +1849,24 @@ function arenaFinishSpin(winner){
                 resolveLoss();
             }else if(winner){
                 showToast('🎯 '+winner.name+' won '+arenaPool.toFixed(2)+' TON');
-                // واکنش بات برنده
-                const bot=BOT_DATABASE.find(x=>x.name===winner.name);
-                if(bot){bot.balance+=arenaPool;bot.streak=Math.max(0,bot.streak)+1;botSay(bot,'win');}
-                // واکنش بات‌های بازنده
-                arenaPlayers.forEach(p=>{
-                    if(p.isMe||p.name===winner.name)return;
-                    const b=BOT_DATABASE.find(x=>x.name===p.name);
-                    if(b){b.streak=Math.min(0,b.streak)-1;if(Math.random()<0.3)botSay(b,'lose');}
-                });
             }
+            // واکنش بات برنده
+            if(winner){
+                const bot=BOT_DATABASE.find(x=>x.name===winner.name);
+                if(bot){bot.balance+=arenaPool;bot.streak=Math.max(0,bot.streak)+1;if(Math.random()<0.6)botSay(bot,'win');}
+            }
+            // واکنش بات‌های بازنده
+            arenaPlayers.forEach(p=>{
+                if(p.isMe||p.name===winner.name)return;
+                const b=BOT_DATABASE.find(x=>x.name===p.name);
+                if(b){b.streak=Math.min(0,b.streak)-1;if(Math.random()<0.3)botSay(b,'lose');}
+            });
         }
     },400);
-    setTimeout(()=>{arenaStartRound();},2500);
+    setTimeout(()=>{
+        arenaStartRound();
+    },2500);
 }
-
-/* ============ PVP ============ */
-window.pvpInitialized=false;
-const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#5f27cd','#ff6b6b','#00d2d3','#c56cf0'];
-let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pvpTimerInterval=null,pvpPointerAngle=-Math.PI/2,pvpGameNum=67842;
-let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null;
-function pvpInit(){pvpCanvas=document.getElementById('pvpCanvas');pvpCtx=pvpCanvas.getContext('2d');window.addEventListener('resize',resizePvpCanvas);resizePvpCanvas();pvpStartRound();}
-function resizePvpCanvas(){if(!pvpCanvas)return;const w=pvpCanvas.parentElement;const aw=w.clientWidth-40;const ah=w.clientHeight-20;const s=Math.max(220,Math.min(aw,ah,340));const dpr=window.devicePixelRatio||1;pvpSize=s;pvpCanvas.width=s*dpr;pvpCanvas.height=s*dpr;pvpCanvas.style.width=s+'px';pvpCanvas.style.height=s+'px';pvpCtx.setTransform(dpr,0,0,dpr,0,0);pvpDraw();}
-function pvpScheduleBots(){const count=2+Math.floor(Math.random()*3);const used=new Set();for(let i=0;i<count;i++){let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;const delay=800+Math.random()*(PVP_COUNTDOWN_SECONDS*1000-2500);setTimeout(()=>{if(pvpState!=='waiting')return;if(Math.random()>persona.joinChance)return;const bet=smartBotBet(bot);const color=PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];pvpPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});pvpRecalcPool();pvpRenderPlayers();pvpDraw();if(Math.random()<persona.chatRate)botSay(bot,'join');pvpCheckStart();},delay);}}
-function pvpStartRound(){pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;pvpPointerAngle=-Math.PI/2;pvpLastResult=null;pvpGameNum=Math.floor(60000+Math.random()*10000);document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;pvpPlayers=[];pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='Join the Battle';btn.className='join-battle-btn';btn.disabled=false;document.getElementById('pvpBetInput').disabled=false;document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||0.1;pvpScheduleBots();clearInterval(pvpTimerInterval);pvpTimerInterval=null;document.getElementById('pvpTimer').innerText='--:--';}
-function pvpCheckStart(){if(pvpState!=='waiting')return;if(pvpPlayers.length>=2 && !pvpTimerInterval){pvpTimer=PVP_COUNTDOWN_SECONDS;document.getElementById('pvpTimer').innerText='00:'+String(pvpTimer).padStart(2,'0');pvpTimerInterval=setInterval(()=>{if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}pvpTimer--;document.getElementById('pvpTimer').innerText='00:'+String(Math.max(0,pvpTimer)).padStart(2,'0');if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpTimerInterval=null;pvpSpin();}},1000);}}
-function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length;}
-function pvpJoinClick(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=parseFloat(document.getElementById('pvpBetInput').value);if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}if(a>balance){showToast('❌ Insufficient');return;}balance-=a;updateGlobalBalanceUI();pvpUserJoined=true;pvpMyBet=a;localStorage.setItem('lastPvpBet',a);pvpPlayers.push({name:'You',avatar:'👤',bet:a,color:'#ffcc00',isMe:true});pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='✅ Joined ('+a+' TON)';btn.className='join-battle-btn joined';btn.disabled=true;document.getElementById('pvpBetInput').disabled=true;showToast('Joined with '+a+' TON');pvpCheckStart();}
-document.getElementById('pvpBetInput').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastPvpBet',v);});
-function pvpRenderPlayers(){const r=document.getElementById('pvpPlayersRow');r.innerHTML='';if(pvpPlayers.length===0){r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>';return;}pvpPlayers.forEach(p=>{const pct=pvpPool>0?((p.bet/pvpPool)*100).toFixed(1):0;const c=document.createElement('div');c.className='pvp-pcard'+(p.isMe?' isMe':'');if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe)c.classList.add('winner');c.innerHTML='<div class="pvp-pcard-top" style="background:'+p.color+'"></div><div class="pvp-pav" style="border-color:'+p.color+'">'+p.avatar+'</div><div class="pvp-pname">'+p.name+'</div><div class="pvp-ppct" style="color:'+p.color+'">'+pct+'%</div><div class="pvp-pbet">'+p.bet.toFixed(2)+' TON</div>';r.appendChild(c);});}
-function pvpDraw(){if(!pvpCtx)return;const s=pvpSize,cx=s/2,cy=s/2,R=s/2-6,ir=s*0.27;pvpCtx.clearRect(0,0,s,s);if(pvpPlayers.length===0){pvpCtx.beginPath();pvpCtx.arc(cx,cy,R,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#0f1119';pvpCtx.fill();return;}let a=-Math.PI/2;pvpPlayers.forEach(p=>{const sh=p.bet/pvpPool,arc=sh*Math.PI*2;pvpCtx.beginPath();pvpCtx.moveTo(cx,cy);pvpCtx.arc(cx,cy,R,a,a+arc);pvpCtx.closePath();pvpCtx.fillStyle=p.color;pvpCtx.fill();pvpCtx.strokeStyle='rgba(0,0,0,0.35)';pvpCtx.lineWidth=2;pvpCtx.stroke();a+=arc;});pvpCtx.beginPath();pvpCtx.arc(cx,cy,ir,0,Math.PI*2);pvpCtx.fillStyle='#1a1d2e';pvpCtx.fill();const px=cx+Math.cos(pvpPointerAngle)*R,py=cy+Math.sin(pvpPointerAngle)*R;pvpCtx.beginPath();pvpCtx.moveTo(cx+Math.cos(pvpPointerAngle)*ir,cy+Math.sin(pvpPointerAngle)*ir);pvpCtx.lineTo(px,py);pvpCtx.strokeStyle='#ffcc00';pvpCtx.lineWidth=5;pvpCtx.lineCap='round';pvpCtx.shadowBlur=18;pvpCtx.shadowColor='#ffcc00';pvpCtx.stroke();pvpCtx.shadowBlur=0;}
-function pvpDetermineWinner(){let a=pvpPointerAngle+Math.PI/2;a=((a%(Math.PI*2))+Math.PI*2)%(Math.PI*2);let cum=0;for(let p of pvpPlayers){const arc=(p.bet/pvpPool)*Math.PI*2;if(a>=cum&&a<cum+arc)return p;cum+=arc;}return pvpPlayers[pvpPlayers.length-1];}
-function pvpSpin(){if(pvpState!=='waiting')return;pvpState='spinning';const fs=6+Math.floor(Math.random()*3);const fo=Math.random()*Math.PI*2;const sa=pvpPointerAngle;const ta=sa+fs*Math.PI*2+fo;const dur=4200;const st=performance.now();function fr(now){const t=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-t,3.2);pvpPointerAngle=sa+(ta-sa)*e;pvpDraw();if(t<1)requestAnimationFrame(fr);else pvpFinishSpin();}requestAnimationFrame(fr);}
-function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastResult=w;pvpRenderPlayers();if(w&&w.isMe){const win=pvpPool;resolveWin(win);document.getElementById('pvpLast').innerText='+'+win.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='100%';showToast('🏆 You won '+win.toFixed(2)+' TON!','win');}else{if(pvpUserJoined){showToast('😔 Lost','lose');resolveLoss();document.getElementById('pvpLast').innerText='-'+pvpMyBet.toFixed(2)+' TON';document.getElementById('pvpLastPct').innerText='0%';}}setTimeout(()=>pvpStartRound(),3200);}
 </script>
 </body>
 </html>
