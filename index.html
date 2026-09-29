@@ -791,6 +791,14 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 <div class="toast" id="toast"></div>
 <div class="live-feed" id="liveFeed"></div>
 
+<div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px">
+    <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div>
+    <div style="padding:0 16px">
+        <input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;box-sizing:border-box">
+        <div id="adminUsersList"></div>
+    </div>
+</div>
+
 <script>
 const BOTS_ENABLED = true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
@@ -1119,15 +1127,43 @@ function openReferral(){document.querySelectorAll('.screen').forEach(s=>s.classL
 function copyRefLink(){const i=document.getElementById('refLinkInput');i.select();i.setSelectionRange(0,99999);navigator.clipboard.writeText(i.value);showToast('✅ Copied!','win');}
 function shareRefLink(){const l=getReferralLink();window.open(`https://t.me/share/url?url=${encodeURIComponent(l)}`,'_blank');}
 
+/* ===== Admin Panel ===== */
 const ADMIN_ID = '6151360205';
+let ADMIN_USERS = {};
+
 function openAdminPanel(){
     if(TG_USER.id !== ADMIN_ID) return;
-    const url = 'https://clanking-slang-undamaged.ngrok-free.dev/admin';
-    if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openLink){
-        window.Telegram.WebApp.openLink(url);
-    } else {
-        window.open(url, '_blank');
-    }
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('adminScreen').classList.remove('hidden');
+    loadAdminUsers();
+}
+function loadAdminUsers(){
+    fetch(`${API_BASE_URL}/admin/users?password=parham1234`,{headers:{'ngrok-skip-browser-warning':'true'}})
+        .then(r=>r.json()).then(d=>{ADMIN_USERS=d.users||{};renderAdminUsers();})
+        .catch(e=>showToast('❌ Failed','lose'));
+}
+function renderAdminUsers(){
+    const q=(document.getElementById('adminSearch').value||'').toLowerCase();
+    const list=document.getElementById('adminUsersList');
+    list.innerHTML='';
+    const ids=Object.keys(ADMIN_USERS).filter(id=>{
+        if(!q) return true;
+        const u=ADMIN_USERS[id];
+        return id.includes(q)||(u.name||'').toLowerCase().includes(q);
+    });
+    if(ids.length===0){list.innerHTML='<div style="text-align:center;padding:40px;color:#7a8299">No users</div>';return;}
+    ids.forEach(id=>{
+        const u=ADMIN_USERS[id];
+        const el=document.createElement('div');
+        el.style.cssText='background:#12141f;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:10px';
+        el.innerHTML='<div style="display:flex;justify-content:space-between"><div><b>'+(u.name||'User')+'</b><div style="font-size:11px;color:#7a8299">ID: '+id+' · Ref: '+((u.referrals||[]).length)+'</div></div><div style="color:#2ff068;font-weight:900">'+((u.balance||0).toFixed(2))+' TON</div></div><div style="display:flex;gap:6px;margin-top:10px"><input type="number" id="adm_'+id+'" value="10" step="0.1" style="flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#0a0d14;color:#fff;text-align:center"><button onclick="adminMod(\''+id+'\',\'add\')" style="background:#2ff068;color:#0a0d14;border:none;padding:8px 12px;border-radius:8px;font-weight:900">+</button><button onclick="adminMod(\''+id+'\',\'subtract\')" style="background:#ff4444;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-weight:900">−</button><button onclick="adminMod(\''+id+'\',\'set\')" style="background:#0098ea;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-weight:900">Set</button></div>';
+        list.appendChild(el);
+    });
+}
+function adminMod(userId,action){
+    const amount=document.getElementById('adm_'+userId).value;
+    fetch(`${API_BASE_URL}/admin/balance`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({password:'parham1234',userId,amount,action})})
+        .then(r=>r.json()).then(d=>{if(d.ok){showToast('✅ '+d.balance.toFixed(2)+' TON','win');loadAdminUsers();}else showToast('❌ '+d.error,'lose');});
 }
 function showAdminButton(){
     const btn = document.getElementById('adminBtn');
@@ -2003,4 +2039,4 @@ function arenaFinishSpin(winner){
 }
 </script>
 </body>
-                                       </html>
+    </html>
