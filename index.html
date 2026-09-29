@@ -806,7 +806,6 @@ const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;
 const REFERRAL_REWARD=0.01;
 
-/* Bot bet: 80% -> 0.1 to 0.4, 20% -> 0.4 to 4 */
 function getRandomBotBet(){
     const r=Math.random();
     if(r<0.80) return +(0.1 + Math.random()*0.3).toFixed(2);
@@ -1577,7 +1576,7 @@ function arenaJoinClick(){
     if(a>balance){showToast('❌ Insufficient');return;}
     balance-=a;updateGlobalBalanceUI();
     arenaUserJoined=true;arenaMyBet=a;localStorage.setItem('lastArenaBet',a);
-    // ← استفاده از اسم واقعی کاربر تلگرام
+    // استفاده از اسم واقعی کاربر تلگرام
     const myName = (TG_USER.name && TG_USER.name !== 'Unknown User') ? TG_USER.name : 'You';
     arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
     arenaRecalcPool();arenaRenderPlayers();arenaDraw();
@@ -1607,12 +1606,12 @@ function arenaRenderPlayers(){
         row.className='arena-strip-row'+(p.isMe?' isMe':'');
         if(arenaLastResult&&arenaLastResult.name===p.name&&arenaLastResult.isMe===p.isMe)row.classList.add('winner');
         row.style.setProperty('--pc',p.color);
-        row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${p.isMe?'You':p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;
+        row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;
         list.appendChild(row);
     });
 }
 
-/* ---------- ARENA DRAW (با اسم روی هر بخش) ---------- */
+/* ---------- ARENA DRAW: با اسم روی هر بخش رنگی ---------- */
 function arenaDraw(){
     if(!arenaCtx)return;
     const w=arenaCW,h=arenaCH;
@@ -1631,7 +1630,7 @@ function arenaDraw(){
     // Pie از پایین-مرکز با شعاع بزرگ -> به‌صورت نوارهای عمودی دیده می‌شود
     const cx=w/2,cy=h;
     const R=Math.max(w,h)*2;
-    const sections=[]; // ذخیره اطلاعات بخش‌ها برای رسم اسم بعد از گرادیان
+    const sections=[]; // ذخیره اطلاعات برای رسم اسم
     let a=-Math.PI;
     arenaPlayers.forEach(p=>{
         const sh=p.bet/arenaPool;
@@ -1662,20 +1661,19 @@ function arenaDraw(){
     // ==== رسم اسم روی هر بخش ====
     sections.forEach(sec=>{
         const sinM=Math.sin(sec.midAngle);
-        // فقط بخش‌هایی که در کادر دید قرار دارند (نیمه بالای دایره)
+        // فقط بخش‌هایی که در کادر دید قرار دارند
         if(sinM >= -0.08) return;
         
         // نقطه‌ای روی پرتو که در ارتفاع h*0.6 کانواس قرار می‌گیرد
         const targetY=h*0.6;
-        const t=(targetY-h)/sinM; // sinM منفی => t مثبت
+        const t=(targetY-h)/sinM;
         if(t<=0) return;
         let nx=cx+Math.cos(sec.midAngle)*t;
-        // کلمپ کردن داخل کادر
         nx=Math.max(24,Math.min(w-24,nx));
         
         const p=sec.player;
         const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(0):'0';
-        let label = p.isMe ? 'You' : p.name;
+        let label = p.name;
         if(label.length>8) label = label.slice(0,7)+'…';
         
         arenaCtx.save();
@@ -1696,6 +1694,16 @@ function arenaDraw(){
     
     // ==== توپ ====
     if(arenaBall.active){
+        // افکت درخشش
+        arenaCtx.beginPath();
+        arenaCtx.arc(arenaBall.x,arenaBall.y,20,0,Math.PI*2);
+        const rg=arenaCtx.createRadialGradient(arenaBall.x,arenaBall.y,2,arenaBall.x,arenaBall.y,20);
+        rg.addColorStop(0,'rgba(255,255,255,0.5)');
+        rg.addColorStop(1,'rgba(255,255,255,0)');
+        arenaCtx.fillStyle=rg;
+        arenaCtx.fill();
+        
+        // توپ
         arenaCtx.beginPath();
         arenaCtx.arc(arenaBall.x,arenaBall.y,14,0,Math.PI*2);
         arenaCtx.fillStyle='#0a0a0a';
@@ -1703,103 +1711,77 @@ function arenaDraw(){
         arenaCtx.shadowColor='rgba(0,0,0,0.9)';
         arenaCtx.fill();
         arenaCtx.shadowBlur=0;
+        
+        // براقیت
         arenaCtx.beginPath();
         arenaCtx.arc(arenaBall.x-4,arenaBall.y-4,4,0,Math.PI*2);
-        arenaCtx.fillStyle='rgba(255,255,255,0.55)';
+        arenaCtx.fillStyle='rgba(255,255,255,0.6)';
         arenaCtx.fill();
     }
 }
 
-function arenaDetermineWinner(){
-    const roll=Math.random();
-    let cum=0;
-    for(let p of arenaPlayers){
-        cum+=p.bet/arenaPool;
-        if(roll<=cum)return p;
+/* ---------- پیدا کردن برنده بر اساس موقعیت (x, y) توپ ---------- */
+function arenaDetermineWinnerAtPoint(x, y){
+    if (arenaPlayers.length === 0 || arenaPool <= 0) return null;
+    const cx = arenaCW / 2, cy = arenaCH;
+    // زاویه نقطه نسبت به مرکز (پایین وسط)
+    let angle = Math.atan2(y - cy, x - cx); // در بازه [-π, π]
+    // پیمایش بخش‌ها (از -π شروع می‌شود)
+    let cum = -Math.PI;
+    for (let p of arenaPlayers) {
+        const arc = (p.bet / arenaPool) * Math.PI * 2;
+        if (angle >= cum && angle < cum + arc) return p;
+        cum += arc;
     }
-    return arenaPlayers[arenaPlayers.length-1];
+    return arenaPlayers[arenaPlayers.length - 1];
 }
 
-/* ---------- ARENA DROP BALL: ۴ ثانیه گشتن و کوبیدن به دیواره‌ها + حرکت نرم به برنده ---------- */
+/* ---------- ARENA DROP BALL: شلیک رندوم + ۴ ثانیه گشتن + توقف روی بخش برنده ---------- */
 function arenaDropBall(){
     if(arenaState!=='waiting')return;
     arenaState='dropping';
-    const winner=arenaDetermineWinner();
-    const w=arenaCW,h=arenaCH;
-    const radius=14;
+    const w = arenaCW, h = arenaCH;
+    const radius = 14;
     
-    // پیدا کردن زاویه مرکز بخش برنده (pie از -π شروع می‌شود)
-    const winnerIdx=arenaPlayers.indexOf(winner);
-    let cum=0;
-    for(let i=0;i<winnerIdx;i++){cum+=arenaPlayers[i].bet/arenaPool;}
-    cum+=arenaPlayers[winnerIdx].bet/arenaPool/2;
-    const winnerAngle=-Math.PI+cum*Math.PI*2;
+    // ۱) شلیک از موقعیت رندوم روی صفحه (با فاصله از لبه‌ها)
+    const startX = radius + 20 + Math.random() * (w - (radius + 20) * 2);
+    const startY = radius + 20 + Math.random() * (h - (radius + 20) * 2);
     
-    // نقطه هدف نهایی (روی زمین، داخل بخش برنده)
-    const sinA=Math.sin(winnerAngle),cosA=Math.cos(winnerAngle);
-    const targetY=h-radius-6;
-    let targetX;
-    if(Math.abs(sinA)>0.15){
-        const R2=(targetY-h)/sinA;
-        targetX=w/2+cosA*R2;
-    }else{
-        targetX=w/2+(cosA>0?w:-w);
-    }
-    targetX=Math.max(radius+4,Math.min(w-radius-4,targetX));
+    // ۲) سرعت اولیه رندوم (مورب تا خوب بچرخه)
+    let vx = (Math.random() < 0.5 ? -1 : 1) * (3.5 + Math.random() * 3.5);
+    let vy = (Math.random() < 0.5 ? -1 : 1) * (3.5 + Math.random() * 3.5);
     
-    // شروع توپ از بالا
-    arenaBall={x:w/2,y:radius+10,active:true};
+    arenaBall = {x: startX, y: startY, active: true};
     
-    // سرعت اولیه تصادفی (افقی و عمودی)
-    let vx=(Math.random()<0.5?-1:1)*(4+Math.random()*4);
-    let vy=3+Math.random()*4;
-    
-    const BOUNCE_MS=4000;   // ۴ ثانیه گشتن و کوبیدن به دیواره‌ها
-    const EASE_MS=600;      // ۰.۶ ثانیه رفتن نرم به سمت برنده
-    const TOTAL_MS=BOUNCE_MS+EASE_MS;
-    const start=performance.now();
-    
-    let lastX=arenaBall.x,lastY=arenaBall.y;
-    let lastTime=start;
+    const DURATION_MS = 4000; // ۴ ثانیه بچرخه
+    const start = performance.now();
+    let lastTime = start;
     
     function anim(now){
-        const elapsed=now-start;
-        const dt=Math.min(50,now-lastTime);
-        lastTime=now;
+        const elapsed = now - start;
+        const dt = Math.min(50, now - lastTime);
+        lastTime = now;
         
-        if(elapsed<BOUNCE_MS){
-            // فاز ۱: حرکت فیزیکی و برخورد با دیواره‌ها
-            const f=dt/16;
-            arenaBall.x+=vx*f;
-            arenaBall.y+=vy*f;
+        if (elapsed < DURATION_MS) {
+            const f = dt / 16;
+            arenaBall.x += vx * f;
+            arenaBall.y += vy * f;
             
             // برخورد با ۴ دیواره (چپ، راست، بالا، پایین)
-            if(arenaBall.x<radius){arenaBall.x=radius;vx=Math.abs(vx);}
-            if(arenaBall.x>w-radius){arenaBall.x=w-radius;vx=-Math.abs(vx);}
-            if(arenaBall.y<radius){arenaBall.y=radius;vy=Math.abs(vy);}
-            if(arenaBall.y>h-radius){arenaBall.y=h-radius;vy=-Math.abs(vy);}
+            if (arenaBall.x < radius)        { arenaBall.x = radius;        vx =  Math.abs(vx); }
+            if (arenaBall.x > w - radius)    { arenaBall.x = w - radius;    vx = -Math.abs(vx); }
+            if (arenaBall.y < radius)        { arenaBall.y = radius;        vy =  Math.abs(vy); }
+            if (arenaBall.y > h - radius)    { arenaBall.y = h - radius;    vy = -Math.abs(vy); }
             
-            lastX=arenaBall.x;
-            lastY=arenaBall.y;
-        }else if(elapsed<TOTAL_MS){
-            // فاز ۲: حرکت نرم به سمت بخش برنده
-            const t=(elapsed-BOUNCE_MS)/EASE_MS;
-            const e=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-            arenaBall.x=lastX+(targetX-lastX)*e;
-            arenaBall.y=lastY+(targetY-lastY)*e;
-        }else{
-            // پایان انیمیشن
-            arenaBall.x=targetX;
-            arenaBall.y=targetY;
             arenaDraw();
+            arenaAnimFrame = requestAnimationFrame(anim);
+        } else {
+            // ⏱ ۴ ثانیه تمام شد - برنده بر اساس موقعیت فعلی توپ
+            const winner = arenaDetermineWinnerAtPoint(arenaBall.x, arenaBall.y);
             arenaFinishSpin(winner);
-            return;
         }
-        
-        arenaDraw();
-        arenaAnimFrame=requestAnimationFrame(anim);
     }
-    arenaAnimFrame=requestAnimationFrame(anim);
+    arenaAnimFrame = requestAnimationFrame(anim);
 }
 
 /* ---------- ARENA FINISH: سریع ریست شود تا کاربر بتونه دوباره وارد شه ---------- */
@@ -1808,7 +1790,7 @@ function arenaFinishSpin(winner){
     arenaLastResult=winner;
     arenaRenderPlayers();
     
-    // نتیجه
+    // نمایش نتیجه
     setTimeout(()=>{
         if(winner&&winner.isMe){
             const win=arenaPool;
@@ -1818,7 +1800,7 @@ function arenaFinishSpin(winner){
             if(arenaUserJoined){
                 showToast('😔 Lost '+arenaMyBet.toFixed(2)+' TON','lose');
                 resolveLoss();
-            }else{
+            }else if(winner){
                 showToast('🎯 '+winner.name+' won '+arenaPool.toFixed(2)+' TON');
             }
         }
@@ -1831,4 +1813,4 @@ function arenaFinishSpin(winner){
 }
 </script>
 </body>
-    </html>
+</html>
