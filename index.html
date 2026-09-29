@@ -1088,13 +1088,13 @@ function updateReferralUI(){
     if(linkInput) linkInput.value = getReferralLink();
     const myId = TG_USER.id;
     if(!myId) return;
-    fetch(`${API_BASE_URL}/referrals?user_id=${myId}`, {
+    fetch(`${API_BASE_URL}/referrals/${myId}`, {
         headers: { 'ngrok-skip-browser-warning': 'true' }
     })
         .then(res => res.json())
         .then(data => {
             const referrals = data.referrals || [];
-            const earned = data.total_earned || 0;
+            const earned = data.earned || 0;
             document.getElementById('refCount').innerText = referrals.length;
             document.getElementById('refEarned').innerText = earned.toFixed(2);
             const listEl = document.getElementById('refList');
