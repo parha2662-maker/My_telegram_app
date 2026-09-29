@@ -350,10 +350,11 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .arena-strip-bet{font-size:13px;font-weight:900;color:#fff;flex-shrink:0;min-width:60px;text-align:right}
 .arena-empty-strip{padding:14px;text-align:center;color:#5a6278;font-size:12px;font-weight:700}
 .arena-bottom{padding:10px 14px 14px;flex-shrink:0;background:#0a0b10;border-top:1px solid #1a1d2e}
-.arena-input-row{display:flex;align-items:center;gap:10px;background:#1a1d2e;border:2px solid #2a2e42;border-radius:14px;padding:4px 14px;margin-bottom:10px}
+.arena-input-row{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:2px solid #2a2e42;border-radius:14px;padding:4px 10px;margin-bottom:10px}
 .arena-input-row .ton-icon{width:22px;height:22px;font-size:11px}
 .arena-bet-input{flex:1;background:transparent;border:none;color:#fff;font-size:17px;font-weight:900;outline:none;font-family:inherit;min-width:0;padding:10px 0}
 .arena-clear-btn{width:30px;height:30px;border-radius:50%;background:#2a2e42;border:none;color:#8a90a6;font-size:13px;cursor:pointer;font-family:inherit;flex-shrink:0}
+.arena-gift-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#ffcc00,#ff9d00);border:none;color:#0a0d14;font-size:18px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:900}
 .arena-join-btn{width:100%;padding:16px;background:linear-gradient(135deg,#9b5cff,#7c3aed);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit}
 .arena-join-btn:disabled{background:#232735;color:#5a6278;cursor:not-allowed}
 .arena-join-btn.joined{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
@@ -523,7 +524,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 
 <div id="giftPickerModal" class="hidden">
     <div class="gp-content">
-        <div class="gp-head"><div class="gp-title">🎁 Pick a Gift to Play</div><button class="gp-close" onclick="closeGiftPicker()">✕</button></div>
+        <div class="gp-head"><div class="gp-title" id="giftPickerTitle">🎁 Pick a Gift to Play</div><button class="gp-close" onclick="closeGiftPicker()">✕</button></div>
         <div class="gp-list" id="giftPickerList"></div>
     </div>
 </div>
@@ -770,6 +771,7 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
         <div class="arena-input-row">
             <span class="ton-icon">◈</span>
             <input type="number" id="arenaBetInput" class="arena-bet-input" value="0.1" min="0.1" step="0.1" inputmode="decimal">
+            <button class="arena-gift-btn" onclick="openArenaGiftPicker()" title="Use Gift">🎁</button>
             <button class="arena-clear-btn" onclick="arenaClearBet()">✕</button>
         </div>
         <button class="arena-join-btn" id="arenaJoinBtn" onclick="arenaJoinClick()">Join Arena</button>
@@ -868,6 +870,12 @@ function smartBotCashout(bot) {
     return target;
 }
 
+/* ===== انتخاب رندوم گیفت برای بات‌ها ===== */
+function getRandomGiftEmoji() {
+    const randomGift = GIFT_DATABASE[Math.floor(Math.random() * 30)];
+    return randomGift.emoji;
+}
+
 function spawnLiveWin(){
     if(!BOTS_ENABLED) return;
     const bot=getRandomBot();
@@ -906,6 +914,7 @@ setTimeout(()=>{loadTelegramUser();updateReferralUI();},800);
 let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount=0.1;
 let betFromGift=false;
+let giftPickerMode='default';
 
 const GIFT_DATABASE=[
     {id:'happy_brownie',name:'Happy Brownie',emoji:'💩',value:4.14,tier:'common'},
@@ -985,7 +994,10 @@ function getGiftByUid(uid){return getUserGifts().find(g=>String(g.uid)===String(
 function classifyTier(v){if(v<10)return'common';if(v<30)return'uncommon';if(v<100)return'rare';if(v<500)return'epic';if(v<1500)return'legendary';return'mythic';}
 function pickClosestGiftTemplate(value){let closest=GIFT_DATABASE[0],minDiff=Infinity;GIFT_DATABASE.forEach(g=>{const d=Math.abs(g.value-value);if(d<minDiff){minDiff=d;closest=g;}});return closest;}
 
+/* ===== Gift Picker عمومی ===== */
 function openGiftPicker(){
+    giftPickerMode='default';
+    document.getElementById('giftPickerTitle').innerText='🎁 Pick a Gift to Play';
     const gifts=getUserGifts();const list=document.getElementById('giftPickerList');list.innerHTML='';
     if(gifts.length===0){list.innerHTML='<div class="gp-empty" style="grid-column:1/-1;"><div style="font-size:50px;margin-bottom:10px;">🎒</div>No gifts yet!</div>';document.getElementById('giftPickerModal').classList.remove('hidden');return;}
     gifts.sort((a,b)=>b.value-a.value).forEach(gift=>{
@@ -995,7 +1007,30 @@ function openGiftPicker(){
     });
     document.getElementById('giftPickerModal').classList.remove('hidden');
 }
+
+/* ===== Gift Picker مخصوص Arena ===== */
+function openArenaGiftPicker(){
+    giftPickerMode='arena';
+    document.getElementById('giftPickerTitle').innerText='🎁 Arena Gift';
+    const gifts=getUserGifts();const list=document.getElementById('giftPickerList');list.innerHTML='';
+    if(gifts.length===0){list.innerHTML='<div class="gp-empty" style="grid-column:1/-1;"><div style="font-size:50px;margin-bottom:10px;">🎒</div>No gifts yet!</div>';document.getElementById('giftPickerModal').classList.remove('hidden');return;}
+    gifts.sort((a,b)=>b.value-a.value).forEach(gift=>{
+        const item=document.createElement('div');item.className='gp-item';
+        item.innerHTML=`<div class="gp-item-val">${gift.value.toFixed(2)} ◈</div><div class="gp-item-emoji">${gift.emoji}</div><div class="gp-item-name">${gift.name}</div>`;
+        item.onclick=()=>{
+            document.getElementById('arenaBetInput').value = gift.value.toFixed(2);
+            arenaBetFromGift = true;
+            arenaGiftUsed = gift;
+            closeGiftPicker();
+            showToast(`🎁 ${gift.emoji} ${gift.name} ready!`,'win');
+        };
+        list.appendChild(item);
+    });
+    document.getElementById('giftPickerModal').classList.remove('hidden');
+}
+
 function closeGiftPicker(){document.getElementById('giftPickerModal').classList.add('hidden');}
+
 function selectGiftForBet(gift){
     removeGiftFromInventory(gift.uid);balance+=gift.value;updateGlobalBalanceUI();betFromGift=true;
     if(document.getElementById('betInput'))document.getElementById('betInput').value=gift.value.toFixed(2);
@@ -1004,6 +1039,7 @@ function selectGiftForBet(gift){
     if(document.getElementById('soloBetInput')){document.getElementById('soloBetInput').value=gift.value.toFixed(2);soloBetAmount=gift.value;}
     closeGiftPicker();showToast(`🎁 ${gift.emoji} ${gift.name} is in play!`,'win');
 }
+
 function resolveWin(winnings){
     let resultText='';
     if(betFromGift||winnings>=4){
@@ -1520,6 +1556,8 @@ let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SE
 let arenaCanvas=null,arenaCtx=null,arenaCW=320,arenaCH=340,arenaMyBet=0,arenaLastResult=null;
 let arenaBall={x:0,y:0,active:false};
 let arenaAnimFrame=null;
+let arenaBetFromGift = false;
+let arenaGiftUsed = null;
 
 function arenaInit(){
     arenaCanvas=document.getElementById('arenaCanvas');
@@ -1552,7 +1590,7 @@ function resizeArenaCanvas(){
     arenaDraw();
 }
 
-/* ===== بات‌های اضافی وقتی شرط کاربر بالاست ===== */
+/* ===== بات‌های اضافی ===== */
 function spawnExtraBots(count) {
     const used = new Set(arenaPlayers.map(p => p.name));
     for (let i = 0; i < count; i++) {
@@ -1563,14 +1601,16 @@ function spawnExtraBots(count) {
         const bet = smartBotBet(bot);
         bot.balance -= bet;
         const color = ARENA_COLORS[arenaPlayers.length % ARENA_COLORS.length];
-        arenaPlayers.push({name:bot.name, avatar:bot.avatar, bet, color, isMe:false});
+        let giftEmoji = '';
+        if (Math.random() < 0.3) giftEmoji = getRandomGiftEmoji();
+        arenaPlayers.push({name:bot.name, avatar:bot.avatar, bet, color, isMe:false, gift:giftEmoji});
     }
     arenaRecalcPool();
     arenaRenderPlayers();
     arenaDraw();
 }
 
-/* ===== بات‌ها سریع میان (1.5 ثانیه) ===== */
+/* ===== Schedule Bots (سریع) ===== */
 function arenaScheduleBots(){
     if(!BOTS_ENABLED) return;
     const myPlayer = arenaPlayers.find(p => p.isMe);
@@ -1590,7 +1630,9 @@ function arenaScheduleBots(){
             const bet=smartBotBet(bot);
             bot.balance-=bet;
             const color=ARENA_COLORS[arenaPlayers.length%ARENA_COLORS.length];
-            arenaPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});
+            let giftEmoji = '';
+            if (Math.random() < 0.3) giftEmoji = getRandomGiftEmoji();
+            arenaPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false,gift:giftEmoji});
             arenaRecalcPool();arenaRenderPlayers();arenaDraw();
             arenaCheckStart();
         },delay);
@@ -1599,6 +1641,7 @@ function arenaScheduleBots(){
 function arenaStartRound(){
     arenaState='waiting';arenaTimer=PVP_COUNTDOWN_SECONDS;arenaMyBet=0;arenaPool=0;
     arenaLastResult=null;arenaBall={x:0,y:0,active:false};
+    arenaBetFromGift = false; arenaGiftUsed = null;
     if(arenaAnimFrame){cancelAnimationFrame(arenaAnimFrame);arenaAnimFrame=null;}
     arenaPlayers=[];arenaRecalcPool();arenaRenderPlayers();arenaDraw();
     const btn=document.getElementById('arenaJoinBtn');
@@ -1640,13 +1683,23 @@ function arenaJoinClick(){
     balance-=a;updateGlobalBalanceUI();
     localStorage.setItem('lastArenaBet',a);
 
+    // اگه از گیفت استفاده شده، حذفش کن
+    let giftEmoji = '';
+    if(arenaBetFromGift && arenaGiftUsed){
+        removeGiftFromInventory(arenaGiftUsed.uid);
+        giftEmoji = arenaGiftUsed.emoji;
+        arenaBetFromGift = false;
+        arenaGiftUsed = null;
+    }
+
     if(existing){
         existing.bet = +(existing.bet + a).toFixed(2);
         arenaMyBet = existing.bet;
+        if(giftEmoji) existing.gift = giftEmoji;
     } else {
         arenaMyBet = a;
         const myName = (TG_USER.name && TG_USER.name !== 'Unknown User') ? TG_USER.name : 'You';
-        arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
+        arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true,gift:giftEmoji});
     }
 
     const myPlayer = arenaPlayers.find(p => p.isMe);
@@ -1693,7 +1746,8 @@ function arenaRenderPlayers(){
         row.className='arena-strip-row'+(p.isMe?' isMe':'');
         if(arenaLastResult&&arenaLastResult.name===p.name&&arenaLastResult.isMe===p.isMe)row.classList.add('winner');
         row.style.setProperty('--pc',p.color);
-        row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;
+        const giftBadge = p.gift ? `<span style="font-size:16px;margin-right:4px">${p.gift}</span>` : '';
+        row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${giftBadge}${p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;
         list.appendChild(row);
     });
 }
@@ -1748,8 +1802,8 @@ function arenaDraw(){
         nx=Math.max(30,Math.min(w-30,nx));
         const p=sec.player;
         const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(0):'0';
-        let label = p.name;
-        if(label.length>10) label = label.slice(0,9)+'…';
+        let label = (p.gift ? p.gift + ' ' : '') + p.name;
+        if(label.length>12) label = label.slice(0,11)+'…';
 
         arenaCtx.save();
         arenaCtx.textAlign='center';
@@ -1803,6 +1857,7 @@ function arenaDetermineWinnerAtPoint(x, y){
     return arenaPlayers[arenaPlayers.length - 1];
 }
 
+/* ===== توپ: شروع پرسرعت، آروم کم میشه ===== */
 function arenaDropBall(){
     if(arenaState!=='waiting')return;
     arenaState='dropping';
@@ -1812,12 +1867,13 @@ function arenaDropBall(){
     const startX = radius + 20 + Math.random() * (w - (radius + 20) * 2);
     const startY = radius + 20 + Math.random() * (h - (radius + 20) * 2);
 
-    let vx = (Math.random() < 0.5 ? -1 : 1) * (1.3 + Math.random() * 1.0);
-    let vy = (Math.random() < 0.5 ? -1 : 1) * (1.3 + Math.random() * 1.0);
+    // ⚡ سرعت اولیه بالا (8-11)
+    let vx = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 3);
+    let vy = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 3);
 
     arenaBall = {x: startX, y: startY, active: true};
 
-    const DURATION_MS = 4500;
+    const DURATION_MS = 5000;
     const start = performance.now();
     let lastTime = start;
 
@@ -1828,11 +1884,9 @@ function arenaDropBall(){
 
         if (elapsed < DURATION_MS) {
             const progress = elapsed / DURATION_MS;
-            let speedFactor = 1;
-            if (progress > 0.25) {
-                const t = (progress - 0.25) / 0.75;
-                speedFactor = Math.pow(1 - t, 2.2);
-            }
+            // سرعت از همون اول شروع به کم شدن می‌کنه، نرم
+            const speedFactor = Math.pow(1 - progress, 1.8);
+            
             const f = (dt / 16) * speedFactor;
             arenaBall.x += vx * f;
             arenaBall.y += vy * f;
@@ -1884,4 +1938,4 @@ function arenaFinishSpin(winner){
 }
 </script>
 </body>
-    </html>
+</html>
