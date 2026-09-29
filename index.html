@@ -12,9 +12,54 @@
 html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;user-select:none}
 ::-webkit-scrollbar{display:none}
 :root{--card:#12141f;--card-2:#181a28;--border:rgba(255,255,255,.07);--border-2:rgba(255,255,255,.12);--text-dim:#7a8299;--text-dim2:#5a6278;--green:#2ff068;--green-2:#00a838;--purple:#9b5cff;--purple-2:#7c3aed;--gold:#ffcc00;--gold-2:#ff9d00;--blue:#0098ea;--blue-2:#0072ff;--red:#ff4444;--pink:#ff006e}
+/* Live Ticker */
+.live-ticker{
+    position:fixed;
+    top:0;left:0;right:0;
+    height:32px;
+    background:linear-gradient(90deg,#0a0d14,#1a0e2e,#0a0d14);
+    border-bottom:1px solid rgba(155,92,255,.3);
+    overflow:hidden;
+    z-index:99;
+    display:flex;align-items:center;
+}
+.live-ticker-inner{
+    display:flex;gap:20px;
+    animation:tickerScroll 40s linear infinite;
+    padding-left:100%;
+    white-space:nowrap;
+}
+@keyframes tickerScroll{
+    from{transform:translateX(0)}
+    to{transform:translateX(-100%)}
+}
+.ticker-item{
+    font-size:12px;font-weight:800;
+    color:#fff;display:flex;align-items:center;gap:4px;
+}
+.ticker-item .t-win{color:#2ff068}
+.ticker-item .t-av{font-size:14px}
+.live-dot{
+    width:8px;height:8px;border-radius:50%;background:#ff006e;
+    box-shadow:0 0 8px #ff006e;
+    animation:livePulse 1.5s infinite;
+    flex-shrink:0;
+}
+@keyframes livePulse{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.5;transform:scale(1.3)}
+}
+.live-label{
+    background:rgba(255,0,110,.15);color:#ff006e;
+    padding:3px 10px;border-radius:8px;
+    font-size:10px;font-weight:900;letter-spacing:1px;
+    display:flex;align-items:center;gap:5px;
+    margin-left:8px;z-index:2;
+    border:1px solid rgba(255,0,110,.3);
+}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .3s;overflow:hidden}
 .screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
-#homeScreen{background:radial-gradient(ellipse at 50% -20%,#1e2544 0%,#0a0d14 55%,#05070d 100%);overflow-y:auto;padding-bottom:110px;padding-top:20px}
+#homeScreen{background:radial-gradient(ellipse at 50% -20%,#1e2544 0%,#0a0d14 55%,#05070d 100%);overflow-y:auto;padding-bottom:110px;padding-top:52px}
 .balance-row{display:flex;align-items:center;padding:6px 16px 18px;gap:12px}
 .avatar-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
 .avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#2ff0e0,#1e9cff);display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:800;position:relative;z-index:2}
@@ -432,6 +477,10 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 <body>
 
 <div id="homeScreen" class="screen">
+    <div class="live-ticker">
+        <div class="live-label"><div class="live-dot"></div>LIVE</div>
+        <div class="live-ticker-inner" id="liveTickerInner"></div>
+    </div>
     <div class="balance-row">
         <div class="avatar-wrap"><div class="avatar-ring"></div><div class="avatar" id="userAvatar">M</div></div>
         <div class="balance-info">
@@ -890,6 +939,20 @@ function getRandomGiftEmoji() {
     return randomGift.emoji;
 }
 
+function updateLiveTicker(){
+    const inner = document.getElementById('liveTickerInner');
+    if(!inner) return;
+    const bots = BOT_DATABASE.slice(0,20);
+    let html = '';
+    bots.forEach((b,i)=>{
+        const win = (0.5 + Math.random()*15).toFixed(2);
+        html += `<span class="ticker-item"><span class="t-av">${b.avatar}</span>${b.name} <span class="t-win">+${win}◈</span></span>`;
+    });
+    inner.innerHTML = html + html;
+}
+setInterval(updateLiveTicker, 5000);
+setTimeout(updateLiveTicker, 1000);
+
 function spawnLiveWin(){
     if(!BOTS_ENABLED) return;
     const bot=getRandomBot();
@@ -1168,13 +1231,11 @@ function adminMod(userId,action){
 }
 function registerAndSync(){
     if(!TG_USER.id) return;
-    // register user in DB
     fetch(`${API_BASE_URL}/user/register`,{
         method:'POST',
         headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
         body:JSON.stringify({userId: TG_USER.id, name: TG_USER.name, username: TG_USER.username})
     }).catch(e=>{});
-    // fetch balance from server
     fetch(`${API_BASE_URL}/referrals/${TG_USER.id}`,{headers:{'ngrok-skip-browser-warning':'true'}})
         .then(r=>r.json())
         .then(d=>{
@@ -1210,7 +1271,6 @@ function updateGlobalBalanceUI(){
     const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['arenaBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2],['shBalanceDisplay',2]];
     ids.forEach(([id,d])=>{const el=document.getElementById(id);if(el)el.innerText=d===3?balance.toFixed(3):balance.toFixed(2);});
     localStorage.setItem('crashBalance_home',balance);
-    // push balance to server
     if(TG_USER.id){
         fetch(`${API_BASE_URL}/user/${TG_USER.id}/balance`,{
             method:'POST',
@@ -2068,4 +2128,4 @@ function arenaFinishSpin(winner){
 }
 </script>
 </body>
-    </html>
+</html>
