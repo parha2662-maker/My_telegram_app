@@ -915,85 +915,42 @@ function loadTelegramUser(){
     }catch(e){}
 }
 
-/* ===== سیستم رفرال کامل ===== */
-function getAllReferrals(){
-    try { return JSON.parse(localStorage.getItem('allReferrals') || '{}'); } catch(e){ return {}; }
-}
-function saveAllReferrals(data){
-    localStorage.setItem('allReferrals', JSON.stringify(data));
-}
-function getMyReferrals(myId){
-    const all = getAllReferrals();
-    return all[myId] || [];
-}
-function addReferralToUser(userId, newFriend){
-    const all = getAllReferrals();
-    if (!all[userId]) all[userId] = [];
-    // جلوگیری از تکرار
-    if (all[userId].some(r => r.id === newFriend.id)) return false;
-    all[userId].push(newFriend);
-    saveAllReferrals(all);
-    return true;
-}
+/* ===== سیستم رفرال (متصل به بک‌اند) ===== */
+const API_BASE_URL = 'https://YOUR_DOMAIN_OR_NGROK_URL/api'; 
 
-// وقتی کاربر جدید با لینک رفرال وارد می‌شه
-function checkAndProcessReferral(){
-    try {
-        const tg = window.Telegram && window.Telegram.WebApp;
-        if (!tg) return;
-        const startParam = tg.initDataUnsafe && tg.initDataUnsafe.start_param;
-        if (!startParam) return;
-        if (!startParam.startsWith('ref_')) return;
-        
-        const referrerId = startParam.replace('ref_', '');
-        const myId = TG_USER.id;
-        
-        // اگه خود کاربر رفرالر باشه، نادیده بگیر
-        if (!myId || !referrerId || referrerId === myId) return;
-        
-        // چک کن قبلاً ثبت نشده
-        const processedKey = 'referral_processed_' + myId;
-        if (localStorage.getItem(processedKey)) return;
-        
-        // ثبت رفرال
-        const success = addReferralToUser(referrerId, {
-            id: myId,
-            name: TG_USER.name,
-            avatar: TG_USER.photo || '👤',
-            date: Date.now(),
-            reward: REFERRAL_REWARD
-        });
-        
-        if (success) {
-            // پاداش فقط به رفرالر (کاربر اصلی) داده میشه
-            // اگه خودمون رفرالر باشیم، پاداش بهمون اضافه نمیشه چون ما رفرال شده‌ایم
-            // این پاداش توی دستگاه رفرالر ذخیره میشه
-            
-            // نشون دادن رفرال جدید توی دستگاه رفرالر
-            // اگه خود کاربر فعلی رفرالر باشه (یعنی همون لینک رو داشته) -> نه، این حالت نمیشه
-            // اگه کاربر جدید باشه -> پاداش برای رفرالر روی دستگاه خودش ذخیره میشه
-            
-            localStorage.setItem(processedKey, '1');
-            
-            // اگه خود کاربر فعلی رفرالر باشه، پاداش بده
-            // اما این حالت زمانی رخ میده که کاربر جدید وارد شده
-            // پس پاداش روی دستگاه رفرالر باید از طریق همون localStorage برای رفرالر ذخیره بشه
-            
-            // اما چون هر کاربر روی دستگاه خودشه، ما نمیتونیم به دستگاه رفرالر دسترسی داشته باشیم
-            // پس راه حل: کاربر جدید توی دستگاه خودش پاداش رفرالر رو ذخیره میکنه و از طرف خودش نمایش میده
-            // اما رفرالر دستگاهش جداست...
-            
-            // بهترین راه: از localStorage مشترک استفاده نمیکنیم چون دستگاه‌ها جدان
-            // این کد زمانی کار میکنه که کاربر رفرالر و کاربر جدید روی یک دستگاه باشن
-            // برای کارکرد واقعی نیاز به backend هست
-            
-            // ولی ما به صورت client-side اینطوری می‌کنیم:
-            // وقتی کاربر جدید میاد، پاداش به موجودی رفرالر روی دستگاه خودش اضافه میشه
-            // چون localStorage مشترکه روی یه مرورگر، ولی روی دو مرورگر جداست
-            
-            // برای راه حل کارا: کاربر جدید به رفرالر پیام میده (از طریق بک‌اند)
-            // ولی الان فقط توی دستگاه خودمون این کارو می‌کنیم
-        }
+function getReferralLink(){if(!TG_USER.id)return'Loading...';return`https://t.me/${BOT_USERNAME}?start=ref_${TG_USER.id}`;}
+
+function updateReferralUI(){
+    const linkInput=document.getElementById('refLinkInput');
+    if(linkInput) linkInput.value = getReferralLink();
+    const myId = TG_USER.id;
+    if(!myId) return;
+    fetch(`${API_BASE_URL}/referrals?user_id=${myId}`)
+        .then(res => res.json())
+        .then(data => {
+            const referrals = data.referrals || [];
+            const earned = data.total_earned || 0;
+            document.getElementById('refCount').innerText = referrals.length;
+            document.getElementById('refEarned').innerText = earned.toFixed(2);
+            const listEl = document.getElementById('refList');
+            if(listEl){
+                if(referrals.length === 0){
+                    listEl.innerHTML = '<div class="ref-empty">هنوز کسی رو دعوت نکردی 🥲</div>';
+                } else {
+                    listEl.innerHTML = '';
+                    referrals.forEach(r => {
+                        const el = document.createElement('div');
+                        el.className = 'ref-list-item';
+                        el.innerHTML = `<div class="ref-list-av">${(r.name||'U')[0]}</div><div class="ref-list-name">${r.name||'User'}</div><div class="ref-list-reward">+0.05 ◈</div>`;
+                        listEl.appendChild(el);
+                    });
+                }
+            }
+        }).catch(e => console.log(e));
+}
+function openReferral(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('referralScreen').classList.remove('hidden');updateReferralUI();}
+function copyRefLink(){const i=document.getElementById('refLinkInput');i.select();i.setSelectionRange(0,99999);navigator.clipboard.writeText(i.value);showToast('✅ Copied!','win');}
+function shareRefLink(){const l=getReferralLink();window.open(`https://t.me/share/url?url=${encodeURIComponent(l)}`,'_blank');}
     } catch(e) { console.error('Referral error:', e); }
 }
 
