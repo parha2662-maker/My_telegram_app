@@ -916,7 +916,7 @@ function loadTelegramUser(){
 }
 
 /* ===== سیستم رفرال (متصل به بک‌اند) ===== */
-const API_BASE_URL = 'https://YOUR_DOMAIN_OR_NGROK_URL/api';
+const API_BASE_URL = 'https://clanking-slang-undamaged.ngrok-free.dev/api';
 
 window.addEventListener('load',()=>{
     loadTelegramUser();
@@ -1088,7 +1088,9 @@ function updateReferralUI(){
     if(linkInput) linkInput.value = getReferralLink();
     const myId = TG_USER.id;
     if(!myId) return;
-    fetch(`${API_BASE_URL}/referrals?user_id=${myId}`)
+    fetch(`${API_BASE_URL}/referrals?user_id=${myId}`, {
+        headers: { 'ngrok-skip-browser-warning': 'true' }
+    })
         .then(res => res.json())
         .then(data => {
             const referrals = data.referrals || [];
@@ -1785,7 +1787,6 @@ function arenaRenderPlayers(){
     });
 }
 
-/* ===== چرخ Arena جدید: نوارهای عمودی ساده ===== */
 function arenaDraw(){
     if(!arenaCtx)return;
     const w=arenaCW,h=arenaCH;
