@@ -919,6 +919,7 @@ function loadTelegramUser(){
                 TG_USER.photo=u.photo_url||'';
                 const av=document.getElementById('userAvatar');if(av) av.innerText=(u.first_name||'M').charAt(0).toUpperCase();
                 setTimeout(showAdminButton, 500);
+                setTimeout(registerAndSync, 600);
                 return;
             }
         }
@@ -1165,6 +1166,26 @@ function adminMod(userId,action){
     fetch(`${API_BASE_URL}/admin/balance`,{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({password:'parham1234',userId,amount,action})})
         .then(r=>r.json()).then(d=>{if(d.ok){showToast('✅ '+d.balance.toFixed(2)+' TON','win');loadAdminUsers();}else showToast('❌ '+d.error,'lose');});
 }
+function registerAndSync(){
+    if(!TG_USER.id) return;
+    // register user in DB
+    fetch(`${API_BASE_URL}/user/register`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+        body:JSON.stringify({userId: TG_USER.id, name: TG_USER.name, username: TG_USER.username})
+    }).catch(e=>{});
+    // fetch balance from server
+    fetch(`${API_BASE_URL}/referrals/${TG_USER.id}`,{headers:{'ngrok-skip-browser-warning':'true'}})
+        .then(r=>r.json())
+        .then(d=>{
+            if(typeof d.balance === 'number' && d.balance !== balance){
+                balance = d.balance;
+                localStorage.setItem('crashBalance_home', balance);
+                const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['arenaBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2],['shBalanceDisplay',2]];
+                ids.forEach(([id,dec])=>{const el=document.getElementById(id);if(el)el.innerText=dec===3?balance.toFixed(3):balance.toFixed(2);});
+            }
+        }).catch(e=>console.log(e));
+}
 function showAdminButton(){
     const btn = document.getElementById('adminBtn');
     if(btn && TG_USER.id === ADMIN_ID) btn.style.display = 'block';
@@ -1189,6 +1210,14 @@ function updateGlobalBalanceUI(){
     const ids=[['homeBalance',3],['balanceDisplay',2],['pvpBalanceDisplay',2],['arenaBalanceDisplay',2],['phBalanceDisplay',2],['upBalanceDisplay',2],['plBalanceDisplay',2],['mnBalanceDisplay',2],['shBalanceDisplay',2]];
     ids.forEach(([id,d])=>{const el=document.getElementById(id);if(el)el.innerText=d===3?balance.toFixed(3):balance.toFixed(2);});
     localStorage.setItem('crashBalance_home',balance);
+    // push balance to server
+    if(TG_USER.id){
+        fetch(`${API_BASE_URL}/user/${TG_USER.id}/balance`,{
+            method:'POST',
+            headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+            body:JSON.stringify({balance: balance})
+        }).catch(e=>{});
+    }
 }
 updateGlobalBalanceUI();
 function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
