@@ -284,8 +284,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .action-btn{width:100%;padding:15px;font-size:20px;font-weight:bold;border:none;border-radius:12px;cursor:pointer;color:#fff;margin-top:3px;font-family:inherit}
 .btn-bet{background:linear-gradient(135deg,#1e90ff,#0056b3)}
 .btn-cashout{background:linear-gradient(135deg,#00c853,#009624)}
-
-/* ============ PVP ============ */
 #pvpScreen{background:#0f1119;z-index:300;overflow-y:auto}
 .pvp-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
 .pvp-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;padding:8px 4px;font-family:inherit}
@@ -326,8 +324,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .pvp-players-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:1px solid var(--border-2)}
 .pvp-players-header span{font-size:13px;font-weight:700;color:#8a90a6}
 .pvp-players-count{background:var(--card);padding:4px 12px;border-radius:12px;font-size:12px!important}
-
-/* ============ ARENA ============ */
 #arenaScreen{background:#0a0b10;z-index:310;display:flex;flex-direction:column;overflow:hidden}
 .arena-topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;flex-shrink:0}
 .arena-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;padding:6px 4px;font-family:inherit}
@@ -342,9 +338,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .arena-timer-badge.show{display:block}
 .arena-timer-badge.warn{border-color:#ff4444;color:#ff4444;animation:timerWarn 1s infinite}
 @keyframes timerWarn{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
-.arena-chat{position:absolute;left:8px;bottom:8px;max-width:65%;display:flex;flex-direction:column;gap:4px;pointer-events:none;z-index:20}
-.arena-chat-item{background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:5px 10px;font-size:11px;font-weight:700;color:#fff;animation:chatIn .3s}
-@keyframes chatIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 .arena-players-strip{margin:10px 12px 0;flex-shrink:0;max-height:80px;overflow-y:auto}
 .arena-players-strip::-webkit-scrollbar{display:none}
 .arena-strip-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#161926;border:1px solid #232735;border-radius:12px;margin-bottom:6px;position:relative;overflow:hidden}
@@ -364,7 +357,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
 .arena-join-btn{width:100%;padding:16px;background:linear-gradient(135deg,#9b5cff,#7c3aed);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit}
 .arena-join-btn:disabled{background:#232735;color:#5a6278;cursor:not-allowed}
 .arena-join-btn.joined{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
-
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border-2);color:#fff;padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;max-width:90vw}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
 .toast.win{background:linear-gradient(135deg,#00c853,#009624)}
@@ -772,7 +764,6 @@ html,body{height:100%;width:100%;overflow:hidden;background:#05070d;color:#fff;f
     <div class="arena-canvas-wrap">
         <div class="arena-timer-badge" id="arenaTimerBadge">15</div>
         <canvas id="arenaCanvas"></canvas>
-        <div class="arena-chat" id="arenaChat"></div>
     </div>
     <div class="arena-players-strip" id="arenaPlayersStrip"></div>
     <div class="arena-bottom">
@@ -845,18 +836,11 @@ const BOT_DATABASE=[
 ];
 
 const BOT_PERSONAS = {
-    conservative: { betPct: 0.03, minCash: 1.1, maxCash: 1.6, joinChance: 0.55, chatRate: 0.10 },
-    balanced:     { betPct: 0.05, minCash: 1.3, maxCash: 2.4, joinChance: 0.80, chatRate: 0.20 },
-    aggressive:   { betPct: 0.10, minCash: 1.8, maxCash: 4.5, joinChance: 0.75, chatRate: 0.25 },
-    whale:        { betPct: 0.15, minCash: 1.4, maxCash: 3.0, joinChance: 0.60, chatRate: 0.35 },
-    lucky:        { betPct: 0.08, minCash: 2.0, maxCash: 6.0, joinChance: 0.85, chatRate: 0.30 }
-};
-
-const BOT_CHAT = {
-    join: ['بزن بریم! 🚀','موفق باشیم','ایول','بازی شروع شد','شانس بیار','منم هستم','پول بیار 🤑','کدوم می‌بره؟'],
-    win:  ['ایول بردم! 🎉','خدا رو شکر','دست پُر 🤑','عالی بود','زدم تو هدف','آخ جون 🎯','بیا تو جیبم 💰'],
-    lose: ['آخ سوخت 😭','باختم','دفعه بعد','حیف شد','شانس نبود','دلم گرفت','اوف'],
-    hype: ['🔥🔥🔥','چه بازی‌ای!','همه پول من بود','بزن!','اینجا جای بزرگان 💪']
+    conservative: { betPct: 0.03, minCash: 1.1, maxCash: 1.6, joinChance: 0.55 },
+    balanced:     { betPct: 0.05, minCash: 1.3, maxCash: 2.4, joinChance: 0.80 },
+    aggressive:   { betPct: 0.10, minCash: 1.8, maxCash: 4.5, joinChance: 0.75 },
+    whale:        { betPct: 0.15, minCash: 1.4, maxCash: 3.0, joinChance: 0.60 },
+    lucky:        { betPct: 0.08, minCash: 2.0, maxCash: 6.0, joinChance: 0.85 }
 };
 
 function getRandomBot(){
@@ -865,18 +849,7 @@ function getRandomBot(){
     return active[Math.floor(Math.random() * active.length)];
 }
 
-function botSay(bot, type) {
-    const pool = BOT_CHAT[type] || BOT_CHAT.hype;
-    const msg = pool[Math.floor(Math.random() * pool.length)];
-    const el = document.getElementById('arenaChat');
-    if (!el) return;
-    const item = document.createElement('div');
-    item.className = 'arena-chat-item';
-    item.innerHTML = `<b>${bot.avatar} ${bot.name}:</b> ${msg}`;
-    el.appendChild(item);
-    setTimeout(() => item.remove(), 3000);
-    while (el.children.length > 3) el.removeChild(el.firstChild);
-}
+function botSay(bot, type) { return; }
 
 function smartBotBet(bot) {
     const persona = BOT_PERSONAS[bot.persona] || BOT_PERSONAS.balanced;
@@ -962,45 +935,24 @@ const GIFT_DATABASE=[
     {id:'sakura_flower_1',name:'Sakura Flower',emoji:'🌸',value:9.71,tier:'common'},
     {id:'whip_cupcake_1',name:'Whip Cupcake',emoji:'🧁',value:10.70,tier:'common'},
     {id:'skull_flower_1',name:'Skull Flower',emoji:'💀',value:11.13,tier:'uncommon'},
-    {id:'restless_jar_1',name:'Restless Jar',emoji:'🫙',value:11.31,tier:'uncommon'},
     {id:'valentine_box_1',name:'Valentine Box',emoji:'💝',value:11.65,tier:'uncommon'},
-    {id:'spring_basket_1',name:'Spring Basket',emoji:'🐰',value:11.74,tier:'uncommon'},
-    {id:'swag_bag_2',name:'Swag Bag',emoji:'💰',value:12.09,tier:'uncommon'},
     {id:'mad_pumpkin_1',name:'Mad Pumpkin',emoji:'🎃',value:12.64,tier:'uncommon'},
-    {id:'jolly_chimp_2',name:'Jolly Chimp',emoji:'🐵',value:15.88,tier:'uncommon'},
     {id:'jack_in_box_1',name:'Jack-in-the-Box',emoji:'🎁',value:16.80,tier:'uncommon'},
-    {id:'input_key_3',name:'Input Key',emoji:'⌨️',value:17.45,tier:'uncommon'},
     {id:'cupid_charm_1',name:'Cupid Charm',emoji:'💘',value:20.50,tier:'uncommon'},
-    {id:'cupid_charm_2',name:'Cupid Charm',emoji:'💘',value:21.82,tier:'uncommon'},
     {id:'eternal_rose_1',name:'Eternal Rose',emoji:'🌹',value:22.57,tier:'uncommon'},
-    {id:'khabib_papakha_1',name:"Khabib's Papakha",emoji:'🧢',value:22.70,tier:'uncommon'},
-    {id:'bling_binky_1',name:'Bling Binky',emoji:'👶',value:23.81,tier:'uncommon'},
-    {id:'rare_bird_1',name:'Rare Bird',emoji:'🦅',value:26.23,tier:'uncommon'},
     {id:'diamond_ring_1',name:'Diamond Ring',emoji:'💍',value:26.58,tier:'uncommon'},
-    {id:'bow_tie_1',name:'Bow Tie',emoji:'🎀',value:28.53,tier:'uncommon'},
-    {id:'signet_ring_1',name:'Signet Ring',emoji:'💍',value:28.60,tier:'uncommon'},
     {id:'snow_globe_1',name:'Snow Globe',emoji:'🔮',value:30.29,tier:'uncommon'},
     {id:'ufc_strike_1',name:'UFC Strike',emoji:'🥊',value:31.41,tier:'rare'},
     {id:'voodoo_doll_1',name:'Voodoo Doll',emoji:'🧸',value:34.60,tier:'rare'},
-    {id:'neko_helmet_1',name:'Neko Helmet',emoji:'🏍️',value:34.93,tier:'rare'},
     {id:'toy_bear_1',name:'Toy Bear',emoji:'🧸',value:35.14,tier:'rare'},
-    {id:'vintage_cigar_1',name:'Vintage Cigar',emoji:'🚬',value:35.19,tier:'rare'},
-    {id:'party_sparkler_1',name:'Party Sparkler',emoji:'✨',value:35.60,tier:'rare'},
     {id:'jingle_bells_1',name:'Jingle Bells',emoji:'🔔',value:35.90,tier:'rare'},
-    {id:'bonded_ring_1',name:'Bonded Ring',emoji:'💍',value:37.98,tier:'rare'},
-    {id:'neko_helmet_2',name:'Neko Helmet',emoji:'🏍️',value:50.63,tier:'rare'},
     {id:'swiss_watch_1',name:'Swiss Watch',emoji:'⌚',value:52.67,tier:'rare'},
-    {id:'rare_bird_2',name:'Rare Bird',emoji:'🦅',value:53.63,tier:'rare'},
-    {id:'timeless_book_2',name:'Timeless Book',emoji:'📕',value:54.65,tier:'rare'},
-    {id:'gem_signet_1',name:'Gem Signet',emoji:'💎',value:56.94,tier:'rare'},
     {id:'perfume_bottle_1',name:'Perfume Bottle',emoji:'💐',value:66.60,tier:'rare'},
     {id:'mini_oscar_1',name:'Mini Oscar',emoji:'🏆',value:66.69,tier:'rare'},
     {id:'money_pot_3',name:'Money Pot',emoji:'💰',value:70.92,tier:'rare'},
-    {id:'jolly_chimp_3',name:'Jolly Chimp',emoji:'🐵',value:74.29,tier:'rare'},
     {id:'durov_glasses_1',name:"Durov's Glasses",emoji:'🕶️',value:81.06,tier:'rare'},
     {id:'genie_lamp_1',name:'Genie Lamp',emoji:'🪔',value:97.82,tier:'rare'},
     {id:'astral_shard_1',name:'Astral Shard',emoji:'💎',value:105.62,tier:'epic'},
-    {id:'nail_bracelet_1',name:'Nail Bracelet',emoji:'💫',value:105.66,tier:'epic'},
     {id:'mighty_arm_1',name:'Mighty Arm',emoji:'💪',value:112.05,tier:'epic'},
     {id:'stellar_rocket_2',name:'Stellar Rocket',emoji:'🚀',value:114.70,tier:'epic'},
     {id:'loot_bag_1',name:'Loot Bag',emoji:'👜',value:115.77,tier:'epic'},
@@ -1566,8 +1518,8 @@ function pvpFinishSpin(){pvpState='done';const w=pvpDetermineWinner();pvpLastRes
 /* ============ ARENA ============ */
 window.arenaInitialized=false;
 const ARENA_COLORS=['#2ff068','#7c3aed','#0098ea','#ff9d00','#ec4899','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731'];
-let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SECONDS,arenaTimerInterval=null,arenaGameNum=451529;
-let arenaCanvas=null,arenaCtx=null,arenaCW=320,arenaCH=340,arenaUserJoined=false,arenaMyBet=0,arenaLastResult=null;
+let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SECONDS,arenaTimerInterval=null;
+let arenaCanvas=null,arenaCtx=null,arenaCW=320,arenaCH=340,arenaMyBet=0,arenaLastResult=null;
 let arenaBall={x:0,y:0,active:false};
 let arenaAnimFrame=null;
 
@@ -1601,10 +1553,36 @@ function resizeArenaCanvas(){
     arenaCtx.setTransform(dpr,0,0,dpr,0,0);
     arenaDraw();
 }
+
+/* ===== بات‌های اضافی وقتی شرط کاربر بالاست ===== */
+function spawnExtraBots(count) {
+    const used = new Set(arenaPlayers.map(p => p.name));
+    for (let i = 0; i < count; i++) {
+        let bot, tries = 0;
+        do { bot = getRandomBot(); tries++; } while (used.has(bot.name) && tries < 100);
+        if (used.has(bot.name)) continue;
+        used.add(bot.name);
+        const bet = smartBotBet(bot);
+        bot.balance -= bet;
+        const color = ARENA_COLORS[arenaPlayers.length % ARENA_COLORS.length];
+        arenaPlayers.push({name:bot.name, avatar:bot.avatar, bet, color, isMe:false});
+    }
+    arenaRecalcPool();
+    arenaRenderPlayers();
+    arenaDraw();
+}
+
 function arenaScheduleBots(){
     if(!BOTS_ENABLED) return;
-    const count=2+Math.floor(Math.random()*4);
-    const used=new Set();
+    const myPlayer = arenaPlayers.find(p => p.isMe);
+    const myBet = myPlayer ? myPlayer.bet : 0;
+    let count;
+    if (myBet >= 70)      count = 10 + Math.floor(Math.random() * 5);
+    else if (myBet >= 60) count = 7 + Math.floor(Math.random() * 4);
+    else if (myBet >= 30) count = 4 + Math.floor(Math.random() * 3);
+    else                  count = 2 + Math.floor(Math.random() * 4);
+
+    const used = new Set(arenaPlayers.map(p => p.name));
     for(let i=0;i<count;i++){
         let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
         const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;
@@ -1617,23 +1595,20 @@ function arenaScheduleBots(){
             const color=ARENA_COLORS[arenaPlayers.length%ARENA_COLORS.length];
             arenaPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});
             arenaRecalcPool();arenaRenderPlayers();arenaDraw();
-            if(Math.random()<persona.chatRate)botSay(bot,'join');
             arenaCheckStart();
         },delay);
     }
 }
 function arenaStartRound(){
-    arenaState='waiting';arenaTimer=PVP_COUNTDOWN_SECONDS;arenaUserJoined=false;arenaMyBet=0;arenaPool=0;
+    arenaState='waiting';arenaTimer=PVP_COUNTDOWN_SECONDS;arenaMyBet=0;arenaPool=0;
     arenaLastResult=null;arenaBall={x:0,y:0,active:false};
     if(arenaAnimFrame){cancelAnimationFrame(arenaAnimFrame);arenaAnimFrame=null;}
-    arenaGameNum=Math.floor(400000+Math.random()*100000);
     arenaPlayers=[];arenaRecalcPool();arenaRenderPlayers();arenaDraw();
     const btn=document.getElementById('arenaJoinBtn');
     btn.innerText='Join Arena';btn.className='arena-join-btn';btn.disabled=false;
     document.getElementById('arenaBetInput').disabled=false;
     document.getElementById('arenaBetInput').value=localStorage.getItem('lastArenaBet')||0.1;
     document.getElementById('arenaTimerBadge').classList.remove('show','warn');
-    const chat=document.getElementById('arenaChat');if(chat)chat.innerHTML='';
     arenaScheduleBots();clearInterval(arenaTimerInterval);arenaTimerInterval=null;
 }
 function arenaCheckStart(){
@@ -1656,27 +1631,54 @@ function arenaCheckStart(){
         },1000);
     }
 }
-function arenaRecalcPool(){
-    arenaPool=arenaPlayers.reduce((s,p)=>s+p.bet,0);
-}
+function arenaRecalcPool(){ arenaPool=arenaPlayers.reduce((s,p)=>s+p.bet,0); }
+
 function arenaJoinClick(){
-    if(arenaState!=='waiting'||arenaUserJoined)return;
+    if(arenaState!=='waiting')return;
     const a=parseFloat(document.getElementById('arenaBetInput').value);
     if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}
     if(a>balance){showToast('❌ Insufficient');return;}
+
+    const existing = arenaPlayers.find(p => p.isMe);
     balance-=a;updateGlobalBalanceUI();
-    arenaUserJoined=true;arenaMyBet=a;localStorage.setItem('lastArenaBet',a);
-    const myName = (TG_USER.name && TG_USER.name !== 'Unknown User') ? TG_USER.name : 'You';
-    arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
+    localStorage.setItem('lastArenaBet',a);
+
+    if(existing){
+        existing.bet = +(existing.bet + a).toFixed(2);
+        arenaMyBet = existing.bet;
+    } else {
+        arenaMyBet = a;
+        const myName = (TG_USER.name && TG_USER.name !== 'Unknown User') ? TG_USER.name : 'You';
+        arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
+    }
+
+    // اگه شرط بالا رفت، بات‌های بیشتر اضافه کن
+    const myPlayer = arenaPlayers.find(p => p.isMe);
+    const totalMyBet = myPlayer ? myPlayer.bet : 0;
+
+    if (totalMyBet >= 70) {
+        spawnExtraBots(10 + Math.floor(Math.random() * 5));
+        showToast('🔥 ' + totalMyBet.toFixed(2) + ' TON! Big pool!', 'win');
+    } else if (totalMyBet >= 60) {
+        spawnExtraBots(7 + Math.floor(Math.random() * 4));
+        showToast('🔥 ' + totalMyBet.toFixed(2) + ' TON!', 'win');
+    } else if (totalMyBet >= 30) {
+        spawnExtraBots(4 + Math.floor(Math.random() * 3));
+        showToast('✅ ' + totalMyBet.toFixed(2) + ' TON', 'win');
+    } else {
+        showToast('✅ Added ' + a.toFixed(2) + ' TON');
+    }
+
     arenaRecalcPool();arenaRenderPlayers();arenaDraw();
     const btn=document.getElementById('arenaJoinBtn');
-    btn.innerText='✅ Joined ('+a+' TON)';btn.className='arena-join-btn joined';btn.disabled=true;
-    document.getElementById('arenaBetInput').disabled=true;
-    showToast('Joined with '+a+' TON');
+    btn.innerText = '✅ Total: ' + arenaMyBet.toFixed(2) + ' TON (Add more)';
+    btn.className='arena-join-btn joined';
+    btn.disabled=false;
+    document.getElementById('arenaBetInput').disabled=false;
     arenaCheckStart();
 }
 function arenaClearBet(){
-    if(arenaState!=='waiting'||arenaUserJoined)return;
+    if(arenaState!=='waiting')return;
     document.getElementById('arenaBetInput').value='0.1';
     localStorage.setItem('lastArenaBet','0.1');
 }
@@ -1739,31 +1741,38 @@ function arenaDraw(){
     g.addColorStop(1,'rgba(0,0,0,0.35)');
     arenaCtx.fillStyle=g;
     arenaCtx.fillRect(0,0,w,h);
+
+    // نام + مبلغ + درصد روی هر بخش
     sections.forEach(sec=>{
         const sinM=Math.sin(sec.midAngle);
         if(sinM >= -0.08) return;
-        const targetY=h*0.6;
+        const targetY=h*0.55;
         const t=(targetY-h)/sinM;
         if(t<=0) return;
         let nx=cx+Math.cos(sec.midAngle)*t;
-        nx=Math.max(24,Math.min(w-24,nx));
+        nx=Math.max(30,Math.min(w-30,nx));
         const p=sec.player;
         const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(0):'0';
         let label = p.name;
-        if(label.length>8) label = label.slice(0,7)+'…';
+        if(label.length>10) label = label.slice(0,9)+'…';
+
         arenaCtx.save();
         arenaCtx.textAlign='center';
         arenaCtx.textBaseline='middle';
-        arenaCtx.shadowColor='rgba(0,0,0,0.9)';
-        arenaCtx.shadowBlur=6;
-        arenaCtx.font='bold 14px -apple-system,BlinkMacSystemFont,sans-serif';
+        arenaCtx.shadowColor='rgba(0,0,0,0.95)';
+        arenaCtx.shadowBlur=8;
+        arenaCtx.font='bold 15px -apple-system,BlinkMacSystemFont,sans-serif';
         arenaCtx.fillStyle='#ffffff';
-        arenaCtx.fillText(label, nx, targetY-9);
-        arenaCtx.font='bold 11px -apple-system,BlinkMacSystemFont,sans-serif';
+        arenaCtx.fillText(label, nx, targetY-22);
+        arenaCtx.font='bold 14px -apple-system,BlinkMacSystemFont,sans-serif';
+        arenaCtx.fillStyle='#ffcc00';
+        arenaCtx.fillText(p.bet.toFixed(2)+' ◈', nx, targetY);
+        arenaCtx.font='bold 12px -apple-system,BlinkMacSystemFont,sans-serif';
         arenaCtx.fillStyle='rgba(255,255,255,0.9)';
-        arenaCtx.fillText(pct+'%', nx, targetY+9);
+        arenaCtx.fillText(pct+'%', nx, targetY+20);
         arenaCtx.restore();
     });
+
     if(arenaBall.active){
         arenaCtx.beginPath();
         arenaCtx.arc(arenaBall.x,arenaBall.y,20,0,Math.PI*2);
@@ -1799,31 +1808,46 @@ function arenaDetermineWinnerAtPoint(x, y){
     return arenaPlayers[arenaPlayers.length - 1];
 }
 
+/* ===== توپ آروم حرکت می‌کنه و آخرش نرم وایمیسته ===== */
 function arenaDropBall(){
     if(arenaState!=='waiting')return;
     arenaState='dropping';
     const w = arenaCW, h = arenaCH;
     const radius = 14;
+
     const startX = radius + 20 + Math.random() * (w - (radius + 20) * 2);
     const startY = radius + 20 + Math.random() * (h - (radius + 20) * 2);
-    let vx = (Math.random() < 0.5 ? -1 : 1) * (3.5 + Math.random() * 3.5);
-    let vy = (Math.random() < 0.5 ? -1 : 1) * (3.5 + Math.random() * 3.5);
+
+    let vx = (Math.random() < 0.5 ? -1 : 1) * (1.3 + Math.random() * 1.0);
+    let vy = (Math.random() < 0.5 ? -1 : 1) * (1.3 + Math.random() * 1.0);
+
     arenaBall = {x: startX, y: startY, active: true};
-    const DURATION_MS = 4000;
+
+    const DURATION_MS = 4500;
     const start = performance.now();
     let lastTime = start;
+
     function anim(now){
         const elapsed = now - start;
         const dt = Math.min(50, now - lastTime);
         lastTime = now;
+
         if (elapsed < DURATION_MS) {
-            const f = dt / 16;
+            const progress = elapsed / DURATION_MS;
+            let speedFactor = 1;
+            if (progress > 0.25) {
+                const t = (progress - 0.25) / 0.75;
+                speedFactor = Math.pow(1 - t, 2.2);
+            }
+            const f = (dt / 16) * speedFactor;
             arenaBall.x += vx * f;
             arenaBall.y += vy * f;
+
             if (arenaBall.x < radius)        { arenaBall.x = radius;        vx =  Math.abs(vx); }
             if (arenaBall.x > w - radius)    { arenaBall.x = w - radius;    vx = -Math.abs(vx); }
             if (arenaBall.y < radius)        { arenaBall.y = radius;        vy =  Math.abs(vy); }
             if (arenaBall.y > h - radius)    { arenaBall.y = h - radius;    vy = -Math.abs(vy); }
+
             arenaDraw();
             arenaAnimFrame = requestAnimationFrame(anim);
         } else {
@@ -1844,28 +1868,25 @@ function arenaFinishSpin(winner){
             resolveWin(win);
             showToast('🏆 You won '+win.toFixed(2)+' TON!','win');
         }else{
-            if(arenaUserJoined){
+            if(arenaMyBet>0){
                 showToast('😔 Lost '+arenaMyBet.toFixed(2)+' TON','lose');
                 resolveLoss();
             }else if(winner){
                 showToast('🎯 '+winner.name+' won '+arenaPool.toFixed(2)+' TON');
             }
-            // واکنش بات برنده
             if(winner){
                 const bot=BOT_DATABASE.find(x=>x.name===winner.name);
-                if(bot){bot.balance+=arenaPool;bot.streak=Math.max(0,bot.streak)+1;if(Math.random()<0.6)botSay(bot,'win');}
+                if(bot){bot.balance+=arenaPool;bot.streak=Math.max(0,bot.streak)+1;}
             }
-            // واکنش بات‌های بازنده
             arenaPlayers.forEach(p=>{
                 if(p.isMe||p.name===winner.name)return;
                 const b=BOT_DATABASE.find(x=>x.name===p.name);
-                if(b){b.streak=Math.min(0,b.streak)-1;if(Math.random()<0.3)botSay(b,'lose');}
+                if(b){b.streak=Math.min(0,b.streak)-1;}
             });
         }
+        arenaMyBet = 0;
     },400);
-    setTimeout(()=>{
-        arenaStartRound();
-    },2500);
+    setTimeout(()=>{arenaStartRound();},2500);
 }
 </script>
 </body>
