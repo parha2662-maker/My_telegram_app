@@ -963,12 +963,14 @@ function smartBotCashout(bot) {
     return target;
 }
 function getRandomGiftEmoji() {
+    if (typeof GIFT_DATABASE === 'undefined' || !GIFT_DATABASE || GIFT_DATABASE.length === 0) return '🎁';
     const randomGift = GIFT_DATABASE[Math.floor(Math.random() * GIFT_DATABASE.length)];
     return randomGift.emoji;
 }
 
-// ✅ Live Ticker: هر ۲ ثانیه یه آیتم جدید (فقط گیفت + مقدار TON)
+// ✅ Live Ticker function - فقط گیفت + مقدار TON
 function addTickerItem(){
+    if(typeof GIFT_DATABASE === 'undefined' || !GIFT_DATABASE || GIFT_DATABASE.length === 0) return;
     const inner = document.getElementById('liveTickerInner');
     if(!inner) return;
     const win = (0.5 + Math.random()*18).toFixed(2);
@@ -977,13 +979,13 @@ function addTickerItem(){
     item.className = 'ticker-item';
     item.innerHTML = `<span class="t-av">${gift.emoji}</span><span class="t-win">+${win}</span><span class="t-ton-coin">◈</span>`;
     inner.appendChild(item);
-    // فقط ۴ آیتم آخر رو نگه‌دار
     while(inner.children.length > 4){
         inner.removeChild(inner.firstChild);
     }
 }
-for(let i=0;i<4;i++) addTickerItem();
-setInterval(addTickerItem, 2000);
+// ⚠️ این خطوط به پایین (بعد از GIFT_DATABASE) منتقل شدن
+// for(let i=0;i<4;i++) addTickerItem();
+// setInterval(addTickerItem, 2000);
 
 let TG_USER={id:'',name:'Unknown User',username:'None',photo:''};
 let BOT_USERNAME='Gift08epqbot';
@@ -1130,6 +1132,13 @@ const GIFT_DATABASE=[
     {id:'plush_pepe_1',name:'Plush Pepe',emoji:'🐸',value:5433.93,tier:'mythic'},
     {id:'plush_pepe_2',name:'Plush Pepe',emoji:'🐸',value:14703.20,tier:'mythic'}
 ];
+
+// ✅ شروع تیکر بعد از تعریف GIFT_DATABASE
+setTimeout(()=>{
+    for(let i=0;i<4;i++) addTickerItem();
+    setInterval(addTickerItem, 2000);
+}, 300);
+
 function getUserGifts(){try{return JSON.parse(localStorage.getItem('userGifts')||'[]')}catch(e){return[]}}
 function saveUserGifts(g){localStorage.setItem('userGifts',JSON.stringify(g))}
 function addGiftToInventory(gift){const g=getUserGifts();g.push({...gift,uid:String(Date.now())+'_'+String(Math.random()).slice(2,8),obtainedAt:Date.now()});saveUserGifts(g);}
@@ -1646,4 +1655,4 @@ function arenaDropBall(){if(arenaState!=='waiting')return;arenaState='dropping';
 function arenaFinishSpin(winner){arenaState='done';arenaLastResult=winner;arenaRenderPlayers();setTimeout(()=>{if(winner&&winner.isMe){const win=arenaPool;resolveWin(win);showToast('🏆 You won '+win.toFixed(2)+' TON!','win');}else{if(arenaMyBet>0){showToast('😔 Lost '+arenaMyBet.toFixed(2)+' TON','lose');resolveLoss();}else if(winner){showToast('🎯 '+winner.name+' won '+arenaPool.toFixed(2)+' TON');}if(winner){const bot=BOT_DATABASE.find(x=>x.name===winner.name);if(bot){bot.balance+=arenaPool;bot.streak=Math.max(0,bot.streak)+1;}}arenaPlayers.forEach(p=>{if(p.isMe||p.name===winner.name)return;const b=BOT_DATABASE.find(x=>x.name===p.name);if(b){b.streak=Math.min(0,b.streak)-1;}});}arenaMyBet=0;},400);setTimeout(()=>{arenaStartRound();},2500);}
 </script>
 </body>
-    </html>
+</html>
