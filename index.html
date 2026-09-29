@@ -879,9 +879,6 @@ function updateReferralUI(){
 }
 function openReferral(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('referralScreen').classList.remove('hidden');updateReferralUI();}
 function copyRefLink(){const i=document.getElementById('refLinkInput');i.select();i.setSelectionRange(0,99999);navigator.clipboard.writeText(i.value);showToast('✅ Copied!','win');}
-function shareRefLink(){const l=getReferralLink();window.open(`https://t.me/share/url?url=${encodeURIComponent(l)}`,'_blank');}
-    } catch(e) { console.error('Referral error:', e); }
-}
 
 window.addEventListener('load',()=>{
     loadTelegramUser();
