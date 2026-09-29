@@ -1429,11 +1429,9 @@ function pvpScheduleBots(){
     const used=new Set();
     for(let i=0;i<count;i++){
         let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
-        const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;
-        const delay=800+Math.random()*(PVP_COUNTDOWN_SECONDS*1000-2500);
+        const delay=300+Math.random()*1200;
         setTimeout(()=>{
             if(pvpState!=='waiting')return;
-            if(Math.random()>persona.joinChance)return;
             const bet=smartBotBet(bot);
             const color=PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
             pvpPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});
@@ -1572,6 +1570,7 @@ function spawnExtraBots(count) {
     arenaDraw();
 }
 
+/* ===== بات‌ها سریع میان (1.5 ثانیه) ===== */
 function arenaScheduleBots(){
     if(!BOTS_ENABLED) return;
     const myPlayer = arenaPlayers.find(p => p.isMe);
@@ -1580,16 +1579,14 @@ function arenaScheduleBots(){
     if (myBet >= 70)      count = 10 + Math.floor(Math.random() * 5);
     else if (myBet >= 60) count = 7 + Math.floor(Math.random() * 4);
     else if (myBet >= 30) count = 4 + Math.floor(Math.random() * 3);
-    else                  count = 2 + Math.floor(Math.random() * 4);
+    else                  count = 3 + Math.floor(Math.random() * 3);
 
     const used = new Set(arenaPlayers.map(p => p.name));
     for(let i=0;i<count;i++){
         let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
-        const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;
-        const delay=600+Math.random()*(PVP_COUNTDOWN_SECONDS*1000-2500);
+        const delay = 300 + Math.random() * 1200;
         setTimeout(()=>{
             if(arenaState!=='waiting')return;
-            if(Math.random()>persona.joinChance)return;
             const bet=smartBotBet(bot);
             bot.balance-=bet;
             const color=ARENA_COLORS[arenaPlayers.length%ARENA_COLORS.length];
@@ -1652,7 +1649,6 @@ function arenaJoinClick(){
         arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true});
     }
 
-    // اگه شرط بالا رفت، بات‌های بیشتر اضافه کن
     const myPlayer = arenaPlayers.find(p => p.isMe);
     const totalMyBet = myPlayer ? myPlayer.bet : 0;
 
@@ -1742,7 +1738,6 @@ function arenaDraw(){
     arenaCtx.fillStyle=g;
     arenaCtx.fillRect(0,0,w,h);
 
-    // نام + مبلغ + درصد روی هر بخش
     sections.forEach(sec=>{
         const sinM=Math.sin(sec.midAngle);
         if(sinM >= -0.08) return;
@@ -1808,7 +1803,6 @@ function arenaDetermineWinnerAtPoint(x, y){
     return arenaPlayers[arenaPlayers.length - 1];
 }
 
-/* ===== توپ آروم حرکت می‌کنه و آخرش نرم وایمیسته ===== */
 function arenaDropBall(){
     if(arenaState!=='waiting')return;
     arenaState='dropping';
@@ -1890,4 +1884,4 @@ function arenaFinishSpin(winner){
 }
 </script>
 </body>
-</html>
+    </html>
