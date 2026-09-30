@@ -1070,97 +1070,31 @@ let soloBetAmount=0.1;
 let betFromGift=false;
 let giftPickerMode='default';
 
-// ✅ همه گیفت‌ها با فرمت PNG (شفاف)
+// ✅ دیتابیس گیفت‌ها - آپدیت شده با عکس‌های جدید و قیمت‌های دقیق
 const GIFT_DATABASE=[
-    {id:'happy_brownie',name:'Happy Brownie',emoji:'💩',value:4.14,tier:'common',img:NFT+'HappyBrownie-1.large.png'},
-    {id:'tama_gadget_1',name:'Tama Gadget',emoji:'📟',value:4.20,tier:'common',img:NFT+'TamaGadget-1.large.png'},
-    {id:'timeless_book_1',name:'Timeless Book',emoji:'📕',value:4.27,tier:'common',img:NFT+'TimelessBook-1.large.png'},
-    {id:'victory_medal',name:'Victory Medal',emoji:'🏅',value:4.53,tier:'common',img:NFT+'VictoryMedal-1.large.png'},
-    {id:'mood_pack_1',name:'Mood Pack',emoji:'🎒',value:4.57,tier:'common',img:NFT+'MoodPack-1.large.png'},
-    {id:'fresh_socks',name:'Fresh Socks',emoji:'🧦',value:4.69,tier:'common',img:NFT+'FreshSocks-1.large.png'},
-    {id:'pool_float',name:'Pool Float',emoji:'🦩',value:4.94,tier:'common',img:NFT+'PoolFloat-1.large.png'},
-    {id:'snoop_dogg',name:'Snoop Dogg',emoji:'🐕',value:4.99,tier:'common',img:NFT+'SnoopDogg-1.large.png'},
-    {id:'desk_calendar',name:'Desk Calendar',emoji:'📅',value:5.20,tier:'common',img:NFT+'DeskCalendar-1.large.png'},
-    {id:'instant_ramen_1',name:'Instant Ramen',emoji:'🍜',value:5.28,tier:'common',img:NFT+'InstantRamen-1.large.png'},
-    {id:'tama_gadget_2',name:'Tama Gadget',emoji:'📟',value:5.43,tier:'common',img:NFT+'TamaGadget-2.large.png'},
-    {id:'stellar_rocket_1',name:'Stellar Rocket',emoji:'🚀',value:5.84,tier:'common',img:NFT+'StellarRocket-1.large.png'},
-    {id:'spy_agaric_1',name:'Spy Agaric',emoji:'🍄',value:5.89,tier:'common',img:NFT+'SpyAgaric-1.large.png'},
-    {id:'big_year',name:'Big Year',emoji:'🎉',value:6.07,tier:'common',img:NFT+'BigYear-1.large.png'},
-    {id:'money_pot_1',name:'Money Pot',emoji:'💰',value:6.09,tier:'common',img:NFT+'MoneyPot-1.large.png'},
-    {id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:6.18,tier:'common',img:NFT+'XmasStocking-1.large.png'},
-    {id:'input_key_1',name:'Input Key',emoji:'⌨️',value:6.48,tier:'common',img:NFT+'InputKey-1.large.png'},
-    {id:'light_sword_1',name:'Light Sword',emoji:'⚔️',value:6.65,tier:'common',img:NFT+'LightSword-1.large.png'},
-    {id:'swag_bag_1',name:'Swag Bag',emoji:'💰',value:6.78,tier:'common',img:NFT+'SwagBag-1.large.png'},
-    {id:'jolly_chimp_1',name:'Jolly Chimp',emoji:'🐵',value:6.91,tier:'common',img:NFT+'JollyChimp-1.large.png'},
-    {id:'pretty_posy_1',name:'Pretty Posy',emoji:'💐',value:7.55,tier:'common',img:NFT+'PrettyPosy-1.large.png'},
-    {id:'hanging_star',name:'Hanging Star',emoji:'⭐',value:8.88,tier:'common',img:NFT+'HangingStar-1.large.png'},
-    {id:'fine_pen_1',name:'Fine Pen',emoji:'🖊️',value:9.05,tier:'common',img:NFT+'FinePen-1.large.png'},
-    {id:'bday_candle_1',name:'B-Day Candle',emoji:'🎂',value:9.59,tier:'common',img:NFT+'BDayCandle-1.large.png'},
-    {id:'sakura_flower_1',name:'Sakura Flower',emoji:'🌸',value:9.71,tier:'common',img:NFT+'SakuraFlower-1.large.png'},
-    {id:'whip_cupcake_1',name:'Whip Cupcake',emoji:'🧁',value:10.70,tier:'common',img:NFT+'WhipCupcake-1.large.png'},
-    {id:'skull_flower_1',name:'Skull Flower',emoji:'💀',value:11.13,tier:'uncommon',img:NFT+'SkullFlower-1.large.png'},
-    {id:'valentine_box_1',name:'Valentine Box',emoji:'💝',value:11.65,tier:'uncommon',img:NFT+'ValentineBox-1.large.png'},
-    {id:'mad_pumpkin_1',name:'Mad Pumpkin',emoji:'🎃',value:12.64,tier:'uncommon',img:NFT+'MadPumpkin-1.large.png'},
-    {id:'jack_in_box_1',name:'Jack-in-the-Box',emoji:'🎁',value:16.80,tier:'uncommon',img:NFT+'JackInTheBox-1.large.png'},
-    {id:'cupid_charm_1',name:'Cupid Charm',emoji:'💘',value:20.50,tier:'uncommon',img:NFT+'CupidCharm-1.large.png'},
-    {id:'eternal_rose_1',name:'Eternal Rose',emoji:'🌹',value:22.57,tier:'uncommon',img:NFT+'EternalRose-1.large.png'},
-    {id:'diamond_ring_1',name:'Diamond Ring',emoji:'💍',value:26.58,tier:'uncommon',img:NFT+'DiamondRing-1.large.png'},
-    {id:'snow_globe_1',name:'Snow Globe',emoji:'🔮',value:30.29,tier:'uncommon',img:NFT+'SnowGlobe-1.large.png'},
-    {id:'ufc_strike_1',name:'UFC Strike',emoji:'🥊',value:31.41,tier:'rare',img:NFT+'UFCStrike-1.large.png'},
-    {id:'voodoo_doll_1',name:'Voodoo Doll',emoji:'🧸',value:34.60,tier:'rare',img:NFT+'VoodooDoll-1.large.png'},
-    {id:'toy_bear_1',name:'Toy Bear',emoji:'🧸',value:35.14,tier:'rare',img:NFT+'ToyBear-1.large.png'},
-    {id:'jingle_bells_1',name:'Jingle Bells',emoji:'🔔',value:35.90,tier:'rare',img:NFT+'JingleBells-1.large.png'},
-    {id:'swiss_watch_1',name:'Swiss Watch',emoji:'⌚',value:52.67,tier:'rare',img:NFT+'SwissWatch-1.large.png'},
-    {id:'perfume_bottle_1',name:'Perfume Bottle',emoji:'💐',value:66.60,tier:'rare',img:NFT+'PerfumeBottle-1.large.png'},
-    {id:'mini_oscar_1',name:'Mini Oscar',emoji:'🏆',value:66.69,tier:'rare',img:NFT+'MiniOscar-1.large.png'},
-    {id:'money_pot_3',name:'Money Pot',emoji:'💰',value:70.92,tier:'rare',img:NFT+'MoneyPot-3.large.png'},
-    {id:'durov_glasses_1',name:"Durov's Glasses",emoji:'🕶️',value:81.06,tier:'rare',img:NFT+'DurovsGlasses-1.large.png'},
-    {id:'genie_lamp_1',name:'Genie Lamp',emoji:'🪔',value:97.82,tier:'rare',img:NFT+'GenieLamp-1.large.png'},
-    {id:'astral_shard_1',name:'Astral Shard',emoji:'💎',value:105.62,tier:'epic',img:NFT+'AstralShard-1.large.png'},
-    {id:'mighty_arm_1',name:'Mighty Arm',emoji:'💪',value:112.05,tier:'epic',img:NFT+'MightyArm-1.large.png'},
-    {id:'stellar_rocket_2',name:'Stellar Rocket',emoji:'🚀',value:114.70,tier:'epic',img:NFT+'StellarRocket-2.large.png'},
-    {id:'loot_bag_1',name:'Loot Bag',emoji:'👜',value:115.77,tier:'epic',img:NFT+'LootBag-1.large.png'},
-    {id:'diamond_ring_2',name:'Diamond Ring',emoji:'💍',value:143.85,tier:'epic',img:NFT+'DiamondRing-2.large.png'},
-    {id:'heroic_helmet_1',name:'Heroic Helmet',emoji:'🪖',value:178.79,tier:'epic',img:NFT+'HeroicHelmet-1.large.png'},
-    {id:'toy_bear_2',name:'Toy Bear',emoji:'🧸',value:179.09,tier:'epic',img:NFT+'ToyBear-2.large.png'},
-    {id:'scared_cat_1',name:'Scared Cat',emoji:'🐱',value:214.38,tier:'epic',img:NFT+'ScaredCat-1.large.png'},
-    {id:'precious_peach_1',name:'Precious Peach',emoji:'🍑',value:225.20,tier:'epic',img:NFT+'PreciousPeach-1.large.png'},
-    {id:'low_rider_1',name:'Low Rider',emoji:'🚗',value:281.13,tier:'epic',img:NFT+'LowRider-1.large.png'},
-    {id:'durov_cap_1',name:"Durov's Cap",emoji:'🧢',value:370.57,tier:'epic',img:NFT+'DurovsCap-1.large.png'},
-    {id:'artisan_brick_1',name:'Artisan Brick',emoji:'🧱',value:390.42,tier:'epic',img:NFT+'ArtisanBrick-1.large.png'},
-    {id:'bonded_ring_2',name:'Bonded Ring',emoji:'💍',value:570.60,tier:'legendary',img:NFT+'BondedRing-2.large.png'},
-    {id:'swiss_watch_2',name:'Swiss Watch',emoji:'⌚',value:637.26,tier:'legendary',img:NFT+'SwissWatch-2.large.png'},
-    {id:'nail_bracelet_2',name:'Nail Bracelet',emoji:'💫',value:764.38,tier:'legendary',img:NFT+'NailBracelet-2.large.png'},
-    {id:'artisan_brick_2',name:'Artisan Brick',emoji:'🧱',value:798.81,tier:'legendary',img:NFT+'ArtisanBrick-2.large.png'},
-    {id:'jingle_bells_2',name:'Jingle Bells',emoji:'🔔',value:800.60,tier:'legendary',img:NFT+'JingleBells-2.large.png'},
-    {id:'scared_cat_2',name:'Scared Cat',emoji:'🐱',value:1193.60,tier:'legendary',img:NFT+'ScaredCat-2.large.png'},
-    {id:'heart_locket_1',name:'Heart Locket',emoji:'💝',value:1212.34,tier:'legendary',img:NFT+'HeartLocket-1.large.png'},
-    {id:'precious_peach_2',name:'Precious Peach',emoji:'🍑',value:2900.60,tier:'mythic',img:NFT+'PreciousPeach-2.large.png'},
-    {id:'scared_cat_3',name:'Scared Cat',emoji:'🐱',value:3500.60,tier:'mythic',img:NFT+'ScaredCat-3.large.png'},
-    {id:'durov_cap_2',name:"Durov's Cap",emoji:'🧢',value:4222.60,tier:'mythic',img:NFT+'DurovsCap-2.large.png'},
-    {id:'plush_pepe_1',name:'Plush Pepe',emoji:'🐸',value:5433.93,tier:'mythic',img:NFT+'PlushPepe-1.large.png'},
-    {id:'plush_pepe_2',name:'Plush Pepe',emoji:'🐸',value:14703.20,tier:'mythic',img:NFT+'PlushPepe-2.large.png'}
+    {id:'happy_brownie',    name:'Happy Brownie',    emoji:'💩', value:61.5,    tier:'rare',      img:'https://i.postimg.cc/XYR4f1XJ/Screenshot-20260929-224434-Telegram.jpg'},
+    {id:'tama_gadget',      name:'Tama Gadget',      emoji:'📟', value:65,      tier:'rare',      img:'https://i.postimg.cc/cLgd8Gx3/Screenshot-20260930-060707-Gallery.jpg'},
+    {id:'timeless_book',    name:'Timeless Book',    emoji:'📕', value:66.19,   tier:'rare',      img:'https://i.postimg.cc/gk0zm6fr/Screenshot-20260930-060705-Gallery.jpg'},
+    {id:'victory_medal',    name:'Victory Medal',    emoji:'🏅', value:86.9,    tier:'rare',      img:'https://i.postimg.cc/KvYGxgdy/Screenshot-20260930-060702-Gallery.jpg'},
+    {id:'mood_pack',        name:'Mood Pack',        emoji:'🎒', value:117,     tier:'epic',      img:'https://i.postimg.cc/tJB9FXVq/Screenshot-20260929-224426-Telegram.jpg'},
+    {id:'fresh_socks',      name:'Fresh Socks',      emoji:'🧦', value:147.9,   tier:'epic',      img:'https://i.postimg.cc/Xqsn9VBD/Screenshot-20260930-060936-Gallery.jpg'},
+    {id:'pool_float',       name:'Pool Float',       emoji:'🦩', value:174.3,   tier:'epic',      img:'https://i.postimg.cc/QC8XBBCK/Screenshot-20260930-060933-Gallery.jpg'},
+    {id:'snoop_dogg',       name:'Snoop Dogg',       emoji:'🐕', value:186,     tier:'epic',      img:'https://i.postimg.cc/qRdBTDTV/Screenshot-20260929-224422-Telegram.jpg'},
+    {id:'desk_calendar',    name:'Desk Calendar',    emoji:'📅', value:236,     tier:'epic',      img:'https://i.postimg.cc/rp4y7X7F/Screenshot-20260930-061127-Gallery.jpg'},
+    {id:'instant_ramen',    name:'Instant Ramen',    emoji:'🍜', value:237.03,  tier:'epic',      img:'https://i.postimg.cc/fRJRj0Kv/Screenshot-20260930-061125-Gallery.jpg'},
+    {id:'stellar_rocket',   name:'Stellar Rocket',   emoji:'🚀', value:280.3,   tier:'epic',      img:'https://i.postimg.cc/X72vCgw3/Screenshot-20260930-061123-Gallery.jpg'},
+    {id:'spy_agaric',       name:'Spy Agaric',       emoji:'🍄', value:378.7,   tier:'epic',      img:'https://i.postimg.cc/8Pk5cYfZ/Screenshot-20260929-224418-Telegram.jpg'},
+    {id:'big_year',         name:'Big Year',         emoji:'🎉', value:475.09,  tier:'epic',      img:'https://i.postimg.cc/x8ndKxxm/Screenshot-20260930-061317-Gallery.jpg'},
+    {id:'money_pot',        name:'Money Pot',        emoji:'💰', value:588.9,   tier:'legendary', img:'https://i.postimg.cc/2646LRwf/Screenshot-20260930-061315-Gallery.jpg'},
+    {id:'xmas_stocking',    name:'Xmas Stocking',    emoji:'🧦', value:640,     tier:'legendary', img:'https://i.postimg.cc/B6WbvQ27/Screenshot-20260930-061313-Gallery.jpg'},
+    {id:'input_key',        name:'Input Key',        emoji:'⌨️', value:774,     tier:'legendary', img:'https://i.postimg.cc/HL8jH78J/Screenshot-20260929-224413-Telegram.jpg'},
+    {id:'light_sword',      name:'Light Sword',      emoji:'⚔️', value:1077,    tier:'legendary', img:'https://i.postimg.cc/9QnzvBMK/Screenshot-20260930-061514-Gallery.jpg'},
+    {id:'swag_bag',         name:'Swag Bag',         emoji:'💰', value:1709.01, tier:'mythic',    img:'https://i.postimg.cc/28T1xYfj/Screenshot-20260930-061507-Gallery.jpg'},
+    {id:'jolly_chimp',      name:'Jolly Chimp',      emoji:'🐵', value:1805.7,  tier:'mythic',    img:'https://i.postimg.cc/1RGnf6CS/Screenshot-20260930-061505-Gallery.jpg'}
 ];
 
-// ✅ 16 گیفت مرتب‌شده از 4 TON تا بالاترین (برای Farm Box)
-const FARMBOX_PRIZES = [
-    'happy_brownie',      // 4.14
-    'victory_medal',      // 4.53
-    'snoop_dogg',         // 4.99
-    'instant_ramen_1',    // 5.28
-    'stellar_rocket_1',   // 5.84
-    'money_pot_1',        // 6.09
-    'jack_in_box_1',      // 16.80
-    'eternal_rose_1',     // 22.57
-    'toy_bear_1',         // 35.14
-    'swiss_watch_1',      // 52.67
-    'genie_lamp_1',       // 97.82
-    'astral_shard_1',     // 105.62
-    'heroic_helmet_1',    // 178.79
-    'durov_cap_1',        // 370.57
-    'heart_locket_1',     // 1212.34
-    'plush_pepe_1'        // 5433.93
-];
+// ✅ تمام گیفت‌های جدید در Farm Box
+const FARMBOX_PRIZES = GIFT_DATABASE.map(g => g.id);
 
 setTimeout(()=>{
     for(let i=0;i<4;i++) addTickerItem();
@@ -1251,7 +1185,7 @@ function fbUpdateQuick(){const v=parseFloat(document.getElementById('fbBetInput'
 function fbRenderPrizes(){
     const grid=document.getElementById('fbPrizesGrid'); if(!grid) return;
     grid.innerHTML='';
-    // ✅ 16 گیفت از 4 TON تا 5433 TON به ترتیب صعودی
+    // نمایش تمام گیفت‌های جدید در Farm Box
     FARMBOX_PRIZES.forEach(id=>{
         const g = GIFT_DATABASE.find(x=>x.id===id);
         if(!g) return;
@@ -1646,4 +1580,4 @@ function arenaDropBall(){if(arenaState!=='waiting')return;arenaState='dropping';
 function arenaFinishSpin(winner){arenaState='done';arenaLastResult=winner;arenaRenderPlayers();setTimeout(()=>{if(winner&&winner.isMe){const win=arenaPool;resolveWin(win);showToast('🏆 You won '+win.toFixed(2)+' TON!','win');}else{if(arenaMyBet>0){showToast('😔 Lost '+arenaMyBet.toFixed(2)+' TON','lose');resolveLoss();}else if(winner){showToast('🎯 '+winner.name+' won '+arenaPool.toFixed(2)+' TON');}if(winner){const bot=BOT_DATABASE.find(x=>x.name===winner.name);if(bot){bot.balance+=arenaPool;bot.streak=Math.max(0,bot.streak)+1;}}arenaPlayers.forEach(p=>{if(p.isMe||p.name===winner.name)return;const b=BOT_DATABASE.find(x=>x.name===p.name);if(b){b.streak=Math.min(0,b.streak)-1;}});}arenaMyBet=0;},400);setTimeout(()=>{arenaStartRound();},2500);}
 </script>
 </body>
-</html>
+    </html>
