@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0a0b0d">
 <title>Game Rush</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;user-select:none;overscroll-behavior:none;position:fixed;inset:0}
+html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;user-select:none;overscroll-behavior:none;position:fixed;inset:0}
 ::-webkit-scrollbar{display:none}
 :root{--card:#12141f;--card-2:#181a28;--border:rgba(255,255,255,.07);--border-2:rgba(255,255,255,.12);--text-dim:#7a8299;--green:#2ff068;--green-2:#00a838;--gold:#ffcc00;--gold-2:#ff9d00;--blue:#0098ea;--blue-2:#0072ff;--red:#ff4444;--pink:#ff006e}
 .live-ticker{position:fixed;top:0;left:0;right:0;height:calc(54px + env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 18px);background:linear-gradient(90deg,#0a0d14,#1a0e2e,#0a0d14);border-bottom:1px solid rgba(155,92,255,.3);overflow:hidden;z-index:99;display:flex;align-items:center}
@@ -88,7 +88,7 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .bp-total-pill{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(47,240,104,.1);border:1.5px solid rgba(47,240,104,.35);color:var(--green);padding:14px 22px;border-radius:16px;margin:0 16px 16px;font-weight:900;font-size:15px}
 .bp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 12px}
 .bp-gift-card{background:#17191f;border-radius:22px;padding:10px 10px 14px;display:flex;flex-direction:column;align-items:center;position:relative}
-.bp-gift-frame{width:100%;aspect-ratio:1;border-radius:22px;border:3px solid #fbbf24;background:#0e0f13;display:flex;align-items:center;justify-content:center;position:relative;padding:16px;box-sizing:border-box}
+.bp-gift-frame{width:100%;aspect-ratio:1;border-radius:22px;border:3px solid #fbbf24;background:#0e0f13;display:flex;align-items:center;justify-content:center;position:relative;padding:16px}
 .bp-gift-frame.tier-common{border-color:#6b7cff}.bp-gift-frame.tier-uncommon{border-color:#a855f7}
 .bp-gift-frame.tier-rare{border-color:#fbbf24}.bp-gift-frame.tier-epic{border-color:#f59e0b}
 .bp-gift-frame.tier-legendary{border-color:#ec4899}.bp-gift-frame.tier-mythic{border-color:#f43f5e}
@@ -149,14 +149,13 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .ph-card-tower .ph-game-icon{background:linear-gradient(135deg,#22d3ee,#0891b2)}
 .ph-card-arena .ph-game-icon{background:linear-gradient(135deg,#f59e0b,#ea580c)}
 #leaderboardScreen{background:linear-gradient(180deg,#1a0f2e,#0a0d14);z-index:220;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))}
-#gameScreen{background:#0a0b0f;z-index:200;padding-top:0;display:flex;flex-direction:column;height:100%}
-.crash-header{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;flex-shrink:0;background:transparent}
+#gameScreen{background:#0a0b0f;z-index:200;display:flex;flex-direction:column;height:100%}
+.crash-header{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;flex-shrink:0}
 .crash-back-btn{background:rgba(35,40,55,.7);color:#fff;border:none;padding:9px 14px;border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:700}
 .crash-balance-pill{display:flex;align-items:center;gap:6px;background:rgba(35,40,55,.7);padding:8px 14px;border-radius:14px;font-weight:900;font-size:15px}
 .crash-balance-pill .ton-icon{width:20px;height:20px;font-size:11px}
 .crash-refill-btn{background:rgba(35,40,55,.7);color:#8a90a6;border:none;padding:9px 12px;border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:700}
 .crash-history-row{display:flex;gap:6px;padding:6px 14px 10px;overflow-x:auto;flex-shrink:0}
-.crash-history-row::-webkit-scrollbar{display:none}
 .crash-hist-badge{padding:7px 14px;border-radius:14px;font-size:13px;font-weight:900;flex-shrink:0;background:rgba(35,40,55,.6);color:#a0a8bd;border:1px solid transparent}
 .crash-hist-badge.red{background:rgba(255,68,68,.15);color:#ff6b6b;border-color:rgba(255,68,68,.3)}
 .crash-hist-badge.green{background:rgba(0,200,83,.15);color:#4ade80;border-color:rgba(0,200,83,.3)}
@@ -173,7 +172,7 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .crash-p-row.cashed{background:rgba(0,200,83,.08);border-color:rgba(0,200,83,.35)}
 .crash-p-row.lost{background:rgba(255,68,68,.06);opacity:.5;border-color:rgba(255,68,68,.25)}
 .crash-p-av{width:36px;height:36px;border-radius:50%;background:#0a0b10;border:2px solid #2a2e42;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.crash-p-name{flex:1;font-size:13px;font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.crash-p-name{flex:1;font-size:13px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .crash-p-bet{font-size:12px;font-weight:800;color:#8a90a6;flex-shrink:0}
 .crash-p-mult{font-size:13px;font-weight:900;color:#2ff068;flex-shrink:0;min-width:52px;text-align:right}
 .crash-p-mult.lost{color:#ff6b6b}
@@ -195,7 +194,7 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .crash-action-btn:disabled{background:#232a3d;color:#6a6a7a;box-shadow:none;animation:none}
 @keyframes pulseGreen{0%,100%{box-shadow:0 4px 20px rgba(0,200,83,.4)}50%{box-shadow:0 4px 32px rgba(0,200,83,.85)}}
 .crash-status-text{text-align:center;font-size:12px;color:#8a90a6;font-weight:800;margin-top:8px;min-height:16px}
-#arenaScreen{background:#0a0b10;z-index:310;display:flex;flex-direction:column;overflow:hidden;padding-top:calc(75px + env(safe-area-inset-top,0px));box-sizing:border-box}
+#arenaScreen{background:#0a0b10;z-index:310;display:flex;flex-direction:column;overflow:hidden;padding-top:calc(75px + env(safe-area-inset-top,0px))}
 .arena-topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;flex-shrink:0}
 .arena-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;padding:6px 4px;font-family:inherit}
 .arena-balance{display:flex;align-items:center;gap:8px;background:#1a1d2e;border:1px solid #2a2e42;padding:7px 14px;border-radius:20px;font-weight:800;font-size:14px}
@@ -207,10 +206,8 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 #arenaCanvas{display:block;width:100%;height:100%}
 .arena-timer-badge{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(15,17,25,.95);border:2px solid #ffcc00;color:#ffcc00;font-size:20px;font-weight:900;padding:4px 20px;border-radius:14px;z-index:30;display:none;letter-spacing:1px}
 .arena-timer-badge.show{display:block}
-.arena-timer-badge.warn{border-color:#ff4444;color:#ff4444;animation:timerWarn 1s infinite}
-@keyframes timerWarn{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.08)}}
+.arena-timer-badge.warn{border-color:#ff4444;color:#ff4444}
 .arena-players-strip{margin:10px 12px 0;flex-shrink:0;max-height:80px;overflow-y:auto}
-.arena-players-strip::-webkit-scrollbar{display:none}
 .arena-strip-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#161926;border:1px solid #232735;border-radius:12px;margin-bottom:6px;position:relative;overflow:hidden}
 .arena-strip-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--pc,#666)}
 .arena-strip-row.isMe{border-color:#ffcc00;background:linear-gradient(90deg,#2a2100,#161926)}
@@ -249,7 +246,7 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .wh-center-val{display:flex;justify-content:center;align-items:center;gap:6px;font-size:34px;font-weight:900;margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.95)}
 .wh-center-val .t-coin{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#ffd93d,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:13px;color:#0a0d14;font-weight:900;box-shadow:0 4px 12px rgba(0,0,0,.6)}
 .wh-timer{background:rgba(0,0,0,.7);border:1px solid rgba(155,92,255,.4);color:#ffcc00;padding:5px 14px;border-radius:10px;font-size:13px;font-weight:900;display:inline-block}
-.wh-timer.hurry{color:#ff4444;border-color:rgba(255,68,68,.5);animation:timerWarn 1s infinite}
+.wh-timer.hurry{color:#ff4444;border-color:rgba(255,68,68,.5)}
 .wh-players{display:flex;gap:6px;padding:0 16px 12px;overflow-x:auto;min-height:76px}
 .wh-pcard{min-width:74px;background:#161926;border:1px solid #232735;border-radius:12px;padding:8px 6px;text-align:center;flex-shrink:0;position:relative;overflow:hidden}
 .wh-pcard.isMe{border-color:#fbbf24;background:linear-gradient(180deg,#2a2100,#161926)}
@@ -277,47 +274,65 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .wh-bet-input-row{display:flex;align-items:center;gap:8px;background:#131722;border-radius:14px;padding:6px 12px;margin-bottom:12px}
 .wh-bet-input-row .t-coin{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#ffd93d,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:12px;color:#0a0d14;font-weight:900}
 .wh-bet-input{flex:1;background:transparent;border:none;color:#fff;font-size:17px;font-weight:900;outline:none;font-family:inherit;text-align:center;padding:10px 0}
-#penaltyScreen{background:#0d1a2e;z-index:320;display:flex;flex-direction:column;height:100%;overflow:hidden;padding-top:calc(60px + env(safe-area-inset-top,0px));box-sizing:border-box}
-.pen-topbar{display:flex;justify-content:space-between;align-items:center;padding:6px 16px;flex-shrink:0}
-.pen-back{background:transparent;color:#fff;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
-.pen-online{display:flex;align-items:center;gap:6px;background:#0f3a2a;color:#2ff068;padding:5px 10px;border-radius:12px;font-size:11px;font-weight:800}
-.pen-online-dot{width:6px;height:6px;border-radius:50%;background:#2ff068}
-.pen-balance-row{display:flex;justify-content:space-between;align-items:center;padding:4px 16px 8px;flex-shrink:0}
-.pen-balance-chip{display:flex;align-items:center;gap:6px;background:#1a1d2e;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:800}
-.pen-balance-chip .t-coin{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#ffd93d,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:9px;color:#0a0d14;font-weight:900}
-.pen-icon-btn{width:32px;height:32px;border-radius:9px;background:#1a1d2e;border:none;color:#8a90a6;font-size:14px;cursor:pointer;font-family:inherit}
-.pen-mults{display:flex;gap:5px;padding:4px 16px 6px;overflow-x:auto;flex-shrink:0}
-.pen-mult{padding:5px 10px;border-radius:8px;background:#1a1d2e;color:#8a90a6;font-size:11px;font-weight:900;flex-shrink:0}
-.pen-mult.active{background:#2ff068;color:#0a0d14}
-.pen-mult.done{background:rgba(47,240,104,.2);color:#2ff068}
-.pen-field{margin:0 12px;background:linear-gradient(180deg,#c9573a 0%,#b8432a 38%,#4a7c3a 38%,#3d6b2e 100%);border-radius:16px;padding:8px 12px 12px;position:relative;overflow:hidden;height:190px;flex-shrink:0}
-.pen-graffiti-left{position:absolute;top:10px;left:16px;font-size:26px;opacity:.35;transform:rotate(-15deg)}
-.pen-graffiti-right{position:absolute;top:14px;right:18px;font-size:32px;opacity:.4;transform:rotate(8deg)}
-.pen-goal-frame{position:relative;background:linear-gradient(180deg,#8fa8b8,#a8bfc9);border-radius:6px;padding:2px;margin:8px auto 0;max-width:190px;height:90px}
-.pen-goal-net{width:100%;height:100%;background:repeating-linear-gradient(0deg,rgba(255,255,255,.45) 0,rgba(255,255,255,.45) 1px,transparent 1px,transparent 10px),repeating-linear-gradient(90deg,rgba(255,255,255,.45) 0,rgba(255,255,255,.45) 1px,transparent 1px,transparent 10px),linear-gradient(180deg,#5a7c5a,#3d6b3d);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:4px}
-.pen-keeper{font-size:34px;transition:transform .35s ease-out}
-.pen-keeper.dive-left{transform:translate(-40px,8px) rotate(-25deg)}
-.pen-keeper.dive-right{transform:translate(40px,8px) rotate(25deg)}
-.pen-ball{position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);font-size:28px;transition:all .5s cubic-bezier(.5,0,.5,1);z-index:5}
-.pen-ball.kick-left{left:20%;bottom:55%;transform:translateX(-50%) scale(.7) rotate(-45deg)}
-.pen-ball.kick-right{left:80%;bottom:55%;transform:translateX(-50%) scale(.7) rotate(45deg)}
-.pen-score-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px;font-weight:900;z-index:10;opacity:0;pointer-events:none;text-shadow:0 6px 12px rgba(0,0,0,.7)}
-.pen-score-overlay.show{opacity:1;animation:scoreFlash .9s ease-out}
-@keyframes scoreFlash{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}30%{transform:translate(-50%,-50%) scale(1.3);opacity:1}70%{transform:translate(-50%,-50%) scale(1.1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
-.pen-status{margin:10px 16px 6px;padding:10px;border-radius:12px;background:rgba(0,0,0,.4);text-align:center;font-size:13px;font-weight:800;color:#c8b1ff;min-height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pen-actions{display:flex;gap:8px;margin:6px 16px;flex-shrink:0}
-.pen-dir-btn{flex:1;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;color:#fff}
-.pen-dir-btn.left{background:linear-gradient(135deg,#166534,#14532d)}
-.pen-dir-btn.right{background:linear-gradient(135deg,#0c4a6e,#082f49)}
-.pen-dir-btn:disabled{opacity:.4;cursor:not-allowed}
-.pen-bottom{margin:auto 16px calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;background:#131722;border-radius:14px;padding:6px 8px;flex-shrink:0}
-.pen-bet-display{flex:1;display:flex;align-items:center;gap:6px;background:#0a0d14;border-radius:10px;padding:8px 10px}
-.pen-bet-display .ton-icon{width:18px;height:18px;font-size:10px}
-.pen-bet-display input{flex:1;background:transparent;border:none;color:#fff;font-size:15px;font-weight:900;outline:none;text-align:center;font-family:inherit;min-width:0}
-.pen-gift-btn{width:40px;height:40px;border-radius:10px;background:#1a1d2e;border:none;color:#ffcc00;font-size:16px;cursor:pointer;font-family:inherit;flex-shrink:0}
-.pen-start-btn{flex:1.5;padding:14px;border-radius:10px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0a0d14;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit}
-.pen-start-btn:disabled{background:#2a2e42;color:#6a6a7a}
-.pen-entry-label{font-size:10px;color:#8a90a6;font-weight:800;letter-spacing:1px;text-align:center;padding:0 16px 4px;flex-shrink:0}
+.toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border-2);padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
+.toast.win{background:linear-gradient(135deg,#00c853,#009624)}
+.toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c)}
+.slot-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:5000;display:flex;justify-content:center;align-items:center;padding:16px}
+.slot-modal.hidden{display:none}
+.slot-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border-radius:24px;padding:18px;max-width:400px;width:100%;border:1px solid var(--border-2)}
+.slot-modal-content.vip{border:2px solid #c084fc}
+.slot-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.slot-title{font-size:20px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:8px}
+.slot-title.vip{color:#c084fc}
+.slot-close{background:var(--card-2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit}
+.slot-sub{font-size:12px;color:var(--text-dim);margin-bottom:14px;font-weight:600}
+.slot-wrap{padding:12px 0;margin-bottom:8px}
+.slot-container{position:relative;height:110px;overflow:hidden;border-radius:16px;background:var(--card-2);padding:8px 0}
+.slot-pointer{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);z-index:10;width:3px;background:linear-gradient(180deg,#9b5cff,#7c3aed)}
+.slot-pointer-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#c084fc;z-index:11}
+.slot-reel{display:flex;gap:6px;padding:0 8px;align-items:center;height:100%}
+.slot-item{min-width:80px;height:94px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-2));display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:900;color:#0a0d14;flex-shrink:0}
+.slot-item.vip-item{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
+.slot-item .slot-value{font-size:22px;font-weight:900}
+.slot-item .slot-ton{font-size:11px;opacity:.75;font-weight:800}
+.slot-info{background:var(--card-2);border-radius:12px;padding:10px;margin-bottom:12px}
+.slot-info-row{display:flex;justify-content:center;align-items:center;gap:8px;font-size:14px;font-weight:800}
+.slot-spin{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#0a0d14;border:none;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit}
+.slot-spin.vip{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
+.slot-spin:disabled{background:#2a2e42;color:#6a6a7a}
+.vip-code-input{width:100%;background:#0a0d14;border:2px solid #3a2e5e;border-radius:12px;color:#fff;padding:14px;font-size:16px;font-weight:800;text-align:center;outline:none;letter-spacing:2px;margin-bottom:16px;font-family:inherit}
+.vip-btns{display:flex;gap:8px}
+.vip-cancel{flex:1;padding:14px;border-radius:12px;background:var(--card-2);color:#8a90a6;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.vip-confirm{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.deposit-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:6000;display:flex;justify-content:center;align-items:center;padding:20px}
+.deposit-modal.hidden{display:none}
+.deposit-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border:2px solid var(--blue);border-radius:24px;padding:24px;max-width:360px;width:100%;text-align:center}
+.deposit-modal-title{font-size:22px;font-weight:900;margin-bottom:6px}
+.deposit-modal-sub{font-size:13px;color:var(--text-dim);margin-bottom:18px}
+.deposit-modal-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:10px}
+.deposit-modal-btn:disabled{opacity:.5}
+.deposit-modal-btn.close{background:var(--card-2);color:#8a90a6}
+.deposit-status{font-size:13px;color:var(--gold);margin-top:10px;min-height:20px;font-weight:700}
+.deposit-wallet-info{background:var(--card-2);border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--text-dim);word-break:break-all}
+.deposit-amount-input{width:100%;background:#0a0d14;border:1px solid var(--border-2);border-radius:10px;color:#fff;padding:10px;text-align:center;font-size:16px;font-weight:bold;outline:none;margin-bottom:6px;font-family:inherit}
+.deposit-min-hint{font-size:11px;color:var(--text-dim);margin-bottom:12px;font-weight:600}
+#giftPickerModal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:7000;display:flex;justify-content:center;align-items:center;padding:16px}
+#giftPickerModal.hidden{display:none}
+.gp-content{background:#17191f;border:2px solid var(--gold);border-radius:24px;padding:18px;max-width:420px;width:100%;max-height:85vh;display:flex;flex-direction:column}
+.gp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.gp-title{font-size:18px;font-weight:900;color:var(--gold)}
+.gp-close{background:var(--card-2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit}
+.gp-list{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px}
+.gp-item{background:#0e0f13;border:2px solid #fbbf24;border-radius:18px;padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;position:relative}
+.gp-item.tier-epic{border-color:#f59e0b}.gp-item.tier-legendary{border-color:#ec4899}.gp-item.tier-mythic{border-color:#f43f5e}
+.gp-item-val{position:absolute;top:6px;right:6px;background:#000;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:900;z-index:5}
+.gp-item-emoji{width:80px;height:80px;margin:8px 0 4px;display:flex;align-items:center;justify-content:center}
+.gp-item-emoji img{width:80px;height:80px;object-fit:contain}
+.gp-item-emoji .em{font-size:50px}
+.gp-item-name{font-size:11px;font-weight:800;text-align:center;margin-top:4px}
+.gp-empty{text-align:center;padding:40px 10px;color:var(--text-dim);font-size:13px}
+.gift-bet-btn{background:linear-gradient(135deg,var(--gold),var(--gold-2));border:none;color:#0a0d14;padding:8px 12px;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
 #minesScreen{background:radial-gradient(ellipse at 50% 0%,#0f1530,#05070d);z-index:270;overflow-y:auto;padding-bottom:30px;padding-top:calc(75px + env(safe-area-inset-top,0px))}
 .mn-top-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
 .mn-balance{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-2);padding:9px 14px;border-radius:14px;font-weight:900;font-size:15px}
@@ -439,7 +454,7 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .fb-prizes-title{font-size:12px;color:var(--text-dim);font-weight:800;margin-bottom:10px}
 .fb-prizes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fb-prize-card{background:#17191f;border-radius:22px;padding:10px 10px 14px;display:flex;flex-direction:column;align-items:center;position:relative}
-.fb-prize-frame{width:100%;aspect-ratio:1;border-radius:22px;border:3px solid #fbbf24;background:#0e0f13;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.fb-prize-frame{width:100%;aspect-ratio:1;border-radius:22px;border:3px solid #fbbf24;background:#0e0f13;display:flex;align-items:center;justify-content:center;padding:16px}
 .fb-prize-frame.tier-epic{border-color:#f59e0b}.fb-prize-frame.tier-legendary{border-color:#ec4899}.fb-prize-frame.tier-mythic{border-color:#f43f5e}
 .fb-prize-frame img{width:100%;height:100%;object-fit:contain}
 .fb-prize-name{font-size:14px;font-weight:800;text-align:center;margin:14px 0 0;line-height:1.25;min-height:34px;display:flex;align-items:center;justify-content:center}
@@ -484,579 +499,233 @@ html,body{height:100vh;height:100dvh;width:100%;overflow:hidden;background:#0507
 .up-result.show{opacity:1}
 .up-result.win{background:rgba(47,240,104,.2);color:var(--green)}
 .up-result.lose{background:rgba(255,68,68,.2);color:var(--red)}
-.toast{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border-2);padding:12px 22px;border-radius:14px;font-size:13px;font-weight:700;z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;max-width:90vw}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
-.toast.win{background:linear-gradient(135deg,#00c853,#009624)}
-.toast.lose{background:linear-gradient(135deg,#d92b2b,#b91c1c)}
-.slot-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.88);z-index:5000;display:flex;justify-content:center;align-items:center;padding:16px}
-.slot-modal.hidden{display:none}
-.slot-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border-radius:24px;padding:18px;max-width:400px;width:100%;box-sizing:border-box;border:1px solid var(--border-2)}
-.slot-modal-content.vip{border:2px solid #c084fc}
-.slot-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.slot-title{font-size:20px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:8px}
-.slot-title.vip{color:#c084fc}
-.slot-close{background:var(--card-2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit}
-.slot-sub{font-size:12px;color:var(--text-dim);margin-bottom:14px;font-weight:600}
-.slot-wrap{padding:12px 0;margin-bottom:8px}
-.slot-container{position:relative;height:110px;overflow:hidden;border-radius:16px;background:var(--card-2);padding:8px 0}
-.slot-pointer{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);z-index:10;width:3px;background:linear-gradient(180deg,#9b5cff,#7c3aed)}
-.slot-pointer-dot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#c084fc;z-index:11}
-.slot-reel{display:flex;gap:6px;padding:0 8px;align-items:center;height:100%}
-.slot-item{min-width:80px;height:94px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-2));display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:900;color:#0a0d14;flex-shrink:0}
-.slot-item.vip-item{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
-.slot-item .slot-value{font-size:22px;font-weight:900}
-.slot-item .slot-ton{font-size:11px;opacity:.75;font-weight:800}
-.slot-info{background:var(--card-2);border-radius:12px;padding:10px;margin-bottom:12px}
-.slot-info-row{display:flex;justify-content:center;align-items:center;gap:8px;font-size:14px;font-weight:800}
-.slot-spin{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#0a0d14;border:none;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit}
-.slot-spin.vip{background:linear-gradient(135deg,#c084fc,#7c3aed);color:#fff}
-.slot-spin:disabled{background:#2a2e42;color:#6a6a7a}
-.vip-code-input{width:100%;background:#0a0d14;border:2px solid #3a2e5e;border-radius:12px;color:#fff;padding:14px;font-size:16px;font-weight:800;text-align:center;outline:none;letter-spacing:2px;margin-bottom:16px;font-family:inherit}
-.vip-btns{display:flex;gap:8px}
-.vip-cancel{flex:1;padding:14px;border-radius:12px;background:var(--card-2);color:#8a90a6;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
-.vip-confirm{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
-.deposit-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.9);z-index:6000;display:flex;justify-content:center;align-items:center;padding:20px}
-.deposit-modal.hidden{display:none}
-.deposit-modal-content{background:linear-gradient(180deg,var(--card),#0f1119);border:2px solid var(--blue);border-radius:24px;padding:24px;max-width:360px;width:100%;text-align:center;box-sizing:border-box}
-.deposit-modal-title{font-size:22px;font-weight:900;margin-bottom:6px}
-.deposit-modal-sub{font-size:13px;color:var(--text-dim);margin-bottom:18px}
-.deposit-modal-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#fff;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:10px}
-.deposit-modal-btn:disabled{opacity:.5}
-.deposit-modal-btn.close{background:var(--card-2);color:#8a90a6}
-.deposit-status{font-size:13px;color:var(--gold);margin-top:10px;min-height:20px;font-weight:700}
-.deposit-wallet-info{background:var(--card-2);border-radius:12px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--text-dim);word-break:break-all}
-.deposit-amount-input{width:100%;background:#0a0d14;border:1px solid var(--border-2);border-radius:10px;color:#fff;padding:10px;text-align:center;font-size:16px;font-weight:bold;outline:none;margin-bottom:6px;font-family:inherit}
-.deposit-min-hint{font-size:11px;color:var(--text-dim);margin-bottom:12px;font-weight:600}
-#giftPickerModal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:7000;display:flex;justify-content:center;align-items:center;padding:16px}
-#giftPickerModal.hidden{display:none}
-.gp-content{background:#17191f;border:2px solid var(--gold);border-radius:24px;padding:18px;max-width:420px;width:100%;box-sizing:border-box;max-height:85vh;display:flex;flex-direction:column}
-.gp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.gp-title{font-size:18px;font-weight:900;color:var(--gold)}
-.gp-close{background:var(--card-2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;font-family:inherit}
-.gp-list{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px}
-.gp-item{background:#0e0f13;border:2px solid #fbbf24;border-radius:18px;padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;position:relative}
-.gp-item.tier-epic{border-color:#f59e0b}.gp-item.tier-legendary{border-color:#ec4899}.gp-item.tier-mythic{border-color:#f43f5e}
-.gp-item-val{position:absolute;top:6px;right:6px;background:#000;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:900;z-index:5}
-.gp-item-emoji{width:80px;height:80px;margin:8px 0 4px;display:flex;align-items:center;justify-content:center}
-.gp-item-emoji img{width:80px;height:80px;object-fit:contain}
-.gp-item-emoji .em{font-size:50px}
-.gp-item-name{font-size:11px;font-weight:800;text-align:center;margin-top:4px}
-.gp-empty{text-align:center;padding:40px 10px;color:var(--text-dim);font-size:13px}
-.gift-bet-btn{background:linear-gradient(135deg,var(--gold),var(--gold-2));border:none;color:#0a0d14;padding:8px 12px;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
 </style>
 </head>
 <body>
 
 <div id="homeScreen" class="screen">
-    <div class="live-ticker">
-        <div class="live-label"><div class="live-dot"></div>LIVE</div>
-        <div class="live-ticker-inner" id="liveTickerInner"></div>
-    </div>
-    <div class="balance-row">
-        <div class="avatar-wrap"><div class="avatar-ring"></div><div class="avatar" id="userAvatar">M</div></div>
-        <div class="balance-info">
-            <div class="balance-label">Your balance</div>
-            <div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">0.000</span></div>
-        </div>
-        <button class="deposit-btn" onclick="openDepositModal()">💳 Deposit</button>
-        <button id="adminBtn" class="deposit-btn" style="display:none;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;margin-left:6px;" onclick="openAdminPanel()">👑</button>
-    </div>
-    <div class="banners">
-        <div class="banner rocket-banner" onclick="openGame()">
-            <div class="banner-badge">🔥 HOT</div>
-            <div class="banner-title">🚀 ROCKET</div>
-            <div class="rocket-ship">🚀</div>
-            <div class="mult-pill green pm-1">x4.75</div>
-            <div class="mult-pill yellow pm-2">x2.51</div>
-            <div class="mult-pill red pm-3">x1.11</div>
-        </div>
-        <div class="banner pvp-banner" onclick="openPvp()">
-            <div class="banner-badge">⚔️ PVP</div>
-            <div class="banner-title">⚔️ PVP</div>
-            <div class="pvp-players">
-                <div class="pvp-card"><div class="pc-av">🎯</div><div class="pc-name">PVP</div><div class="pc-pct">LIVE</div></div>
-                <div class="pvp-card"><div class="pc-av">👤</div><div class="pc-name">YOU</div><div class="pc-pct">?</div></div>
-            </div>
-        </div>
-        <div class="banner playhub-banner" onclick="openPlayHub()">
-            <div class="banner-badge new">⚙️ NEW</div>
-            <div class="banner-title">🎮 PLAY HUB</div>
-            <div class="game-cards">
-                <div class="game-card gc-upgrade">⬆️<div class="game-card-label">Upgrade</div></div>
-                <div class="game-card gc-crash">🚀<div class="game-card-label">Crash</div></div>
-                <div class="game-card gc-plinko">🎯<div class="game-card-label">Mines</div></div>
-            </div>
-        </div>
-    </div>
-    <div class="free-banners">
-        <div class="free-banner free-banner-1" onclick="openSlotModal('free')">
-            <div class="free-icon">🎁</div>
-            <div class="free-title"><span class="gold">FREE24</span></div>
-            <div class="free-sub">Spin once / 24h</div>
-        </div>
-        <div class="free-banner free-banner-2" onclick="openVipCodeModal()">
-            <div class="free-icon">👑</div>
-            <div class="free-title"><span class="purple">FREE VIP</span></div>
-            <div class="free-sub">Code required</div>
-        </div>
-        <div class="free-banner free-banner-farm" onclick="openFarmBox()">
-            <div class="free-icon">🌾</div>
-            <div class="free-title">FARM BOX</div>
-            <div class="free-sub">0.1 - 10 TON</div>
-        </div>
-        <div class="free-banner free-banner-giftcode" onclick="openGiftCodeModal()">
-            <div class="free-icon">🎁</div>
-            <div class="free-title">GIFT CODE</div>
-            <div class="free-sub">Enter code</div>
-        </div>
-    </div>
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
-        <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
-    </div>
+<div class="live-ticker"><div class="live-label"><div class="live-dot"></div>LIVE</div><div class="live-ticker-inner" id="liveTickerInner"></div></div>
+<div class="balance-row"><div class="avatar-wrap"><div class="avatar-ring"></div><div class="avatar" id="userAvatar">M</div></div><div class="balance-info"><div class="balance-label">Your balance</div><div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">0.000</span></div></div><button class="deposit-btn" onclick="openDepositModal()">💳 Deposit</button><button id="adminBtn" class="deposit-btn" style="display:none;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;margin-left:6px;" onclick="openAdminPanel()">👑</button></div>
+<div class="banners">
+<div class="banner rocket-banner" onclick="openGame()"><div class="banner-badge">🔥 HOT</div><div class="banner-title">🚀 ROCKET</div><div class="rocket-ship">🚀</div><div class="mult-pill green pm-1">x4.75</div><div class="mult-pill yellow pm-2">x2.51</div><div class="mult-pill red pm-3">x1.11</div></div>
+<div class="banner pvp-banner" onclick="openPvp()"><div class="banner-badge">⚔️ PVP</div><div class="banner-title">⚔️ PVP</div><div class="pvp-players"><div class="pvp-card"><div class="pc-av">🎯</div><div class="pc-name">PVP</div><div class="pc-pct">LIVE</div></div><div class="pvp-card"><div class="pc-av">👤</div><div class="pc-name">YOU</div><div class="pc-pct">?</div></div></div></div>
+<div class="banner playhub-banner" onclick="openPlayHub()"><div class="banner-badge new">⚙️ NEW</div><div class="banner-title">🎮 PLAY HUB</div><div class="game-cards"><div class="game-card gc-upgrade">⬆️<div class="game-card-label">Upgrade</div></div><div class="game-card gc-crash">🚀<div class="game-card-label">Crash</div></div><div class="game-card gc-plinko">🎯<div class="game-card-label">Mines</div></div></div></div>
+</div>
+<div class="free-banners">
+<div class="free-banner free-banner-1" onclick="openSlotModal('free')"><div class="free-icon">🎁</div><div class="free-title"><span class="gold">FREE24</span></div><div class="free-sub">Spin once / 24h</div></div>
+<div class="free-banner free-banner-2" onclick="openVipCodeModal()"><div class="free-icon">👑</div><div class="free-title"><span class="purple">FREE VIP</span></div><div class="free-sub">Code required</div></div>
+<div class="free-banner free-banner-farm" onclick="openFarmBox()"><div class="free-icon">🌾</div><div class="free-title">FARM BOX</div><div class="free-sub">0.1 - 10 TON</div></div>
+<div class="free-banner free-banner-giftcode" onclick="openGiftCodeModal()"><div class="free-icon">🎁</div><div class="free-title">GIFT CODE</div><div class="free-sub">Enter code</div></div>
+</div>
+<div class="bottom-nav">
+<div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+<div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
+<div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
+<div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
+<div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
+</div>
 </div>
 
 <div id="backpackScreen" class="screen hidden">
-    <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎒 My Gifts</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
-    <div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div>
-    <div class="bp-grid" id="backpackGrid"></div>
-    <div class="bottom-nav">
-        <div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
-        <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
-    </div>
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎒 My Gifts</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
+<div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div>
+<div class="bp-grid" id="backpackGrid"></div>
+<div class="bottom-nav">
+<div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+<div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
+<div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
+<div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
+<div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
+</div>
 </div>
 
 <div id="referralScreen" class="screen hidden">
-    <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👥 Invite Friends</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
-    <div class="ref-content">
-        <div class="ref-hero"><div class="ref-emoji">🎁</div><div class="ref-title">Invite & Earn</div><div class="ref-sub">Get <b>0.05 TON</b> for each friend who joins</div></div>
-        <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div>
-        <div class="ref-link-box"><input type="text" id="refLinkInput" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button></div>
-        <button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button>
-        <div class="ref-stats">
-            <div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div>
-            <div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div>
-        </div>
-        <div class="ref-list-title">👥 YOUR REFERRALS</div>
-        <div class="ref-list" id="refList"></div>
-        <div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they start the bot, you get <b>0.05 TON</b></div>
-    </div>
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
-        <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
-    </div>
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👥 Invite Friends</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
+<div class="ref-content">
+<div class="ref-hero"><div class="ref-emoji">🎁</div><div class="ref-title">Invite & Earn</div><div class="ref-sub">Get <b>0.05 TON</b> for each friend who joins</div></div>
+<div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div>
+<div class="ref-link-box"><input type="text" id="refLinkInput" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button></div>
+<button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button>
+<div class="ref-stats"><div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div><div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div></div>
+<div class="ref-list-title">👥 YOUR REFERRALS</div>
+<div class="ref-list" id="refList"></div>
+<div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they start the bot, you get <b>0.05 TON</b></div>
+</div>
+<div class="bottom-nav">
+<div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+<div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div>
+<div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
+<div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
+<div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
+</div>
 </div>
 
 <div id="leaderboardScreen" class="screen hidden">
-    <div class="sh-top-bar">
-        <button class="sh-back" onclick="goHome()">⬅ Back</button>
-        <div class="sh-title">🏆 Leaderboard</div>
-        <button class="sh-back" onclick="loadLeaderboard()">🔄</button>
-    </div>
-    <div style="padding:0 16px">
-        <div style="background:linear-gradient(135deg,#ffcc00,#ff9d00);border-radius:20px;padding:20px;text-align:center;margin-bottom:16px;box-shadow:0 8px 24px rgba(255,204,0,.3)">
-            <div style="font-size:13px;font-weight:800;color:#0a0d14;margin-bottom:8px;letter-spacing:1px">⏰ NEXT REWARD IN</div>
-            <div id="lbTimer" style="font-size:26px;font-weight:900;color:#0a0d14;letter-spacing:2px;font-variant-numeric:tabular-nums">--d --:--:--</div>
-            <div style="font-size:11px;font-weight:700;color:#0a0d14;opacity:.85;margin-top:8px">💰 Top 10 win 1 TON each</div>
-        </div>
-        <div id="lbList" style="display:flex;flex-direction:column;gap:8px"></div>
-    </div>
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🏆 Leaderboard</div><button class="sh-back" onclick="loadLeaderboard()">🔄</button></div>
+<div style="padding:0 16px">
+<div style="background:linear-gradient(135deg,#ffcc00,#ff9d00);border-radius:20px;padding:20px;text-align:center;margin-bottom:16px;box-shadow:0 8px 24px rgba(255,204,0,.3)"><div style="font-size:13px;font-weight:800;color:#0a0d14;margin-bottom:8px;letter-spacing:1px">⏰ NEXT REWARD IN</div><div id="lbTimer" style="font-size:26px;font-weight:900;color:#0a0d14;letter-spacing:2px;font-variant-numeric:tabular-nums">--d --:--:--</div><div style="font-size:11px;font-weight:700;color:#0a0d14;opacity:.85;margin-top:8px">💰 Top 10 win 1 TON each</div></div>
+<div id="lbList" style="display:flex;flex-direction:column;gap:8px"></div>
+</div>
 </div>
 
 <div id="playhubScreen" class="screen hidden">
-    <div class="ph-top-bar">
-        <button class="ph-back" onclick="goHome()">⬅ Back</button>
-        <div class="ph-title">🎮 Play Hub</div>
-        <div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="ph-banner">
-        <div class="ph-banner-text">PENALTY IS NOW LIVE<br><b>10 shots to the final!</b></div>
-        <div class="ph-banner-img">⚽</div>
-    </div>
-    <div class="ph-referral" onclick="openReferral()">
-        <div class="ph-referral-title">Referrals</div>
-        <div class="ph-referral-val"><span>◈</span><span id="phRefCount">0</span></div>
-    </div>
-    <div class="ph-games-grid">
-        <div class="ph-game-card ph-card-penalty" onclick="openPenalty()">
-            <div class="ph-new-badge">NEW</div>
-            <div class="ph-game-icon">⚽</div>
-            <div class="ph-game-title">PENALTY</div>
-            <div class="ph-game-sub">Score goals and win</div>
-        </div>
-        <div class="ph-game-card ph-card-wheel" onclick="openWheel()">
-            <div class="ph-game-icon">🎡</div>
-            <div class="ph-game-title">WHEEL</div>
-            <div class="ph-game-sub">Spin & multiply</div>
-        </div>
-        <div class="ph-game-card ph-card-mines" onclick="openMines()">
-            <div class="ph-game-icon">💎</div>
-            <div class="ph-game-title">MINES</div>
-            <div class="ph-game-sub">Dodge the mines</div>
-        </div>
-        <div class="ph-game-card ph-card-plinko" onclick="openPlinko()">
-            <div class="ph-game-icon">🎯</div>
-            <div class="ph-game-title">PLINKO</div>
-            <div class="ph-game-sub">Win up to 1000x</div>
-        </div>
-        <div class="ph-game-card ph-card-tower" onclick="openSoloHub()">
-            <div class="ph-game-icon">🗼</div>
-            <div class="ph-game-title">TOWER</div>
-            <div class="ph-game-sub">Climb higher</div>
-        </div>
-        <div class="ph-game-card ph-card-arena" onclick="openArena()">
-            <div class="ph-game-icon">⚔️</div>
-            <div class="ph-game-title">ARENA</div>
-            <div class="ph-game-sub">Ball battle</div>
-        </div>
-    </div>
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
-        <div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
-        <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
-        <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
-        <div class="nav-item active"><div class="nav-icon">🎮</div><span>Games</span></div>
-    </div>
+<div class="ph-top-bar"><button class="ph-back" onclick="goHome()">⬅ Back</button><div class="ph-title">🎮 Play Hub</div><div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.00</span></div></div>
+<div class="ph-banner"><div class="ph-banner-text">PENALTY IS NOW LIVE<br><b>10 shots to the final!</b></div><div class="ph-banner-img">⚽</div></div>
+<div class="ph-referral" onclick="openReferral()"><div class="ph-referral-title">Referrals</div><div class="ph-referral-val"><span>◈</span><span id="phRefCount">0</span></div></div>
+<div class="ph-games-grid">
+<div class="ph-game-card ph-card-penalty" onclick="openPenalty()"><div class="ph-new-badge">NEW</div><div class="ph-game-icon">⚽</div><div class="ph-game-title">PENALTY</div><div class="ph-game-sub">Score goals and win</div></div>
+<div class="ph-game-card ph-card-wheel" onclick="openWheel()"><div class="ph-game-icon">🎡</div><div class="ph-game-title">WHEEL</div><div class="ph-game-sub">Spin & multiply</div></div>
+<div class="ph-game-card ph-card-mines" onclick="openMines()"><div class="ph-game-icon">💎</div><div class="ph-game-title">MINES</div><div class="ph-game-sub">Dodge the mines</div></div>
+<div class="ph-game-card ph-card-plinko" onclick="openPlinko()"><div class="ph-game-icon">🎯</div><div class="ph-game-title">PLINKO</div><div class="ph-game-sub">Win up to 1000x</div></div>
+<div class="ph-game-card ph-card-tower" onclick="openSoloHub()"><div class="ph-game-icon">🗼</div><div class="ph-game-title">TOWER</div><div class="ph-game-sub">Climb higher</div></div>
+<div class="ph-game-card ph-card-arena" onclick="openArena()"><div class="ph-game-icon">⚔️</div><div class="ph-game-title">ARENA</div><div class="ph-game-sub">Ball battle</div></div>
+</div>
+<div class="bottom-nav">
+<div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div>
+<div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div>
+<div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div>
+<div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
+<div class="nav-item active"><div class="nav-icon">🎮</div><span>Games</span></div>
+</div>
 </div>
 
 <div id="penaltyScreen" class="screen hidden">
-    <div class="pen-topbar">
-        <button class="pen-back" onclick="closePenalty()">← Back</button>
-        <div class="pen-online"><div class="pen-online-dot"></div><span id="penOnlineCount">3057 online</span></div>
-    </div>
-    <div class="pen-balance-row">
-        <div class="pen-balance-chip">Balance: <span class="t-coin">◈</span><span id="penBalanceDisplay">0.00</span></div>
-        <div style="display:flex;gap:6px">
-            <button class="pen-icon-btn" onclick="showToast('ℹ️ Score goals to increase your multiplier!','')">i</button>
-            <button class="pen-icon-btn" onclick="showToast('📜 No history yet','')">🕐</button>
-        </div>
-    </div>
-    <div class="pen-mults" id="penMultsRow"></div>
-    <div class="pen-field">
-        <div class="pen-graffiti-left">🐕</div>
-        <div class="pen-graffiti-right">👑</div>
-        <div class="pen-goal-frame">
-            <div class="pen-goal-net">
-                <div class="pen-keeper" id="penKeeper">🐸</div>
-                <div class="pen-score-overlay" id="penScoreOverlay">GOAL!</div>
-            </div>
-        </div>
-        <div class="pen-ball" id="penBall">⚽</div>
-    </div>
-    <div class="pen-status" id="penStatus">Place your bet and shoot!</div>
-    <div class="pen-actions">
-        <button class="pen-dir-btn left" id="penLeftBtn" onclick="penShoot('left')" disabled>◀ Left</button>
-        <button class="pen-dir-btn right" id="penRightBtn" onclick="penShoot('right')" disabled>Right ▶</button>
-    </div>
-    <div class="pen-entry-label">ENTRY PRICE (TON)</div>
-    <div class="pen-bottom">
-        <div class="pen-bet-display">
-            <span class="ton-icon">◈</span>
-            <input type="number" id="penBetInput" value="0.1" min="0.1" step="0.1">
-        </div>
-        <button class="pen-gift-btn" onclick="openGiftPicker()">🎁</button>
-        <button class="pen-start-btn" id="penStartBtn" onclick="penStart()">START</button>
-    </div>
+<div class="pen-topbar"><button class="pen-back" onclick="closePenalty()">← Back</button><div class="pen-online"><div class="pen-online-dot"></div><span id="penOnlineCount">3057 online</span></div></div>
+<div class="pen-balance-row"><div class="pen-balance-chip">Balance: <span class="t-coin">◈</span><span id="penBalanceDisplay">0.00</span></div><div style="display:flex;gap:6px"><button class="pen-icon-btn" onclick="showToast('ℹ️ Score goals!','')">i</button><button class="pen-icon-btn" onclick="showToast('📜 No history yet','')">🕐</button></div></div>
+<div class="pen-mults" id="penMultsRow"></div>
+<div class="pen-field"><div class="pen-graffiti-left">🐕</div><div class="pen-graffiti-right">👑</div><div class="pen-goal-frame"><div class="pen-goal-net"><div class="pen-keeper" id="penKeeper">🐸</div><div class="pen-score-overlay" id="penScoreOverlay">GOAL!</div></div></div><div class="pen-ball" id="penBall">⚽</div></div>
+<div class="pen-status" id="penStatus">Place your bet and shoot!</div>
+<div class="pen-actions"><button class="pen-dir-btn left" id="penLeftBtn" onclick="penShoot('left')" disabled>◀ Left</button><button class="pen-dir-btn right" id="penRightBtn" onclick="penShoot('right')" disabled>Right ▶</button></div>
+<div class="pen-entry-label">ENTRY PRICE (TON)</div>
+<div class="pen-bottom"><div class="pen-bet-display"><span class="ton-icon">◈</span><input type="number" id="penBetInput" value="0.1" min="0.1" step="0.1"></div><button class="pen-gift-btn" onclick="openGiftPicker()">🎁</button><button class="pen-start-btn" id="penStartBtn" onclick="penStart()">START</button></div>
 </div>
 
 <div id="wheelScreen" class="screen hidden">
-    <div class="wh-topbar">
-        <button class="wh-back" onclick="closeWheel()">← Back</button>
-        <div class="wh-status"><div class="wh-status-dot"></div><span id="whStatusText">Connecting...</span></div>
-    </div>
-    <div class="wh-title">WHEEL</div>
-    <div class="wh-balance-row">
-        <div class="wh-balance-chip">Balance: <span class="t-coin">◈</span><span id="whBalanceDisplay">0.00</span></div>
-        <div style="display:flex;gap:8px">
-            <button class="wh-icon-btn" onclick="showToast('ℹ️ Pick a multiplier and spin!','')">i</button>
-            <button class="wh-icon-btn" onclick="showToast('📜 No history yet','')">🕐</button>
-        </div>
-    </div>
-    <div class="wh-history" id="whHistory"></div>
-    <div class="wh-wheel-wrap">
-        <div class="wh-pointer"></div>
-        <canvas id="wheelCanvas"></canvas>
-        <div class="wh-center-info">
-            <div class="wh-center-label">BANK</div>
-            <div class="wh-center-val"><span class="t-coin">◈</span><span id="whBankVal">0</span></div>
-            <div class="wh-timer" id="whTimer">Starts in: 00:20</div>
-        </div>
-    </div>
-    <div class="wh-players" id="whPlayers"></div>
-    <div class="wh-actions">
-        <div class="wh-action-row">
-            <button class="wh-gift-btn" onclick="openGiftPicker()">🎁</button>
-            <button class="wh-topup-btn" onclick="openDepositModal()">Top Up Balance</button>
-        </div>
-        <div class="wh-mult-picks">
-            <button class="wh-mult-btn purple" data-mult="2" onclick="whPickMult(2)">x2</button>
-            <button class="wh-mult-btn green" data-mult="4" onclick="whPickMult(4)">x4</button>
-            <button class="wh-mult-btn blue" data-mult="5" onclick="whPickMult(5)">x5</button>
-            <button class="wh-mult-btn pink" data-mult="20" onclick="whPickMult(20)">x20</button>
-        </div>
-        <div class="wh-bet-input-row">
-            <span class="t-coin">◈</span>
-            <input type="number" id="whBetInput" class="wh-bet-input" value="0.1" min="0.1" step="0.1">
-        </div>
-    </div>
+<div class="wh-topbar"><button class="wh-back" onclick="closeWheel()">← Back</button><div class="wh-status"><div class="wh-status-dot"></div><span id="whStatusText">Connecting...</span></div></div>
+<div class="wh-title">WHEEL</div>
+<div class="wh-balance-row"><div class="wh-balance-chip">Balance: <span class="t-coin">◈</span><span id="whBalanceDisplay">0.00</span></div><div style="display:flex;gap:8px"><button class="wh-icon-btn" onclick="showToast('ℹ️ Pick a multiplier!','')">i</button><button class="wh-icon-btn" onclick="showToast('📜 No history yet','')">🕐</button></div></div>
+<div class="wh-history" id="whHistory"></div>
+<div class="wh-wheel-wrap"><div class="wh-pointer"></div><canvas id="wheelCanvas"></canvas><div class="wh-center-info"><div class="wh-center-label">BANK</div><div class="wh-center-val"><span class="t-coin">◈</span><span id="whBankVal">0</span></div><div class="wh-timer" id="whTimer">Starts in: 00:20</div></div></div>
+<div class="wh-players" id="whPlayers"></div>
+<div class="wh-actions">
+<div class="wh-action-row"><button class="wh-gift-btn" onclick="openGiftPicker()">🎁</button><button class="wh-topup-btn" onclick="openDepositModal()">Top Up Balance</button></div>
+<div class="wh-mult-picks"><button class="wh-mult-btn purple" data-mult="2" onclick="whPickMult(2)">x2</button><button class="wh-mult-btn green" data-mult="4" onclick="whPickMult(4)">x4</button><button class="wh-mult-btn blue" data-mult="5" onclick="whPickMult(5)">x5</button><button class="wh-mult-btn pink" data-mult="20" onclick="whPickMult(20)">x20</button></div>
+<div class="wh-bet-input-row"><span class="t-coin">◈</span><input type="number" id="whBetInput" class="wh-bet-input" value="0.1" min="0.1" step="0.1"></div>
+</div>
 </div>
 
 <div id="gameScreen" class="screen hidden">
-    <div class="crash-header">
-        <button class="crash-back-btn" onclick="goHome()">← Back</button>
-        <div class="crash-balance-pill"><span class="ton-icon">◈</span><span id="balanceDisplay">0.00</span></div>
-        <button class="crash-refill-btn" onclick="resetBalance()">↻</button>
-    </div>
-    <div class="crash-history-row" id="multiplierHistory"></div>
-    <div class="crash-chart-area">
-        <canvas id="chartCanvas"></canvas>
-        <div class="crash-big-mult" id="multiplierDisplay">1.00x</div>
-    </div>
-    <div class="crash-players-list" id="crashPlayersRow"></div>
-    <div class="crash-controls">
-        <div class="crash-controls-row">
-            <div class="crash-bet-input-wrap">
-                <input type="number" id="betInput" class="crash-bet-input" value="0.1" min="0.1">
-                <button class="crash-gift-btn" onclick="openGiftPicker()">🎁</button>
-            </div>
-            <button class="crash-quick-btn half" id="halfBtn" onclick="setBetHalf()">50%</button>
-            <button class="crash-quick-btn all" id="allBtn" onclick="setBetAll()">ALL</button>
-        </div>
-        <div class="crash-auto-row">
-            <span class="crash-auto-label">Auto Cashout:</span>
-            <input type="number" id="autoCashoutInput" class="crash-auto-input" value="2.00" min="1.01" step="0.1">
-            <span style="color:#00c853;font-weight:900;font-size:15px">x</span>
-        </div>
-        <button class="crash-action-btn bet" id="actionButton">Place bet</button>
-        <div class="crash-status-text" id="statusText"></div>
-    </div>
+<div class="crash-header"><button class="crash-back-btn" onclick="goHome()">← Back</button><div class="crash-balance-pill"><span class="ton-icon">◈</span><span id="balanceDisplay">0.00</span></div><button class="crash-refill-btn" onclick="resetBalance()">↻</button></div>
+<div class="crash-history-row" id="multiplierHistory"></div>
+<div class="crash-chart-area"><canvas id="chartCanvas"></canvas><div class="crash-big-mult" id="multiplierDisplay">1.00x</div></div>
+<div class="crash-players-list" id="crashPlayersRow"></div>
+<div class="crash-controls">
+<div class="crash-controls-row"><div class="crash-bet-input-wrap"><input type="number" id="betInput" class="crash-bet-input" value="0.1" min="0.1"><button class="crash-gift-btn" onclick="openGiftPicker()">🎁</button></div><button class="crash-quick-btn half" id="halfBtn" onclick="setBetHalf()">50%</button><button class="crash-quick-btn all" id="allBtn" onclick="setBetAll()">ALL</button></div>
+<div class="crash-auto-row"><span class="crash-auto-label">Auto Cashout:</span><input type="number" id="autoCashoutInput" class="crash-auto-input" value="2.00" min="1.01" step="0.1"><span style="color:#00c853;font-weight:900;font-size:15px">x</span></div>
+<button class="crash-action-btn bet" id="actionButton">Place bet</button>
+<div class="crash-status-text" id="statusText"></div>
+</div>
 </div>
 
 <div id="arenaScreen" class="screen hidden">
-    <div class="arena-topbar">
-        <button class="arena-back" onclick="closeArena()">✕ بستن</button>
-        <div class="arena-balance"><span class="ton-icon">◈</span><span id="arenaBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="arena-tournament">
-        <div class="arena-tt-title">⚔️ Arena <span style="font-size:16px">🏆</span></div>
-        <div class="arena-tt-timer" id="arenaTTimer">00:00:00</div>
-    </div>
-    <div class="arena-canvas-wrap">
-        <div class="arena-timer-badge" id="arenaTimerBadge">20</div>
-        <canvas id="arenaCanvas"></canvas>
-    </div>
-    <div class="arena-players-strip" id="arenaPlayersStrip"></div>
-    <div class="arena-bottom">
-        <div class="arena-input-row">
-            <span class="ton-icon">◈</span>
-            <input type="number" id="arenaBetInput" class="arena-bet-input" value="0.1" min="0.1" step="0.1">
-            <button class="arena-gift-btn" onclick="openArenaGiftPicker()">🎁</button>
-            <button class="arena-clear-btn" onclick="arenaClearBet()">✕</button>
-        </div>
-        <button class="arena-join-btn" id="arenaJoinBtn" onclick="arenaJoinClick()">Join Arena</button>
-    </div>
+<div class="arena-topbar"><button class="arena-back" onclick="closeArena()">✕ بستن</button><div class="arena-balance"><span class="ton-icon">◈</span><span id="arenaBalanceDisplay">0.00</span></div></div>
+<div class="arena-tournament"><div class="arena-tt-title">⚔️ Arena <span style="font-size:16px">🏆</span></div><div class="arena-tt-timer" id="arenaTTimer">00:00:00</div></div>
+<div class="arena-canvas-wrap"><div class="arena-timer-badge" id="arenaTimerBadge">20</div><canvas id="arenaCanvas"></canvas></div>
+<div class="arena-players-strip" id="arenaPlayersStrip"></div>
+<div class="arena-bottom"><div class="arena-input-row"><span class="ton-icon">◈</span><input type="number" id="arenaBetInput" class="arena-bet-input" value="0.1" min="0.1" step="0.1"><button class="arena-gift-btn" onclick="openArenaGiftPicker()">🎁</button><button class="arena-clear-btn" onclick="arenaClearBet()">✕</button></div><button class="arena-join-btn" id="arenaJoinBtn" onclick="arenaJoinClick()">Join Arena</button></div>
 </div>
 
 <div id="minesScreen" class="screen hidden">
-    <div class="mn-top-bar"><button class="sh-back" onclick="closeMines()">⬅ Back</button><div class="mn-balance"><span class="ton-icon">◈</span><span id="mnBalanceDisplay">0.00</span></div></div>
-    <div class="mn-header"><div><div class="mn-mult-label">MULTIPLIER</div><div class="mn-mult-value" id="mnMultiplier">×1.04</div></div></div>
-    <div class="mn-config-row"><div class="mn-config-block"><div class="mn-config-label">📐 GRID SIZE</div>
-        <div class="mn-size-btns">
-            <button class="mn-size-btn" data-size="5" onclick="mnSetSize(5)">5×5</button>
-            <button class="mn-size-btn active" data-size="6" onclick="mnSetSize(6)">6×6</button>
-            <button class="mn-size-btn" data-size="9" onclick="mnSetSize(9)">9×9</button>
-        </div>
-    </div></div>
-    <div class="mn-live-bar" id="mnLiveBar"></div>
-    <div class="mn-grid-wrap"><div class="mn-grid" id="mnGrid" data-size="6" style="grid-template-columns:repeat(6,1fr)"></div></div>
-    <div class="mn-config-row"><div class="mn-config-block"><div class="mn-config-label">💣 MINES COUNT</div><div class="mn-bomb-btns" id="mnBombBtns"></div></div></div>
-    <div class="mn-bet-row"><div class="mn-bet-label">BET AMOUNT</div>
-        <div class="mn-bet-input-wrap">
-            <input type="number" id="mnBetInput" class="mn-bet-input" value="0.1" min="0.1" step="0.1">
-            <button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button>
-            <button class="mn-half-btn" onclick="mnHalfBet()">½</button>
-            <button class="mn-max-btn" onclick="mnMaxBet()">MAX</button>
-        </div>
-    </div>
-    <button class="mn-play-btn" id="mnPlayBtn" onclick="mnPlayBtnClick()">Place Bet</button>
+<div class="mn-top-bar"><button class="sh-back" onclick="closeMines()">⬅ Back</button><div class="mn-balance"><span class="ton-icon">◈</span><span id="mnBalanceDisplay">0.00</span></div></div>
+<div class="mn-header"><div><div class="mn-mult-label">MULTIPLIER</div><div class="mn-mult-value" id="mnMultiplier">×1.04</div></div></div>
+<div class="mn-config-row"><div class="mn-config-block"><div class="mn-config-label">📐 GRID SIZE</div><div class="mn-size-btns"><button class="mn-size-btn" data-size="5" onclick="mnSetSize(5)">5×5</button><button class="mn-size-btn active" data-size="6" onclick="mnSetSize(6)">6×6</button><button class="mn-size-btn" data-size="9" onclick="mnSetSize(9)">9×9</button></div></div></div>
+<div class="mn-live-bar" id="mnLiveBar"></div>
+<div class="mn-grid-wrap"><div class="mn-grid" id="mnGrid" data-size="6" style="grid-template-columns:repeat(6,1fr)"></div></div>
+<div class="mn-config-row"><div class="mn-config-block"><div class="mn-config-label">💣 MINES COUNT</div><div class="mn-bomb-btns" id="mnBombBtns"></div></div></div>
+<div class="mn-bet-row"><div class="mn-bet-label">BET AMOUNT</div><div class="mn-bet-input-wrap"><input type="number" id="mnBetInput" class="mn-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button><button class="mn-half-btn" onclick="mnHalfBet()">½</button><button class="mn-max-btn" onclick="mnMaxBet()">MAX</button></div></div>
+<button class="mn-play-btn" id="mnPlayBtn" onclick="mnPlayBtnClick()">Place Bet</button>
 </div>
 
 <div id="plinkoScreen" class="screen hidden">
-    <div class="pl-top-bar"><button class="pl-back" onclick="closePlinko()">⬅ Back</button><div class="pl-title">🎯 Plinko</div><div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">0.00</span></div></div>
-    <div class="pl-canvas-wrap"><div class="pl-count" id="plBallCount">0 balls</div><canvas id="plinkoCanvas"></canvas></div>
-    <div class="pl-controls">
-        <div class="pl-diff-row">
-            <button class="pl-diff-btn" id="plDiffEasy" onclick="plSetDifficulty('easy')">Easy</button>
-            <button class="pl-diff-btn active" id="plDiffMedium" onclick="plSetDifficulty('medium')">Medium</button>
-            <button class="pl-diff-btn" id="plDiffHard" onclick="plSetDifficulty('hard')">Hard</button>
-        </div>
-        <div class="pl-bet-row"><div class="pl-bet-wrap"><input type="number" id="plBetInput" class="pl-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button><button class="pl-bet-max" onclick="plMaxBet()">MAX</button></div></div>
-        <button class="pl-play-btn" id="plPlayBtn" onclick="plDrop()">Place 0.1 TON Bet</button>
-    </div>
+<div class="pl-top-bar"><button class="pl-back" onclick="closePlinko()">⬅ Back</button><div class="pl-title">🎯 Plinko</div><div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">0.00</span></div></div>
+<div class="pl-canvas-wrap"><div class="pl-count" id="plBallCount">0 balls</div><canvas id="plinkoCanvas"></canvas></div>
+<div class="pl-controls">
+<div class="pl-diff-row"><button class="pl-diff-btn" id="plDiffEasy" onclick="plSetDifficulty('easy')">Easy</button><button class="pl-diff-btn active" id="plDiffMedium" onclick="plSetDifficulty('medium')">Medium</button><button class="pl-diff-btn" id="plDiffHard" onclick="plSetDifficulty('hard')">Hard</button></div>
+<div class="pl-bet-row"><div class="pl-bet-wrap"><input type="number" id="plBetInput" class="pl-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button><button class="pl-bet-max" onclick="plMaxBet()">MAX</button></div></div>
+<button class="pl-play-btn" id="plPlayBtn" onclick="plDrop()">Place 0.1 TON Bet</button>
+</div>
 </div>
 
 <div id="upgradeScreen" class="screen hidden">
-    <div class="up-top-bar"><button class="up-back" onclick="closeUpgrade()">⬅ Back</button><div class="up-title">🎁 Gift Hub</div><div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">0.00</span></div></div>
-    <div class="up-head"><div class="up-head-title">Gift Upgrade</div><div class="up-head-sub">✨ Transform your gift</div></div>
-    <div class="up-cards-row">
-        <div class="up-card"><div class="up-card-num">1</div><div class="up-card-title">Your Gift</div><input type="number" id="upBetInput" class="up-input" value="10" min="1" step="0.1"><div class="up-card-lbl">Entry Amount</div></div>
-        <div class="up-swap-icon">⚡</div>
-        <div class="up-card"><div class="up-card-num" style="background:var(--gold);">2</div><div class="up-card-title">Target Gift</div><input type="number" id="upTargetInput" class="up-input" value="50" min="2" step="0.1"><div class="up-card-lbl">Target Amount</div></div>
-    </div>
-    <div class="up-wheel-wrap"><canvas id="upCanvas"></canvas><div class="up-wheel-center"><div class="up-chance" id="upChanceDisplay">19.4%</div><div class="up-chance-lbl" id="upChanceLabel">LOW</div></div></div>
-    <div class="up-stats">
-        <div class="up-stat"><div class="up-stat-lbl">🎯 Win Chance</div><div class="up-stat-val" id="upChanceText">19.4%</div></div>
-        <div class="up-stat"><div class="up-stat-lbl">💰 Profit if Win</div><div class="up-stat-val" id="upProfitText">+40.00</div></div>
-    </div>
-    <button class="up-btn" id="upBtn" onclick="upStart()">🚀 UPGRADE</button>
-    <div class="up-result" id="upResult"></div>
+<div class="up-top-bar"><button class="up-back" onclick="closeUpgrade()">⬅ Back</button><div class="up-title">🎁 Gift Hub</div><div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">0.00</span></div></div>
+<div class="up-head"><div class="up-head-title">Gift Upgrade</div><div class="up-head-sub">✨ Transform your gift</div></div>
+<div class="up-cards-row"><div class="up-card"><div class="up-card-num">1</div><div class="up-card-title">Your Gift</div><input type="number" id="upBetInput" class="up-input" value="10" min="1" step="0.1"><div class="up-card-lbl">Entry Amount</div></div><div class="up-swap-icon">⚡</div><div class="up-card"><div class="up-card-num" style="background:var(--gold);">2</div><div class="up-card-title">Target Gift</div><input type="number" id="upTargetInput" class="up-input" value="50" min="2" step="0.1"><div class="up-card-lbl">Target Amount</div></div></div>
+<div class="up-wheel-wrap"><canvas id="upCanvas"></canvas><div class="up-wheel-center"><div class="up-chance" id="upChanceDisplay">19.4%</div><div class="up-chance-lbl" id="upChanceLabel">LOW</div></div></div>
+<div class="up-stats"><div class="up-stat"><div class="up-stat-lbl">🎯 Win Chance</div><div class="up-stat-val" id="upChanceText">19.4%</div></div><div class="up-stat"><div class="up-stat-lbl">💰 Profit if Win</div><div class="up-stat-val" id="upProfitText">+40.00</div></div></div>
+<button class="up-btn" id="upBtn" onclick="upStart()">🚀 UPGRADE</button>
+<div class="up-result" id="upResult"></div>
 </div>
 
 <div id="soloHubScreen" class="screen hidden">
-    <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎯 Tower Game</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
-    <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.00</span> TON</div>
-    <div class="sh-game-area" id="towerGameArea"></div>
-    <div class="sh-controls">
-        <div style="display:flex;justify-content:center;gap:10px;"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁 Use Gift</button></div>
-        <div class="sh-bet-bar">
-            <button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">−</button>
-            <input type="number" id="soloBetInput" class="sh-bet-value" value="0.1" min="0.1" step="0.1">
-            <button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button>
-        </div>
-        <button class="sh-action-btn" id="towerStartBtn" onclick="startTowerGame()">Start Game</button>
-        <button class="sh-action-btn" id="towerCashoutBtn" onclick="towerCashOut()" style="display:none;">Cash Out</button>
-    </div>
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎯 Tower Game</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
+<div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.00</span> TON</div>
+<div class="sh-game-area" id="towerGameArea"></div>
+<div class="sh-controls">
+<div style="display:flex;justify-content:center;gap:10px;"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁 Use Gift</button></div>
+<div class="sh-bet-bar"><button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">−</button><input type="number" id="soloBetInput" class="sh-bet-value" value="0.1" min="0.1" step="0.1"><button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button></div>
+<button class="sh-action-btn" id="towerStartBtn" onclick="startTowerGame()">Start Game</button>
+<button class="sh-action-btn" id="towerCashoutBtn" onclick="towerCashOut()" style="display:none;">Cash Out</button>
+</div>
 </div>
 
 <div id="pvpScreen" class="screen hidden">
-    <div class="pvp-header">
-        <button class="pvp-back" onclick="goHome()">← Back</button>
-        <div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">0.00</span></div>
-    </div>
-    <div class="pvp-stats">
-        <div class="stat-block"><div class="stat-label">Last Game</div><div class="stat-value-row"><span class="stat-value" id="pvpLast">+0.00 TON</span><span class="stat-pct" id="pvpLastPct">0%</span></div></div>
-        <div class="stat-block"><div class="stat-label">Top of the Day</div><div class="stat-value-row"><span class="stat-value" id="pvpTop">+0.00 TON</span><span class="stat-pct" id="pvpTopPct">0%</span></div></div>
-    </div>
-    <div class="pvp-wheel-wrap">
-        <canvas id="pvpCanvas"></canvas>
-        <div class="pvp-center">
-            <div class="pvp-timer" id="pvpTimer">--:--</div>
-            <div class="pvp-pool-label">TOTAL POOL</div>
-            <div class="pvp-pool"><span class="ton-icon">◈</span><span id="pvpPoolValue">0.00</span></div>
-            <div class="pvp-game-num" id="pvpGameNum">Game #00000</div>
-        </div>
-    </div>
-    <div class="pvp-players-row" id="pvpPlayersRow"></div>
-    <div class="pvp-join-wrap">
-        <label class="pvp-bet-label">Entry Amount (TON):</label>
-        <div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openPvpGiftPicker()">🎁</button></div>
-        <button class="join-battle-btn" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button>
-    </div>
-    <div class="pvp-players-header"><span>Players</span><span class="pvp-players-count" id="pvpPlayersCount">👥 0</span></div>
+<div class="pvp-header"><button class="pvp-back" onclick="goHome()">← Back</button><div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">0.00</span></div></div>
+<div class="pvp-stats"><div class="stat-block"><div class="stat-label">Last Game</div><div class="stat-value-row"><span class="stat-value" id="pvpLast">+0.00 TON</span><span class="stat-pct" id="pvpLastPct">0%</span></div></div><div class="stat-block"><div class="stat-label">Top of the Day</div><div class="stat-value-row"><span class="stat-value" id="pvpTop">+0.00 TON</span><span class="stat-pct" id="pvpTopPct">0%</span></div></div></div>
+<div class="pvp-wheel-wrap"><canvas id="pvpCanvas"></canvas><div class="pvp-center"><div class="pvp-timer" id="pvpTimer">--:--</div><div class="pvp-pool-label">TOTAL POOL</div><div class="pvp-pool"><span class="ton-icon">◈</span><span id="pvpPoolValue">0.00</span></div><div class="pvp-game-num" id="pvpGameNum">Game #00000</div></div></div>
+<div class="pvp-players-row" id="pvpPlayersRow"></div>
+<div class="pvp-join-wrap"><label class="pvp-bet-label">Entry Amount (TON):</label><div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openPvpGiftPicker()">🎁</button></div><button class="join-battle-btn" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button></div>
+<div class="pvp-players-header"><span>Players</span><span class="pvp-players-count" id="pvpPlayersCount">👥 0</span></div>
 </div>
 
 <div id="farmBoxScreen" class="screen hidden">
-    <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🌾 Farm Box</div><div class="mn-balance" style="padding:7px 12px;font-size:13px"><span class="ton-icon" style="width:18px;height:18px;font-size:9px">◈</span><span id="fbBalanceDisplay">0.00</span></div></div>
-    <div class="fb-hero">
-        <div class="fb-box" id="fbBoxEmoji">🎁</div>
-        <div class="fb-title">FARM BOX</div>
-        <div class="fb-sub">Open the box and win big!</div>
-    </div>
-    <div class="fb-bet-section">
-        <div class="fb-label">BET AMOUNT (TON)</div>
-        <div class="fb-bet-row">
-            <button class="fb-bet-btn" onclick="fbAdjustBet(-0.1)">−</button>
-            <div class="fb-bet-input-wrap"><span class="ton-icon">◈</span><input type="number" id="fbBetInput" class="fb-bet-input" value="0.1" min="0.1" max="10000" step="0.1"></div>
-            <button class="fb-bet-btn" onclick="fbAdjustBet(0.1)">+</button>
-        </div>
-        <div class="fb-quick-row" id="fbQuickRow">
-            <button class="fb-quick active" data-val="0.1" onclick="fbSetBet(0.1)">0.1</button>
-            <button class="fb-quick" data-val="0.5" onclick="fbSetBet(0.5)">0.5</button>
-            <button class="fb-quick" data-val="1" onclick="fbSetBet(1)">1</button>
-            <button class="fb-quick" data-val="5" onclick="fbSetBet(5)">5</button>
-            <button class="fb-quick" data-val="10" onclick="fbSetBet(10)">10</button>
-            <button class="fb-quick" data-val="100" onclick="fbSetBet(100)">100</button>
-            <button class="fb-quick" data-val="1000" onclick="fbSetBet(1000)">1K</button>
-            <button class="fb-quick" data-val="10000" onclick="fbSetBet(10000)">10K</button>
-        </div>
-    </div>
-    <button class="fb-open-btn" id="fbOpenBtn" onclick="fbOpen()">🎁 OPEN FARM BOX</button>
-    <div class="fb-result" id="fbResult"></div>
-    <div class="fb-prizes">
-        <div class="fb-prizes-title">🎁 POSSIBLE PRIZES</div>
-        <div class="fb-prizes-grid" id="fbPrizesGrid"></div>
-    </div>
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🌾 Farm Box</div><div class="mn-balance" style="padding:7px 12px;font-size:13px"><span class="ton-icon" style="width:18px;height:18px;font-size:9px">◈</span><span id="fbBalanceDisplay">0.00</span></div></div>
+<div class="fb-hero"><div class="fb-box" id="fbBoxEmoji">🎁</div><div class="fb-title">FARM BOX</div><div class="fb-sub">Open the box and win big!</div></div>
+<div class="fb-bet-section">
+<div class="fb-label">BET AMOUNT (TON)</div>
+<div class="fb-bet-row"><button class="fb-bet-btn" onclick="fbAdjustBet(-0.1)">−</button><div class="fb-bet-input-wrap"><span class="ton-icon">◈</span><input type="number" id="fbBetInput" class="fb-bet-input" value="0.1" min="0.1" max="10000" step="0.1"></div><button class="fb-bet-btn" onclick="fbAdjustBet(0.1)">+</button></div>
+<div class="fb-quick-row" id="fbQuickRow"><button class="fb-quick active" data-val="0.1" onclick="fbSetBet(0.1)">0.1</button><button class="fb-quick" data-val="0.5" onclick="fbSetBet(0.5)">0.5</button><button class="fb-quick" data-val="1" onclick="fbSetBet(1)">1</button><button class="fb-quick" data-val="5" onclick="fbSetBet(5)">5</button><button class="fb-quick" data-val="10" onclick="fbSetBet(10)">10</button><button class="fb-quick" data-val="100" onclick="fbSetBet(100)">100</button><button class="fb-quick" data-val="1000" onclick="fbSetBet(1000)">1K</button><button class="fb-quick" data-val="10000" onclick="fbSetBet(10000)">10K</button></div>
+</div>
+<button class="fb-open-btn" id="fbOpenBtn" onclick="fbOpen()">🎁 OPEN FARM BOX</button>
+<div class="fb-result" id="fbResult"></div>
+<div class="fb-prizes"><div class="fb-prizes-title">🎁 POSSIBLE PRIZES</div><div class="fb-prizes-grid" id="fbPrizesGrid"></div></div>
 </div>
 
 <div id="giftPickerModal" class="hidden">
-    <div class="gp-content">
-        <div class="gp-head"><div class="gp-title" id="giftPickerTitle">🎁 Pick a Gift</div><button class="gp-close" onclick="closeGiftPicker()">✕</button></div>
-        <div class="gp-list" id="giftPickerList"></div>
-    </div>
+<div class="gp-content"><div class="gp-head"><div class="gp-title" id="giftPickerTitle">🎁 Pick a Gift</div><button class="gp-close" onclick="closeGiftPicker()">✕</button></div><div class="gp-list" id="giftPickerList"></div></div>
 </div>
 
 <div id="depositModal" class="deposit-modal hidden">
-    <div class="deposit-modal-content">
-        <div class="deposit-modal-title">💎 Deposit</div>
-        <div class="deposit-modal-sub">Send TON → Get same amount (1:1)</div>
-        <div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div>
-        <input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1">
-        <div class="deposit-min-hint">Minimum: 0.1 TON</div>
-        <button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
-        <button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none;background:linear-gradient(135deg,#d92b2b,#b91c1c);">🔌 Disconnect</button>
-        <button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
-        <button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button>
-        <div class="deposit-status" id="depositStatus"></div>
-    </div>
+<div class="deposit-modal-content"><div class="deposit-modal-title">💎 Deposit</div><div class="deposit-modal-sub">Send TON → Get same amount (1:1)</div><div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div><input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1"><div class="deposit-min-hint">Minimum: 0.1 TON</div><button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button><button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none;background:linear-gradient(135deg,#d92b2b,#b91c1c);">🔌 Disconnect</button><button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button><button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button><div class="deposit-status" id="depositStatus"></div></div>
 </div>
 
 <div id="slotModal" class="slot-modal hidden">
-    <div class="slot-modal-content" id="slotModalContent">
-        <div class="slot-head"><div class="slot-title" id="slotTitle">📅 Daily Box</div><button class="slot-close" onclick="closeSlotModal()">✕</button></div>
-        <div class="slot-sub" id="slotSub">🎁 Spin to win TON rewards</div>
-        <div class="slot-wrap"><div class="slot-container"><div class="slot-pointer"></div><div class="slot-pointer-dot"></div><div class="slot-reel" id="slotReel"></div></div></div>
-        <div class="slot-info"><div class="slot-info-row"><span>⏰</span><span id="slotTimerText">Ready to spin!</span></div></div>
-        <button class="slot-spin" id="slotSpinBtn" onclick="spinSlot()">🎰 SPIN</button>
-    </div>
+<div class="slot-modal-content" id="slotModalContent"><div class="slot-head"><div class="slot-title" id="slotTitle">📅 Daily Box</div><button class="slot-close" onclick="closeSlotModal()">✕</button></div><div class="slot-sub" id="slotSub">🎁 Spin to win TON rewards</div><div class="slot-wrap"><div class="slot-container"><div class="slot-pointer"></div><div class="slot-pointer-dot"></div><div class="slot-reel" id="slotReel"></div></div></div><div class="slot-info"><div class="slot-info-row"><span>⏰</span><span id="slotTimerText">Ready to spin!</span></div></div><button class="slot-spin" id="slotSpinBtn" onclick="spinSlot()">🎰 SPIN</button></div>
 </div>
 
 <div id="vipCodeModal" class="slot-modal hidden">
-    <div class="slot-modal-content vip">
-        <div class="slot-head"><div class="slot-title vip">👑 VIP ACCESS</div><button class="slot-close" onclick="closeVipCodeModal()">✕</button></div>
-        <div class="slot-sub">Enter secret code</div>
-        <input type="text" id="vipCodeInput" class="vip-code-input" placeholder="Enter code...">
-        <div class="vip-btns"><button class="vip-cancel" onclick="closeVipCodeModal()">Cancel</button><button class="vip-confirm" onclick="submitVipCode()">Unlock</button></div>
-    </div>
+<div class="slot-modal-content vip"><div class="slot-head"><div class="slot-title vip">👑 VIP ACCESS</div><button class="slot-close" onclick="closeVipCodeModal()">✕</button></div><div class="slot-sub">Enter secret code</div><input type="text" id="vipCodeInput" class="vip-code-input" placeholder="Enter code..."><div class="vip-btns"><button class="vip-cancel" onclick="closeVipCodeModal()">Cancel</button><button class="vip-confirm" onclick="submitVipCode()">Unlock</button></div></div>
 </div>
 
 <div id="giftCodeModal" class="slot-modal hidden">
-    <div class="slot-modal-content vip" style="border-color:var(--gold);background:linear-gradient(180deg,#2a0a3a,#0f1119)">
-        <div class="slot-head"><div class="slot-title" style="color:var(--gold)">🎁 GIFT CODE</div><button class="slot-close" onclick="closeGiftCodeModal()">✕</button></div>
-        <div class="slot-sub">Enter your gift code</div>
-        <input type="text" id="giftCodeInput" class="vip-code-input" placeholder="Enter code..." style="border-color:var(--pink)">
-        <div class="vip-btns"><button class="vip-cancel" onclick="closeGiftCodeModal()">Cancel</button><button class="vip-confirm" style="background:linear-gradient(135deg,var(--gold),#fb5607);color:#0a0d14" onclick="submitGiftCode()">Claim</button></div>
-    </div>
+<div class="slot-modal-content vip" style="border-color:var(--gold);background:linear-gradient(180deg,#2a0a3a,#0f1119)"><div class="slot-head"><div class="slot-title" style="color:var(--gold)">🎁 GIFT CODE</div><button class="slot-close" onclick="closeGiftCodeModal()">✕</button></div><div class="slot-sub">Enter your gift code</div><input type="text" id="giftCodeInput" class="vip-code-input" placeholder="Enter code..." style="border-color:var(--pink)"><div class="vip-btns"><button class="vip-cancel" onclick="closeGiftCodeModal()">Cancel</button><button class="vip-confirm" style="background:linear-gradient(135deg,var(--gold),#fb5607);color:#0a0d14" onclick="submitGiftCode()">Claim</button></div></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))">
-    <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div>
-    <div style="padding:0 16px">
-        <input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;box-sizing:border-box">
-        <div id="adminUsersList"></div>
-    </div>
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div>
+<div style="padding:0 16px"><input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;"><div id="adminUsersList"></div></div>
 </div>
-
 <script>
 const BOTS_ENABLED = true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
@@ -1069,54 +738,47 @@ const FARMBOX_WIN_CHANCE = 0.04;const MAX_BET = 10000;
 const NFT='https://nft.fragment.com/gift/';
 
 const BOT_DATABASE=[
-    {name:'Alex',avatar:'🦁',color:'#2ff068',persona:'aggressive',balance:15.20,streak:0},
-    {name:'Sara',avatar:'🐱',color:'#0098ea',persona:'conservative',balance:3.40,streak:0},
-    {name:'Max',avatar:'🐺',color:'#7c3aed',persona:'whale',balance:45.80,streak:0},
-    {name:'Nina',avatar:'🦊',color:'#ff9d00',persona:'balanced',balance:8.10,streak:0},
-    {name:'John',avatar:'🐻',color:'#ec4899',persona:'aggressive',balance:12.50,streak:0},
-    {name:'Emma',avatar:'🐰',color:'#26de81',persona:'conservative',balance:2.20,streak:0},
-    {name:'David',avatar:'🐯',color:'#fc5c65',persona:'balanced',balance:7.30,streak:0},
-    {name:'Lily',avatar:'🦄',color:'#45aaf2',persona:'lucky',balance:22.00,streak:0},
-    {name:'Tom',avatar:'🐧',color:'#fed330',persona:'conservative',balance:1.80,streak:0},
-    {name:'Mia',avatar:'🐨',color:'#eb3b5a',persona:'aggressive',balance:18.90,streak:0},
-    {name:'Leo',avatar:'🐼',color:'#4ecdc4',persona:'balanced',balance:6.40,streak:0},
-    {name:'Zoe',avatar:'🐸',color:'#f7b731',persona:'lucky',balance:11.30,streak:0},
-    {name:'Ryan',avatar:'🦉',color:'#5f27cd',persona:'whale',balance:52.10,streak:0},
-    {name:'Anna',avatar:'🐝',color:'#ff6b6b',persona:'conservative',balance:4.10,streak:0},
-    {name:'Mike',avatar:'🦅',color:'#00d2d3',persona:'aggressive',balance:9.80,streak:0},
-    {name:'Ella',avatar:'🦋',color:'#c56cf0',persona:'balanced',balance:5.60,streak:0},
-    {name:'Ben',avatar:'🐢',color:'#ff9f1a',persona:'conservative',balance:3.20,streak:0},
-    {name:'Chloe',avatar:'🐙',color:'#18dcff',persona:'lucky',balance:14.70,streak:0},
-    {name:'Sam',avatar:'🦈',color:'#32ff7e',persona:'aggressive',balance:16.40,streak:0},
-    {name:'Ruby',avatar:'🐬',color:'#7d5fff',persona:'balanced',balance:8.90,streak:0},
-    {name:'Kai',avatar:'🐲',color:'#e84118',persona:'whale',balance:38.60,streak:0},
-    {name:'Ivy',avatar:'🌺',color:'#c23616',persona:'conservative',balance:2.70,streak:0},
-    {name:'Noah',avatar:'🔥',color:'#e1b12c',persona:'aggressive',balance:13.20,streak:0},
-    {name:'Aria',avatar:'⭐',color:'#f0932b',persona:'lucky',balance:19.50,streak:0},
-    {name:'Jake',avatar:'⚡',color:'#be2edd',persona:'balanced',balance:6.80,streak:0},
-    {name:'Maya',avatar:'💎',color:'#6ab04c',persona:'whale',balance:42.30,streak:0},
-    {name:'Owen',avatar:'👑',color:'#eb4d4b',persona:'aggressive',balance:11.90,streak:0},
-    {name:'Luna',avatar:'🌙',color:'#4834d4',persona:'conservative',balance:3.90,streak:0},
-    {name:'Finn',avatar:'🎯',color:'#f9ca24',persona:'balanced',balance:7.10,streak:0},
-    {name:'Iris',avatar:'🎨',color:'#22a6b3',persona:'lucky',balance:13.60,streak:0},
-    {name:'Cole',avatar:'🚀',color:'#7ed6df',persona:'aggressive',balance:10.40,streak:0},
-    {name:'Rose',avatar:'🌹',color:'#e056fd',persona:'balanced',balance:5.30,streak:0},
-    {name:'Dean',avatar:'🎸',color:'#badc58',persona:'conservative',balance:2.80,streak:0},
-    {name:'Vera',avatar:'🎭',color:'#ff7979',persona:'whale',balance:35.20,streak:0},
-    {name:'Luke',avatar:'🏆',color:'#f6e58d',persona:'lucky',balance:17.80,streak:0},
-    {name:'Cora',avatar:'🎪',color:'#ffbe76',persona:'balanced',balance:4.50,streak:0},
-    {name:'Nate',avatar:'🦖',color:'#686de0',persona:'aggressive',balance:9.20,streak:0},
-    {name:'Faye',avatar:'🦚',color:'#22a6b3',persona:'conservative',balance:3.10,streak:0},
-    {name:'Ezra',avatar:'🦜',color:'#c7ecee',persona:'balanced',balance:6.20,streak:0},
-    {name:'Amir',avatar:'🐪',color:'#f8c291',persona:'lucky',balance:15.40,streak:0}
-];
-const BOT_PERSONAS={
-    conservative:{betPct:0.03,minCash:1.1,maxCash:1.6,joinChance:0.55},
-    balanced:{betPct:0.05,minCash:1.3,maxCash:2.4,joinChance:0.80},
-    aggressive:{betPct:0.10,minCash:1.8,maxCash:4.5,joinChance:0.75},
-    whale:{betPct:0.15,minCash:1.4,maxCash:3.0,joinChance:0.60},
-    lucky:{betPct:0.08,minCash:2.0,maxCash:6.0,joinChance:0.85}
-};
+{name:'Alex',avatar:'🦁',color:'#2ff068',persona:'aggressive',balance:15.20,streak:0},
+{name:'Sara',avatar:'🐱',color:'#0098ea',persona:'conservative',balance:3.40,streak:0},
+{name:'Max',avatar:'🐺',color:'#7c3aed',persona:'whale',balance:45.80,streak:0},
+{name:'Nina',avatar:'🦊',color:'#ff9d00',persona:'balanced',balance:8.10,streak:0},
+{name:'John',avatar:'🐻',color:'#ec4899',persona:'aggressive',balance:12.50,streak:0},
+{name:'Emma',avatar:'🐰',color:'#26de81',persona:'conservative',balance:2.20,streak:0},
+{name:'David',avatar:'🐯',color:'#fc5c65',persona:'balanced',balance:7.30,streak:0},
+{name:'Lily',avatar:'🦄',color:'#45aaf2',persona:'lucky',balance:22.00,streak:0},
+{name:'Tom',avatar:'🐧',color:'#fed330',persona:'conservative',balance:1.80,streak:0},
+{name:'Mia',avatar:'🐨',color:'#eb3b5a',persona:'aggressive',balance:18.90,streak:0},
+{name:'Leo',avatar:'🐼',color:'#4ecdc4',persona:'balanced',balance:6.40,streak:0},
+{name:'Zoe',avatar:'🐸',color:'#f7b731',persona:'lucky',balance:11.30,streak:0},
+{name:'Ryan',avatar:'🦉',color:'#5f27cd',persona:'whale',balance:52.10,streak:0},
+{name:'Anna',avatar:'🐝',color:'#ff6b6b',persona:'conservative',balance:4.10,streak:0},
+{name:'Mike',avatar:'🦅',color:'#00d2d3',persona:'aggressive',balance:9.80,streak:0},
+{name:'Ella',avatar:'🦋',color:'#c56cf0',persona:'balanced',balance:5.60,streak:0},
+{name:'Ben',avatar:'🐢',color:'#ff9f1a',persona:'conservative',balance:3.20,streak:0},
+{name:'Chloe',avatar:'🐙',color:'#18dcff',persona:'lucky',balance:14.70,streak:0},
+{name:'Sam',avatar:'🦈',color:'#32ff7e',persona:'aggressive',balance:16.40,streak:0},
+{name:'Ruby',avatar:'🐬',color:'#7d5fff',persona:'balanced',balance:8.90,streak:0},
+{name:'Kai',avatar:'🐲',color:'#e84118',persona:'whale',balance:38.60,streak:0},
+{name:'Ivy',avatar:'🌺',color:'#c23616',persona:'conservative',balance:2.70,streak:0},
+{name:'Noah',avatar:'🔥',color:'#e1b12c',persona:'aggressive',balance:13.20,streak:0},
+{name:'Aria',avatar:'⭐',color:'#f0932b',persona:'lucky',balance:19.50,streak:0},
+{name:'Jake',avatar:'⚡',color:'#be2edd',persona:'balanced',balance:6.80,streak:0},
+{name:'Maya',avatar:'💎',color:'#6ab04c',persona:'whale',balance:42.30,streak:0},
+{name:'Owen',avatar:'👑',color:'#eb4d4b',persona:'aggressive',balance:11.90,streak:0},
+{name:'Luna',avatar:'🌙',color:'#4834d4',persona:'conservative',balance:3.90,streak:0},
+{name:'Finn',avatar:'🎯',color:'#f9ca24',persona:'balanced',balance:7.10,streak:0},
+{name:'Iris',avatar:'🎨',color:'#22a6b3',persona:'lucky',balance:13.60,streak:0},
+{name:'Cole',avatar:'🚀',color:'#7ed6df',persona:'aggressive',balance:10.40,streak:0},
+{name:'Rose',avatar:'🌹',color:'#e056fd',persona:'balanced',balance:5.30,streak:0},
+{name:'Dean',avatar:'🎸',color:'#badc58',persona:'conservative',balance:2.80,streak:0},
+{name:'Vera',avatar:'🎭',color:'#ff7979',persona:'whale',balance:35.20,streak:0},
+{name:'Luke',avatar:'🏆',color:'#f6e58d',persona:'lucky',balance:17.80,streak:0},
+{name:'Cora',avatar:'🎪',color:'#ffbe76',persona:'balanced',balance:4.50,streak:0},
+{name:'Nate',avatar:'🦖',color:'#686de0',persona:'aggressive',balance:9.20,streak:0},
+{name:'Faye',avatar:'🦚',color:'#22a6b3',persona:'conservative',balance:3.10,streak:0},
+{name:'Ezra',avatar:'🦜',color:'#c7ecee',persona:'balanced',balance:6.20,streak:0},
+{name:'Amir',avatar:'🐪',color:'#f8c291',persona:'lucky',balance:15.40,streak:0}];
+const BOT_PERSONAS={conservative:{betPct:0.03,minCash:1.1,maxCash:1.6,joinChance:0.55},balanced:{betPct:0.05,minCash:1.3,maxCash:2.4,joinChance:0.80},aggressive:{betPct:0.10,minCash:1.8,maxCash:4.5,joinChance:0.75},whale:{betPct:0.15,minCash:1.4,maxCash:3.0,joinChance:0.60},lucky:{betPct:0.08,minCash:2.0,maxCash:6.0,joinChance:0.85}};
 function getRandomBot(){const a=BOT_DATABASE.filter(b=>b.balance>0.15);return a.length===0?BOT_DATABASE[0]:a[Math.floor(Math.random()*a.length)];}
 function smartBotBet(bot){const p=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;let base=Math.max(0.1,bot.balance*p.betPct);if(bot.streak<=-2)base*=0.5;if(bot.streak>=2)base*=1.6;base*=0.8+Math.random()*0.4;return Math.round(Math.max(0.1,Math.min(bot.balance*0.3,base))*100)/100;}
 function smartBotCashout(bot){const p=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;let t=p.minCash+Math.random()*(p.maxCash-p.minCash);if(bot.streak>=2)t*=1.3;if(bot.streak<=-2)t*=0.7;return t;}
@@ -1140,29 +802,28 @@ let tonConnectUI=null,isWalletConnected=false;
 let soloBetAmount=0.1,betFromGift=false,giftPickerMode='default';
 
 const GIFT_DATABASE=[
-    {id:'astral_shard',name:'Astral Shard',emoji:'💎',value:108.48,tier:'epic',img:NFT+'astralshard-1.large.png'},
-    {id:'nail_bracelet',name:'Nail Bracelet',emoji:'💍',value:108.33,tier:'epic',img:NFT+'nailbracelet-1.large.png'},
-    {id:'westside_sign',name:'Westside Sign',emoji:'🤟',value:96.10,tier:'rare',img:NFT+'westsidesign-1.large.png'},
-    {id:'durov_glasses',name:"Durov's Glasses",emoji:'🕶️',value:85.09,tier:'rare',img:NFT+'durovsglasses-1.large.png'},
-    {id:'perfume_bottle',name:'Perfume Bottle',emoji:'💐',value:65.61,tier:'rare',img:NFT+'perfumebottle-1.large.png'},
-    {id:'mini_oscar',name:'Mini Oscar',emoji:'🏆',value:64.96,tier:'rare',img:NFT+'minioscar-1.large.png'},
-    {id:'ion_gem',name:'Ion Gem',emoji:'💎',value:61.5,tier:'rare',img:NFT+'iongem-1.large.png'},
-    {id:'diamond_ring',name:'Diamond Ring',emoji:'💍',value:147.9,tier:'epic',img:NFT+'diamondring-1.large.png'},
-    {id:'heroic_helmet',name:'Heroic Helmet',emoji:'🪖',value:174.3,tier:'epic',img:NFT+'heroichelmet-1.large.png'},
-    {id:'mighty_arm',name:'Mighty Arm',emoji:'💪',value:117,tier:'epic',img:NFT+'mightyarm-1.large.png'},
-    {id:'precious_peach',name:'Precious Peach',emoji:'🍑',value:236,tier:'epic',img:NFT+'preciouspeach-1.large.png'},
-    {id:'low_rider',name:'Low Rider',emoji:'🚗',value:280.3,tier:'epic',img:NFT+'lowrider-1.large.png'},
-    {id:'toy_bear',name:'Toy Bear',emoji:'🧸',value:186,tier:'epic',img:NFT+'toybear-1.large.png'},
-    {id:'stellar_rocket',name:'Stellar Rocket',emoji:'🚀',value:237.03,tier:'epic',img:NFT+'stellarrocket-1.large.png'},
-    {id:'money_pot',name:'Money Pot',emoji:'💰',value:588.9,tier:'legendary',img:NFT+'moneypot-1.large.png'},
-    {id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:640,tier:'legendary',img:NFT+'xmasstocking-1.large.png'},
-    {id:'spy_agaric',name:'Spy Agaric',emoji:'🍄',value:378.7,tier:'epic',img:NFT+'spyagaric-1.large.png'},
-    {id:'big_year',name:'Big Year',emoji:'🎉',value:475.09,tier:'epic',img:NFT+'bigyear-1.large.png'},
-    {id:'swag_bag',name:'Swag Bag',emoji:'💰',value:1709.01,tier:'mythic',img:NFT+'swagbag-1.large.png'},
-    {id:'jolly_chimp',name:'Jolly Chimp',emoji:'🐵',value:1805.7,tier:'mythic',img:NFT+'jollychimp-1.large.png'},
-    {id:'input_key',name:'Input Key',emoji:'⌨️',value:774,tier:'legendary',img:NFT+'inputkey-1.large.png'},
-    {id:'light_sword',name:'Light Sword',emoji:'⚔️',value:1077,tier:'legendary',img:NFT+'lightsword-1.large.png'}
-];
+{id:'astral_shard',name:'Astral Shard',emoji:'💎',value:108.48,tier:'epic',img:NFT+'astralshard-1.large.png'},
+{id:'nail_bracelet',name:'Nail Bracelet',emoji:'💍',value:108.33,tier:'epic',img:NFT+'nailbracelet-1.large.png'},
+{id:'westside_sign',name:'Westside Sign',emoji:'🤟',value:96.10,tier:'rare',img:NFT+'westsidesign-1.large.png'},
+{id:'durov_glasses',name:"Durov's Glasses",emoji:'🕶️',value:85.09,tier:'rare',img:NFT+'durovsglasses-1.large.png'},
+{id:'perfume_bottle',name:'Perfume Bottle',emoji:'💐',value:65.61,tier:'rare',img:NFT+'perfumebottle-1.large.png'},
+{id:'mini_oscar',name:'Mini Oscar',emoji:'🏆',value:64.96,tier:'rare',img:NFT+'minioscar-1.large.png'},
+{id:'ion_gem',name:'Ion Gem',emoji:'💎',value:61.5,tier:'rare',img:NFT+'iongem-1.large.png'},
+{id:'diamond_ring',name:'Diamond Ring',emoji:'💍',value:147.9,tier:'epic',img:NFT+'diamondring-1.large.png'},
+{id:'heroic_helmet',name:'Heroic Helmet',emoji:'🪖',value:174.3,tier:'epic',img:NFT+'heroichelmet-1.large.png'},
+{id:'mighty_arm',name:'Mighty Arm',emoji:'💪',value:117,tier:'epic',img:NFT+'mightyarm-1.large.png'},
+{id:'precious_peach',name:'Precious Peach',emoji:'🍑',value:236,tier:'epic',img:NFT+'preciouspeach-1.large.png'},
+{id:'low_rider',name:'Low Rider',emoji:'🚗',value:280.3,tier:'epic',img:NFT+'lowrider-1.large.png'},
+{id:'toy_bear',name:'Toy Bear',emoji:'🧸',value:186,tier:'epic',img:NFT+'toybear-1.large.png'},
+{id:'stellar_rocket',name:'Stellar Rocket',emoji:'🚀',value:237.03,tier:'epic',img:NFT+'stellarrocket-1.large.png'},
+{id:'money_pot',name:'Money Pot',emoji:'💰',value:588.9,tier:'legendary',img:NFT+'moneypot-1.large.png'},
+{id:'xmas_stocking',name:'Xmas Stocking',emoji:'🧦',value:640,tier:'legendary',img:NFT+'xmasstocking-1.large.png'},
+{id:'spy_agaric',name:'Spy Agaric',emoji:'🍄',value:378.7,tier:'epic',img:NFT+'spyagaric-1.large.png'},
+{id:'big_year',name:'Big Year',emoji:'🎉',value:475.09,tier:'epic',img:NFT+'bigyear-1.large.png'},
+{id:'swag_bag',name:'Swag Bag',emoji:'💰',value:1709.01,tier:'mythic',img:NFT+'swagbag-1.large.png'},
+{id:'jolly_chimp',name:'Jolly Chimp',emoji:'🐵',value:1805.7,tier:'mythic',img:NFT+'jollychimp-1.large.png'},
+{id:'input_key',name:'Input Key',emoji:'⌨️',value:774,tier:'legendary',img:NFT+'inputkey-1.large.png'},
+{id:'light_sword',name:'Light Sword',emoji:'⚔️',value:1077,tier:'legendary',img:NFT+'lightsword-1.large.png'}];
 const FARMBOX_PRIZES = GIFT_DATABASE.map(g=>g.id);
 
 setTimeout(()=>{for(let i=0;i<4;i++)addTickerItem();setInterval(addTickerItem,2000);},300);
@@ -1321,8 +982,7 @@ function updateGlobalBalanceUI(){
 }
 updateGlobalBalanceUI();
 function showToast(msg,type=''){const t=document.getElementById('toast');t.className='toast '+type+' show';t.innerText=msg;clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),2500);}
-
-async function initTonConnect(){try{tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});tonConnectUI.onStatusChange(async wallet=>{if(wallet){isWalletConnected=true;const addr=wallet.account.address;const shortAddr=addr.slice(0,6)+'...'+addr.slice(-4);document.getElementById('walletInfo').innerHTML='✅ Connected: <b>'+shortAddr+'</b>';document.getElementById('connectWalletBtn').style.display='none';document.getElementById('disconnectWalletBtn').style.display='block';document.getElementById('payBtn').disabled=false;}else{isWalletConnected=false;document.getElementById('walletInfo').innerText='Wallet not connected';document.getElementById('connectWalletBtn').style.display='block';document.getElementById('disconnectWalletBtn').style.display='none';document.getElementById('payBtn').disabled=true;}});}catch(e){}}
+    async function initTonConnect(){try{tonConnectUI=new TON_CONNECT_UI.TonConnectUI({manifestUrl:'https://parha2662-maker.github.io/My_telegram_app/tonconnect-manifest.json',buttonRootId:null});tonConnectUI.onStatusChange(async wallet=>{if(wallet){isWalletConnected=true;const addr=wallet.account.address;const shortAddr=addr.slice(0,6)+'...'+addr.slice(-4);document.getElementById('walletInfo').innerHTML='✅ Connected: <b>'+shortAddr+'</b>';document.getElementById('connectWalletBtn').style.display='none';document.getElementById('disconnectWalletBtn').style.display='block';document.getElementById('payBtn').disabled=false;}else{isWalletConnected=false;document.getElementById('walletInfo').innerText='Wallet not connected';document.getElementById('connectWalletBtn').style.display='block';document.getElementById('disconnectWalletBtn').style.display='none';document.getElementById('payBtn').disabled=true;}});}catch(e){}}
 function openDepositModal(){document.getElementById('depositModal').classList.remove('hidden');if(!tonConnectUI)initTonConnect();}
 function closeDepositModal(){document.getElementById('depositModal').classList.add('hidden');document.getElementById('depositStatus').innerText='';}
 async function connectWallet(){if(!tonConnectUI){await initTonConnect();}document.getElementById('depositModal').classList.add('hidden');try{await tonConnectUI.openModal();}catch(e){document.getElementById('depositModal').classList.remove('hidden');}}
@@ -1435,189 +1095,18 @@ function getBadgeColorClass(m){if(m>=10)return'yellow';if(m>=5)return'purple';if
 function addRoundToHistory(c){roundHistory.unshift(c);if(roundHistory.length>30)roundHistory.pop();localStorage.setItem('roundHistory',JSON.stringify(roundHistory));renderRoundHistory();}
 function renderRoundHistory(){multiplierHistoryContainer.innerHTML='';roundHistory.slice(0,15).forEach(m=>{const b=document.createElement('div');b.className='crash-hist-badge '+getBadgeColorClass(m);b.innerText=m.toFixed(2)+'x';multiplierHistoryContainer.appendChild(b);});}
 renderRoundHistory();
-function drawChart(cm){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(cm<=1.01) return;
-    const max=Math.max(crashPoint,cm,2);
-    const sx=0,sy=canvas.height-30,ex=canvas.width,ey=20;
-    const p=cm/max;
-    const cx=sx+(ex-sx)*p;
-    const cy=sy-(sy-ey)*Math.min(1,cm/max);
-    ctx.beginPath();
-    ctx.moveTo(sx,sy);
-    for(let i=0;i<=30;i++){
-        const t=i/30;
-        const x=sx+(cx-sx)*t;
-        const y=sy-(sy-cy)*(t*t);
-        if(i===0)ctx.lineTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.lineTo(cx,cy);
-    ctx.lineTo(cx,sy);
-    ctx.closePath();
-    const grad=ctx.createLinearGradient(0,0,0,canvas.height);
-    grad.addColorStop(0,'rgba(255,204,0,.35)');
-    grad.addColorStop(1,'rgba(255,204,0,0)');
-    ctx.fillStyle=grad;
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(sx,sy);
-    for(let i=0;i<=30;i++){
-        const t=i/30;
-        const x=sx+(cx-sx)*t;
-        const y=sy-(sy-cy)*(t*t);
-        if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle='#ffcc00';
-    ctx.lineWidth=5;
-    ctx.lineCap='round';
-    ctx.shadowBlur=15;
-    ctx.shadowColor='rgba(255,204,0,.6)';
-    ctx.stroke();
-    ctx.shadowBlur=0;
-    ctx.beginPath();
-    ctx.arc(cx,cy,10,0,Math.PI*2);
-    ctx.fillStyle='#ffcc00';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(cx,cy,5,0,Math.PI*2);
-    ctx.fillStyle='#fff';
-    ctx.fill();
-}
+function drawChart(cm){ctx.clearRect(0,0,canvas.width,canvas.height);if(cm<=1.01)return;const max=Math.max(crashPoint,cm,2);const sx=0,sy=canvas.height-30,ex=canvas.width,ey=20;const p=cm/max;const cx=sx+(ex-sx)*p;const cy=sy-(sy-ey)*Math.min(1,cm/max);ctx.beginPath();ctx.moveTo(sx,sy);for(let i=0;i<=30;i++){const t=i/30;const x=sx+(cx-sx)*t;const y=sy-(sy-cy)*(t*t);ctx.lineTo(x,y);}ctx.lineTo(cx,cy);ctx.lineTo(cx,sy);ctx.closePath();const grad=ctx.createLinearGradient(0,0,0,canvas.height);grad.addColorStop(0,'rgba(255,204,0,.35)');grad.addColorStop(1,'rgba(255,204,0,0)');ctx.fillStyle=grad;ctx.fill();ctx.beginPath();ctx.moveTo(sx,sy);for(let i=0;i<=30;i++){const t=i/30;const x=sx+(cx-sx)*t;const y=sy-(sy-cy)*(t*t);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.strokeStyle='#ffcc00';ctx.lineWidth=5;ctx.lineCap='round';ctx.shadowBlur=15;ctx.shadowColor='rgba(255,204,0,.6)';ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fillStyle='#ffcc00';ctx.fill();ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();}
 function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);}
-function renderCrashPlayers(){
-    const row=document.getElementById('crashPlayersRow');if(!row)return;
-    if(crashBots.length===0 && !hasJoined){
-        row.innerHTML='<div style="color:#5a6278;font-size:12px;padding:14px;font-weight:700;text-align:center;">⏳ Waiting for players...</div>';
-        return;
-    }
-    row.innerHTML='';
-    crashBots.forEach(b=>{
-        const c=document.createElement('div');
-        c.className='crash-p-row'+(b.cashed?' cashed':'')+(b.lost?' lost':'');
-        c.innerHTML=`<div class="crash-p-av">${b.avatar}</div><div class="crash-p-name">${b.name}</div>`+
-            (b.cashed?`<div class="crash-p-mult">+${(b.bet*b.cashedAt).toFixed(2)}</div><span class="crash-p-coin">◈</span><div class="crash-p-bet" style="color:#2ff068">×${b.cashedAt.toFixed(2)}</div>`:
-             b.lost?`<div class="crash-p-mult lost">-${b.bet.toFixed(2)}</div><span class="crash-p-coin" style="opacity:.5">◈</span>`:
-            `<div class="crash-p-mult" style="color:#8a90a6">${b.bet.toFixed(2)}×?</div><span class="crash-p-coin">◈</span>`);
-        row.appendChild(c);
-    });
-    if(hasJoined){
-        const c=document.createElement('div');
-        c.className='crash-p-row';
-        c.style.borderColor='#ffcc00';
-        c.innerHTML=`<div class="crash-p-av" style="border-color:#ffcc00">👤</div><div class="crash-p-name" style="color:#ffcc00">You</div><div class="crash-p-mult">${myBet.toFixed(2)}×${multiplier.toFixed(2)}</div><span class="crash-p-coin">◈</span>`;
-        row.appendChild(c);
-    }
-}
-function spawnCrashBots(){
-    if(!BOTS_ENABLED){crashBots=[];renderCrashPlayers();return;}
-    crashBots=[];renderCrashPlayers();
-    const count=4+Math.floor(Math.random()*4);
-    const used=new Set();
-    for(let i=0;i<count;i++){
-        let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);
-        const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;
-        const delay=300+Math.random()*(COUNTDOWN_SECONDS*1000-800);
-        setTimeout(()=>{
-            if(gameState!=='waiting')return;
-            if(Math.random()>persona.joinChance)return;
-            const bet=smartBotBet(bot);bot.balance-=bet;
-            crashBots.push({...bot,bet,cashout:smartBotCashout(bot),cashed:false,lost:false});
-            renderCrashPlayers();
-        },delay);
-    }
-}
+function renderCrashPlayers(){const row=document.getElementById('crashPlayersRow');if(!row)return;if(crashBots.length===0&&!hasJoined){row.innerHTML='<div style="color:#5a6278;font-size:12px;padding:14px;font-weight:700;text-align:center;">⏳ Waiting for players...</div>';return;}row.innerHTML='';crashBots.forEach(b=>{const c=document.createElement('div');c.className='crash-p-row'+(b.cashed?' cashed':'')+(b.lost?' lost':'');c.innerHTML=`<div class="crash-p-av">${b.avatar}</div><div class="crash-p-name">${b.name}</div>`+(b.cashed?`<div class="crash-p-mult">+${(b.bet*b.cashedAt).toFixed(2)}</div><span class="crash-p-coin">◈</span><div class="crash-p-bet" style="color:#2ff068">×${b.cashedAt.toFixed(2)}</div>`:b.lost?`<div class="crash-p-mult lost">-${b.bet.toFixed(2)}</div><span class="crash-p-coin" style="opacity:.5">◈</span>`:`<div class="crash-p-mult" style="color:#8a90a6">${b.bet.toFixed(2)}×?</div><span class="crash-p-coin">◈</span>`);row.appendChild(c);});if(hasJoined){const c=document.createElement('div');c.className='crash-p-row';c.style.borderColor='#ffcc00';c.innerHTML=`<div class="crash-p-av" style="border-color:#ffcc00">👤</div><div class="crash-p-name" style="color:#ffcc00">You</div><div class="crash-p-mult">${myBet.toFixed(2)}×${multiplier.toFixed(2)}</div><span class="crash-p-coin">◈</span>`;row.appendChild(c);}}
+function spawnCrashBots(){if(!BOTS_ENABLED){crashBots=[];renderCrashPlayers();return;}crashBots=[];renderCrashPlayers();const count=4+Math.floor(Math.random()*4);const used=new Set();for(let i=0;i<count;i++){let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);const persona=BOT_PERSONAS[bot.persona]||BOT_PERSONAS.balanced;const delay=300+Math.random()*(COUNTDOWN_SECONDS*1000-800);setTimeout(()=>{if(gameState!=='waiting')return;if(Math.random()>persona.joinChance)return;const bet=smartBotBet(bot);bot.balance-=bet;crashBots.push({...bot,bet,cashout:smartBotCashout(bot),cashed:false,lost:false});renderCrashPlayers();},delay);}}
 function botCashOuts(currentMult){crashBots.forEach(b=>{if(!b.cashed&&!b.lost&&currentMult>=b.cashout){b.cashed=true;b.cashedAt=currentMult;const dbBot=BOT_DATABASE.find(x=>x.name===b.name);if(dbBot)dbBot.balance+=b.bet*currentMult;}});renderCrashPlayers();}
 function botCrashAll(){crashBots.forEach(b=>{if(!b.cashed)b.lost=true;});renderCrashPlayers();}
 let _lastGiftShown='';
-function updateGiftDisplayOnMultiplier(){
-    if(!hasJoined)return false;
-    const potentialWin=myBet*multiplier;
-    const willBeGift=betFromGift||potentialWin>=MIN_GIFT_VALUE;
-    if(!willBeGift){_lastGiftShown='';return false;}
-    const gift=pickClosestGiftTemplate(potentialWin);
-    _lastGiftShown=gift.id;
-    multiplierDisplay.innerHTML=`<div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:110px;height:110px;display:flex;align-items:center;justify-content:center">${getGiftImg(gift)}</div><div style="font-size:16px;color:#fff;font-weight:900">${gift.name}</div><div style="font-size:13px;color:#2ff068;font-weight:800">${multiplier.toFixed(2)}x • ${gift.value.toFixed(2)} ◈</div></div>`;
-    return true;
-}
-function startNewRound(){
-    gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;_lastGiftShown='';multiplier=1.00;
-    crashPoint=getRandomCrashPoint();
-    clearChart();
-    spawnCrashBots();
-    multiplierDisplay.classList.remove('crashed','counting');
-    multiplierDisplay.style.color='#ff9800';
-    betInput.disabled=false;autoCashoutInput.disabled=false;halfBtn.disabled=false;allBtn.disabled=false;
-    betInput.value=localStorage.getItem('lastBet')||0.1;
-    autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;
-    actionButton.innerText='Place bet';actionButton.className='crash-action-btn bet';actionButton.disabled=false;
-    statusText.innerText='';
-    let c=COUNTDOWN_SECONDS;
-    multiplierDisplay.classList.add('counting');
-    multiplierDisplay.innerText=c;
-    countdownInterval=setInterval(()=>{
-        c--;
-        if(c>0)multiplierDisplay.innerText=c;
-        else{
-            clearInterval(countdownInterval);
-            multiplierDisplay.classList.remove('counting');
-            multiplierDisplay.style.color='#fff';
-            multiplierDisplay.innerText='1.00x';
-            startGameplay();
-        }
-    },1000);
-}
-function startGameplay(){
-    gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;
-    if(hasJoined){statusText.innerText='✅ Joined with '+myBet+' TON';actionButton.innerText='Cash Out';actionButton.className='crash-action-btn cashout';actionButton.disabled=false;}
-    else{statusText.innerText='';actionButton.innerText='Not joined';actionButton.className='crash-action-btn bet';actionButton.disabled=true;}
-    let el=0;
-    gameInterval=setInterval(()=>{
-        el+=80;multiplier=Math.pow(SPEED,el);
-        const showingGift=updateGiftDisplayOnMultiplier();
-        if(!showingGift)multiplierDisplay.innerText=multiplier.toFixed(2)+'x';
-        drawChart(multiplier);
-        botCashOuts(multiplier);
-        if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);
-        if(multiplier>=crashPoint){
-            clearInterval(gameInterval);botCrashAll();
-            multiplierDisplay.style.color='#ff4444';
-            multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';
-            multiplierDisplay.classList.add('crashed');
-            gameState='crashed';
-            actionButton.disabled=true;
-            actionButton.innerText='Next round...';
-            actionButton.className='crash-action-btn bet';
-            addRoundToHistory(crashPoint);
-            statusText.innerText=hasJoined?'💥 Lost '+myBet+' TON':'💥 Crashed!';
-            if(hasJoined)resolveLoss();
-            setTimeout(startNewRound,2500);
-        }
-    },80);
-}
-function joinGame(){
-    if(gameState!=='waiting')return;
-    const amount=parseFloat(betInput.value);
-    if(isNaN(amount)||amount<0.1){statusText.innerText='❌ Min 0.1 TON';return;}
-    if(amount>MAX_BET){statusText.innerText='❌ Max '+MAX_BET+' TON';return;}
-    if(amount>balance){statusText.innerText='❌ Insufficient';return;}
-    hasJoined=true;myBet=amount;
-    myAutoCashout=parseFloat(autoCashoutInput.value);
-    if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;
-    balance-=amount;updateGlobalBalanceUI();
-    betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;
-    statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined';
-    actionButton.innerText='Waiting...';actionButton.disabled=true;
-}
-function cashOut(isAuto=false){
-    if(!hasJoined||gameState!=='playing')return;
-    const willBeGift=betFromGift||(myBet*multiplier>=MIN_GIFT_VALUE);
-    const winnings=myBet*multiplier;
-    hasJoined=false;
-    actionButton.disabled=true;actionButton.innerText='Next round...';actionButton.className='crash-action-btn bet';
-    const msg=resolveWin(winnings);
-    statusText.innerText=msg;
-    if(willBeGift){const gift=pickClosestGiftTemplate(winnings);multiplierDisplay.innerHTML='<div style="text-align:center"><div style="width:110px;height:110px;margin:0 auto;display:flex;align-items:center;justify-content:center">'+getGiftImg(gift)+'</div><div style="font-size:14px;color:#2ff068;font-weight:900;margin-top:6px">🎉 WON!</div><div style="font-size:12px;color:#fff;font-weight:700">'+gift.name+'</div></div>';}
-}
+function updateGiftDisplayOnMultiplier(){if(!hasJoined)return false;const potentialWin=myBet*multiplier;const willBeGift=betFromGift||potentialWin>=MIN_GIFT_VALUE;if(!willBeGift){_lastGiftShown='';return false;}const gift=pickClosestGiftTemplate(potentialWin);_lastGiftShown=gift.id;multiplierDisplay.innerHTML=`<div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:110px;height:110px;display:flex;align-items:center;justify-content:center">${getGiftImg(gift)}</div><div style="font-size:16px;color:#fff;font-weight:900">${gift.name}</div><div style="font-size:13px;color:#2ff068;font-weight:800">${multiplier.toFixed(2)}x • ${gift.value.toFixed(2)} ◈</div></div>`;return true;}
+function startNewRound(){gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;_lastGiftShown='';multiplier=1.00;crashPoint=getRandomCrashPoint();clearChart();spawnCrashBots();multiplierDisplay.classList.remove('crashed','counting');multiplierDisplay.style.color='#ff9800';betInput.disabled=false;autoCashoutInput.disabled=false;halfBtn.disabled=false;allBtn.disabled=false;betInput.value=localStorage.getItem('lastBet')||0.1;autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;actionButton.innerText='Place bet';actionButton.className='crash-action-btn bet';actionButton.disabled=false;statusText.innerText='';let c=COUNTDOWN_SECONDS;multiplierDisplay.classList.add('counting');multiplierDisplay.innerText=c;countdownInterval=setInterval(()=>{c--;if(c>0)multiplierDisplay.innerText=c;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.style.color='#fff';multiplierDisplay.innerText='1.00x';startGameplay();}},1000);}
+function startGameplay(){gameState='playing';betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;if(hasJoined){statusText.innerText='✅ Joined with '+myBet+' TON';actionButton.innerText='Cash Out';actionButton.className='crash-action-btn cashout';actionButton.disabled=false;}else{statusText.innerText='';actionButton.innerText='Not joined';actionButton.className='crash-action-btn bet';actionButton.disabled=true;}let el=0;gameInterval=setInterval(()=>{el+=80;multiplier=Math.pow(SPEED,el);const showingGift=updateGiftDisplayOnMultiplier();if(!showingGift)multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);botCashOuts(multiplier);if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);if(multiplier>=crashPoint){clearInterval(gameInterval);botCrashAll();multiplierDisplay.style.color='#ff4444';multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');gameState='crashed';actionButton.disabled=true;actionButton.innerText='Next round...';actionButton.className='crash-action-btn bet';addRoundToHistory(crashPoint);statusText.innerText=hasJoined?'💥 Lost '+myBet+' TON':'💥 Crashed!';if(hasJoined)resolveLoss();setTimeout(startNewRound,2500);}},80);}
+function joinGame(){if(gameState!=='waiting')return;const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<0.1){statusText.innerText='❌ Min 0.1 TON';return;}if(amount>MAX_BET){statusText.innerText='❌ Max '+MAX_BET+' TON';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}hasJoined=true;myBet=amount;myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined';actionButton.innerText='Waiting...';actionButton.disabled=true;}
+function cashOut(isAuto=false){if(!hasJoined||gameState!=='playing')return;const willBeGift=betFromGift||(myBet*multiplier>=MIN_GIFT_VALUE);const winnings=myBet*multiplier;hasJoined=false;actionButton.disabled=true;actionButton.innerText='Next round...';actionButton.className='crash-action-btn bet';const msg=resolveWin(winnings);statusText.innerText=msg;if(willBeGift){const gift=pickClosestGiftTemplate(winnings);multiplierDisplay.innerHTML='<div style="text-align:center"><div style="width:110px;height:110px;margin:0 auto;display:flex;align-items:center;justify-content:center">'+getGiftImg(gift)+'</div><div style="font-size:14px;color:#2ff068;font-weight:900;margin-top:6px">🎉 WON!</div><div style="font-size:12px;color:#fff;font-weight:700">'+gift.name+'</div></div>';}}
 actionButton.addEventListener('click',()=>{if(gameState==='waiting')joinGame();else if(gameState==='playing'&&hasJoined)cashOut(false);});
 function setBetAll(){if(gameState!=='waiting')return;const a=Math.floor(Math.min(balance,MAX_BET)*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);}
 function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor(Math.min(balance/2,MAX_BET)*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);}
@@ -1631,9 +1120,9 @@ let pvpPlayers=[],pvpPool=0,pvpState='waiting',pvpTimer=PVP_COUNTDOWN_SECONDS,pv
 let pvpCanvas=null,pvpCtx=null,pvpSize=320,pvpUserJoined=false,pvpMyBet=0,pvpLastResult=null,pvpBetFromGift=false,pvpGiftUsed=null;
 function pvpInit(){pvpCanvas=document.getElementById('pvpCanvas');pvpCtx=pvpCanvas.getContext('2d');window.addEventListener('resize',resizePvpCanvas);resizePvpCanvas();pvpStartRound();}
 function resizePvpCanvas(){if(!pvpCanvas)return;const w=pvpCanvas.parentElement;const aw=w.clientWidth-40;const ah=w.clientHeight-20;const s=Math.max(220,Math.min(aw,ah,340));const dpr=window.devicePixelRatio||1;pvpSize=s;pvpCanvas.width=s*dpr;pvpCanvas.height=s*dpr;pvpCanvas.style.width=s+'px';pvpCanvas.style.height=s+'px';pvpCtx.setTransform(dpr,0,0,dpr,0,0);pvpDraw();}
-function pvpScheduleBots(){if(!BOTS_ENABLED) return;const count=2+Math.floor(Math.random()*3);const used=new Set();for(let i=0;i<count;i++){let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);const delay=500+(i*900)+Math.random()*1500;setTimeout(()=>{if(pvpState!=='waiting')return;const bet=smartBotBet(bot);const color=PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];pvpPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});pvpRecalcPool();pvpRenderPlayers();pvpDraw();pvpCheckStart();},delay);}}
+function pvpScheduleBots(){if(!BOTS_ENABLED)return;const count=2+Math.floor(Math.random()*3);const used=new Set();for(let i=0;i<count;i++){let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);const delay=500+(i*900)+Math.random()*1500;setTimeout(()=>{if(pvpState!=='waiting')return;const bet=smartBotBet(bot);const color=PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];pvpPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false});pvpRecalcPool();pvpRenderPlayers();pvpDraw();pvpCheckStart();},delay);}}
 function pvpStartRound(){pvpState='waiting';pvpTimer=PVP_COUNTDOWN_SECONDS;pvpUserJoined=false;pvpMyBet=0;pvpPool=0;pvpPointerAngle=-Math.PI/2;pvpLastResult=null;pvpBetFromGift=false;pvpGiftUsed=null;pvpGameNum=Math.floor(60000+Math.random()*10000);document.getElementById('pvpGameNum').innerText='Game #'+pvpGameNum;pvpPlayers=[];pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='Join the Battle';btn.className='join-battle-btn';btn.disabled=false;document.getElementById('pvpBetInput').disabled=false;document.getElementById('pvpBetInput').value=localStorage.getItem('lastPvpBet')||0.1;pvpScheduleBots();clearInterval(pvpTimerInterval);pvpTimerInterval=null;document.getElementById('pvpTimer').innerText='--:--';}
-function pvpCheckStart(){if(pvpState!=='waiting')return;if(pvpPlayers.length>=2 && !pvpTimerInterval){pvpTimer=PVP_COUNTDOWN_SECONDS;document.getElementById('pvpTimer').innerText='00:'+String(pvpTimer).padStart(2,'0');pvpTimerInterval=setInterval(()=>{if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}pvpTimer--;document.getElementById('pvpTimer').innerText='00:'+String(Math.max(0,pvpTimer)).padStart(2,'0');if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpTimerInterval=null;pvpSpin();}},1000);}}
+function pvpCheckStart(){if(pvpState!=='waiting')return;if(pvpPlayers.length>=2&&!pvpTimerInterval){pvpTimer=PVP_COUNTDOWN_SECONDS;document.getElementById('pvpTimer').innerText='00:'+String(pvpTimer).padStart(2,'0');pvpTimerInterval=setInterval(()=>{if(pvpState!=='waiting'){clearInterval(pvpTimerInterval);pvpTimerInterval=null;return;}pvpTimer--;document.getElementById('pvpTimer').innerText='00:'+String(Math.max(0,pvpTimer)).padStart(2,'0');if(pvpTimer<=0){clearInterval(pvpTimerInterval);pvpTimerInterval=null;pvpSpin();}},1000);}}
 function pvpRecalcPool(){pvpPool=pvpPlayers.reduce((s,p)=>s+p.bet,0);document.getElementById('pvpPoolValue').innerText=pvpPool.toFixed(2);document.getElementById('pvpPlayersCount').innerText='👥 '+pvpPlayers.length;}
 function pvpJoinClick(){if(pvpState!=='waiting'||pvpUserJoined)return;const a=parseFloat(document.getElementById('pvpBetInput').value);if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}if(a>MAX_BET){showToast('❌ Max '+MAX_BET,'lose');return;}if(a>balance){showToast('❌ Insufficient');return;}balance-=a;updateGlobalBalanceUI();let giftEmoji='';if(pvpBetFromGift&&pvpGiftUsed){removeGiftFromInventory(pvpGiftUsed.uid);giftEmoji=pvpGiftUsed.emoji;pvpBetFromGift=false;pvpGiftUsed=null;}pvpUserJoined=true;pvpMyBet=a;localStorage.setItem('lastPvpBet',a);pvpPlayers.push({name:'You',avatar:'👤',bet:a,color:'#ffcc00',isMe:true,gift:giftEmoji});pvpRecalcPool();pvpRenderPlayers();pvpDraw();const btn=document.getElementById('joinBattleBtn');btn.innerText='✅ Joined ('+a+' TON)';btn.className='join-battle-btn joined';btn.disabled=true;document.getElementById('pvpBetInput').disabled=true;showToast('Joined with '+a+' TON');pvpCheckStart();}
 function pvpRenderPlayers(){const r=document.getElementById('pvpPlayersRow');r.innerHTML='';if(pvpPlayers.length===0){r.innerHTML='<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting...</div>';return;}pvpPlayers.forEach(p=>{const pct=pvpPool>0?((p.bet/pvpPool)*100).toFixed(1):0;const c=document.createElement('div');c.className='pvp-pcard'+(p.isMe?' isMe':'');if(pvpLastResult&&pvpLastResult.name===p.name&&pvpLastResult.isMe===p.isMe)c.classList.add('winner');c.innerHTML='<div class="pvp-pcard-top" style="background:'+p.color+'"></div><div class="pvp-pav" style="border-color:'+p.color+'">'+p.avatar+'</div><div class="pvp-pname">'+p.name+'</div><div class="pvp-ppct" style="color:'+p.color+'">'+pct+'%</div><div class="pvp-pbet">'+p.bet.toFixed(2)+' TON</div>';r.appendChild(c);});}
@@ -1646,197 +1135,21 @@ window.arenaInitialized=false;
 const ARENA_COLORS=['#2ff068','#7c3aed','#0098ea','#ff9d00','#ec4899','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a','#4ecdc4','#f7b731','#a855f7','#06b6d4','#84cc16','#f43f5e'];
 let arenaPlayers=[],arenaPool=0,arenaState='waiting',arenaTimer=PVP_COUNTDOWN_SECONDS,arenaTimerInterval=null;
 let arenaCanvas=null,arenaCtx=null,arenaCW=320,arenaCH=340,arenaMyBet=0,arenaLastResult=null;
-let arenaBall={x:0,y:0,active:false};
-let arenaAnimFrame=null;
-let arenaBetFromGift=false;
-let arenaGiftUsed=null;
-
+let arenaBall={x:0,y:0,active:false};let arenaAnimFrame=null;let arenaBetFromGift=false;let arenaGiftUsed=null;
 function arenaInit(){arenaCanvas=document.getElementById('arenaCanvas');arenaCtx=arenaCanvas.getContext('2d');window.addEventListener('resize',resizeArenaCanvas);resizeArenaCanvas();arenaStartRound();arenaStartTournamentTimer();}
 function arenaStartTournamentTimer(){let total=3*3600+20*60+26;setInterval(()=>{total--;if(total<0)total=3*3600+20*60+26;const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),s=total%60;const el=document.getElementById('arenaTTimer');if(el)el.innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;},1000);}
 function resizeArenaCanvas(){if(!arenaCanvas)return;const wrap=arenaCanvas.parentElement;const w=wrap.clientWidth;const h=wrap.clientHeight;const dpr=window.devicePixelRatio||1;arenaCW=w;arenaCH=h;arenaCanvas.width=w*dpr;arenaCanvas.height=h*dpr;arenaCanvas.style.width=w+'px';arenaCanvas.style.height=h+'px';arenaCtx.setTransform(dpr,0,0,dpr,0,0);arenaDraw();}
-
-function spawnExtraBots(count){const used=new Set(arenaPlayers.map(p=>p.name));for(let i=0;i<count;i++){let bot,tries=0;do{bot=getRandomBot();tries++;}while(used.has(bot.name)&&tries<100);if(used.has(bot.name))continue;used.add(bot.name);const delay=800+(i*700)+Math.random()*1200;setTimeout(()=>{if(arenaState!=='waiting')return;const bet=smartBotBet(bot);bot.balance-=bet;const color=ARENA_COLORS[arenaPlayers.length%ARENA_COLORS.length];let giftEmoji='';if(Math.random()<0.3)giftEmoji=getRandomGiftEmoji();arenaPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false,gift:giftEmoji});arenaRecalcPool();arenaRenderPlayers();arenaDraw();},delay);}}
-function arenaScheduleBots(){if(!BOTS_ENABLED) return;const count=3+Math.floor(Math.random()*4);const used=new Set(arenaPlayers.map(p=>p.name));for(let i=0;i<count;i++){let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);const delay=400+(i*800)+Math.random()*1200;setTimeout(()=>{if(arenaState!=='waiting')return;const bet=smartBotBet(bot);bot.balance-=bet;const color=ARENA_COLORS[arenaPlayers.length%ARENA_COLORS.length];let giftEmoji='';if(Math.random()<0.3)giftEmoji=getRandomGiftEmoji();arenaPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false,gift:giftEmoji});arenaRecalcPool();arenaRenderPlayers();arenaDraw();arenaCheckStart();},delay);}}
+function arenaScheduleBots(){if(!BOTS_ENABLED)return;const count=3+Math.floor(Math.random()*4);const used=new Set(arenaPlayers.map(p=>p.name));for(let i=0;i<count;i++){let bot;do{bot=getRandomBot();}while(used.has(bot.name));used.add(bot.name);const delay=400+(i*800)+Math.random()*1200;setTimeout(()=>{if(arenaState!=='waiting')return;const bet=smartBotBet(bot);bot.balance-=bet;const color=ARENA_COLORS[arenaPlayers.length%ARENA_COLORS.length];let giftEmoji='';if(Math.random()<0.3)giftEmoji=getRandomGiftEmoji();arenaPlayers.push({name:bot.name,avatar:bot.avatar,bet,color,isMe:false,gift:giftEmoji});arenaRecalcPool();arenaRenderPlayers();arenaDraw();arenaCheckStart();},delay);}}
 function arenaStartRound(){arenaState='waiting';arenaTimer=PVP_COUNTDOWN_SECONDS;arenaMyBet=0;arenaPool=0;arenaLastResult=null;arenaBall={x:0,y:0,active:false};arenaBetFromGift=false;arenaGiftUsed=null;if(arenaAnimFrame){cancelAnimationFrame(arenaAnimFrame);arenaAnimFrame=null;}arenaPlayers=[];arenaRecalcPool();arenaRenderPlayers();arenaDraw();const btn=document.getElementById('arenaJoinBtn');btn.innerText='Join Arena';btn.className='arena-join-btn';btn.disabled=false;document.getElementById('arenaBetInput').disabled=false;document.getElementById('arenaBetInput').value=localStorage.getItem('lastArenaBet')||0.1;document.getElementById('arenaTimerBadge').classList.remove('show','warn');arenaScheduleBots();clearInterval(arenaTimerInterval);arenaTimerInterval=null;}
-function arenaCheckStart(){if(arenaState!=='waiting')return;if(arenaPlayers.length>=2 && !arenaTimerInterval){arenaTimer=PVP_COUNTDOWN_SECONDS;const badge=document.getElementById('arenaTimerBadge');badge.classList.add('show');badge.classList.remove('warn');badge.innerText=arenaTimer;arenaTimerInterval=setInterval(()=>{if(arenaState!=='waiting'){clearInterval(arenaTimerInterval);arenaTimerInterval=null;return;}arenaTimer--;badge.innerText=arenaTimer;if(arenaTimer<=5)badge.classList.add('warn');if(arenaTimer<=0){clearInterval(arenaTimerInterval);arenaTimerInterval=null;badge.classList.remove('show');arenaDropBall();}},1000);}}
+function arenaCheckStart(){if(arenaState!=='waiting')return;if(arenaPlayers.length>=2&&!arenaTimerInterval){arenaTimer=PVP_COUNTDOWN_SECONDS;const badge=document.getElementById('arenaTimerBadge');badge.classList.add('show');badge.classList.remove('warn');badge.innerText=arenaTimer;arenaTimerInterval=setInterval(()=>{if(arenaState!=='waiting'){clearInterval(arenaTimerInterval);arenaTimerInterval=null;return;}arenaTimer--;badge.innerText=arenaTimer;if(arenaTimer<=5)badge.classList.add('warn');if(arenaTimer<=0){clearInterval(arenaTimerInterval);arenaTimerInterval=null;badge.classList.remove('show');arenaDropBall();}},1000);}}
 function arenaRecalcPool(){arenaPool=arenaPlayers.reduce((s,p)=>s+p.bet,0);}
 function arenaJoinClick(){if(arenaState!=='waiting')return;const a=parseFloat(document.getElementById('arenaBetInput').value);if(isNaN(a)||a<0.1){showToast('❌ Min 0.1');return;}if(a>MAX_BET){showToast('❌ Max '+MAX_BET,'lose');return;}if(a>balance){showToast('❌ Insufficient');return;}const existing=arenaPlayers.find(p=>p.isMe);balance-=a;updateGlobalBalanceUI();localStorage.setItem('lastArenaBet',a);let giftEmoji='';if(arenaBetFromGift&&arenaGiftUsed){removeGiftFromInventory(arenaGiftUsed.uid);giftEmoji=arenaGiftUsed.emoji;arenaBetFromGift=false;arenaGiftUsed=null;}if(existing){existing.bet=+(existing.bet+a).toFixed(2);arenaMyBet=existing.bet;if(giftEmoji)existing.gift=giftEmoji;}else{arenaMyBet=a;const myName=(TG_USER.name&&TG_USER.name!=='Unknown User')?TG_USER.name:'You';arenaPlayers.push({name:myName,avatar:'👤',bet:a,color:'#ffcc00',isMe:true,gift:giftEmoji});}arenaRecalcPool();arenaRenderPlayers();arenaDraw();const btn=document.getElementById('arenaJoinBtn');btn.innerText='✅ Total: '+arenaMyBet.toFixed(2)+' TON';btn.className='arena-join-btn joined';btn.disabled=false;document.getElementById('arenaBetInput').disabled=false;arenaCheckStart();}
 function arenaClearBet(){if(arenaState!=='waiting')return;document.getElementById('arenaBetInput').value='0.1';}
 document.getElementById('arenaBetInput').addEventListener('input',e=>{const v=parseFloat(e.target.value);if(!isNaN(v)&&v>0)localStorage.setItem('lastArenaBet',v);});
 function arenaRenderPlayers(){const list=document.getElementById('arenaPlayersStrip');list.innerHTML='';if(arenaPlayers.length===0){list.innerHTML='<div class="arena-empty-strip">⏳ Waiting for players...</div>';return;}arenaPlayers.forEach(p=>{const pct=arenaPool>0?((p.bet/arenaPool)*100).toFixed(1):'0';const row=document.createElement('div');row.className='arena-strip-row'+(p.isMe?' isMe':'');if(arenaLastResult&&arenaLastResult.name===p.name&&arenaLastResult.isMe===p.isMe)row.classList.add('winner');row.style.setProperty('--pc',p.color);const giftBadge=p.gift?`<span style="font-size:16px;margin-right:4px">${p.gift}</span>`:'';row.innerHTML=`<div class="arena-strip-av">${p.avatar}</div><div class="arena-strip-name">${giftBadge}${p.name}</div><div class="arena-strip-pct">${pct}%</div><div class="arena-strip-bet">${p.bet.toFixed(2)}◈</div>`;list.appendChild(row);});}
-
-function arenaDraw(){
-    if(!arenaCtx)return;
-    const w=arenaCW,h=arenaCH;
-    arenaCtx.clearRect(0,0,w,h);
-    arenaCtx.fillStyle='#0a0d14';
-    arenaCtx.fillRect(0,0,w,h);
-    if(arenaPlayers.length===0){
-        arenaCtx.fillStyle='#5a6278';
-        arenaCtx.font='bold 13px sans-serif';
-        arenaCtx.textAlign='center';
-        arenaCtx.textBaseline='middle';
-        arenaCtx.fillText('⏳ Waiting for players (need 2+)',w/2,h/2);
-        return;
-    }
-    const cx=w/2, cy=h/2;
-    const R = Math.min(w,h) * 0.46;
-    let angle = -Math.PI/2;
-    arenaPlayers.forEach((p, idx) => {
-        const pct = arenaPool>0 ? (p.bet/arenaPool) : 0;
-        const arc = pct * Math.PI * 2;
-        const a1 = angle;
-        const a2 = angle + arc;
-        arenaCtx.beginPath();
-        arenaCtx.moveTo(cx, cy);
-        arenaCtx.lineTo(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R);
-        arenaCtx.lineTo(cx + Math.cos(a2) * R, cy + Math.sin(a2) * R);
-        arenaCtx.closePath();
-        arenaCtx.fillStyle = p.color;
-        arenaCtx.fill();
-        const grad = arenaCtx.createRadialGradient(cx, cy, 0, cx, cy, R);
-        grad.addColorStop(0, 'rgba(0,0,0,.25)');
-        grad.addColorStop(0.4, 'rgba(0,0,0,0)');
-        grad.addColorStop(1, 'rgba(0,0,0,.15)');
-        arenaCtx.fillStyle = grad;
-        arenaCtx.fill();
-        arenaCtx.beginPath();
-        arenaCtx.moveTo(cx, cy);
-        arenaCtx.lineTo(cx+Math.cos(a1)*R, cy+Math.sin(a1)*R);
-        arenaCtx.strokeStyle = 'rgba(10,13,20,.65)';
-        arenaCtx.lineWidth = 2;
-        arenaCtx.stroke();
-        if (arenaLastResult && arenaLastResult.name===p.name && arenaLastResult.isMe===p.isMe) {
-            arenaCtx.beginPath();
-            arenaCtx.moveTo(cx, cy);
-            arenaCtx.lineTo(cx+Math.cos(a1)*R, cy+Math.sin(a1)*R);
-            arenaCtx.lineTo(cx+Math.cos(a2)*R, cy+Math.sin(a2)*R);
-            arenaCtx.closePath();
-            arenaCtx.strokeStyle = '#2ff068';
-            arenaCtx.lineWidth = 4;
-            arenaCtx.stroke();
-        }
-        const midA = (a1+a2)/2;
-        const labelR = R * 0.72;
-        let lx = cx + Math.cos(midA) * labelR;
-        let ly = cy + Math.sin(midA) * labelR;
-        lx = Math.max(60, Math.min(w-60, lx));
-        ly = Math.max(30, Math.min(h-30, ly));
-        const pctStr = (pct*100).toFixed(pct<0.1?1:0);
-        arenaCtx.save();
-        arenaCtx.textAlign='center';
-        arenaCtx.textBaseline='middle';
-        arenaCtx.shadowColor='rgba(0,0,0,0.95)';
-        arenaCtx.shadowBlur=12;
-        let name=(p.gift?p.gift+' ':'')+p.name;
-        if(name.length>10) name=name.slice(0,9)+'…';
-        arenaCtx.font='bold 15px -apple-system,sans-serif';
-        arenaCtx.fillStyle='#ffffff';
-        arenaCtx.fillText(name, lx, ly-24);
-        arenaCtx.font='bold 14px -apple-system,sans-serif';
-        arenaCtx.fillStyle='#ffcc00';
-        arenaCtx.fillText(p.bet.toFixed(2)+' ◈', lx, ly);
-        arenaCtx.font='bold 13px -apple-system,sans-serif';
-        arenaCtx.fillStyle='rgba(255,255,255,.95)';
-        arenaCtx.fillText(pctStr+'%', lx, ly+22);
-        arenaCtx.restore();
-        angle = a2;
-    });
-    const centerR = R * 0.14;
-    arenaCtx.beginPath();
-    for (let i = 0; i < 3; i++) {
-        const a = -Math.PI/2 + i * (Math.PI*2/3);
-        const x = cx + Math.cos(a) * centerR;
-        const y = cy + Math.sin(a) * centerR;
-        if (i === 0) arenaCtx.moveTo(x, y);
-        else arenaCtx.lineTo(x, y);
-    }
-    arenaCtx.closePath();
-    arenaCtx.fillStyle = '#0a0d14';
-    arenaCtx.fill();
-    arenaCtx.strokeStyle = 'rgba(255,255,255,.15)';
-    arenaCtx.lineWidth = 3;
-    arenaCtx.stroke();
-    arenaCtx.beginPath();
-    let borderAngle = -Math.PI/2;
-    arenaPlayers.forEach((p, i) => {
-        const pct = arenaPool > 0 ? (p.bet / arenaPool) : 0;
-        const arc = pct * Math.PI * 2;
-        const a2 = borderAngle + arc;
-        const x = cx + Math.cos(a2) * (R + 2);
-        const y = cy + Math.sin(a2) * (R + 2);
-        if (i === 0) arenaCtx.moveTo(x, y);
-        else arenaCtx.lineTo(x, y);
-        borderAngle = a2;
-    });
-    arenaCtx.closePath();
-    arenaCtx.strokeStyle = 'rgba(255,255,255,.15)';
-    arenaCtx.lineWidth = 4;
-    arenaCtx.stroke();
-    if(arenaBall.active){
-        arenaCtx.beginPath();arenaCtx.arc(arenaBall.x,arenaBall.y,18,0,Math.PI*2);
-        const rg=arenaCtx.createRadialGradient(arenaBall.x,arenaBall.y,2,arenaBall.x,arenaBall.y,18);
-        rg.addColorStop(0,'rgba(255,255,255,0.9)');rg.addColorStop(1,'rgba(255,255,255,0)');
-        arenaCtx.fillStyle=rg;arenaCtx.fill();
-        arenaCtx.beginPath();arenaCtx.arc(arenaBall.x,arenaBall.y,12,0,Math.PI*2);
-        arenaCtx.fillStyle='#0a0a0a';arenaCtx.shadowBlur=20;arenaCtx.shadowColor='rgba(0,0,0,1)';arenaCtx.fill();
-        arenaCtx.shadowBlur=0;
-    }
-}
-
-function arenaDetermineWinnerAtPoint(x,y){
-    if(arenaPlayers.length===0 || arenaPool<=0) return null;
-    const cx=arenaCW/2, cy=arenaCH/2;
-    const dx = x-cx, dy = y-cy;
-    let a = Math.atan2(dy, dx);
-    a = ((a + Math.PI/2) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
-    let cum=0;
-    for(const p of arenaPlayers){
-        const arc = (p.bet/arenaPool) * Math.PI*2;
-        if(a >= cum && a < cum+arc) return p;
-        cum += arc;
-    }
-    return arenaPlayers[arenaPlayers.length-1];
-}
-
-function arenaDropBall(){
-    if(arenaState!=='waiting')return;
-    arenaState='dropping';
-    const w=arenaCW,h=arenaCH;
-    const cx=w/2, cy=h/2;
-    const R = Math.min(w,h)*0.46;
-    const radius=12;
-    const startA = Math.random() * Math.PI * 2;
-    const startR = R * 0.15;
-    arenaBall = {x:cx+Math.cos(startA)*startR, y:cy+Math.sin(startA)*startR, active:true};
-    const DURATION_MS = 4500;
-    const start = performance.now();
-    let lastTime = start;
-    const finalA = Math.random() * Math.PI * 2;
-    const finalR = R * (0.55 + Math.random()*0.35);
-    function anim(now){
-        const elapsed = now-start;
-        const dt = Math.min(50, now-lastTime);
-        lastTime = now;
-        if(elapsed < DURATION_MS){
-            const t = elapsed/DURATION_MS;
-            const ease = 1 - Math.pow(1-t, 2.2);
-            const spins = 2;
-            const curA = startA + (finalA - startA) + spins * Math.PI*2 * t;
-            const curR = startR + (finalR - startR) * ease;
-            arenaBall.x = cx + Math.cos(curA) * curR;
-            arenaBall.y = cy + Math.sin(curA) * curR;
-            arenaDraw();
-            arenaAnimFrame = requestAnimationFrame(anim);
-        } else {
-            arenaBall.x = cx + Math.cos(finalA + 2*Math.PI*2) * finalR;
-            arenaBall.y = cy + Math.sin(finalA + 2*Math.PI*2) * finalR;
-            const winner = arenaDetermineWinnerAtPoint(arenaBall.x, arenaBall.y);
-            arenaFinishSpin(winner);
-        }
-    }
-    arenaAnimFrame = requestAnimationFrame(anim);
-}
+function arenaDraw(){if(!arenaCtx)return;const w=arenaCW,h=arenaCH;arenaCtx.clearRect(0,0,w,h);arenaCtx.fillStyle='#0a0d14';arenaCtx.fillRect(0,0,w,h);if(arenaPlayers.length===0){arenaCtx.fillStyle='#5a6278';arenaCtx.font='bold 13px sans-serif';arenaCtx.textAlign='center';arenaCtx.textBaseline='middle';arenaCtx.fillText('⏳ Waiting for players (need 2+)',w/2,h/2);return;}const cx=w/2,cy=h/2;const R=Math.min(w,h)*0.46;let angle=-Math.PI/2;arenaPlayers.forEach((p,idx)=>{const pct=arenaPool>0?(p.bet/arenaPool):0;const arc=pct*Math.PI*2;const a1=angle;const a2=angle+arc;arenaCtx.beginPath();arenaCtx.moveTo(cx,cy);arenaCtx.lineTo(cx+Math.cos(a1)*R,cy+Math.sin(a1)*R);arenaCtx.lineTo(cx+Math.cos(a2)*R,cy+Math.sin(a2)*R);arenaCtx.closePath();arenaCtx.fillStyle=p.color;arenaCtx.fill();const grad=arenaCtx.createRadialGradient(cx,cy,0,cx,cy,R);grad.addColorStop(0,'rgba(0,0,0,.25)');grad.addColorStop(0.4,'rgba(0,0,0,0)');grad.addColorStop(1,'rgba(0,0,0,.15)');arenaCtx.fillStyle=grad;arenaCtx.fill();arenaCtx.beginPath();arenaCtx.moveTo(cx,cy);arenaCtx.lineTo(cx+Math.cos(a1)*R,cy+Math.sin(a1)*R);arenaCtx.strokeStyle='rgba(10,13,20,.65)';arenaCtx.lineWidth=2;arenaCtx.stroke();if(arenaLastResult&&arenaLastResult.name===p.name&&arenaLastResult.isMe===p.isMe){arenaCtx.beginPath();arenaCtx.moveTo(cx,cy);arenaCtx.lineTo(cx+Math.cos(a1)*R,cy+Math.sin(a1)*R);arenaCtx.lineTo(cx+Math.cos(a2)*R,cy+Math.sin(a2)*R);arenaCtx.closePath();arenaCtx.strokeStyle='#2ff068';arenaCtx.lineWidth=4;arenaCtx.stroke();}const midA=(a1+a2)/2;const labelR=R*0.72;let lx=cx+Math.cos(midA)*labelR;let ly=cy+Math.sin(midA)*labelR;lx=Math.max(60,Math.min(w-60,lx));ly=Math.max(30,Math.min(h-30,ly));const pctStr=(pct*100).toFixed(pct<0.1?1:0);arenaCtx.save();arenaCtx.textAlign='center';arenaCtx.textBaseline='middle';arenaCtx.shadowColor='rgba(0,0,0,0.95)';arenaCtx.shadowBlur=12;let name=(p.gift?p.gift+' ':'')+p.name;if(name.length>10)name=name.slice(0,9)+'…';arenaCtx.font='bold 15px -apple-system,sans-serif';arenaCtx.fillStyle='#ffffff';arenaCtx.fillText(name,lx,ly-24);arenaCtx.font='bold 14px -apple-system,sans-serif';arenaCtx.fillStyle='#ffcc00';arenaCtx.fillText(p.bet.toFixed(2)+' ◈',lx,ly);arenaCtx.font='bold 13px -apple-system,sans-serif';arenaCtx.fillStyle='rgba(255,255,255,.95)';arenaCtx.fillText(pctStr+'%',lx,ly+22);arenaCtx.restore();angle=a2;});const centerR=R*0.14;arenaCtx.beginPath();for(let i=0;i<3;i++){const a=-Math.PI/2+i*(Math.PI*2/3);const x=cx+Math.cos(a)*centerR;const y=cy+Math.sin(a)*centerR;if(i===0)arenaCtx.moveTo(x,y);else arenaCtx.lineTo(x,y);}arenaCtx.closePath();arenaCtx.fillStyle='#0a0d14';arenaCtx.fill();arenaCtx.strokeStyle='rgba(255,255,255,.15)';arenaCtx.lineWidth=3;arenaCtx.stroke();arenaCtx.beginPath();let borderAngle=-Math.PI/2;arenaPlayers.forEach((p,i)=>{const pct=arenaPool>0?(p.bet/arenaPool):0;const arc=pct*Math.PI*2;const a2=borderAngle+arc;const x=cx+Math.cos(a2)*(R+2);const y=cy+Math.sin(a2)*(R+2);if(i===0)arenaCtx.moveTo(x,y);else arenaCtx.lineTo(x,y);borderAngle=a2;});arenaCtx.closePath();arenaCtx.strokeStyle='rgba(255,255,255,.15)';arenaCtx.lineWidth=4;arenaCtx.stroke();if(arenaBall.active){arenaCtx.beginPath();arenaCtx.arc(arenaBall.x,arenaBall.y,18,0,Math.PI*2);const rg=arenaCtx.createRadialGradient(arenaBall.x,arenaBall.y,2,arenaBall.x,arenaBall.y,18);rg.addColorStop(0,'rgba(255,255,255,0.9)');rg.addColorStop(1,'rgba(255,255,255,0)');arenaCtx.fillStyle=rg;arenaCtx.fill();arenaCtx.beginPath();arenaCtx.arc(arenaBall.x,arenaBall.y,12,0,Math.PI*2);arenaCtx.fillStyle='#0a0a0a';arenaCtx.shadowBlur=20;arenaCtx.shadowColor='rgba(0,0,0,1)';arenaCtx.fill();arenaCtx.shadowBlur=0;}}
+function arenaDetermineWinnerAtPoint(x,y){if(arenaPlayers.length===0||arenaPool<=0)return null;const cx=arenaCW/2,cy=arenaCH/2;const dx=x-cx,dy=y-cy;let a=Math.atan2(dy,dx);a=((a+Math.PI/2)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);let cum=0;for(const p of arenaPlayers){const arc=(p.bet/arenaPool)*Math.PI*2;if(a>=cum&&a<cum+arc)return p;cum+=arc;}return arenaPlayers[arenaPlayers.length-1];}
+function arenaDropBall(){if(arenaState!=='waiting')return;arenaState='dropping';const w=arenaCW,h=arenaCH;const cx=w/2,cy=h/2;const R=Math.min(w,h)*0.46;const startA=Math.random()*Math.PI*2;const startR=R*0.15;arenaBall={x:cx+Math.cos(startA)*startR,y:cy+Math.sin(startA)*startR,active:true};const DURATION_MS=4500;const start=performance.now();let lastTime=start;const finalA=Math.random()*Math.PI*2;const finalR=R*(0.55+Math.random()*0.35);function anim(now){const elapsed=now-start;lastTime=now;if(elapsed<DURATION_MS){const t=elapsed/DURATION_MS;const ease=1-Math.pow(1-t,2.2);const curA=startA+(finalA-startA)+2*Math.PI*2*t;const curR=startR+(finalR-startR)*ease;arenaBall.x=cx+Math.cos(curA)*curR;arenaBall.y=cy+Math.sin(curA)*curR;arenaDraw();arenaAnimFrame=requestAnimationFrame(anim);}else{arenaBall.x=cx+Math.cos(finalA)*finalR;arenaBall.y=cy+Math.sin(finalA)*finalR;const winner=arenaDetermineWinnerAtPoint(arenaBall.x,arenaBall.y);arenaFinishSpin(winner);}}arenaAnimFrame=requestAnimationFrame(anim);}
 function arenaFinishSpin(winner){arenaState='done';arenaLastResult=winner;arenaRenderPlayers();setTimeout(()=>{if(winner&&winner.isMe){const win=arenaPool;resolveWin(win);showToast('🏆 You won '+win.toFixed(2)+' TON!','win');}else{if(arenaMyBet>0){showToast('😔 Lost '+arenaMyBet.toFixed(2)+' TON','lose');resolveLoss();}else if(winner){showToast('🎯 '+winner.name+' won '+arenaPool.toFixed(2)+' TON');}}arenaMyBet=0;},400);setTimeout(()=>{arenaStartRound();},3000);}
 
 let penState='idle';let penBet=0;let penGoals=0;let penShotsUsed=0;let penMaxShots=10;let penCurrentMult=1.0;let penFromGift=false;
@@ -1849,109 +1162,121 @@ function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxSho
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
 
-const WH_COLORS={2:'#a855f7',4:'#a3e635',5:'#38bdf8',20:'#f43f5e'};
-const WH_SEGMENTS=[2,2,2,4,2,2,2,5,2,2,4,2,2,2,20,2,2,4,2,2,5,2,4,2];
+/* ============ WHEEL (FIXED + BLACK SLICE) ============ */
+const WH_COLORS={0:'#111111',2:'#a855f7',4:'#a3e635',5:'#38bdf8',20:'#f43f5e'};
+const WH_SEGMENTS=[2,2,2,4,2,2,2,5,2,2,4,0,2,2,20,2,2,4,2,2,5,2,4,2];
+const WH_BLACK_CHANCE=0.015;
 let whCtx=null,whSize=340,whRotation=0,whState='waiting',whTimerVal=20,whTimerInterval=null;
 let whPlayers=[],whMyBet=0,whMyPick=null,whMyPickFromGift=false,whMyGiftUsed=null,whCurrentBank=0;
 let whHistory=['#a855f7','#a3e635','#a855f7','#a855f7','#f43f5e','#a855f7','#38bdf8','#a855f7','#a3e635','#a855f7','#a855f7','#a855f7'];
 function openWheel(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('wheelScreen').classList.remove('hidden');initWheelCanvas();whStartRound();showBackBtn();}
 function closeWheel(){document.getElementById('wheelScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
-function initWheelCanvas(){const c=document.getElementById('wheelCanvas');if(!c) return;whCtx=c.getContext('2d');whResize();window.removeEventListener('resize',whResize);window.addEventListener('resize',whResize);drawWheel(0);}
-function whResize(){
-    const c = document.getElementById('wheelCanvas');
-    if(!c) return;
-    const wrap = c.parentElement;
-    const s = Math.min(wrap.clientWidth - 20, 400);
-    const dpr = window.devicePixelRatio || 1;
-    whSize = s;
-    c.width  = s * dpr;
-    c.height = s * dpr;
-    c.style.width  = s + 'px';
-    c.style.height = s + 'px';
-    whCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawWheel(whRotation);
-}
+function initWheelCanvas(){const c=document.getElementById('wheelCanvas');if(!c)return;whCtx=c.getContext('2d');whResize();window.removeEventListener('resize',whResize);window.addEventListener('resize',whResize);drawWheel(0);}
+function whResize(){const c=document.getElementById('wheelCanvas');if(!c)return;const wrap=c.parentElement;const s=Math.min(wrap.clientWidth-20,400);const dpr=window.devicePixelRatio||1;whSize=s;c.width=s*dpr;c.height=s*dpr;c.style.width=s+'px';c.style.height=s+'px';whCtx.setTransform(dpr,0,0,dpr,0,0);drawWheel(whRotation);}
 function drawWheel(rotation){
-    if(!whCtx) return;
-    const s = whSize, cx = s/2, cy = s/2, R = s/2 - 14;
+    if(!whCtx)return;
+    const s=whSize,cx=s/2,cy=s/2,R=s/2-14;
     whCtx.clearRect(0,0,s,s);
-
-    const n = WH_SEGMENTS.length;
-    const segAngle = (Math.PI*2)/n;
-
+    const n=WH_SEGMENTS.length;
+    const segAngle=(Math.PI*2)/n;
     whCtx.save();
-    whCtx.shadowColor = 'rgba(155,92,255,.35)';
-    whCtx.shadowBlur = 30;
-    whCtx.beginPath();
-    whCtx.arc(cx, cy, R, 0, Math.PI*2);
-    whCtx.fillStyle = '#0d0616';
-    whCtx.fill();
+    whCtx.shadowColor='rgba(155,92,255,.35)';whCtx.shadowBlur=30;
+    whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.fillStyle='#0d0616';whCtx.fill();
     whCtx.restore();
-
     for(let i=0;i<n;i++){
-        const mult = WH_SEGMENTS[i];
-        const color = WH_COLORS[mult];
-        const a1 = i*segAngle + rotation - Math.PI/2;
-        const a2 = a1 + segAngle;
-
-        whCtx.beginPath();
-        whCtx.moveTo(cx, cy);
-        whCtx.arc(cx, cy, R, a1, a2);
-        whCtx.closePath();
-        whCtx.fillStyle = color;
-        whCtx.fill();
-
-        whCtx.beginPath();
-        whCtx.moveTo(cx, cy);
-        whCtx.lineTo(cx + Math.cos(a1)*R, cy + Math.sin(a1)*R);
-        whCtx.strokeStyle = 'rgba(255,255,255,.18)';
-        whCtx.lineWidth = 2;
-        whCtx.stroke();
+        const mult=WH_SEGMENTS[i];
+        const color=WH_COLORS[mult]||'#a855f7';
+        const a1=i*segAngle+rotation-Math.PI/2;
+        const a2=a1+segAngle;
+        whCtx.beginPath();whCtx.moveTo(cx,cy);whCtx.arc(cx,cy,R,a1,a2);whCtx.closePath();
+        whCtx.fillStyle=color;whCtx.fill();
+        whCtx.beginPath();whCtx.moveTo(cx,cy);whCtx.lineTo(cx+Math.cos(a1)*R,cy+Math.sin(a1)*R);
+        whCtx.strokeStyle='rgba(255,255,255,.18)';whCtx.lineWidth=2;whCtx.stroke();
     }
-
-    const g = whCtx.createRadialGradient(cx, cy, R*0.2, cx, cy, R);
-    g.addColorStop(0, 'rgba(255,255,255,.12)');
-    g.addColorStop(0.5, 'rgba(255,255,255,0)');
-    g.addColorStop(1, 'rgba(0,0,0,.25)');
-    whCtx.beginPath();
-    whCtx.arc(cx, cy, R, 0, Math.PI*2);
-    whCtx.fillStyle = g;
-    whCtx.fill();
-
-    whCtx.beginPath();
-    whCtx.arc(cx, cy, R, 0, Math.PI*2);
-    whCtx.strokeStyle = 'rgba(155,92,255,.65)';
-    whCtx.lineWidth = 4;
-    whCtx.stroke();
-
-    const centerR = R*0.34;
-    whCtx.beginPath();
-    whCtx.arc(cx, cy, centerR, 0, Math.PI*2);
-    whCtx.fillStyle = '#0d0616';
-    whCtx.fill();
-    whCtx.strokeStyle = 'rgba(155,92,255,.55)';
-    whCtx.lineWidth = 3;
-    whCtx.stroke();
-
-    const cg = whCtx.createRadialGradient(cx, cy, 0, cx, cy, centerR);
-    cg.addColorStop(0, 'rgba(155,92,255,.15)');
-    cg.addColorStop(1, 'rgba(155,92,255,0)');
-    whCtx.beginPath();
-    whCtx.arc(cx, cy, centerR, 0, Math.PI*2);
-    whCtx.fillStyle = cg;
-    whCtx.fill();
+    const g=whCtx.createRadialGradient(cx,cy,R*0.2,cx,cy,R);
+    g.addColorStop(0,'rgba(255,255,255,.12)');g.addColorStop(0.5,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(0,0,0,.25)');
+    whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.fillStyle=g;whCtx.fill();
+    whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);
+    whCtx.strokeStyle='rgba(155,92,255,.65)';whCtx.lineWidth=4;whCtx.stroke();
+    const centerR=R*0.34;
+    whCtx.beginPath();whCtx.arc(cx,cy,centerR,0,Math.PI*2);
+    whCtx.fillStyle='#0d0616';whCtx.fill();
+    whCtx.strokeStyle='rgba(155,92,255,.55)';whCtx.lineWidth=3;whCtx.stroke();
+    const cg=whCtx.createRadialGradient(cx,cy,0,cx,cy,centerR);
+    cg.addColorStop(0,'rgba(155,92,255,.15)');cg.addColorStop(1,'rgba(155,92,255,0)');
+    whCtx.beginPath();whCtx.arc(cx,cy,centerR,0,Math.PI*2);whCtx.fillStyle=cg;whCtx.fill();
 }
 function whRenderHistory(){const c=document.getElementById('whHistory');if(!c)return;c.innerHTML='';whHistory.slice(0,30).forEach(col=>{const el=document.createElement('div');el.className='wh-history-seg';el.style.background=col;c.appendChild(el);});}
-function whStartRound(){whState='waiting';whTimerVal=20;whRotation=0;whPlayers=[];whMyBet=0;whMyPick=null;whCurrentBank=0;whMyPickFromGift=false;whMyGiftUsed=null;document.getElementById('whBankVal').innerText='0';document.getElementById('whPlayers').innerHTML='<div class="wh-empty">⏳ Waiting...</div>';document.getElementById('whStatusText').innerText='Connecting...';document.getElementById('whStatusText').parentElement.style.background='#3a2a10';document.getElementById('whStatusText').parentElement.style.color='#fbbf24';const timerEl=document.getElementById('whTimer');timerEl.className='wh-timer';document.querySelectorAll('.wh-mult-btn').forEach(b=>{b.classList.remove('active');b.disabled=false;});document.getElementById('whBetInput').disabled=false;updateWhBalance();drawWheel(0);whRenderHistory();setTimeout(()=>whScheduleBots(),300);clearInterval(whTimerInterval);timerEl.innerText='Starts in: 00:20';whTimerInterval=setInterval(()=>{whTimerVal--;timerEl.innerText='Starts in: 00:'+String(Math.max(0,whTimerVal)).padStart(2,'0');if(whTimerVal<=5)timerEl.classList.add('hurry');if(whTimerVal<=0){clearInterval(whTimerInterval);whTimerInterval=null;whSpin();}},1000);}
-function whScheduleBots(){if(!BOTS_ENABLED) return;const count=4+Math.floor(Math.random()*4);for(let i=0;i<count;i++){const bot=getRandomBot();const bet=Math.max(0.1,Math.round((bot.balance*(0.02+Math.random()*0.05))*100)/100);const pickOptions=[2,2,2,4,4,5,20];const pick=pickOptions[Math.floor(Math.random()*pickOptions.length)];const delay=200+i*400+Math.random()*800;setTimeout(()=>{if(whState!=='waiting') return;whPlayers.push({name:bot.name,avatar:bot.avatar,bet,pick,isMe:false});whCurrentBank+=bet;document.getElementById('whBankVal').innerText=whCurrentBank.toFixed(2);whRenderPlayers();},delay);}}
-function updateWhBalance(){const el=document.getElementById('whBalanceDisplay');if(el)el.innerText=balance.toFixed(2);}
 function whRenderPlayers(){const c=document.getElementById('whPlayers');if(whPlayers.length===0){c.innerHTML='<div class="wh-empty">⏳ Waiting...</div>';return;}c.innerHTML='';whPlayers.forEach(p=>{const el=document.createElement('div');el.className='wh-pcard'+(p.isMe?' isMe':'');const color=WH_COLORS[p.pick]||'#8a90a6';el.innerHTML=`<div class="wh-pcard-color" style="background:${color}"></div><div class="wh-pcard-av">${p.avatar}</div><div class="wh-pcard-name">${p.name}</div><div class="wh-pcard-bet">${p.bet.toFixed(2)}◈</div><div class="wh-pcard-pick">x${p.pick}</div>`;c.appendChild(el);});}
+function whStartRound(){whState='waiting';whTimerVal=20;whRotation=0;whPlayers=[];whMyBet=0;whMyPick=null;whCurrentBank=0;whMyPickFromGift=false;whMyGiftUsed=null;document.getElementById('whBankVal').innerText='0';document.getElementById('whPlayers').innerHTML='<div class="wh-empty">⏳ Waiting...</div>';document.getElementById('whStatusText').innerText='Connecting...';const timerEl=document.getElementById('whTimer');timerEl.className='wh-timer';document.querySelectorAll('.wh-mult-btn').forEach(b=>{b.classList.remove('active');b.disabled=false;});document.getElementById('whBetInput').disabled=false;drawWheel(0);whRenderHistory();setTimeout(()=>whScheduleBots(),300);clearInterval(whTimerInterval);timerEl.innerText='Starts in: 00:20';whTimerInterval=setInterval(()=>{whTimerVal--;timerEl.innerText='Starts in: 00:'+String(Math.max(0,whTimerVal)).padStart(2,'0');if(whTimerVal<=5)timerEl.classList.add('hurry');if(whTimerVal<=0){clearInterval(whTimerInterval);whTimerInterval=null;whSpin();}},1000);}
+function whScheduleBots(){if(!BOTS_ENABLED)return;const count=4+Math.floor(Math.random()*4);for(let i=0;i<count;i++){const bot=getRandomBot();const bet=Math.max(0.1,Math.round((bot.balance*(0.02+Math.random()*0.05))*100)/100);const pickOptions=[2,2,2,4,4,5,20];const pick=pickOptions[Math.floor(Math.random()*pickOptions.length)];const delay=200+i*400+Math.random()*800;setTimeout(()=>{if(whState!=='waiting')return;whPlayers.push({name:bot.name,avatar:bot.avatar,bet,pick,isMe:false});whCurrentBank+=bet;document.getElementById('whBankVal').innerText=whCurrentBank.toFixed(2);whRenderPlayers();},delay);}}
+function updateWhBalance(){const el=document.getElementById('whBalanceDisplay');if(el)el.innerText=balance.toFixed(2);}
 function whPickMult(m){if(whState!=='waiting'){showToast('❌ Wait next round','lose');return;}whMyPick=m;document.querySelectorAll('.wh-mult-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.mult)===m);});showToast('🎯 x'+m,'');whPlaceBet();}
-function whPlaceBet(){if(whState!=='waiting')return;if(whMyPick===null)return;const bet=parseFloat(document.getElementById('whBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1','lose');return;}if(bet>MAX_BET){showToast('❌ Max '+MAX_BET,'lose');return;}if(bet>balance){showToast('❌ Insufficient','lose');return;}whPlayers=whPlayers.filter(p=>!p.isMe);if(whMyBet>0){balance+=whMyBet;whCurrentBank-=whMyBet;}balance-=bet;updateGlobalBalanceUI();updateWhBalance();whMyBet=bet;whPlayers.push({name:'You',avatar:'👤',bet,pick:whMyPick,isMe:true});whCurrentBank+=bet;document.getElementById('whBankVal').innerText=whCurrentBank.toFixed(2);whRenderPlayers();document.getElementById('whStatusText').innerText='Waiting...';document.getElementById('whStatusText').parentElement.style.background='#0f3a2a';document.getElementById('whStatusText').parentElement.style.color='#2ff068';showToast('✅ '+bet.toFixed(2)+' on x'+whMyPick,'win');document.getElementById('whBetInput').disabled=true;}
-function whSpin(){if(whState!=='waiting')return;whState='spinning';const n=WH_SEGMENTS.length;const segAngle=360/n;const winnerIdx=Math.floor(Math.random()*n);const winnerMult=WH_SEGMENTS[winnerIdx];const targetCenter=winnerIdx*segAngle+segAngle/2;const totalSpins=6+Math.floor(Math.random()*4);const finalRotation=-targetCenter*Math.PI/180-Math.PI/2+totalSpins*Math.PI*2;const startRot=whRotation;const duration=5000;const start=performance.now();const jitter=(Math.random()-0.5)*segAngle*0.5;const finalRotAdj=finalRotation-jitter*Math.PI/180;function anim(now){const t=Math.min(1,(now-start)/duration);const e=1-Math.pow(1-t,3.3);whRotation=startRot+(finalRotAdj-startRot)*e;drawWheel(whRotation);if(t<1)requestAnimationFrame(anim);else whFinishSpin(winnerMult,winnerIdx);}requestAnimationFrame(anim);}
-function whFinishSpin(winnerMult,winnerIdx){whState='done';whRotation=whRotation%(Math.PI*2);document.getElementById('whStatusText').innerText='Winner!';document.getElementById('whStatusText').parentElement.style.background='#3a1a1a';document.getElementById('whStatusText').parentElement.style.color='#f43f5e';whHistory.unshift(WH_COLORS[winnerMult]);if(whHistory.length>30)whHistory.pop();whRenderHistory();const myPlayer=whPlayers.find(p=>p.isMe);if(myPlayer&&myPlayer.pick===winnerMult){const win=myPlayer.bet*winnerMult;betFromGift=whMyPickFromGift;resolveWin(win);showToast('🏆 Won '+win.toFixed(2)+' TON!','win');}else if(myPlayer){showToast('😔 Lost '+myPlayer.bet.toFixed(2)+' TON','lose');resolveLoss();}document.getElementById('whBetInput').disabled=false;document.querySelectorAll('.wh-mult-btn').forEach(b=>{b.classList.remove('active');b.disabled=true;});setTimeout(()=>{whStartRound();},3000);}
+function whPlaceBet(){if(whState!=='waiting')return;if(whMyPick===null)return;const bet=parseFloat(document.getElementById('whBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1','lose');return;}if(bet>MAX_BET){showToast('❌ Max '+MAX_BET,'lose');return;}if(bet>balance){showToast('❌ Insufficient','lose');return;}whPlayers=whPlayers.filter(p=>!p.isMe);if(whMyBet>0){balance+=whMyBet;whCurrentBank-=whMyBet;}balance-=bet;updateGlobalBalanceUI();updateWhBalance();whMyBet=bet;whPlayers.push({name:'You',avatar:'👤',bet,pick:whMyPick,isMe:true});whCurrentBank+=bet;document.getElementById('whBankVal').innerText=whCurrentBank.toFixed(2);whRenderPlayers();document.getElementById('whStatusText').innerText='Waiting...';showToast('✅ '+bet.toFixed(2)+' on x'+whMyPick,'win');document.getElementById('whBetInput').disabled=true;}
+function whSpin(){
+    if(whState!=='waiting')return;
+    whState='spinning';
+    const n=WH_SEGMENTS.length;
+    const segAngleRad=(Math.PI*2)/n;
+    let winnerIdx;
+    if(Math.random()<WH_BLACK_CHANCE){
+        winnerIdx=WH_SEGMENTS.indexOf(0);
+        if(winnerIdx<0)winnerIdx=0;
+    }else{
+        const nonBlack=[];
+        WH_SEGMENTS.forEach((v,i)=>{if(v!==0)nonBlack.push(i);});
+        winnerIdx=nonBlack[Math.floor(Math.random()*nonBlack.length)];
+    }
+    const winnerMult=WH_SEGMENTS[winnerIdx];
+    const targetCenterRot=-(winnerIdx+0.5)*segAngleRad;
+    const totalSpins=6+Math.floor(Math.random()*4);
+    const jitter=(Math.random()-0.5)*segAngleRad*0.85;
+    const finalRotation=targetCenterRot+totalSpins*Math.PI*2+jitter;
+    const startRot=Math.random()*Math.PI*2;
+    whRotation=startRot;
+    const duration=5000;
+    const start=performance.now();
+    function anim(now){
+        const t=Math.min(1,(now-start)/duration);
+        const e=1-Math.pow(1-t,3.3);
+        whRotation=startRot+(finalRotation-startRot)*e;
+        drawWheel(whRotation);
+        if(t<1)requestAnimationFrame(anim);
+        else{whRotation=whRotation%(Math.PI*2);whFinishSpin(winnerMult,winnerIdx);}
+    }
+    requestAnimationFrame(anim);
+}
+function whFinishSpin(winnerMult,winnerIdx){
+    whState='done';
+    const statusEl=document.getElementById('whStatusText');
+    whHistory.unshift(WH_COLORS[winnerMult]||'#111111');
+    if(whHistory.length>30)whHistory.pop();
+    whRenderHistory();
+    const myPlayer=whPlayers.find(p=>p.isMe);
+    if(winnerMult===0){
+        statusEl.innerText='🏠 HOUSE WINS';
+        showToast('🏠 House wins! All lose','lose');
+        if(myPlayer)resolveLoss();
+    }else if(myPlayer&&myPlayer.pick===winnerMult){
+        const win=myPlayer.bet*winnerMult;
+        betFromGift=whMyPickFromGift;
+        resolveWin(win);
+        statusEl.innerText='Winner!';
+        showToast('🏆 Won '+win.toFixed(2)+' TON!','win');
+    }else if(myPlayer){
+        statusEl.innerText='Winner!';
+        showToast('😔 Lost '+myPlayer.bet.toFixed(2)+' TON','lose');
+        resolveLoss();
+    }else{
+        statusEl.innerText='Winner!';
+    }
+    document.getElementById('whBetInput').disabled=false;
+    document.querySelectorAll('.wh-mult-btn').forEach(b=>{b.classList.remove('active');b.disabled=true;});
+    setTimeout(()=>{whStartRound();},3000);
+}
 
-setTimeout(()=>{if(document.getElementById('wheelCanvas')) initWheelCanvas();},500);
+setTimeout(()=>{if(document.getElementById('wheelCanvas'))initWheelCanvas();},500);
+setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
-    </html>
+</html>
