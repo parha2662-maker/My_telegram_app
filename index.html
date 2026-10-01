@@ -709,7 +709,7 @@ const GIFT_DATABASE=[
 {id:'chillflame',name:'Chill Flame',emoji:'🔥',value:3.98,tier:'common',img:NFT+'chillflame-1.webp'},
 {id:'instantramen',name:'Instant Ramen',emoji:'🍜',value:3.96,tier:'common',img:NFT+'instantramen-1.webp'},
 {id:'vicecream',name:'Vice Cream',emoji:'🍦',value:3.95,tier:'common',img:NFT+'vicecream-1.webp'}];
-const FARMBOX_PRIZES=GIFT_DATABASE.map(g=>g.id);
+let FARMBOX_PRIZES=GIFT_DATABASE.map(g=>g.id);
 async function loadGiftsFromAPI(){
   try{
     const res=await fetch(API_BASE_URL+'/gifts',{headers:{'ngrok-skip-browser-warning':'true'}});
@@ -728,6 +728,9 @@ async function loadGiftsFromAPI(){
       });
     });
     console.log('Gifts loaded from API:',GIFT_DATABASE.length);
+    FARMBOX_PRIZES.length=0;
+    GIFT_DATABASE.forEach(function(g){FARMBOX_PRIZES.push(g.id);});
+    if(typeof fbRenderPrizes==='function'&&document.getElementById('fbPrizesGrid'))fbRenderPrizes();
   }catch(e){
     console.log('API failed, using fallback:',e.message);
   }
