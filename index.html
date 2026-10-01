@@ -687,10 +687,11 @@ const GIFT_DATABASE=[
 {id:'plushpepe',name:'Plush Pepe',emoji:'🐸',value:5517.26,tier:'mythic',img:NFT+'plushpepe-1.webp'},
 {id:'durovscap',name:"Durov's Cap",emoji:'🧢',value:4222.60,tier:'mythic',img:NFT+'durovscap-1.webp'},
 {id:'scaredcat',name:'Scared Cat',emoji:'🐈',value:3600.60,tier:'mythic',img:NFT+'scaredcat-1.webp'},
-{id:'perfumebottle',name:'Perfume Bottle',emoji:'🧴',value:66.19,tier:'rare',img:NFT+'perfumebottle-1.webp'},
-{id:'diamondring',name:'Diamond Ring',emoji:'💍',value:146.18,tier:'epic',img:NFT+'diamondring-1.webp'},
 {id:'bondedring',name:'Bonded Ring',emoji:'💍',value:587.93,tier:'epic',img:NFT+'bondedring-1.webp'},
+{id:'nails',name:'Nail Bracelet',emoji:'💅',value:1200.00,tier:'legendary',img:NFT+'nails-1.webp'},
+{id:'diamondring',name:'Diamond Ring',emoji:'💎',value:146.18,tier:'epic',img:NFT+'diamondring-1.webp'},
 {id:'preciouspeach',name:'Precious Peach',emoji:'🍑',value:238.25,tier:'epic',img:NFT+'preciouspeach-1.webp'},
+{id:'perfumebottle',name:'Perfume Bottle',emoji:'🧴',value:66.19,tier:'rare',img:NFT+'perfumebottle-1.webp'},
 {id:'holidaydrink',name:'Holiday Drink',emoji:'☕',value:4.11,tier:'common',img:NFT+'holidaydrink-1.webp'},
 {id:'bigyear',name:'Big Year',emoji:'🎉',value:4.08,tier:'common',img:NFT+'bigyear-1.webp'},
 {id:'petsnake',name:'Pet Snake',emoji:'🐍',value:4.07,tier:'common',img:NFT+'petsnake-1.webp'},
@@ -965,8 +966,8 @@ function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxSho
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
 const WH_COLORS={0:'#111111',2:'#a855f7',4:'#a3e635',5:'#38bdf8',20:'#f43f5e'};
-const WH_SEGMENTS=[2,4,2,4,2,4,2,4,2,5,2,4,2,4,2,4,2,5,2,4,2,20,2,0];
-const WH_WEIGHTS={0:1,2:5,4:4,5:4,20:2};
+const WH_SEGMENTS=[2,4,5,2,4,5,2,4,5,2,4,5,2,4,5,2,4,5,2,4,5,2,4,5];
+const WH_WEIGHTS={2:6,4:4,5:2};
 let whCtx=null,whSize=340,whRotation=0,whState='waiting',whTimerVal=20,whTimerInterval=null;
 let whPlayers=[],whMyBet=0,whMyPick=null,whMyPickFromGift=false,whMyGiftUsed=null,whCurrentBank=0;
 let whHistory=['#a855f7','#a3e635','#a855f7','#a855f7','#f43f5e','#a855f7','#38bdf8','#a855f7','#a3e635','#a855f7','#a855f7','#a855f7'];
