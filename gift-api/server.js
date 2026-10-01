@@ -154,7 +154,7 @@ loadData();
 app.get('/api/gifts', (req, res) => {
   const gifts = Object.keys(GIFT_PRICES).map(id => {
     const g = GIFT_PRICES[id];
-    return { id, name: g.name, emoji: g.emoji, value: g.value, tier: g.tier, img: 'https://cdn.jsdelivr.net/gh/parha2662-maker/My_telegram_app@main/gifts/' + id + '-1.webp' };
+    return { id, name: g.name, emoji: g.emoji, value: g.value, tier: g.tier, img: g.img };
   });
   res.json(gifts);
 });
