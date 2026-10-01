@@ -946,10 +946,8 @@ const allBtn=document.getElementById('allBtn');
 function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;}
 window.addEventListener('resize',resizeCanvas);resizeCanvas();
 function resetBalance(){showToast('❌ No free refill','lose');}
-let multiplierBag=[];const bagCounts={yellow:3,purple:4,blue:8,green:12,red:4};
-function fillBag(){multiplierBag=[];for(let t in bagCounts)for(let i=0;i<bagCounts[t];i++)multiplierBag.push(t);for(let i=multiplierBag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[multiplierBag[i],multiplierBag[j]]=[multiplierBag[j],multiplierBag[i]];}}
-function getNextMultiplierType(){if(multiplierBag.length===0)fillBag();return multiplierBag.pop();}
-function getRandomCrashPoint(){const t=getNextMultiplierType();if(t==='yellow')return 10+Math.random()*40;if(t==='purple')return 5+Math.random()*4.99;if(t==='blue')return 2+Math.random()*2.99;if(t==='green')return 1.2+Math.random()*0.79;if(t==='red')return 1.01+Math.random()*0.18;return 1.01;}
+const CRASH_WEIGHTS={red:20,green:52,blue:20,purple:6,yellow:2};
+function getRandomCrashPoint(){const total=Object.values(CRASH_WEIGHTS).reduce((a,b)=>a+b,0);let r=Math.random()*total;let type='red';for(const k in CRASH_WEIGHTS){r-=CRASH_WEIGHTS[k];if(r<=0){type=k;break;}}let m;if(type==='yellow')m=8+Math.random()*22;else if(type==='purple')m=4+Math.random()*3.99;else if(type==='blue')m=1.7+Math.random()*2.29;else if(type==='green')m=1.15+Math.random()*0.64;else m=1.01+Math.random()*0.13;m=Math.round(m*100)/100;return m;}
 function getBadgeColorClass(m){if(m>=10)return'yellow';if(m>=5)return'purple';if(m>=2)return'blue';if(m>=1.2)return'green';return'red';}
 function addRoundToHistory(c){roundHistory.unshift(c);if(roundHistory.length>30)roundHistory.pop();localStorage.setItem('roundHistory',JSON.stringify(roundHistory));renderRoundHistory();}
 function renderRoundHistory(){multiplierHistoryContainer.innerHTML='';roundHistory.slice(0,15).forEach(m=>{const b=document.createElement('div');b.className='crash-hist-badge '+getBadgeColorClass(m);b.innerText=m.toFixed(2)+'x';multiplierHistoryContainer.appendChild(b);});}
