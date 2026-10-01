@@ -59,8 +59,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .free-banner-2{background:linear-gradient(135deg,#2d1a4a,#4a148c,#7c3aed);border:2px solid #c084fc}
 .free-banner-farm{background:linear-gradient(135deg,#0a3a2a,#1a7a5a,#2ff068);border:2px solid #2ff068}
 .free-banner-giftcode{background:linear-gradient(135deg,#ff006e,#8338ec);border:2px solid var(--gold)}
-.free-icon{font-size:38px;margin-bottom:4px}
-.free-title{font-size:15px;font-weight:900;margin-bottom:4px}
+.free-icon{font-size:38px;margin-bottom:4px}.free-title{font-size:15px;font-weight:900;margin-bottom:4px}
 .free-title .gold{color:var(--gold);font-style:italic}.free-title .purple{color:#c084fc;font-style:italic}
 .free-sub{font-size:9px;font-weight:700;background:rgba(0,0,0,.4);padding:3px 8px;border-radius:8px;margin-top:3px}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(62px + env(safe-area-inset-bottom,0px));background:rgba(10,14,23,.95);backdrop-filter:blur(20px);display:flex;justify-content:space-around;align-items:center;border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom,0)}
@@ -219,9 +218,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .wh-pcard-pick{font-size:9px;font-weight:800;color:#8a90a6;margin-top:1px}
 .wh-empty{width:100%;text-align:center;color:#5a6278;font-size:12px;font-weight:700;padding:16px}
 .wh-actions{padding:0 16px}
-.wh-action-row{display:flex;gap:8px;margin-bottom:12px}
 .wh-gift-btn{width:52px;height:52px;border-radius:14px;background:#1a1d2e;border:none;color:#ffcc00;font-size:22px;cursor:pointer;font-family:inherit;flex-shrink:0}
-.wh-topup-btn{flex:1;padding:0 16px;border-radius:14px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0a0d14;border:none;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;height:52px}
 .wh-mult-picks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
 .wh-mult-btn{padding:16px 0;border-radius:12px;border:2px solid transparent;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;background:#1a1d2e}
 .wh-mult-btn.purple{color:#b58cff}.wh-mult-btn.purple.active{border-color:#a855f7;background:rgba(168,85,247,.15)}
@@ -263,12 +260,13 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .pen-actions{display:flex;gap:8px;margin:6px 16px;flex-shrink:0}
 .pen-dir-btn{flex:1;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;color:#fff}
 .pen-dir-btn.left{background:linear-gradient(135deg,#166534,#14532d)}.pen-dir-btn.right{background:linear-gradient(135deg,#0c4a6e,#082f49)}.pen-dir-btn:disabled{opacity:.4;cursor:not-allowed}
-.pen-bottom{margin:auto 16px calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;background:#131722;border-radius:14px;padding:6px 8px;flex-shrink:0}
-.pen-bet-display{flex:1;display:flex;align-items:center;gap:6px;background:#0a0d14;border-radius:10px;padding:8px 10px}
-.pen-bet-display .ton-icon{width:18px;height:18px;font-size:10px}
-.pen-bet-display input{flex:1;background:transparent;border:none;color:#fff;font-size:15px;font-weight:900;outline:none;text-align:center;font-family:inherit;min-width:0}
-.pen-gift-btn{width:40px;height:40px;border-radius:10px;background:#1a1d2e;border:none;color:#ffcc00;font-size:16px;cursor:pointer;font-family:inherit;flex-shrink:0}
-.pen-start-btn{flex:1.5;padding:14px;border-radius:10px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0a0d14;border:none;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit}
+.pen-bet-row{margin:0 16px 10px;display:flex;gap:8px;align-items:center;flex-shrink:0}
+.pen-bet-row .pen-bet-display{flex:1;display:flex;align-items:center;gap:6px;background:#131722;border-radius:14px;padding:8px 12px;height:52px}
+.pen-bet-display .ton-icon{width:20px;height:20px;font-size:10px}
+.pen-bet-display input{flex:1;background:transparent;border:none;color:#fff;font-size:16px;font-weight:900;outline:none;text-align:center;font-family:inherit;min-width:0}
+.pen-gift-btn{width:52px;height:52px;border-radius:14px;background:#1a1d2e;border:none;color:#ffcc00;font-size:20px;cursor:pointer;font-family:inherit;flex-shrink:0}
+.pen-start-row{margin-top:auto;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));flex-shrink:0}
+.pen-start-btn{width:100%;padding:18px;border-radius:14px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#0a0d14;border:none;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:.5px}
 .pen-start-btn:disabled{background:#2a2e42;color:#6a6a7a}
 .pen-entry-label{font-size:10px;color:#8a90a6;font-weight:800;letter-spacing:1px;text-align:center;padding:0 16px 4px;flex-shrink:0}
 #minesScreen{background:radial-gradient(ellipse at 50% 0%,#0f1530,#05070d);z-index:270;overflow-y:auto;padding-bottom:30px;padding-top:calc(75px + env(safe-area-inset-top,0px))}
@@ -499,36 +497,13 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div>
 </div></div>
 
-<div id="backpackScreen" class="screen hidden">
-<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎒 My Gifts</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
-<div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div>
-<div class="bp-grid" id="backpackGrid"></div>
-<div class="bottom-nav"><div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div></div></div>
+<div id="backpackScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎒 My Gifts</div><button class="sh-back" style="visibility:hidden;">⬅</button></div><div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div><div class="bp-grid" id="backpackGrid"></div><div class="bottom-nav"><div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div></div></div>
 
-<div id="referralScreen" class="screen hidden">
-<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👥 Invite Friends</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
-<div class="ref-content">
-<div class="ref-hero"><div class="ref-emoji">🎁</div><div class="ref-title">Invite & Earn</div><div class="ref-sub">Get <b>0.05 TON</b> for each friend who joins</div></div>
-<div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div>
-<div class="ref-link-box"><input type="text" id="refLinkInput" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button></div>
-<button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button>
-<div class="ref-stats"><div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div><div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div></div>
-<div class="ref-list-title">👥 YOUR REFERRALS</div>
-<div class="ref-list" id="refList"></div>
-<div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they start the bot, you get <b>0.05 TON</b></div></div>
-<div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div></div></div>
+<div id="referralScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👥 Invite Friends</div><button class="sh-back" style="visibility:hidden;">⬅</button></div><div class="ref-content"><div class="ref-hero"><div class="ref-emoji">🎁</div><div class="ref-title">Invite & Earn</div><div class="ref-sub">Get <b>0.05 TON</b> for each friend who joins</div></div><div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div><div class="ref-link-box"><input type="text" id="refLinkInput" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button></div><button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button><div class="ref-stats"><div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div><div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div></div><div class="ref-list-title">👥 YOUR REFERRALS</div><div class="ref-list" id="refList"></div><div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they start the bot, you get <b>0.05 TON</b></div></div><div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item active"><div class="nav-icon">👥</div><span>Invite</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div></div></div>
 
-<div id="leaderboardScreen" class="screen hidden">
-<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🏆 Leaderboard</div><button class="sh-back" onclick="loadLeaderboard()">🔄</button></div>
-<div style="padding:0 16px">
-<div style="background:linear-gradient(135deg,#ffcc00,#ff9d00);border-radius:20px;padding:20px;text-align:center;margin-bottom:16px;box-shadow:0 8px 24px rgba(255,204,0,.3)"><div style="font-size:13px;font-weight:800;color:#0a0d14;margin-bottom:8px;letter-spacing:1px">⏰ NEXT REWARD IN</div><div id="lbTimer" style="font-size:26px;font-weight:900;color:#0a0d14;letter-spacing:2px;font-variant-numeric:tabular-nums">--d --:--:--</div><div style="font-size:11px;font-weight:700;color:#0a0d14;opacity:.85;margin-top:8px">💰 Top 10 win 1 TON each</div></div>
-<div id="lbList" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
+<div id="leaderboardScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🏆 Leaderboard</div><button class="sh-back" onclick="loadLeaderboard()">🔄</button></div><div style="padding:0 16px"><div style="background:linear-gradient(135deg,#ffcc00,#ff9d00);border-radius:20px;padding:20px;text-align:center;margin-bottom:16px;box-shadow:0 8px 24px rgba(255,204,0,.3)"><div style="font-size:13px;font-weight:800;color:#0a0d14;margin-bottom:8px;letter-spacing:1px">⏰ NEXT REWARD IN</div><div id="lbTimer" style="font-size:26px;font-weight:900;color:#0a0d14;letter-spacing:2px;font-variant-numeric:tabular-nums">--d --:--:--</div><div style="font-size:11px;font-weight:700;color:#0a0d14;opacity:.85;margin-top:8px">💰 Top 10 win 1 TON each</div></div><div id="lbList" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
 
-<div id="playhubScreen" class="screen hidden">
-<div class="ph-top-bar"><button class="ph-back" onclick="goHome()">⬅ Back</button><div class="ph-title">🎮 Play Hub</div><div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.00</span></div></div>
-<div class="ph-banner"><div class="ph-banner-text">PENALTY IS NOW LIVE<br><b>10 shots to the final!</b></div><div class="ph-banner-img">⚽</div></div>
-<div class="ph-referral" onclick="openReferral()"><div class="ph-referral-title">Referrals</div><div class="ph-referral-val"><span>◈</span><span id="phRefCount">0</span></div></div>
-<div class="ph-games-grid">
+<div id="playhubScreen" class="screen hidden"><div class="ph-top-bar"><button class="ph-back" onclick="goHome()">⬅ Back</button><div class="ph-title">🎮 Play Hub</div><div class="ph-balance-pill"><span class="ton-icon">◈</span><span class="val" id="phBalanceDisplay">0.00</span></div></div><div class="ph-banner"><div class="ph-banner-text">PENALTY IS NOW LIVE<br><b>10 shots to the final!</b></div><div class="ph-banner-img">⚽</div></div><div class="ph-referral" onclick="openReferral()"><div class="ph-referral-title">Referrals</div><div class="ph-referral-val"><span>◈</span><span id="phRefCount">0</span></div></div><div class="ph-games-grid">
 <div class="ph-game-card ph-card-penalty" onclick="openPenalty()"><div class="ph-new-badge">NEW</div><div class="ph-game-icon">⚽</div><div class="ph-game-title">PENALTY</div><div class="ph-game-sub">Score goals and win</div></div>
 <div class="ph-game-card ph-card-wheel" onclick="openWheel()"><div class="ph-game-icon">🎡</div><div class="ph-game-title">WHEEL</div><div class="ph-game-sub">Spin & multiply</div></div>
 <div class="ph-game-card ph-card-mines" onclick="openMines()"><div class="ph-game-icon">💎</div><div class="ph-game-title">MINES</div><div class="ph-game-sub">Dodge the mines</div></div>
@@ -545,7 +520,9 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="pen-status" id="penStatus">Place your bet and shoot!</div>
 <div class="pen-actions"><button class="pen-dir-btn left" id="penLeftBtn" onclick="penShoot('left')" disabled>◀ Left</button><button class="pen-dir-btn right" id="penRightBtn" onclick="penShoot('right')" disabled>Right ▶</button></div>
 <div class="pen-entry-label">ENTRY PRICE (TON)</div>
-<div class="pen-bottom"><div class="pen-bet-display"><span class="ton-icon">◈</span><input type="number" id="penBetInput" value="0.1" min="0.1" step="0.1"></div><button class="pen-gift-btn" onclick="openGiftPicker()">🎁</button><button class="pen-start-btn" id="penStartBtn" onclick="penStart()">START</button></div></div>
+<div class="pen-bet-row"><div class="pen-bet-display"><span class="ton-icon">◈</span><input type="number" id="penBetInput" value="0.1" min="0.1" step="0.1"></div><button class="pen-gift-btn" onclick="openGiftPicker()">🎁</button></div>
+<div class="pen-start-row"><button class="pen-start-btn" id="penStartBtn" onclick="penStart()">START</button></div>
+</div>
 
 <div id="wheelScreen" class="screen hidden">
 <div class="wh-topbar"><button class="wh-back" onclick="closeWheel()">← Back</button><div class="wh-status"><div class="wh-status-dot"></div><span id="whStatusText">Connecting...</span></div></div>
@@ -556,18 +533,15 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="wh-players" id="whPlayers"></div>
 <div class="wh-actions">
 <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><button class="wh-gift-btn" onclick="openGiftPicker()">🎁</button><div class="wh-bet-input-row" style="flex:1"><span class="t-coin">◈</span><input type="number" id="whBetInput" class="wh-bet-input" value="0.1" min="0.1" step="0.1"></div></div>
-<div class="wh-mult-picks"><button class="wh-mult-btn purple" data-mult="2" onclick="whPickMult(2)">x2</button><button class="wh-mult-btn green" data-mult="4" onclick="whPickMult(4)">x4</button><button class="wh-mult-btn blue" data-mult="5" onclick="whPickMult(5)">x5</button><button class="wh-mult-btn pink" data-mult="20" onclick="whPickMult(20)">x20</button></div></div></div>
+<div class="wh-mult-picks"><button class="wh-mult-btn purple" data-mult="2" onclick="whPickMult(2)">x2</button><button class="wh-mult-btn green" data-mult="4" onclick="whPickMult(4)">x4</button><button class="wh-mult-btn blue" data-mult="5" onclick="whPickMult(5)">x5</button><button class="wh-mult-btn pink" data-mult="20" onclick="whPickMult(20)">x20</button></div>
+</div></div>
 
 <div id="gameScreen" class="screen hidden">
 <div class="crash-header"><button class="crash-back-btn" onclick="goHome()">← Back</button><div class="crash-balance-pill"><span class="ton-icon">◈</span><span id="balanceDisplay">0.00</span></div><button class="crash-refill-btn" onclick="resetBalance()">↻</button></div>
 <div class="crash-history-row" id="multiplierHistory"></div>
 <div class="crash-chart-area"><canvas id="chartCanvas"></canvas><div class="crash-big-mult" id="multiplierDisplay">1.00x</div></div>
 <div class="crash-players-list" id="crashPlayersRow"></div>
-<div class="crash-controls">
-<div class="crash-controls-row"><div class="crash-bet-input-wrap"><input type="number" id="betInput" class="crash-bet-input" value="0.1" min="0.1"><button class="crash-gift-btn" onclick="openGiftPicker()">🎁</button></div><button class="crash-quick-btn half" id="halfBtn" onclick="setBetHalf()">50%</button><button class="crash-quick-btn all" id="allBtn" onclick="setBetAll()">ALL</button></div>
-<div class="crash-auto-row"><span class="crash-auto-label">Auto Cashout:</span><input type="number" id="autoCashoutInput" class="crash-auto-input" value="2.00" min="1.01" step="0.1"><span style="color:#00c853;font-weight:900;font-size:15px">x</span></div>
-<button class="crash-action-btn bet" id="actionButton">Place bet</button>
-<div class="crash-status-text" id="statusText"></div></div></div>
+<div class="crash-controls"><div class="crash-controls-row"><div class="crash-bet-input-wrap"><input type="number" id="betInput" class="crash-bet-input" value="0.1" min="0.1"><button class="crash-gift-btn" onclick="openGiftPicker()">🎁</button></div><button class="crash-quick-btn half" id="halfBtn" onclick="setBetHalf()">50%</button><button class="crash-quick-btn all" id="allBtn" onclick="setBetAll()">ALL</button></div><div class="crash-auto-row"><span class="crash-auto-label">Auto Cashout:</span><input type="number" id="autoCashoutInput" class="crash-auto-input" value="2.00" min="1.01" step="0.1"><span style="color:#00c853;font-weight:900;font-size:15px">x</span></div><button class="crash-action-btn bet" id="actionButton">Place bet</button><div class="crash-status-text" id="statusText"></div></div></div>
 
 <div id="arenaScreen" class="screen hidden">
 <div class="arena-topbar"><button class="arena-back" onclick="closeArena()">✕ بستن</button><div class="arena-balance"><span class="ton-icon">◈</span><span id="arenaBalanceDisplay">0.00</span></div></div>
@@ -589,10 +563,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div id="plinkoScreen" class="screen hidden">
 <div class="pl-top-bar"><button class="pl-back" onclick="closePlinko()">⬅ Back</button><div class="pl-title">🎯 Plinko</div><div class="pl-balance"><span class="ton-icon">◈</span><span id="plBalanceDisplay">0.00</span></div></div>
 <div class="pl-canvas-wrap"><div class="pl-count" id="plBallCount">0 balls</div><canvas id="plinkoCanvas"></canvas></div>
-<div class="pl-controls">
-<div class="pl-diff-row"><button class="pl-diff-btn" id="plDiffEasy" onclick="plSetDifficulty('easy')">Easy</button><button class="pl-diff-btn active" id="plDiffMedium" onclick="plSetDifficulty('medium')">Medium</button><button class="pl-diff-btn" id="plDiffHard" onclick="plSetDifficulty('hard')">Hard</button></div>
-<div class="pl-bet-row"><div class="pl-bet-wrap"><input type="number" id="plBetInput" class="pl-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button><button class="pl-bet-max" onclick="plMaxBet()">MAX</button></div></div>
-<button class="pl-play-btn" id="plPlayBtn" onclick="plDrop()">Place 0.1 TON Bet</button></div></div>
+<div class="pl-controls"><div class="pl-diff-row"><button class="pl-diff-btn" id="plDiffEasy" onclick="plSetDifficulty('easy')">Easy</button><button class="pl-diff-btn active" id="plDiffMedium" onclick="plSetDifficulty('medium')">Medium</button><button class="pl-diff-btn" id="plDiffHard" onclick="plSetDifficulty('hard')">Hard</button></div><div class="pl-bet-row"><div class="pl-bet-wrap"><input type="number" id="plBetInput" class="pl-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁</button><button class="pl-bet-max" onclick="plMaxBet()">MAX</button></div></div><button class="pl-play-btn" id="plPlayBtn" onclick="plDrop()">Place 0.1 TON Bet</button></div></div>
 
 <div id="upgradeScreen" class="screen hidden">
 <div class="up-top-bar"><button class="up-back" onclick="closeUpgrade()">⬅ Back</button><div class="up-title">🎁 Gift Hub</div><div class="up-balance-pill"><span class="ton-icon">◈</span><span class="val" id="upBalanceDisplay">0.00</span></div></div>
@@ -607,11 +578,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎯 Tower Game</div><button class="sh-back" style="visibility:hidden;">⬅</button></div>
 <div class="sh-balance-pill"><span class="ton-icon">◈</span><span id="shBalanceDisplay">0.00</span> TON</div>
 <div class="sh-game-area" id="towerGameArea"></div>
-<div class="sh-controls">
-<div style="display:flex;justify-content:center;gap:10px;"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁 Use Gift</button></div>
-<div class="sh-bet-bar"><button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">−</button><input type="number" id="soloBetInput" class="sh-bet-value" value="0.1" min="0.1" step="0.1"><button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button></div>
-<button class="sh-action-btn" id="towerStartBtn" onclick="startTowerGame()">Start Game</button>
-<button class="sh-action-btn" id="towerCashoutBtn" onclick="towerCashOut()" style="display:none;">Cash Out</button></div></div>
+<div class="sh-controls"><div style="display:flex;justify-content:center;gap:10px;"><button class="gift-bet-btn" onclick="openGiftPicker()">🎁 Use Gift</button></div><div class="sh-bet-bar"><button class="sh-bet-btn" onclick="adjustSoloBet(-0.1)">−</button><input type="number" id="soloBetInput" class="sh-bet-value" value="0.1" min="0.1" step="0.1"><button class="sh-bet-btn" onclick="adjustSoloBet(0.1)">+</button></div><button class="sh-action-btn" id="towerStartBtn" onclick="startTowerGame()">Start Game</button><button class="sh-action-btn" id="towerCashoutBtn" onclick="towerCashOut()" style="display:none;">Cash Out</button></div></div>
 
 <div id="pvpScreen" class="screen hidden">
 <div class="pvp-header"><button class="pvp-back" onclick="goHome()">← Back</button><div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">0.00</span></div></div>
@@ -644,7 +611,8 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 
 <div class="toast" id="toast"></div>
 
-    <script>
+<div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div><div style="padding:0 16px"><input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;"><div id="adminUsersList"></div></div></div>
+<script>
 const BOTS_ENABLED=true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';const GIFT_CODE='parham2010';const GIFT_CODE_REWARD=1000000;
@@ -906,7 +874,6 @@ function penStart(){if(penState!=='idle')return;const bet=parseFloat(document.ge
 function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxShots)return;document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const saved=Math.random()<0.40;const keeperGoes=saved?dir:(dir==='left'?'right':'left');const keeper=document.getElementById('penKeeper');keeper.className='pen-keeper dive-'+keeperGoes;const ball=document.getElementById('penBall');ball.className='pen-ball kick-'+dir;setTimeout(()=>{if(saved){document.getElementById('penStatus').innerHTML='<span style="color:#ff4444">❌ SAVED!</span>';showToast('❌ Saved!','lose');endPenaltyGame(false);}else{penGoals++;penShotsUsed++;penCurrentMult=1+penGoals*0.4;const overlay=document.getElementById('penScoreOverlay');overlay.className='pen-score-overlay show';setTimeout(()=>overlay.className='pen-score-overlay',900);showToast('⚽ GOAL!','win');updatePenMultsRow();if(penShotsUsed>=penMaxShots){endPenaltyGame(true);}else{document.getElementById('penStatus').innerHTML='🎯 Score: '+penGoals+' / '+penShotsUsed+' · x'+penCurrentMult.toFixed(2);document.getElementById('penLeftBtn').disabled=false;document.getElementById('penRightBtn').disabled=false;const startBtn=document.getElementById('penStartBtn');startBtn.disabled=false;startBtn.innerText='💰 CASH OUT ('+(penBet*penCurrentMult).toFixed(2)+' TON)';startBtn.onclick=penCashOut;}}setTimeout(()=>{ball.className='pen-ball';keeper.className='pen-keeper';},1000);},500);}
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
-/* ===== WHEEL (FIXED + BLACK SLICE) ===== */
 const WH_COLORS={0:'#111111',2:'#a855f7',4:'#a3e635',5:'#38bdf8',20:'#f43f5e'};
 const WH_SEGMENTS=[2,2,2,4,2,2,2,5,2,2,4,0,2,2,20,2,2,4,2,2,5,2,4,2];
 const WH_BLACK_CHANCE=0.015;
@@ -917,39 +884,7 @@ function openWheel(){document.querySelectorAll('.screen').forEach(s=>s.classList
 function closeWheel(){document.getElementById('wheelScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
 function initWheelCanvas(){const c=document.getElementById('wheelCanvas');if(!c)return;whCtx=c.getContext('2d');whResize();window.removeEventListener('resize',whResize);window.addEventListener('resize',whResize);drawWheel(0);}
 function whResize(){const c=document.getElementById('wheelCanvas');if(!c)return;const wrap=c.parentElement;const s=Math.min(wrap.clientWidth-20,400);const dpr=window.devicePixelRatio||1;whSize=s;c.width=s*dpr;c.height=s*dpr;c.style.width=s+'px';c.style.height=s+'px';whCtx.setTransform(dpr,0,0,dpr,0,0);drawWheel(whRotation);}
-function drawWheel(rotation){
-    if(!whCtx)return;
-    const s=whSize,cx=s/2,cy=s/2,R=s/2-14;
-    whCtx.clearRect(0,0,s,s);
-    const n=WH_SEGMENTS.length;
-    const segAngle=(Math.PI*2)/n;
-    whCtx.save();
-    whCtx.shadowColor='rgba(155,92,255,.35)';whCtx.shadowBlur=30;
-    whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.fillStyle='#0d0616';whCtx.fill();
-    whCtx.restore();
-    for(let i=0;i<n;i++){
-        const mult=WH_SEGMENTS[i];
-        const color=WH_COLORS[mult]||'#a855f7';
-        const a1=i*segAngle+rotation-Math.PI/2;
-        const a2=a1+segAngle;
-        whCtx.beginPath();whCtx.moveTo(cx,cy);whCtx.arc(cx,cy,R,a1,a2);whCtx.closePath();
-        whCtx.fillStyle=color;whCtx.fill();
-        whCtx.beginPath();whCtx.moveTo(cx,cy);whCtx.lineTo(cx+Math.cos(a1)*R,cy+Math.sin(a1)*R);
-        whCtx.strokeStyle='rgba(255,255,255,.18)';whCtx.lineWidth=2;whCtx.stroke();
-    }
-    const g=whCtx.createRadialGradient(cx,cy,R*0.2,cx,cy,R);
-    g.addColorStop(0,'rgba(255,255,255,.12)');g.addColorStop(0.5,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(0,0,0,.25)');
-    whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.fillStyle=g;whCtx.fill();
-    whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);
-    whCtx.strokeStyle='rgba(155,92,255,.65)';whCtx.lineWidth=4;whCtx.stroke();
-    const centerR=R*0.34;
-    whCtx.beginPath();whCtx.arc(cx,cy,centerR,0,Math.PI*2);
-    whCtx.fillStyle='#0d0616';whCtx.fill();
-    whCtx.strokeStyle='rgba(155,92,255,.55)';whCtx.lineWidth=3;whCtx.stroke();
-    const cg=whCtx.createRadialGradient(cx,cy,0,cx,cy,centerR);
-    cg.addColorStop(0,'rgba(155,92,255,.15)');cg.addColorStop(1,'rgba(155,92,255,0)');
-    whCtx.beginPath();whCtx.arc(cx,cy,centerR,0,Math.PI*2);whCtx.fillStyle=cg;whCtx.fill();
-}
+function drawWheel(rotation){if(!whCtx)return;const s=whSize,cx=s/2,cy=s/2,R=s/2-14;whCtx.clearRect(0,0,s,s);const n=WH_SEGMENTS.length;const segAngle=(Math.PI*2)/n;whCtx.save();whCtx.shadowColor='rgba(155,92,255,.35)';whCtx.shadowBlur=30;whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.fillStyle='#0d0616';whCtx.fill();whCtx.restore();for(let i=0;i<n;i++){const mult=WH_SEGMENTS[i];const color=WH_COLORS[mult]||'#a855f7';const a1=i*segAngle+rotation-Math.PI/2;const a2=a1+segAngle;whCtx.beginPath();whCtx.moveTo(cx,cy);whCtx.arc(cx,cy,R,a1,a2);whCtx.closePath();whCtx.fillStyle=color;whCtx.fill();whCtx.beginPath();whCtx.moveTo(cx,cy);whCtx.lineTo(cx+Math.cos(a1)*R,cy+Math.sin(a1)*R);whCtx.strokeStyle='rgba(255,255,255,.18)';whCtx.lineWidth=2;whCtx.stroke();}const g=whCtx.createRadialGradient(cx,cy,R*0.2,cx,cy,R);g.addColorStop(0,'rgba(255,255,255,.12)');g.addColorStop(0.5,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(0,0,0,.25)');whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.fillStyle=g;whCtx.fill();whCtx.beginPath();whCtx.arc(cx,cy,R,0,Math.PI*2);whCtx.strokeStyle='rgba(155,92,255,.65)';whCtx.lineWidth=4;whCtx.stroke();const centerR=R*0.34;whCtx.beginPath();whCtx.arc(cx,cy,centerR,0,Math.PI*2);whCtx.fillStyle='#0d0616';whCtx.fill();whCtx.strokeStyle='rgba(155,92,255,.55)';whCtx.lineWidth=3;whCtx.stroke();const cg=whCtx.createRadialGradient(cx,cy,0,cx,cy,centerR);cg.addColorStop(0,'rgba(155,92,255,.15)');cg.addColorStop(1,'rgba(155,92,255,0)');whCtx.beginPath();whCtx.arc(cx,cy,centerR,0,Math.PI*2);whCtx.fillStyle=cg;whCtx.fill();}
 function whRenderHistory(){const c=document.getElementById('whHistory');if(!c)return;c.innerHTML='';whHistory.slice(0,30).forEach(col=>{const el=document.createElement('div');el.className='wh-history-seg';el.style.background=col;c.appendChild(el);});}
 function whRenderPlayers(){const c=document.getElementById('whPlayers');if(whPlayers.length===0){c.innerHTML='<div class="wh-empty">⏳ Waiting...</div>';return;}c.innerHTML='';whPlayers.forEach(p=>{const el=document.createElement('div');el.className='wh-pcard'+(p.isMe?' isMe':'');const color=WH_COLORS[p.pick]||'#8a90a6';el.innerHTML=`<div class="wh-pcard-color" style="background:${color}"></div><div class="wh-pcard-av">${p.avatar}</div><div class="wh-pcard-name">${p.name}</div><div class="wh-pcard-bet">${p.bet.toFixed(2)}◈</div><div class="wh-pcard-pick">x${p.pick}</div>`;c.appendChild(el);});}
 function whStartRound(){whState='waiting';whTimerVal=20;whRotation=0;whPlayers=[];whMyBet=0;whMyPick=null;whCurrentBank=0;whMyPickFromGift=false;whMyGiftUsed=null;document.getElementById('whBankVal').innerText='0';document.getElementById('whPlayers').innerHTML='<div class="wh-empty">⏳ Waiting...</div>';document.getElementById('whStatusText').innerText='Connecting...';const timerEl=document.getElementById('whTimer');timerEl.className='wh-timer';document.querySelectorAll('.wh-mult-btn').forEach(b=>{b.classList.remove('active');b.disabled=false;});document.getElementById('whBetInput').disabled=false;drawWheel(0);whRenderHistory();setTimeout(()=>whScheduleBots(),300);clearInterval(whTimerInterval);timerEl.innerText='Starts in: 00:20';whTimerInterval=setInterval(()=>{whTimerVal--;timerEl.innerText='Starts in: 00:'+String(Math.max(0,whTimerVal)).padStart(2,'0');if(whTimerVal<=5)timerEl.classList.add('hurry');if(whTimerVal<=0){clearInterval(whTimerInterval);whTimerInterval=null;whSpin();}},1000);}
@@ -1022,4 +957,3 @@ setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
 </html>
-<div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div><div style="padding:0 16px"><input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;"><div id="adminUsersList"></div></div></div>
