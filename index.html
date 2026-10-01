@@ -688,6 +688,7 @@ const GIFT_DATABASE=[
 {id:'scaredcat',name:'Scared Cat',emoji:'🐈',value:3600.60,tier:'mythic',img:NFT+'scaredcat-1.webp'},
 {id:'perfumebottle',name:'Perfume Bottle',emoji:'🧴',value:66.19,tier:'rare',img:NFT+'perfumebottle-1.webp'},
 {id:'diamondring',name:'Diamond Ring',emoji:'💍',value:146.18,tier:'epic',img:NFT+'diamondring-1.webp'},
+{id:'bondedring',name:'Bonded Ring',emoji:'💍',value:587.93,tier:'epic',img:NFT+'bondedring-1.webp'},
 {id:'preciouspeach',name:'Precious Peach',emoji:'🍑',value:238.25,tier:'epic',img:NFT+'preciouspeach-1.webp'},
 {id:'holidaydrink',name:'Holiday Drink',emoji:'☕',value:4.11,tier:'common',img:NFT+'holidaydrink-1.webp'},
 {id:'bigyear',name:'Big Year',emoji:'🎉',value:4.08,tier:'common',img:NFT+'bigyear-1.webp'},
@@ -706,6 +707,30 @@ const GIFT_DATABASE=[
 {id:'instantramen',name:'Instant Ramen',emoji:'🍜',value:3.96,tier:'common',img:NFT+'instantramen-1.webp'},
 {id:'vicecream',name:'Vice Cream',emoji:'🍦',value:3.95,tier:'common',img:NFT+'vicecream-1.webp'}];
 const FARMBOX_PRIZES=GIFT_DATABASE.map(g=>g.id);
+async function loadGiftsFromAPI(){
+  try{
+    const res=await fetch(API_BASE_URL+'/gifts',{headers:{'ngrok-skip-browser-warning':'true'}});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const gifts=await res.json();
+    if(!Array.isArray(gifts)||gifts.length===0)return;
+    GIFT_DATABASE.length=0;
+    gifts.forEach(g=>{
+      GIFT_DATABASE.push({
+        id:g.id,
+        name:g.name,
+        emoji:g.emoji,
+        value:parseFloat(g.value.toFixed(2)),
+        tier:classifyTier(g.value),
+        img:g.img
+      });
+    });
+    console.log('✅ Gifts loaded from API:',GIFT_DATABASE.length);
+  }catch(e){
+    console.log('❌ API failed, using fallback:',e.message);
+  }
+}
+loadGiftsFromAPI();
+setInterval(loadGiftsFromAPI,300000);
 setTimeout(()=>{for(let i=0;i<4;i++)addTickerItem();setInterval(addTickerItem,2000);},300);
 function getUserGifts(){try{return JSON.parse(localStorage.getItem('userGifts')||'[]')}catch(e){return[]}}
 function saveUserGifts(g){localStorage.setItem('userGifts',JSON.stringify(g))}
