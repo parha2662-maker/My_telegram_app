@@ -9,7 +9,7 @@ const PORT = 3000;
 const DATA_FILE = path.join(__dirname, 'data.json');
 const PRICES_FILE = path.join(__dirname, 'prices.json');
 const ADMIN_PASSWORD = 'parham1234';
-const REFERRAL_REWARD = 0.05;
+const REFERRAL_REWARD = 0.04;
 
 const GIFT_PRICES = {
   'plushpepe': { name: 'Plush Pepe', emoji: '🎁', value: 5300.0, tier: 'mythic', img: 'https://raw.githubusercontent.com/parha2662-maker/My_telegram_app/main/gifts/plushpepe.webp' },
