@@ -200,8 +200,8 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .pen-graffiti-right{position:absolute;top:14px;right:18px;font-size:32px;opacity:.4;transform:rotate(8deg)}
 .pen-goal-frame{position:relative;background:linear-gradient(180deg,#8fa8b8,#a8bfc9);border-radius:6px;padding:2px;margin:8px auto 0;max-width:190px;height:90px}
 .pen-goal-net{width:100%;height:100%;background:repeating-linear-gradient(0deg,rgba(255,255,255,.45) 0,rgba(255,255,255,.45) 1px,transparent 1px,transparent 10px),repeating-linear-gradient(90deg,rgba(255,255,255,.45) 0,rgba(255,255,255,.45) 1px,transparent 1px,transparent 10px),linear-gradient(180deg,#5a7c5a,#3d6b3d);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:4px}
-.pen-keeper{font-size:46px;transition:transform .4s cubic-bezier(.25,.8,.4,1);filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
-.pen-keeper.dive-left{transform:translate(-58px,6px) rotate(-40deg) scale(1.15)}.pen-keeper.dive-right{transform:translate(58px,6px) rotate(40deg) scale(1.15)}
+.pen-keeper{font-size:30px;display:flex;align-items:center;justify-content:center;gap:-2px;transition:transform .4s cubic-bezier(.25,.8,.4,1);filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}.pen-keeper .pk-frog{font-size:38px;line-height:1}.pen-keeper .pk-glove{font-size:28px;line-height:1;margin:0 -4px}
+.pen-keeper.dive-left{transform:translate(-62px,4px) rotate(-35deg) scale(1.2)}.pen-keeper.dive-right{transform:translate(62px,4px) rotate(35deg) scale(1.2)}
 .pen-ball{position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);font-size:28px;transition:all .5s cubic-bezier(.5,0,.5,1);z-index:5}
 .pen-ball.kick-left{left:33%;bottom:62%;transform:translateX(-50%) scale(.6) rotate(-45deg)}.pen-ball.kick-right{left:67%;bottom:62%;transform:translateX(-50%) scale(.6) rotate(45deg)}
 .pen-score-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:40px;font-weight:900;z-index:10;opacity:0;pointer-events:none;text-shadow:0 6px 12px rgba(0,0,0,.7)}
@@ -524,7 +524,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="pen-topbar"><button class="pen-back" onclick="closePenalty()">← Back</button><div class="pen-online"><div class="pen-online-dot"></div><span id="penOnlineCount">3057 online</span></div></div>
 <div class="pen-balance-row"><div class="pen-balance-chip">Balance: <span class="t-coin">◈</span><span id="penBalanceDisplay">0.00</span></div><div style="display:flex;gap:6px"><button class="pen-icon-btn" onclick="showToast('ℹ️ Score goals!','')">i</button><button class="pen-icon-btn" onclick="showToast('📜 No history yet','')">🕐</button></div></div>
 <div class="pen-mults" id="penMultsRow"></div>
-<div class="pen-field"><div class="pen-graffiti-left">🐕</div><div class="pen-graffiti-right">👑</div><div class="pen-goal-frame"><div class="pen-goal-net"><div class="pen-keeper" id="penKeeper">🧤</div><div class="pen-score-overlay" id="penScoreOverlay">GOAL!</div></div></div><div class="pen-ball" id="penBall">⚽</div></div>
+<div class="pen-field"><div class="pen-graffiti-left">🐕</div><div class="pen-graffiti-right">👑</div><div class="pen-goal-frame"><div class="pen-goal-net"><div class="pen-keeper" id="penKeeper"><span class="pk-glove">🧤</span><span class="pk-frog">🐸</span><span class="pk-glove">🧤</span></div><div class="pen-score-overlay" id="penScoreOverlay">GOAL!</div></div></div><div class="pen-ball" id="penBall">⚽</div></div>
 <div class="pen-status" id="penStatus">Place your bet and shoot!</div>
 <div class="pen-actions"><button class="pen-dir-btn left" id="penLeftBtn" onclick="penShoot('left')" disabled>◀ Left</button><button class="pen-dir-btn right" id="penRightBtn" onclick="penShoot('right')" disabled>Right ▶</button></div>
 <div class="pen-entry-label">ENTRY PRICE (TON)</div>
