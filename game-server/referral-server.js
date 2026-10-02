@@ -9,9 +9,9 @@ const META_FILE = path.join(__dirname, 'leaderboard_meta.json');
 
 const ADMIN_PASSWORD = 'parham1234';
 const ACTIVE_PLAYERS = {}; // ACTIVE_PLAYERS_CASHOUT
-const WITHDRAW_BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
+const WITHDRAW_BOT_TOKEN = '8990993364:AAGan9c_-YMhxKs-pzYn7DmVaqALGFzuif8';
 const WITHDRAW_ADMIN_ID = '6151360205';
-const BOT_TOKEN = '8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
+const BOT_TOKEN = '8990993364:AAGan9c_-YMhxKs-pzYn7DmVaqALGFzuif8';
 
 async function sendTelegramMessage(chatId, text) {
     try {
@@ -601,6 +601,170 @@ app.post('/api/withdraw/status', (req, res) => {
         }
     } catch(e) {}
     res.json({ ok: false });
+});
+
+
+app.post('/api/gift-deposit', (req, res) => {
+    try {
+        const { userId, userName, giftId, giftName, senderUserId } = req.body;
+        if (!userId || !giftName) return res.json({ ok: false, error: 'missing fields' });
+        const value = (typeof req.body.value === 'number' && req.body.value > 0) ? req.body.value : getGiftValue(giftName);
+        const db = loadDB();
+        if (!db[userId]) db[userId] = { referrals: [], earned: 0, balance: 0, games: [], name: userName || 'User' };
+        db[userId].balance = (db[userId].balance || 0) + value;
+        db[userId].giftDeposits = db[userId].giftDeposits || [];
+        db[userId].giftDeposits.push({ giftId, giftName, value, at: Date.now() });
+        saveDB(db);
+        console.log('[gift-deposit] user=' + userId + ' gift=' + giftName + ' value=' + value);
+        res.json({ ok: true, value: value, balance: db[userId].balance });
+    } catch (e) {
+        console.log('gift-deposit error:', e);
+        res.json({ ok: false, error: 'server error' });
+    }
+});
+
+
+const GIFT_VALUE_MAP = {
+    'Plush Pepe': 5300, 'Durovs Cap': 4222, 'Scared Cat': 3600,
+    'Heart Locket': 1089, 'Bonded Ring': 38.67, 'Diamond Ring': 27.31,
+    'Perfume Bottle': 64.21, 'Precious Peach': 238,
+    'Lol Pop': 4.12, 'Spring Basket': 6.51, 'Eternal Candle': 6.64,
+    'Spy Agaric': 6.55, 'Fresh Socks': 5.36, 'Santa Hat': 5.80,
+    'Timeless Book': 5.20, 'Cupid Charm': 21.01
+};
+function getGiftValue(name) {
+    if (!name) return 5;
+    for (const k in GIFT_VALUE_MAP) {
+        if (name.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(name.toLowerCase())) {
+            return GIFT_VALUE_MAP[k];
+        }
+    }
+    return 5;
+}
+
+
+app.post('/api/gift-value', (req, res) => {
+    const { giftName } = req.body;
+    res.json({ ok: true, value: getGiftValue(giftName) });
+});
+
+
+
+app.post('/api/nft-notify', (req, res) => {
+    try {
+        const { userId, userName, username, giftName } = req.body;
+        if (!userId || !giftName) return res.json({ ok: false, error: 'missing fields' });
+        const value = getGiftValue(giftName);
+        const reqId = 'GFT' + Date.now();
+
+        // Save pending
+        const pf = '/game-server/nft_pending.json';
+        let pend = {};
+        if (fs.existsSync(pf)) { try { pend = JSON.parse(fs.readFileSync(pf, 'utf8')); } catch(e) {} }
+        pend[reqId] = { userId, userName, username, giftName, value, status: 'pending', createdAt: Date.now() };
+        fs.writeFileSync(pf, JSON.stringify(pend, null, 2));
+
+        // Build message
+        let text = '💎 *NFT GIFT DEPOSIT REQUEST*\n';
+        text += '━━━━━━━━━━━━━━━━━━\n';
+        text += '👤 Name: ' + (userName || 'User') + '\n';
+        if (username) text += '📛 Username: @' + String(username).replace('@','') + '\n';
+        text += '🆔 User ID: ' + userId + '\n\n';
+        text += '🎁 Gift: ' + giftName + '\n';
+        text += '💰 Estimated: ' + value + ' TON\n';
+        text += '🔑 ID: ' + reqId + '\n\n';
+        text += 'Use buttons below to adjust and confirm.';
+
+        const keyboard = {
+            inline_keyboard: [
+                [{ text: '✅ Confirm', callback_data: 'nftok_' + reqId }],
+                [
+                    { text: '➖ -10%', callback_data: 'nftm10_' + reqId },
+                    { text: '➕ +10%', callback_data: 'nftp10_' + reqId }
+                ],
+                [{ text: '✏️ Set Value', callback_data: 'nftset_' + reqId }],
+                [{ text: '❌ Reject', callback_data: 'nftno_' + reqId }]
+            ]
+        };
+
+        const postData = JSON.stringify({
+            chat_id: WITHDRAW_ADMIN_ID, text: text, parse_mode: 'Markdown',
+            reply_markup: keyboard
+        });
+        const opts = {
+            hostname: 'api.telegram.org',
+            path: '/bot' + WITHDRAW_BOT_TOKEN + '/sendMessage',
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(postData)}
+        };
+        const tgReq = https.request(opts, (tgRes) => {
+            let data = '';
+            tgRes.on('data', d => data += d);
+            tgRes.on('end', () => { try { const j = JSON.parse(data); res.json({ ok: j.ok === true }); } catch(e) { res.json({ ok: false }); } });
+        });
+        tgReq.on('error', () => res.json({ ok: false }));
+        tgReq.write(postData);
+        tgReq.end();
+    } catch(e) { console.log('nft-notify err:', e); res.json({ ok: false }); }
+});
+
+app.post('/api/nft-confirm', (req, res) => {
+    try {
+        const { reqId } = req.body;
+        const pf = '/game-server/nft_pending.json';
+        if (!fs.existsSync(pf)) return res.json({ ok: false, error: 'no pending' });
+        const pend = JSON.parse(fs.readFileSync(pf, 'utf8'));
+        const p = pend[reqId];
+        if (!p) return res.json({ ok: false, error: 'not found' });
+        const db = loadDB();
+        if (!db[p.userId]) db[p.userId] = { referrals: [], earned: 0, balance: 0, games: [], name: p.userName || 'User' };
+        db[p.userId].balance = (db[p.userId].balance || 0) + p.value;
+        saveDB(db);
+        p.status = 'confirmed';
+        fs.writeFileSync(pf, JSON.stringify(pend, null, 2));
+        res.json({ ok: true, added: p.value, userId: p.userId, newBalance: db[p.userId].balance });
+    } catch(e) { res.json({ ok: false, error: 'server error' }); }
+});
+
+app.post('/api/nft-reject', (req, res) => {
+    try {
+        const { reqId } = req.body;
+        const pf = '/game-server/nft_pending.json';
+        if (!fs.existsSync(pf)) return res.json({ ok: false });
+        const pend = JSON.parse(fs.readFileSync(pf, 'utf8'));
+        if (pend[reqId]) { pend[reqId].status = 'rejected'; fs.writeFileSync(pf, JSON.stringify(pend, null, 2)); }
+        res.json({ ok: true });
+    } catch(e) { res.json({ ok: false }); }
+});
+
+
+app.post('/api/user/:id/history', (req, res) => {
+    try {
+        const { type, amount, note } = req.body;
+        const uid = req.params.id;
+        if (!type || typeof amount === 'undefined') return res.json({ ok: false, error: 'missing fields' });
+        const db = loadDB();
+        if (!db[uid]) db[uid] = { referrals: [], earned: 0, balance: 0, games: [], name: 'User' };
+        if (!db[uid].history) db[uid].history = [];
+        db[uid].history.push({
+            type: type,
+            amount: parseFloat(amount) || 0,
+            note: note || '',
+            balance: db[uid].balance || 0,
+            at: Date.now()
+        });
+        if (db[uid].history.length > 200) db[uid].history = db[uid].history.slice(-200);
+        saveDB(db);
+        res.json({ ok: true });
+    } catch(e) { console.log('history err:', e); res.json({ ok: false }); }
+});
+
+app.get('/api/user/:id/history', (req, res) => {
+    try {
+        const db = loadDB();
+        const u = db[req.params.id];
+        res.json({ history: (u && u.history) ? u.history.slice(-50).reverse() : [] });
+    } catch(e) { res.json({ history: [] }); }
 });
 
 app.listen(PORT, '0.0.0.0', () => { console.log('Referral API + Admin on port ' + PORT); });
