@@ -236,10 +236,10 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .mn-header{padding:8px 20px 6px}
 .mn-mult-label{font-size:11px;color:var(--text-dim);letter-spacing:2px;font-weight:800;margin-bottom:6px}
 .mn-mult-value{font-size:42px;font-weight:900;background:linear-gradient(135deg,#fff,#c8b1ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.mn-live-bar{display:flex;gap:8px;padding:14px 14px;overflow-x:auto;background:linear-gradient(90deg,#3d1f7a,#5b21b6,#3d1f7a);margin:0 12px 16px;border-radius:14px;position:relative;z-index:20;border:2px solid rgba(168,85,247,.5);box-shadow:0 4px 20px rgba(168,85,247,.35)}
-.mn-live-tier{padding:8px 14px;border-radius:11px;background:#1c2038;font-size:12px;font-weight:800;color:#a0a8bd;flex-shrink:0;border:1px solid rgba(255,255,255,.08)}
-.mn-live-tier.current{background:rgba(47,240,104,.25);border:1.5px solid var(--green);color:var(--green);box-shadow:0 0 12px rgba(47,240,104,.4)}
-.mn-grid-wrap{padding:10px 12px;max-width:460px;margin:0 auto;width:100%;position:relative;z-index:1}
+.mn-live-bar{display:flex;gap:8px;padding:10px 14px;overflow-x:auto;background:rgba(0,0,0,.3);margin-bottom:10px}
+.mn-live-tier{padding:8px 14px;border-radius:11px;background:var(--card);font-size:12px;font-weight:800;color:var(--text-dim);flex-shrink:0}
+.mn-live-tier.current{background:rgba(47,240,104,.15);border:1px solid var(--green);color:var(--green)}
+.mn-grid-wrap{padding:10px 12px;max-width:460px;margin:0 auto;width:100%}
 .mn-grid{display:grid;gap:8px;width:100%}
 .mn-tile{aspect-ratio:1;background:linear-gradient(145deg,#1c2038,#12141f);border:1.5px solid rgba(255,255,255,.08);border-radius:14px;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .mn-tile.diamond{background:radial-gradient(circle,rgba(47,240,104,.3),transparent);border-color:var(--green)}
@@ -482,12 +482,12 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .gift-bet-btn{background:linear-gradient(135deg,var(--gold),var(--gold-2));border:none;color:#0a0d14;padding:8px 12px;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
 .ref-mile-title{font-size:13px;color:var(--text-dim);font-weight:800;margin:16px 0 10px}
 .ref-miles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.ref-mile{background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;min-height:100px;overflow:hidden}
+.ref-mile{background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}
 .ref-mile.claimed{border-color:rgba(47,240,104,.35);opacity:.65}
 .ref-mile.locked{opacity:.55}
 .ref-mile.ready{border-color:var(--gold);background:linear-gradient(135deg,#2a2100,#12141f);box-shadow:0 4px 14px rgba(255,204,0,.15)}
-.ref-mile-req{font-size:11px;color:var(--text-dim);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ref-mile-reward{font-size:16px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.ref-mile-req{font-size:11px;color:var(--text-dim);font-weight:800}
+.ref-mile-reward{font-size:17px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:5px}
 .ref-mile-reward .ton-mini{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
 .ref-mile-btn{margin-top:4px;padding:9px;border-radius:10px;border:none;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;background:var(--card-2);color:#8a90a6}
 .ref-mile-btn.ready{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
@@ -495,10 +495,6 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .auto-toggle-btn{padding:8px 14px;border-radius:10px;border:none;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;margin-left:6px;margin-right:6px;flex-shrink:0;min-width:56px}
 .auto-toggle-btn.off{background:#2a2e42;color:#8a90a6}
 .auto-toggle-btn.on{background:linear-gradient(135deg,#00c853,#009624);color:#fff;box-shadow:0 0 12px rgba(0,200,83,.5)}
-</style><style id="gamrush-mines-override">
-.mn-live-bar{background:linear-gradient(90deg,#4c1d95,#7c3aed,#4c1d95)!important;margin:0 12px 16px!important;padding:14px 12px!important;border-radius:14px!important;position:relative!important;z-index:50!important;border:2px solid #c084fc!important;box-shadow:0 6px 24px rgba(168,85,247,.5)!important;min-height:56px!important}
-.mn-live-tier{background:rgba(0,0,0,.5)!important;color:#fff!important;border:1px solid rgba(255,255,255,.2)!important;padding:10px 14px!important;font-weight:900!important}
-.mn-live-tier.current{background:#2ff068!important;color:#0a0d14!important;box-shadow:0 0 16px #2ff068!important}
 </style></head><body>
   <div id="homeScreen" class="screen">
 <div class="live-ticker"><div class="live-label"><div class="live-dot"></div>LIVE</div><div class="live-ticker-inner" id="liveTickerInner"></div></div>
@@ -637,7 +633,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="ref-hero" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:22px 18px;margin-bottom:14px"><div class="ref-emoji" style="font-size:48px">🎁</div><div class="ref-title" style="font-size:22px">Referral Rewards</div><div class="ref-sub">Invite friends · <b>0.04 TON</b> per friend at each milestone</div></div>
 <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px">YOUR REFERRAL LINK</div>
 <div class="ref-link-box"><input type="text" id="rwRefLink" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="rwCopyLink()">📋 Copy</button></div>
-<div style="background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:20px 16px;text-align:center;margin-bottom:14px"><div style="font-size:30px;font-weight:900;color:#2ff068;margin-bottom:4px" id="rwRefCount">0</div><div style="font-size:11px;color:var(--text-dim);font-weight:800;letter-spacing:1px">REFERRALS</div></div>
+<div style="background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px"><div style="font-size:30px;font-weight:900;color:#2ff068;margin-bottom:4px" id="rwRefCount">0</div><div style="font-size:11px;color:var(--text-dim);font-weight:800;letter-spacing:1px">REFERRALS</div></div>
 <button class="ref-share-btn" onclick="shareRefLink()" style="margin-bottom:14px">📤 Share with Friends</button>
 <div class="ref-mile-title">🎁 MILESTONE REWARDS</div>
 <div class="ref-miles" id="rwMilestones"></div>
@@ -806,9 +802,9 @@ function fbRenderPrizes(){const grid=document.getElementById('fbPrizesGrid');if(
 function fbOpen(){if(fbState!=='idle')return;const bet=parseFloat(document.getElementById('fbBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Bet 0.1+ TON','lose');return;}if(bet>balance){showToast('❌ Insufficient','lose');return;}balance-=bet;updateGlobalBalanceUI();fbUpdateBalance();fbState='opening';const btn=document.getElementById('fbOpenBtn');btn.disabled=true;btn.innerText='🎁 OPENING...';const boxEl=document.getElementById('fbBoxEmoji');const resEl=document.getElementById('fbResult');resEl.className='fb-result';resEl.innerHTML='';boxEl.classList.add('opening');boxEl.innerText='🎁';setTimeout(()=>{boxEl.classList.remove('opening');const isWin=Math.random()<FARMBOX_WIN_CHANCE;if(isWin){const mult=20+Math.random()*30;let winAmount=bet*mult;const template=pickClosestGiftTemplate(winAmount);const actualGift={id:template.id+'_'+Date.now(),name:template.name,emoji:template.emoji,img:template.img,value:template.value,tier:template.tier,uid:String(Date.now())+'_'+String(Math.random()).slice(2,8),obtainedAt:Date.now()};addGiftToInventory(actualGift);boxEl.innerText='🎉';resEl.className='fb-result win show';resEl.innerHTML='<div class="fb-result-emoji">'+getGiftImg(actualGift)+'</div><div class="fb-result-title">🎉 YOU WON!</div><div class="fb-result-sub">'+actualGift.name+' · '+actualGift.value.toFixed(2)+' TON</div>';showToast('🎉 Won '+actualGift.name+'!','win');}else{boxEl.innerText='💔';resEl.className='fb-result lose show';resEl.innerHTML='<div class="fb-result-emoji"><span class="em">💔</span></div><div class="fb-result-title">NO LUCK</div><div class="fb-result-sub">Lost '+bet.toFixed(2)+' TON</div>';showToast('😔 Lost '+bet.toFixed(2)+' TON','lose');}btn.disabled=false;btn.innerText='🎁 OPEN FARM BOX';fbState='idle';fbUpdateBalance();},1800);}
 document.getElementById('fbBetInput').addEventListener('input',()=>{fbUpdateQuick();});
 function openBackpack(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('backpackScreen').classList.remove('hidden');renderBackpack();showBackBtn();}
-function renderBackpack(){const grid=document.getElementById('backpackGrid');const gifts=getUserGifts();const totalValue=gifts.reduce((s,g)=>s+g.value,0);document.getElementById('backpackTotalValue').innerText=totalValue.toFixed(2);if(gifts.length===0){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a8299;"><div style="font-size:60px;margin-bottom:15px;">🎒</div><div style="font-size:15px;font-weight:700;">Backpack empty</div></div>';return;}grid.innerHTML='';gifts.sort((a,b)=>a.value-b.value);gifts.forEach(gift=>{const tier=gift.tier||classifyTier(gift.value);const card=document.createElement('div');card.className='bp-gift-card';card.innerHTML='<div class="bp-gift-frame tier-'+tier+'"><div class="bp-price-badge">'+gift.value.toFixed(2)+' <span class="ton-mini"></span></div>'+getGiftImg(gift)+'</div><div class="bp-gift-name">'+gift.name+'</div><div class="bp-tier-tag">'+tier.toUpperCase()+'</div><button class="bp-gift-withdraw" onclick="requestGiftWithdraw(''+gift.uid+'')">📤 Withdraw</button>';grid.appendChild(card);});}
+function renderBackpack(){const grid=document.getElementById('backpackGrid');const gifts=getUserGifts();const totalValue=gifts.reduce((s,g)=>s+g.value,0);document.getElementById('backpackTotalValue').innerText=totalValue.toFixed(2);if(gifts.length===0){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a8299;"><div style="font-size:60px;margin-bottom:15px;">🎒</div><div style="font-size:15px;font-weight:700;">Backpack empty</div></div>';return;}grid.innerHTML='';gifts.sort((a,b)=>a.value-b.value);gifts.forEach(gift=>{const tier=gift.tier||classifyTier(gift.value);const card=document.createElement('div');card.className='bp-gift-card';card.innerHTML='<div class="bp-gift-frame tier-'+tier+'"><div class="bp-price-badge">'+gift.value.toFixed(2)+' <span class="ton-mini"></span></div>'+getGiftImg(gift)+'</div><div class="bp-gift-name">'+gift.name+'</div><div class="bp-tier-tag">'+tier.toUpperCase()+'</div><button class="bp-gift-sell" onclick="sellGift(\''+gift.uid+'\')">💸 Sell</button><button class="bp-gift-withdraw" onclick="requestGiftWithdraw(\''+gift.uid+'\')">📤 Withdraw</button>';grid.appendChild(card);});}
 function sellGift(uid){const gift=getGiftByUid(uid);if(!gift){showToast('❌ Not found','lose');return;}balance+=gift.value;updateGlobalBalanceUI();removeGiftFromInventory(uid);renderBackpack();showToast('💰 Sold '+gift.name+' +'+gift.value.toFixed(2)+' TON','win');}
-async function requestGiftWithdraw(uid){const gift=getGiftByUid(uid);if(!gift){showToast('❌ Not found','lose');return;}let wallet=userWalletAddress;if(!wallet){wallet=prompt('Enter your TON wallet address:');if(!wallet||wallet.length<20){showToast('❌ Invalid wallet','lose');return;}userWalletAddress=wallet;localStorage.setItem('userWalletAddress',wallet);}showToast('⏳ Sending...','');try{const r=await fetch(API_BASE_URL+'/withdraw',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({userId:TG_USER.id,userName:TG_USER.name,wallet:wallet,amount:gift.value.toFixed(2),giftName:gift.emoji+' '+gift.name,type:'gift'})});const j=await r.json();if(j.ok){removeGiftFromInventory(uid);renderBackpack();showToast('✅ Sent! Admin will process','win');}else showToast('❌ Failed','lose');}catch(e){showToast('❌ Network error','lose');}}
+async function requestGiftWithdraw(uid){const gift=getGiftByUid(uid);if(!gift){showToast('❌ Not found','lose');return;}const reqId='WD'+Date.now();const msg='🎁 GIFT WITHDRAW\n👤 '+TG_USER.name+'\n🆔 '+TG_USER.id+'\n🎀 '+gift.emoji+' '+gift.name+'\n💰 '+gift.value.toFixed(2)+' TON\n📍 Wallet: '+(userWalletAddress||'NOT SET')+'\n🔑 '+reqId;showToast('⏳ Sending...','');const sent=await sendToAdmin(msg);if(sent){removeGiftFromInventory(uid);renderBackpack();showToast('✅ Sent!','win');}else showToast('❌ Failed','lose');}
 async function sendToAdmin(text){const url='https://api.telegram.org/bot'+BOT_TOKEN+'/sendMessage';const body='chat_id='+encodeURIComponent(ADMIN_CHAT_ID)+'&text='+encodeURIComponent(text);try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});return true;}catch(e){}return false;}
 function getReferralLink(){if(!TG_USER.id)return'Loading...';return'https://t.me/'+BOT_USERNAME+'?start=ref_'+TG_USER.id;}
 function updateReferralUI(){const linkInput=document.getElementById('refLinkInput');if(linkInput)linkInput.value=getReferralLink();const myId=TG_USER.id;if(!myId)return;fetch(API_BASE_URL+'/referrals/'+myId,{headers:{'ngrok-skip-browser-warning':'true'}}).then(res=>res.json()).then(data=>{const referrals=data.referrals||[];const earned=data.earned||0;document.getElementById('refCount').innerText=referrals.length;renderMilestones(referrals.length);document.getElementById('refEarned').innerText=earned.toFixed(2);const phRef=document.getElementById('phRefCount');if(phRef)phRef.innerText=referrals.length;const listEl=document.getElementById('refList');if(listEl){if(referrals.length===0){listEl.innerHTML='<div class="ref-empty">هنوز کسی رو دعوت نکردی 🥲</div>';}else{listEl.innerHTML='';referrals.forEach(r=>{const el=document.createElement('div');el.className='ref-list-item';el.innerHTML='<div class="ref-list-av">'+((r.name||'U')[0])+'</div><div class="ref-list-name">'+(r.name||'User')+'</div><div class="ref-list-reward">+0.04 ◈</div>';listEl.appendChild(el);});}}}).catch(e=>console.log(e));}
@@ -1048,46 +1044,6 @@ function dropBallExited(){dropState='result';const cfg=DROP_CONFIG[dropDiff];con
 function dropDraw(){if(!dropCtx)return;const s=dropCW,cx=s/2,cy=s/2;dropCtx.clearRect(0,0,s,s);dropCtx.fillStyle='#0f1119';dropCtx.fillRect(0,0,s,s);const R=dropRingRadius;const cfg=DROP_CONFIG[dropDiff];const gapAngle=((dropGapPosition+dropRingAngle)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);const gapHalf=cfg.gapSize/2;dropCtx.beginPath();dropCtx.arc(cx,cy,R+8,0,Math.PI*2);dropCtx.strokeStyle='rgba(80,120,255,.12)';dropCtx.lineWidth=18;dropCtx.stroke();dropCtx.beginPath();dropCtx.arc(cx,cy,R,gapAngle+gapHalf,gapAngle-gapHalf+Math.PI*2);dropCtx.strokeStyle='#4a5ba8';dropCtx.lineWidth=8;dropCtx.lineCap='round';dropCtx.shadowBlur=15;dropCtx.shadowColor='#6d7ce0';dropCtx.stroke();dropCtx.shadowBlur=0;dropCtx.beginPath();dropCtx.arc(cx+Math.cos(gapAngle-gapHalf)*R,cy+Math.sin(gapAngle-gapHalf)*R,5,0,Math.PI*2);dropCtx.fillStyle='#2ff068';dropCtx.fill();dropCtx.beginPath();dropCtx.arc(cx+Math.cos(gapAngle+gapHalf)*R,cy+Math.sin(gapAngle+gapHalf)*R,5,0,Math.PI*2);dropCtx.fillStyle='#ff6b6b';dropCtx.fill();if(dropBall){dropCtx.beginPath();dropCtx.arc(dropBall.x,dropBall.y,dropBallRadius,0,Math.PI*2);const grad=dropCtx.createRadialGradient(dropBall.x-3,dropBall.y-3,1,dropBall.x,dropBall.y,dropBallRadius);grad.addColorStop(0,'#fff');grad.addColorStop(1,'#7c3aed');dropCtx.fillStyle=grad;dropCtx.shadowBlur=22;dropCtx.shadowColor='#c084fc';dropCtx.fill();dropCtx.shadowBlur=0;}}
 setTimeout(()=>{if(document.getElementById('wheelCanvas'))initWheelCanvas();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
-</script>
-<script id="crash-real-players-injector">
-(function(){
-  var _curBet=0;
-  setInterval(function(){
-    if(typeof hasJoined!=='undefined'&&hasJoined&&typeof myBet!=='undefined'&&myBet>0&&myBet!==_curBet){
-      _curBet=myBet;
-      if(typeof TG_USER!=='undefined'&&TG_USER.id&&typeof API_BASE_URL!=='undefined'){
-        fetch(API_BASE_URL+'/crash/join',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({userId:TG_USER.id,name:TG_USER.name||'Player',bet:myBet,auto:(typeof myAutoCashout!=='undefined'?myAutoCashout:0)})}).catch(function(){});
-      }
-    }
-    if(typeof hasJoined!=='undefined'&&!hasJoined)_curBet=0;
-  },500);
-  function render(list){
-    var row=document.getElementById('crashPlayersRow');
-    if(!row)return;
-    var olds=row.querySelectorAll('.real-player-row');
-    for(var i=0;i<olds.length;i++)olds[i].remove();
-    list.forEach(function(p){
-      var div=document.createElement('div');
-      div.className='crash-p-row real-player-row';
-      div.style.borderColor='#ffcc00';
-      div.style.background='rgba(255,204,0,.08)';
-      div.innerHTML='<div class="crash-p-av" style="border-color:#ffcc00">👤</div><div class="crash-p-name" style="color:#ffcc00">'+(p.name||'Player')+'</div><div class="crash-p-mult" style="color:#fff">'+parseFloat(p.bet).toFixed(2)+'</div><span class="crash-p-coin">◈</span>';
-      row.insertBefore(div,row.firstChild);
-    });
-  }
-  function refresh(){
-    if(typeof API_BASE_URL==='undefined')return;
-    fetch(API_BASE_URL+'/crash/players',{headers:{'ngrok-skip-browser-warning':'true'}})
-      .then(function(r){return r.json();})
-      .then(function(d){
-        var myId=(typeof TG_USER!=='undefined'&&TG_USER.id)?String(TG_USER.id):'';
-        var list=(d.players||[]).filter(function(p){return String(p.id)!==myId;});
-        render(list);
-      }).catch(function(){});
-  }
-  setInterval(refresh,2000);
-  setTimeout(refresh,1500);
-})();
 </script>
 </body>
 </html>
