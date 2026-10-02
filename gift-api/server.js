@@ -157,7 +157,7 @@ app.get('/api/gifts', (req, res) => {
     let mul = 1.03;
     if (g.value < 40) mul = 1.10;
     else if (g.value <= 120) mul = 1.05;
-    const val = Math.round(g.value * mul * 100) / 100;
+    const val = Math.round((g.value * mul + 0.6) * 100) / 100;
     return { id, name: g.name, emoji: g.emoji, value: val, tier: g.tier, img: g.img };
   });
   res.json(gifts);
