@@ -614,9 +614,11 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div id="pvpScreen" class="screen hidden">
 <div class="pvp-header"><button class="pvp-back" onclick="goHome()">← Back</button><div class="pvp-balance-pill"><span class="ton-icon">◈</span><span class="val" id="pvpBalanceDisplay">0.00</span></div></div>
 <div class="pvp-stats"><div class="stat-block"><div class="stat-label">Last Game</div><div class="stat-value-row"><span class="stat-value" id="pvpLast">+0.00 TON</span><span class="stat-pct" id="pvpLastPct">0%</span></div></div><div class="stat-block"><div class="stat-label">Top of the Day</div><div class="stat-value-row"><span class="stat-value" id="pvpTop">+0.00 TON</span><span class="stat-pct" id="pvpTopPct">0%</span></div></div></div>
-<div class="pvp-wheel-wrap"><canvas id="pvpCanvas"></canvas><div class="pvp-center"><div class="pvp-timer" id="pvpTimer">--:--</div><div class="pvp-pool-label">TOTAL POOL</div><div class="pvp-pool"><span class="ton-icon">◈</span><span id="pvpPoolValue">0.00</span></div><div class="pvp-game-num" id="pvpGameNum">Game #00000</div></div></div>
+<div class="pvp-wheel-wrap"><canvas id="pvpCanvas"></canvas><div class="pvp-center"><div class="pvp-timer" id="pvpTimer">--:--</div><div class="pvp-pool-label">TOTAL POOL</div><div class="pvp-pool"><span class="ton-icon">◈</span><span id="pvpPoolValue">0.00</span></div><div class="pvp-game-num" id="pvpGameNum">Game #00000</div>
+<div class="pvp-winner-line" id="pvpWinnerLine" style="display:none;font-size:14px;font-weight:900;color:#2ff068;margin-top:4px;text-shadow:0 2px 8px rgba(47,240,104,.5)"></div>
+</div></div>
 <div class="pvp-players-row" id="pvpPlayersRow"></div>
-<div class="pvp-join-wrap"><label class="pvp-bet-label">Entry Amount (TON):</label><div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openPvpGiftPicker()">🎁</button></div><button class="join-battle-btn" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button></div>
+<div class="pvp-join-wrap"><label class="pvp-bet-label">Entry Amount (TON):</label><div class="pvp-bet-input-wrap"><span class="ton-icon" style="width:20px;height:20px;font-size:11px">◈</span><input type="number" id="pvpBetInput" class="pvp-bet-input" value="0.1" min="0.1" step="0.1"><button class="gift-bet-btn" onclick="openPvpGiftPicker()">🎁</button></div><button class="join-battle-btn" id="joinBattleBtn" onclick="pvpJoinClick()">Join the Battle</button><div class="pvp-result-text" id="pvpResultText" style="text-align:center;font-size:14px;font-weight:900;margin-top:8px;min-height:20px;color:#a0a8bd"></div></div>
 <div class="pvp-players-header"><span>Players</span><span class="pvp-players-count" id="pvpPlayersCount">👥 0</span></div></div>
 
 <div id="farmBoxScreen" class="screen hidden">
@@ -1148,8 +1150,59 @@ setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
           t.innerText = '🎡 Spinning';
           t.style.color = '#ffcc00';
         } else {
-          t.innerText = '🏆 Winner!';
+          var wname = '';
+          if (s.winnerId) {
+            var w = (s.players||[]).find(function(p){return String(p.id) === String(s.winnerId);});
+            if (w) wname = w.name || 'Player';
+          }
+          t.innerText = '🏆 ' + (wname || 'Winner');
           t.style.color = '#2ff068';
+          t.style.fontSize = '18px';
+        }
+      }
+      // Winner name in the center
+      var wl = document.getElementById('pvpWinnerLine');
+      if (wl) {
+        if ((s.phase === 'done' || s.phase === 'spinning') && s.winnerId) {
+          var w = (s.players||[]).find(function(p){return String(p.id) === String(s.winnerId);});
+          if (w) {
+            var isMeWin = String(s.winnerId) === myId;
+            wl.style.display = 'block';
+            wl.style.color = isMeWin ? '#ffcc00' : '#2ff068';
+            wl.innerText = '🏆 Winner: ' + (w.name || 'Player') + (isMeWin ? ' (You!)' : '');
+          }
+        } else {
+          wl.style.display = 'none';
+          wl.innerText = '';
+        }
+      }
+      // My status (won/lost)
+      var rt = document.getElementById('pvpResultText');
+      if (rt) {
+        if (s.phase === 'waiting') {
+          var joined = (s.players||[]).find(function(p){return String(p.id) === myId;});
+          if (joined) {
+            rt.style.color = '#ffcc00';
+            rt.innerText = '🎯 You joined with ' + parseFloat(joined.bet).toFixed(2) + ' TON';
+          } else {
+            rt.style.color = '#a0a8bd';
+            rt.innerText = '';
+          }
+        } else if (s.phase === 'spinning') {
+          rt.style.color = '#ffcc00';
+          rt.innerText = '🎡 Spinning...';
+        } else if (s.phase === 'done') {
+          var joined = (s.players||[]).find(function(p){return String(p.id) === myId;});
+          if (String(s.winnerId) === myId && total > 0) {
+            rt.style.color = '#2ff068';
+            rt.innerText = '🏆 YOU WON ' + total.toFixed(2) + ' TON!';
+          } else if (joined) {
+            rt.style.color = '#ff4444';
+            rt.innerText = '😔 You lost ' + parseFloat(joined.bet).toFixed(2) + ' TON';
+          } else {
+            rt.style.color = '#a0a8bd';
+            rt.innerText = '👀 You didn\'t join';
+          }
         }
       }
       var pEl = document.getElementById('pvpPoolValue');
