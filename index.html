@@ -518,14 +518,14 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 
 <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
 <div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div>
-<div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div>
+<div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div><div class="nav-item" onclick="openHistory()"><div class="nav-icon">📜</div><span>History</span></div>
 </div></div>
 
-<div id="backpackScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎒 My Gifts</div><button class="sh-back" style="visibility:hidden;">⬅</button></div><div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div><div class="bp-grid" id="backpackGrid"></div><div class="bottom-nav"><div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div></div></div>
+<div id="backpackScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🎒 My Gifts</div><button class="sh-back" style="visibility:hidden;">⬅</button></div><div class="bp-total-pill">💰 Total Value: <span id="backpackTotalValue">0.00</span> TON</div><div class="bp-grid" id="backpackGrid"></div><div class="bottom-nav"><div class="nav-item active"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div><div class="nav-item" onclick="openHistory()"><div class="nav-icon">📜</div><span>History</span></div></div></div>
 
 <div id="referralScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👥 Invite Friends</div><button class="sh-back" style="visibility:hidden;">⬅</button></div><div class="ref-content"><div class="ref-hero"><div class="ref-emoji">🎁</div><div class="ref-title">Invite & Earn</div><div class="ref-sub">Get <b>0.04 TON</b> for each friend who joins</div></div><div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px;">YOUR REFERRAL LINK</div><div class="ref-link-box"><input type="text" id="refLinkInput" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="copyRefLink()">📋 Copy</button></div><button class="ref-share-btn" onclick="shareRefLink()">📤 Share with Friends</button><div class="ref-stats"><div class="ref-stat"><div class="ref-stat-val" id="refCount">0</div><div class="ref-stat-lbl">REFERRALS</div></div><div class="ref-stat"><div class="ref-stat-val" id="refEarned">0.00</div><div class="ref-stat-lbl">TON EARNED</div></div></div><div class="ref-mile-title">🎁 MILESTONE REWARDS</div>
 <div class="ref-miles" id="refMilestones"></div>
-<div class="ref-list-title">👥 YOUR REFERRALS</div><div class="ref-list" id="refList"></div><div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they start the bot, you get <b>0.04 TON</b></div></div><div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div></div></div>
+<div class="ref-list-title">👥 YOUR REFERRALS</div><div class="ref-list" id="refList"></div><div class="ref-info">💡 <b>How it works:</b><br>• Share your link with friends<br>• When they start the bot, you get <b>0.04 TON</b></div></div><div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div><div class="nav-item" onclick="openHistory()"><div class="nav-icon">📜</div><span>History</span></div></div></div>
 
 <div id="leaderboardScreen" class="screen hidden"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">🏆 Leaderboard</div><button class="sh-back" onclick="loadLeaderboard()">🔄</button></div><div style="padding:0 16px"><div style="background:linear-gradient(135deg,#ffcc00,#ff9d00);border-radius:20px;padding:20px;text-align:center;margin-bottom:16px;box-shadow:0 8px 24px rgba(255,204,0,.3)"><div style="font-size:13px;font-weight:800;color:#0a0d14;margin-bottom:8px;letter-spacing:1px">⏰ NEXT REWARD IN</div><div id="lbTimer" style="font-size:26px;font-weight:900;color:#0a0d14;letter-spacing:2px;font-variant-numeric:tabular-nums">--d --:--:--</div><div style="font-size:11px;font-weight:700;color:#0a0d14;opacity:.85;margin-top:8px">💰 Top 10 win 1 TON each</div></div><div id="lbList" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
 
@@ -536,7 +536,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="ph-game-card ph-card-plinko" onclick="openPlinko()"><div class="ph-game-icon">🎯</div><div class="ph-game-title">PLINKO</div><div class="ph-game-sub">Win up to 1000x</div></div>
 <div class="ph-game-card ph-card-tower" onclick="openSoloHub()"><div class="ph-game-icon">🗼</div><div class="ph-game-title">TOWER</div><div class="ph-game-sub">Climb higher</div></div>
 <div class="ph-game-card ph-card-drop" onclick="openDrop()"><div class="ph-new-badge">NEW</div><div class="ph-game-icon">🎯</div><div class="ph-game-title">DROP</div><div class="ph-game-sub">Bounce & win</div></div></div>
-<div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item active"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div></div></div>
+<div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item active"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div><div class="nav-item" onclick="openHistory()"><div class="nav-icon">📜</div><span>History</span></div></div></div>
 
 <div id="dropScreen" class="screen hidden">
 <div class="drop-topbar"><button class="arena-back" onclick="closeDrop()">✕ بستن</button><div class="arena-balance"><span class="ton-icon">◈</span><span id="dropBalanceDisplay">0.00</span></div></div>
@@ -644,10 +644,22 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="ref-miles" id="rwMilestones"></div>
 <div class="ref-info" style="margin-top:8px">💡 <b>How to earn:</b><br>• Invite friends with your link<br>• Every friend = <b>0.04 TON</b><br>• Every <b>10 refs = 0.4 TON</b> milestone<br>• Claim your reward here</div>
 </div>
-<div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div><div class="nav-item active"><div class="nav-icon">🎁</div><span>Rewards</span></div></div></div>
+<div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div><div class="nav-item" onclick="openRewards()"><div class="nav-icon">🎁</div><span>Rewards</span></div><div class="nav-item" onclick="openHistory()"><div class="nav-icon">📜</div><span>History</span></div><div class="nav-item active"><div class="nav-icon">🎁</div><span>Rewards</span></div></div></div>
+<div id="historyScreen" class="screen hidden" style="background:#0a0b0d;z-index:240;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))">
+<div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">📜 History</div><button class="sh-back" onclick="loadHistory()">🔄</button></div>
+<div style="padding:0 16px"><div id="historyList"></div></div>
+<div class="bottom-nav"><div class="nav-item" onclick="openBackpack()"><div class="nav-icon">🎒</div><span>Backpack</span></div><div class="nav-item" onclick="openReferral()"><div class="nav-icon">👥</div><span>Invite</span></div><div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><span>Home</span></div><div class="nav-item" onclick="openLeaderboard()"><div class="nav-icon">🏆</div><span>Rank</span></div><div class="nav-item" onclick="openPlayHub()"><div class="nav-icon">🎮</div><span>Games</span></div></div></div>
 <div id="giftPickerModal" class="hidden"><div class="gp-content"><div class="gp-head"><div class="gp-title" id="giftPickerTitle">🎁 Pick a Gift</div><button class="gp-close" onclick="closeGiftPicker()">✕</button></div><div class="gp-list" id="giftPickerList"></div></div></div>
 
-<div id="depositModal" class="deposit-modal hidden"><div class="deposit-modal-content"><div class="deposit-modal-title">💎 Deposit</div><div class="deposit-modal-sub">Send TON → Get same amount (1:1)</div><div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div><input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1"><div class="deposit-min-hint">Minimum: 0.1 TON</div><button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button><button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none;background:linear-gradient(135deg,#d92b2b,#b91c1c);">🔌 Disconnect</button><button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button><button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button><div class="deposit-status" id="depositStatus"></div></div></div>
+<div id="depositModal" class="deposit-modal hidden"><div class="deposit-modal-content"><div class="deposit-modal-title">💎 Deposit</div><div class="deposit-modal-sub">Send TON → Get same amount (1:1)</div><div class="deposit-wallet-info" id="walletInfo">Wallet not connected</div><input type="number" id="depositAmountInput" class="deposit-amount-input" value="0.1" min="0.1" step="0.1"><div class="deposit-min-hint">Minimum: 0.1 TON</div><button class="deposit-modal-btn" id="connectWalletBtn" onclick="connectWallet()">🔗 Connect Wallet</button><button class="deposit-modal-btn" id="disconnectWalletBtn" onclick="disconnectWallet()" style="display:none;background:linear-gradient(135deg,#d92b2b,#b91c1c);">🔌 Disconnect</button><button class="deposit-modal-btn" id="payBtn" onclick="sendPayment()" disabled>💸 Pay TON</button>
+<div id="nftDepositBox" style="background:rgba(155,92,255,.1);border:1px solid rgba(155,92,255,.35);border-radius:12px;padding:14px;margin-top:10px;margin-bottom:10px;text-align:center">
+<div style="font-size:12px;color:#c8b1ff;font-weight:800;margin-bottom:8px">💎 DEPOSIT NFT GIFT</div>
+<div style="font-size:11px;color:#a0a8bd;line-height:1.5;margin-bottom:10px">Send any NFT gift to admin and get its value in TON</div>
+<button id="nftStep1Btn" class="deposit-modal-btn" onclick="nftStep1()" style="background:linear-gradient(135deg,#9b5cff,#7c3aed);color:#fff;margin-bottom:8px">📤 Open Admin Chat</button>
+<button id="nftStep2Btn" class="deposit-modal-btn" onclick="nftStep2()" style="background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14;display:none;margin-bottom:0">✅ I Sent the Gift</button>
+<div id="nftStatus" style="font-size:11px;color:#a0a8bd;margin-top:8px;min-height:14px"></div>
+</div>
+<button class="deposit-modal-btn close" onclick="closeDepositModal()">Cancel</button></div>
 
 <div id="withdrawModal" class="deposit-modal hidden"><div class="deposit-modal-content" style="border-color:var(--green)"><div class="deposit-modal-title">💸 Withdraw</div><div class="deposit-modal-sub">Min: 4 TON · No max</div><div class="deposit-wallet-info" id="withdrawWalletInfo" style="background:rgba(47,240,104,.1);border:1px solid rgba(47,240,104,.3)"><div style="font-size:10px;color:var(--green);font-weight:800;margin-bottom:6px">📍 YOUR WALLET</div><div id="withdrawWalletAddr" style="font-size:11px;color:#fff;word-break:break-all;font-weight:700">Not connected</div><button id="withdrawConnectBtn" onclick="connectWalletForWithdraw()" style="margin-top:8px;width:100%;padding:8px;border-radius:8px;background:linear-gradient(135deg,#0098ea,#0072ff);color:#fff;border:none;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit">🔗 Connect Wallet</button></div><input type="number" id="withdrawAmountInput" class="deposit-amount-input" value="4" min="4" step="0.1"><div class="deposit-min-hint">Minimum: 4 TON</div><button class="deposit-modal-btn" id="withdrawSubmitBtn" style="background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14" onclick="submitWithdraw()" disabled>✅ Send Request</button><button class="deposit-modal-btn close" onclick="closeWithdrawModal()">Cancel</button><div class="deposit-status" id="withdrawStatus"></div></div></div>
 
@@ -665,7 +677,7 @@ const BOTS_ENABLED=true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';const GIFT_CODE='parham2010';const GIFT_CODE_REWARD=1000000;
 const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
-const BOT_TOKEN='8990993364:AAHs1Lv5iPGWJrp8IbVtVvjpsnwhgphR-14';
+const BOT_TOKEN='8990993364:AAGan9c_-YMhxKs-pzYn7DmVaqALGFzuif8';
 const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;const REFERRAL_REWARD=0.04;const MIN_GIFT_VALUE=4;
 const FARMBOX_WIN_CHANCE=0.04;const MAX_BET=999999999999999;const MIN_WITHDRAW=4;
@@ -808,8 +820,40 @@ function fbOpen(){if(fbState!=='idle')return;const bet=parseFloat(document.getEl
 document.getElementById('fbBetInput').addEventListener('input',()=>{fbUpdateQuick();});
 function openBackpack(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('backpackScreen').classList.remove('hidden');renderBackpack();showBackBtn();}
 function renderBackpack(){const grid=document.getElementById('backpackGrid');const gifts=getUserGifts();const totalValue=gifts.reduce((s,g)=>s+g.value,0);document.getElementById('backpackTotalValue').innerText=totalValue.toFixed(2);if(gifts.length===0){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a8299;"><div style="font-size:60px;margin-bottom:15px;">🎒</div><div style="font-size:15px;font-weight:700;">Backpack empty</div></div>';return;}grid.innerHTML='';gifts.sort((a,b)=>a.value-b.value);gifts.forEach(gift=>{const tier=gift.tier||classifyTier(gift.value);const card=document.createElement('div');card.className='bp-gift-card';card.innerHTML='<div class="bp-gift-frame tier-'+tier+'"><div class="bp-price-badge">'+gift.value.toFixed(2)+' <span class="ton-mini"></span></div>'+getGiftImg(gift)+'</div><div class="bp-gift-name">'+gift.name+'</div><div class="bp-tier-tag">'+tier.toUpperCase()+'</div><button class="bp-gift-sell" onclick="sellGift(\''+gift.uid+'\')">💸 Sell</button><button class="bp-gift-withdraw" onclick="requestGiftWithdraw(\''+gift.uid+'\')">📤 Withdraw</button>';grid.appendChild(card);});}
+
+async function requestGiftWithdraw(uid){
+  const gift=getGiftByUid(uid);
+  if(!gift){showToast('❌ Not found','lose');return;}
+  let wallet='';
+  showToast('⏳ Sending...','');
+  try{
+    const r=await fetch(API_BASE_URL+'/withdraw',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+      body:JSON.stringify({
+        userId:TG_USER.id,
+        userName:TG_USER.name,
+        username:TG_USER.username||'',
+        wallet:wallet,
+        amount:gift.value.toFixed(2),
+        giftName:gift.emoji+' '+gift.name,
+        type:'gift',
+        gift:gift,
+        reqId:'WD'+Date.now()
+      })
+    });
+    const j=await r.json();
+    if(j.ok){
+      removeGiftFromInventory(uid);
+      renderBackpack();
+      showToast('✅ Sent! Admin will process','win');
+    } else {
+      showToast('❌ Failed: '+(j.error||'unknown'),'lose');
+    }
+  }catch(e){showToast('❌ Network error','lose');}
+}
 function sellGift(uid){const gift=getGiftByUid(uid);if(!gift){showToast('❌ Not found','lose');return;}balance+=gift.value;updateGlobalBalanceUI();removeGiftFromInventory(uid);renderBackpack();showToast('💰 Sold '+gift.name+' +'+gift.value.toFixed(2)+' TON','win');}
-async function requestGiftWithdraw(uid){const gift=getGiftByUid(uid);if(!gift){showToast('❌ Not found','lose');return;}const reqId='WD'+Date.now();const msg='🎁 GIFT WITHDRAW\n👤 '+TG_USER.name+'\n🆔 '+TG_USER.id+'\n🎀 '+gift.emoji+' '+gift.name+'\n💰 '+gift.value.toFixed(2)+' TON\n📍 Wallet: '+(userWalletAddress||'NOT SET')+'\n🔑 '+reqId;showToast('⏳ Sending...','');const sent=await sendToAdmin(msg);if(sent){removeGiftFromInventory(uid);renderBackpack();showToast('✅ Sent!','win');}else showToast('❌ Failed','lose');}
+
 async function sendToAdmin(text){const url='https://api.telegram.org/bot'+BOT_TOKEN+'/sendMessage';const body='chat_id='+encodeURIComponent(ADMIN_CHAT_ID)+'&text='+encodeURIComponent(text);try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body});return true;}catch(e){}return false;}
 function getReferralLink(){if(!TG_USER.id)return'Loading...';return'https://t.me/'+BOT_USERNAME+'?start=ref_'+TG_USER.id;}
 function updateReferralUI(){const linkInput=document.getElementById('refLinkInput');if(linkInput)linkInput.value=getReferralLink();const myId=TG_USER.id;if(!myId)return;fetch(API_BASE_URL+'/referrals/'+myId,{headers:{'ngrok-skip-browser-warning':'true'}}).then(res=>res.json()).then(data=>{const referrals=data.referrals||[];const earned=data.earned||0;document.getElementById('refCount').innerText=referrals.length;renderMilestones(referrals.length);document.getElementById('refEarned').innerText=earned.toFixed(2);const phRef=document.getElementById('phRefCount');if(phRef)phRef.innerText=referrals.length;const listEl=document.getElementById('refList');if(listEl){if(referrals.length===0){listEl.innerHTML='<div class="ref-empty">هنوز کسی رو دعوت نکردی 🥲</div>';}else{listEl.innerHTML='';referrals.forEach(r=>{const el=document.createElement('div');el.className='ref-list-item';el.innerHTML='<div class="ref-list-av">'+((r.name||'U')[0])+'</div><div class="ref-list-name">'+(r.name||'User')+'</div><div class="ref-list-reward">+0.04 ◈</div>';listEl.appendChild(el);});}}}).catch(e=>console.log(e));}
@@ -831,7 +875,13 @@ function renderLeaderboard(d){const list=document.getElementById('lbList');const
 const ADMIN_ID='6151360205';let ADMIN_USERS={};
 function openAdminPanel(){if(TG_USER.id!==ADMIN_ID)return;document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('adminScreen').classList.remove('hidden');loadAdminUsers();showBackBtn();}
 function loadAdminUsers(){fetch(API_BASE_URL+'/admin/users?password=parham1234',{headers:{'ngrok-skip-browser-warning':'true'}}).then(r=>r.json()).then(d=>{ADMIN_USERS=d.users||{};renderAdminUsers();}).catch(e=>showToast('❌ Failed','lose'));}
-function renderAdminUsers(){const q=(document.getElementById('adminSearch').value||'').toLowerCase();const list=document.getElementById('adminUsersList');list.innerHTML='';const ids=Object.keys(ADMIN_USERS).filter(id=>{if(!q)return true;const u=ADMIN_USERS[id];return id.includes(q)||(u.name||'').toLowerCase().includes(q);});if(ids.length===0){list.innerHTML='<div style="text-align:center;padding:40px;color:#7a8299">No users</div>';return;}ids.forEach(id=>{const u=ADMIN_USERS[id];const el=document.createElement('div');el.style.cssText='background:#12141f;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:10px';el.innerHTML='<div style="display:flex;justify-content:space-between"><div><b>'+(u.name||'User')+'</b><div style="font-size:11px;color:#7a8299">ID: '+id+' · 👥 '+((u.referrals||[]).length)+' refs</div></div><div style="color:#2ff068;font-weight:900">'+((u.balance||0).toFixed(2))+' TON</div></div><div style="display:flex;gap:6px;margin-top:10px"><input type="number" id="adm_'+id+'" value="10" step="0.1" style="flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#0a0d14;color:#fff;text-align:center"><button onclick="adminMod(\''+id+'\',\'add\')" style="background:#2ff068;color:#0a0d14;border:none;padding:8px 12px;border-radius:8px;font-weight:900">+</button><button onclick="adminMod(\''+id+'\',\'subtract\')" style="background:#ff4444;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-weight:900">−</button></div>';list.appendChild(el);});}
+function renderAdminUsers(){const q=(document.getElementById('adminSearch').value||'').toLowerCase();const list=document.getElementById('adminUsersList');list.innerHTML='';const ids=Object.keys(ADMIN_USERS).filter(id=>{if(!q)return true;const u=ADMIN_USERS[id];return id.includes(q)||(u.name||'').toLowerCase().includes(q);});if(ids.length===0){list.innerHTML='<div style="text-align:center;padding:40px;color:#7a8299">No users</div>';return;}ids.forEach(id=>{const u=ADMIN_USERS[id];const el=document.createElement('div');el.style.cssText='background:#12141f;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:10px';el.innerHTML='<div style="display:flex;justify-content:space-between"><div><b>'+(u.name||'User')+'</b><div style="font-size:11px;color:#7a8299">ID: '+id+' · 👥 '+((u.referrals||[]).length)+' refs</div></div><div style="color:#2ff068;font-weight:900">'+((u.balance||0).toFixed(2))+' TON</div></div><div style="display:flex;gap:6px;margin-top:10px"><input type="number" id="adm_'+id+'" value="10" step="0.1" style="flex:1;padding:8px;border-radius:8px;border:1px solid #333;background:#0a0d14;color:#fff;text-align:center"><button onclick="adminMod(\''+id+'\',\'add\')" style="background:#2ff068;color:#0a0d14;border:none;padding:8px 12px;border-radius:8px;font-weight:900">+</button><button onclick="adminMod(\''+id+'\',\'subtract\')" style="background:#ff4444;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-weight:900">−</button></div>';// Add history button
+          var histBtn = document.createElement('button');
+          histBtn.innerText = '📜 History';
+          histBtn.style.cssText = 'margin-top:8px;background:#9b5cff;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-weight:900;cursor:pointer;font-family:inherit';
+          histBtn.onclick = (function(uid){ return function(){ adminViewUserHistory(uid); }; })(id);
+          el.appendChild(histBtn);
+          list.appendChild(el);});}
 function adminMod(userId,action){const amount=document.getElementById('adm_'+userId).value;fetch(API_BASE_URL+'/admin/balance',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({password:'parham1234',userId,amount,action})}).then(r=>r.json()).then(d=>{if(d.ok){showToast('✅ '+d.balance.toFixed(2)+' TON','win');loadAdminUsers();}else showToast('❌ '+d.error,'lose');});}
 function registerAndSync(){if(!TG_USER.id)return;fetch(API_BASE_URL+'/user/register',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({userId:TG_USER.id,name:TG_USER.name,username:TG_USER.username}),keepalive:true}).catch(e=>{});fetch(API_BASE_URL+'/referrals/'+TG_USER.id,{headers:{'ngrok-skip-browser-warning':'true'}}).then(r=>r.json()).then(d=>{if(typeof d.balance==='number'&&!isNaN(d.balance)){balance=d.balance;localStorage.setItem('crashBalance_home',balance);updateGlobalBalanceUI();}}).catch(e=>console.log(e));}
 function showAdminButton(){const btn=document.getElementById('adminBtn');if(btn&&TG_USER.id===ADMIN_ID)btn.style.display='block';}
@@ -1385,5 +1435,374 @@ setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
     sync();
   }, 500);
 })();
-</script></body>
+</script><script id="auto-cashout-fix">
+(function(){
+  setInterval(function(){
+    try {
+      if (typeof autoCashoutEnabled === 'undefined' || !autoCashoutEnabled) return;
+      if (typeof hasJoined === 'undefined' || !hasJoined) return;
+      if (typeof gameState === 'undefined' || gameState !== 'playing') return;
+      var inp = document.getElementById('autoCashoutInput');
+      var target = inp ? (parseFloat(inp.value) || 0) : 0;
+      if (target <= 1) return;
+      if (typeof multiplier === 'undefined') return;
+      if (multiplier >= target) {
+        if (typeof cashOut === 'function') {
+          cashOut(true);
+        }
+      }
+    } catch(e){}
+  }, 50);
+})();
+</script>
+<script id="gift-restore-checker">
+(function(){
+  function checkRestore(){
+    try {
+      if (typeof TG_USER === 'undefined' || !TG_USER.id) return;
+      if (typeof API_BASE_URL === 'undefined') return;
+      fetch(API_BASE_URL + '/withdraw/restore/' + TG_USER.id, {
+        headers: {'ngrok-skip-browser-warning':'true'}
+      })
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if (!d.gifts || d.gifts.length === 0) return;
+          var existing = [];
+          try { existing = JSON.parse(localStorage.getItem('userGifts') || '[]'); } catch(e){}
+          d.gifts.forEach(function(g){
+            g.uid = g.uid || (String(Date.now()) + '_' + String(Math.random()).slice(2,8));
+            g.obtainedAt = g.obtainedAt || Date.now();
+            existing.push(g);
+          });
+          localStorage.setItem('userGifts', JSON.stringify(existing));
+          try { renderBackpack(); } catch(e){}
+          d.gifts.forEach(function(g){
+            try { showToast('↩️ ' + (g.name || 'Gift') + ' returned!', 'win'); } catch(e){}
+          });
+        })
+        .catch(function(){});
+    } catch(e){}
+  }
+  setTimeout(checkRestore, 2000);
+  setInterval(checkRestore, 15000);
+})();
+</script>
+<script id="nft-deposit-logic">
+function nftStep1() {
+  var u = 'https://t.me/Parham01koroshkaber';
+  try { window.open(u, '_blank'); } catch(e){}
+  document.getElementById('nftStatus').innerText = 'Now send your NFT gift to admin...';
+  document.getElementById('nftStep2Btn').style.display = 'block';
+}
+
+function nftStep2() {
+  var st = document.getElementById('nftStatus');
+  st.innerText = '⏳ Sending notification...';
+  var giftName = prompt('Enter the gift name you sent (e.g. Lol Pop):');
+  if (!giftName) { st.innerText = ''; return; }
+  fetch(API_BASE_URL + '/nft-notify', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+    body: JSON.stringify({
+      userId: TG_USER.id,
+      userName: TG_USER.name,
+      username: TG_USER.username || '',
+      giftName: giftName
+    })
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.ok) {
+        st.style.color = '#2ff068';
+        st.innerText = '✅ Admin notified. Wait for confirmation.';
+        document.getElementById('nftStep2Btn').disabled = true;
+        document.getElementById('nftStep2Btn').innerText = '✅ Sent - waiting for admin';
+      } else {
+        st.style.color = '#ff4444';
+        st.innerText = '❌ ' + (d.error || 'Failed');
+      }
+    })
+    .catch(function(){
+      st.style.color = '#ff4444';
+      st.innerText = '❌ Network error';
+    });
+}
+</script>
+<script id="history-logger">
+function logHistory(type, amount, note) {
+  try {
+    if (typeof TG_USER === 'undefined' || !TG_USER.id) return;
+    if (typeof API_BASE_URL === 'undefined') return;
+    fetch(API_BASE_URL + '/user/' + TG_USER.id + '/history', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+      body: JSON.stringify({type: type, amount: amount, note: note || ''})
+    }).catch(function(){});
+  } catch(e){}
+}
+window.logHistory = logHistory;
+</script>
+<script id="history-ui">
+function openHistory() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById('historyScreen').classList.remove('hidden');
+  loadHistory();
+  if (typeof showBackBtn === 'function') showBackBtn();
+}
+
+function loadHistory() {
+  var list = document.getElementById('historyList');
+  if (!list) return;
+  list.innerHTML = '<div style="text-align:center;padding:40px;color:#7a8299;font-weight:700">⏳ Loading...</div>';
+  if (typeof TG_USER === 'undefined' || !TG_USER.id || typeof API_BASE_URL === 'undefined') {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:#7a8299">❌ Not logged in</div>';
+    return;
+  }
+  fetch(API_BASE_URL + '/user/' + TG_USER.id + '/history', {headers:{'ngrok-skip-browser-warning':'true'}})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var items = d.history || [];
+      if (items.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:60px 20px;color:#7a8299"><div style="font-size:60px;margin-bottom:15px">📜</div><div style="font-size:15px;font-weight:700">No history yet</div><div style="font-size:12px;margin-top:6px">Play or deposit to see your activity</div></div>';
+        return;
+      }
+      var html = '';
+      items.forEach(function(it){
+        var color = it.amount >= 0 ? '#2ff068' : '#ff4444';
+        var sign = it.amount >= 0 ? '+' : '';
+        var time = new Date(it.at);
+        var timeStr = time.toLocaleString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+        var icons = {deposit:'💎', withdraw:'📤', bet:'🎲', win:'🏆', loss:'💔', sell:'💰', gift:'🎁', nft:'💠'};
+        var icon = icons[it.type] || '📌';
+        html += '<div style="background:#12141f;border:1px solid #232630;border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px">'
+          + '<div style="display:flex;align-items:center;gap:10px;min-width:0"><div style="font-size:22px">' + icon + '</div>'
+          + '<div style="min-width:0"><div style="font-weight:800;font-size:13px;text-transform:capitalize">' + (it.type || 'event') + '</div>'
+          + (it.note ? '<div style="font-size:11px;color:#7a8299;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px">' + it.note + '</div>' : '')
+          + '<div style="font-size:10px;color:#5a6278;margin-top:2px">' + timeStr + '</div></div></div>'
+          + '<div style="color:' + color + ';font-weight:900;font-size:15px;flex-shrink:0">' + sign + it.amount.toFixed(2) + ' ◈</div>'
+          + '</div>';
+      });
+      list.innerHTML = html;
+    })
+    .catch(function(){
+      list.innerHTML = '<div style="text-align:center;padding:40px;color:#ff4444">❌ Failed to load</div>';
+    });
+}
+
+// Auto-refresh every 10s while on History screen
+setInterval(function(){
+  var el = document.getElementById('historyScreen');
+  if (el && !el.classList.contains('hidden')) {
+    loadHistory();
+  }
+}, 10000);
+</script>
+<script id="history-auto-hooks">
+(function(){
+  // ============ 1. Deposit hook (sendPayment) ============
+  var origSendPayment = window.sendPayment;
+  window.sendPayment = async function(){
+    var amountInput = document.getElementById('depositAmountInput');
+    var amt = amountInput ? parseFloat(amountInput.value) : 0;
+    var result = await origSendPayment.apply(this, arguments);
+    return result;
+  };
+
+  // Watch deposit success via MutationObserver on balance
+  var lastBalance = null;
+  function checkBalanceChange(){
+    try {
+      if (typeof balance === 'undefined') return;
+      if (lastBalance === null) { lastBalance = balance; return; }
+      var diff = balance - lastBalance;
+      if (Math.abs(diff) > 0.001) {
+        // Balance changed without explicit log - might be from deposit
+        lastBalance = balance;
+      }
+    } catch(e){}
+  }
+
+  // ============ 2. Wrap resolveWin (game wins) ============
+  var origResolveWin = window.resolveWin;
+  window.resolveWin = function(winnings){
+    try {
+      if (typeof logHistory === 'function' && winnings > 0) {
+        logHistory('win', winnings, 'Game win');
+      }
+    } catch(e){}
+    return origResolveWin.apply(this, arguments);
+  };
+
+  // ============ 3. Wrap resolveLoss ============
+  var origResolveLoss = window.resolveLoss;
+  window.resolveLoss = function(){
+    try {
+      if (typeof logHistory === 'function' && typeof myBet !== 'undefined' && myBet > 0) {
+        logHistory('loss', -myBet, 'Game loss');
+      }
+    } catch(e){}
+    return origResolveLoss.apply(this, arguments);
+  };
+
+  // ============ 4. Deposit hook - watch for "💎 +X" toasts ============
+  var origShowToast = window.showToast;
+  window.showToast = function(msg, type){
+    try {
+      if (typeof logHistory === 'function' && msg && typeof msg === 'string') {
+        // Deposit detection
+        var m = msg.match(/💎 \+(\d+\.?\d*) TON/);
+        if (m) {
+          logHistory('deposit', parseFloat(m[1]), 'TON deposit');
+        }
+        // Bonus deposit
+        var m2 = msg.match(/bonus = (\d+\.?\d*) TON/);
+        if (m2) {
+          logHistory('deposit', parseFloat(m2[1]), 'Deposit + bonus');
+        }
+        // Sell gift
+        var m3 = msg.match(/Sold (.+) \+(\d+\.?\d*) TON/);
+        if (m3) {
+          logHistory('sell', parseFloat(m3[2]), 'Sold: ' + m3[1]);
+        }
+      }
+    } catch(e){}
+    return origShowToast.apply(this, arguments);
+  };
+
+  // ============ 5. Deposit modal successful send ============
+  // Wrap the deposit success path
+  var origUpdateGlobal = window.updateGlobalBalanceUI;
+  if (origUpdateGlobal) {
+    // not needed, hooks above cover it
+  }
+
+  // ============ 6. Withdraw success ============
+  // Watch for withdraw success by wrapping submitWithdraw
+  var origSubmit = window.submitWithdraw;
+  if (origSubmit) {
+    window.submitWithdraw = async function(){
+      var amtInput = document.getElementById('withdrawAmountInput');
+      var amt = amtInput ? parseFloat(amtInput.value) : 0;
+      var before = typeof balance !== 'undefined' ? balance : 0;
+      var result = await origSubmit.apply(this, arguments);
+      var after = typeof balance !== 'undefined' ? balance : 0;
+      if (after < before - 0.001 && amt > 0) {
+        try {
+          if (typeof logHistory === 'function') {
+            logHistory('withdraw', -amt, 'Withdraw request');
+          }
+        } catch(e){}
+      }
+      return result;
+    };
+  }
+
+  // ============ 7. Deposit modal amount success via tonconnect ============
+  // Alternative: watch for deposit amount change
+  // Not needed if toast hook works
+
+  console.log('History hooks loaded');
+})();
+</script>
+<script id="more-history-hooks">
+(function(){
+  // Wait for functions to be defined
+  setTimeout(function(){
+    // 1. Gift withdraw hook
+    var origGiftWithdraw = window.requestGiftWithdraw;
+    if (origGiftWithdraw) {
+      window.requestGiftWithdraw = async function(uid){
+        var giftBefore = (typeof getGiftByUid === 'function') ? getGiftByUid(uid) : null;
+        var giftVal = giftBefore ? giftBefore.value : 0;
+        var giftName = giftBefore ? giftBefore.name : 'Gift';
+        var result = await origGiftWithdraw.apply(this, arguments);
+        // Check if gift was removed (successful)
+        var giftAfter = (typeof getGiftByUid === 'function') ? getGiftByUid(uid) : null;
+        if (giftBefore && !giftAfter && typeof logHistory === 'function') {
+          logHistory('withdraw', -giftVal, 'Gift: ' + giftName);
+        }
+        return result;
+      };
+      console.log('Gift withdraw hook loaded');
+    }
+
+    // 2. Gift sell hook
+    var origSellGift = window.sellGift;
+    if (origSellGift) {
+      window.sellGift = function(uid){
+        var gift = (typeof getGiftByUid === 'function') ? getGiftByUid(uid) : null;
+        var result = origSellGift.apply(this, arguments);
+        if (gift && typeof logHistory === 'function') {
+          logHistory('sell', gift.value, 'Sold: ' + gift.name);
+        }
+        return result;
+      };
+      console.log('Sell gift hook loaded');
+    }
+
+    // 3. Deposit hook (sendPayment)
+    var origSendPayment = window.sendPayment;
+    if (origSendPayment) {
+      window.sendPayment = async function(){
+        var amtInput = document.getElementById('depositAmountInput');
+        var amt = amtInput ? parseFloat(amtInput.value) : 0;
+        var result = await origSendPayment.apply(this, arguments);
+        if (amt > 0 && typeof logHistory === 'function') {
+          // Log after a small delay to ensure success
+          setTimeout(function(){
+            logHistory('deposit', amt, 'TON deposit');
+          }, 2000);
+        }
+        return result;
+      };
+      console.log('Deposit hook loaded');
+    }
+
+    console.log('More history hooks loaded');
+  }, 1000);
+})();
+</script>
+<script id="admin-user-history">
+function adminViewUserHistory(userId) {
+  var existing = document.getElementById('adminUserHistory');
+  if (existing) existing.remove();
+  var div = document.createElement('div');
+  div.id = 'adminUserHistory';
+  div.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.95);z-index:9999;overflow-y:auto;padding:20px';
+  div.innerHTML = '<button onclick="document.getElementById(\'adminUserHistory\').remove()" style="background:#2ff068;color:#0a0d14;border:none;padding:10px 16px;border-radius:10px;font-weight:900;cursor:pointer;margin-bottom:16px">⬅ Close</button>'
+    + '<div style="color:#fff;font-size:18px;font-weight:900;margin-bottom:16px">📜 History for User ' + userId + '</div>'
+    + '<div id="adminHistList" style="color:#7a8299;text-align:center;padding:20px">⏳ Loading...</div>';
+  document.body.appendChild(div);
+
+  fetch(API_BASE_URL + '/user/' + userId + '/history', {headers:{'ngrok-skip-browser-warning':'true'}})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var items = d.history || [];
+      var list = document.getElementById('adminHistList');
+      if (items.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px;color:#7a8299">No history</div>';
+        return;
+      }
+      var html = '';
+      items.forEach(function(it){
+        var color = it.amount >= 0 ? '#2ff068' : '#ff4444';
+        var sign = it.amount >= 0 ? '+' : '';
+        var t = new Date(it.at).toLocaleString();
+        var icons = {deposit:'💎', withdraw:'📤', win:'🏆', loss:'💔', sell:'💰', bet:'🎲', gift:'🎁'};
+        var icon = icons[it.type] || '📌';
+        html += '<div style="background:#12141f;border:1px solid #232630;border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between">'
+          + '<div><div style="font-weight:800">' + icon + ' ' + (it.type||'event') + '</div>'
+          + (it.note ? '<div style="font-size:11px;color:#7a8299;margin-top:2px">' + it.note + '</div>' : '')
+          + '<div style="font-size:10px;color:#5a6278;margin-top:4px">' + t + '</div></div>'
+          + '<div style="color:' + color + ';font-weight:900;font-size:15px">' + sign + it.amount.toFixed(2) + ' ◈</div></div>';
+      });
+      list.innerHTML = html;
+    })
+    .catch(function(){
+      document.getElementById('adminHistList').innerHTML = '<div style="color:#ff4444;text-align:center">❌ Failed</div>';
+    });
+}
+window.adminViewUserHistory = adminViewUserHistory;
+</script>
+</body>
 </html>
