@@ -305,13 +305,13 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .stat-value-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .stat-value{font-size:15px;font-weight:800;color:#0098ea}
 .stat-pct{font-size:12px;color:var(--text-dim);text-align:right}
-.pvp-wheel-wrap{position:relative;flex:1;min-height:340px;display:flex;justify-content:center;align-items:center}
+.pvp-wheel-wrap{position:relative;display:flex;justify-content:center;align-items:center;padding:20px 0 10px;min-height:auto}
 #pvpCanvas{display:block}
-.pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-.pvp-timer{background:var(--card);font-size:20px;font-weight:800;padding:4px 14px;border-radius:14px;display:inline-block;margin-bottom:10px}
-.pvp-pool-label{font-size:10px;color:var(--text-dim);letter-spacing:1.5px;margin-bottom:4px}
-.pvp-pool{display:flex;justify-content:center;align-items:center;gap:5px;font-size:18px;font-weight:900}
-.pvp-game-num{font-size:10px;color:#5a6278;margin-top:6px}
+.pvp-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;z-index:5;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pvp-timer{background:rgba(0,0,0,.7);color:#ffcc00;font-size:20px;font-weight:900;padding:4px 14px;border-radius:12px;display:inline-block;border:1px solid rgba(255,204,0,.35);letter-spacing:1px}
+.pvp-pool-label{font-size:9px;color:#a0a8bd;letter-spacing:1.5px;margin-bottom:0;font-weight:800}
+.pvp-pool{display:flex;justify-content:center;align-items:center;gap:5px;font-size:18px;font-weight:900;color:#2ff068}
+.pvp-game-num{font-size:9px;color:#5a6278;margin-top:0}
 .pvp-players-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto}
 .pvp-pcard{min-width:96px;padding:14px 10px;border-radius:16px;background:var(--card);text-align:center;flex-shrink:0;position:relative;border:1px solid var(--border-2)}
 .pvp-pcard.isMe{border-color:var(--gold)}.pvp-pcard.winner{border-color:var(--green);transform:scale(1.05)}
@@ -495,6 +495,9 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .auto-toggle-btn{padding:8px 14px;border-radius:10px;border:none;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .2s;margin-left:6px;margin-right:6px;flex-shrink:0;min-width:56px}
 .auto-toggle-btn.off{background:#2a2e42;color:#8a90a6}
 .auto-toggle-btn.on{background:linear-gradient(135deg,#00c853,#009624);color:#fff;box-shadow:0 0 12px rgba(0,200,83,.5)}
+
+.pvp-wheel-wrap::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:22px solid #ffcc00;filter:drop-shadow(0 4px 8px rgba(255,204,0,.6));z-index:10;animation:arrowPulse 1.5s ease-in-out infinite}
+@keyframes arrowPulse{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(3px)}}
 </style></head><body>
   <div id="homeScreen" class="screen">
 <div class="live-ticker"><div class="live-label"><div class="live-dot"></div>LIVE</div><div class="live-ticker-inner" id="liveTickerInner"></div></div>
@@ -1045,5 +1048,278 @@ function dropDraw(){if(!dropCtx)return;const s=dropCW,cx=s/2,cy=s/2;dropCtx.clea
 setTimeout(()=>{if(document.getElementById('wheelCanvas'))initWheelCanvas();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
-</body>
+<script id="pvp-server-sync">
+(function(){
+  setTimeout(function(){
+    // Disable local PVP logic
+    try { pvpStartRound = function(){}; } catch(e){}
+    try { pvpScheduleBots = function(){}; } catch(e){}
+    try { pvpCheckStart = function(){}; } catch(e){}
+    try { pvpSpin = function(){}; } catch(e){}
+    try { pvpDetermineWinner = function(){}; } catch(e){}
+    try { pvpFinishSpin = function(){}; } catch(e){}
+    try { pvpRenderPlayers = function(){}; } catch(e){}
+    try { pvpDraw = function(){}; } catch(e){}
+
+    var lastPhase = null;
+    var lastRoundId = -1;
+    var latestState = null;
+    var spinStartTime = 0;
+    var spinDuration = 4000;
+    var spinStartAngle = 0;
+    var spinEndAngle = 0;
+    var frozenAngle = 0;
+    var _hasSpun = false;
+
+    // Override join — allow multiple joins
+    try {
+      pvpJoinClick = function(){
+        if (typeof API_BASE_URL === 'undefined' || typeof TG_USER === 'undefined') return;
+        var bet = parseFloat(document.getElementById('pvpBetInput').value) || 0;
+        if (bet < 0.1) { showToast('❌ Min 0.1 TON','lose'); return; }
+        if (bet > balance) { showToast('❌ Insufficient','lose'); return; }
+        fetch(API_BASE_URL + '/pvp/join', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},
+          body: JSON.stringify({userId: TG_USER.id, name: TG_USER.name, bet: bet})
+        }).then(function(r){return r.json();})
+          .then(function(d){
+            if (d.ok) {
+              balance -= bet;
+              updateGlobalBalanceUI();
+              showToast('✅ Joined +' + bet.toFixed(2) + ' TON','win');
+            } else {
+              showToast('❌ ' + (d.error||'Failed'),'lose');
+            }
+          }).catch(function(){});
+      };
+    } catch(e){}
+
+    function sync(){
+      if (typeof API_BASE_URL === 'undefined') return;
+      fetch(API_BASE_URL + '/pvp/state', {headers:{'ngrok-skip-browser-warning':'true'}})
+        .then(function(r){return r.json();})
+        .then(function(s){
+          if (s.phase === 'spinning' && lastPhase !== 'spinning') {
+            spinStartTime = performance.now();
+            spinStartAngle = (latestState && latestState._angle) || frozenAngle || 0;
+            _hasSpun = true;
+            var winnerIdx = 0;
+            var total = s.players.reduce(function(sum,p){return sum + parseFloat(p.bet||0);}, 0);
+            var acc = 0;
+            for (var i=0; i<s.players.length; i++) {
+              var slice = (parseFloat(s.players[i].bet)/total) * Math.PI * 2;
+              if (String(s.players[i].id) === String(s.winnerId)) {
+                var targetAngle = -(acc + slice/2);
+                var spins = 4 + Math.floor(Math.random()*3);
+                var normalized = ((targetAngle - spinStartAngle) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+                spinEndAngle = spinStartAngle + spins * Math.PI*2 + normalized;
+                break;
+              }
+              acc += slice;
+            }
+          }
+          latestState = s;
+          lastPhase = s.phase;
+        })
+        .catch(function(){});
+    }
+
+    // Animation loop
+    function drawLoop(){
+      requestAnimationFrame(drawLoop);
+      if (!latestState) return;
+      var s = latestState;
+      var myId = String((TG_USER && TG_USER.id) || '');
+      var total = (s.players||[]).reduce(function(sum,p){return sum + parseFloat(p.bet||0);}, 0);
+
+      // Timer text
+      var t = document.getElementById('pvpTimer');
+      if (t) {
+        if (s.phase === 'waiting') {
+          if (s.timerRunning) {
+            t.innerText = '00:' + String(s.countdown).padStart(2,'0');
+            t.style.color = '#ffcc00';
+          } else {
+            t.innerText = '🔒 Need ' + Math.max(0, 2 - (s.players||[]).length) + ' more';
+            t.style.color = '#ff6b6b';
+          }
+        } else if (s.phase === 'spinning') {
+          t.innerText = '🎡 Spinning';
+          t.style.color = '#ffcc00';
+        } else {
+          t.innerText = '🏆 Winner!';
+          t.style.color = '#2ff068';
+        }
+      }
+      var pEl = document.getElementById('pvpPoolValue');
+      if (pEl) pEl.innerText = total.toFixed(2);
+      var gn = document.getElementById('pvpGameNum');
+      if (gn) gn.innerText = 'Game #' + s.roundId;
+
+      // Rotation angle
+      var angle = frozenAngle;
+      if (s.phase === 'spinning') {
+        var elapsed = performance.now() - spinStartTime;
+        var p = Math.min(1, elapsed / spinDuration);
+        var eased = 1 - Math.pow(1 - p, 3);
+        angle = spinStartAngle + (spinEndAngle - spinStartAngle) * eased;
+        latestState._angle = angle;
+        if (p >= 1) { frozenAngle = spinEndAngle; }
+      } else if (s.phase === 'done') {
+        angle = spinEndAngle;
+        frozenAngle = spinEndAngle;
+        latestState._angle = angle;
+      } else if (s.phase === 'waiting') {
+        // Keep frozen at last position during waiting, slowly reset to 0
+        if (_hasSpun) {
+          frozenAngle = frozenAngle * 0.9;
+          if (Math.abs(frozenAngle) < 0.01) { frozenAngle = 0; _hasSpun = false; }
+          angle = frozenAngle;
+        } else {
+          angle = 0;
+        }
+      }
+
+      // Draw wheel
+      var canvas = document.getElementById('pvpCanvas');
+      if (canvas && s.players && s.players.length > 0 && total > 0) {
+        var ctx = canvas.getContext('2d');
+        var dpr = window.devicePixelRatio || 1;
+        var parent = canvas.parentElement;
+        var size = Math.min(parent.clientWidth - 20, 280);
+        if (canvas.width !== size*dpr) {
+          canvas.width = size*dpr;
+          canvas.height = size*dpr;
+          canvas.style.width = size + 'px';
+          canvas.style.height = size + 'px';
+        }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, size, size);
+        var cx = size/2, cy = size/2, R = size/2 - 6, ir = size*0.27;
+
+        var colors = ['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2'];
+        var a = -Math.PI/2 + angle;
+        s.players.forEach(function(pl, i){
+          var arc = (parseFloat(pl.bet)/total) * Math.PI * 2;
+          var col = (String(pl.id) === myId) ? '#ffcc00' : colors[i % colors.length];
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.arc(cx, cy, R, a, a+arc);
+          ctx.closePath();
+          ctx.fillStyle = col;
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(0,0,0,.3)';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          a += arc;
+        });
+
+        // Center circle
+        ctx.beginPath();
+        ctx.arc(cx, cy, ir, 0, Math.PI*2);
+        ctx.fillStyle = '#1a1d2e';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,204,0,.5)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+
+      } else if (canvas) {
+        var ctx2 = canvas.getContext('2d');
+        var dpr2 = window.devicePixelRatio || 1;
+        var size2 = Math.min(canvas.parentElement.clientWidth - 20, 280);
+        if (canvas.width !== size2*dpr2) {
+          canvas.width = size2*dpr2;
+          canvas.height = size2*dpr2;
+          canvas.style.width = size2 + 'px';
+          canvas.style.height = size2 + 'px';
+        }
+        ctx2.setTransform(dpr2, 0, 0, dpr2, 0, 0);
+        ctx2.clearRect(0, 0, size2, size2);
+        var cx2 = size2/2, cy2 = size2/2;
+        ctx2.beginPath();
+        ctx2.arc(cx2, cy2, size2/2-6, 0, Math.PI*2);
+        ctx2.fillStyle = '#1a1d2e';
+        ctx2.fill();
+        ctx2.beginPath();
+        ctx2.arc(cx2, cy2, size2*0.27, 0, Math.PI*2);
+        ctx2.fillStyle = '#0f1119';
+        ctx2.fill();
+      }
+
+      // Players row
+      var row = document.getElementById('pvpPlayersRow');
+      if (row) {
+        var wanted = (s.players||[]).map(function(p){return p.id + ':' + p.bet;}).join(',') + '|' + s.winnerId;
+        if (row.getAttribute('data-sig') !== wanted) {
+          row.setAttribute('data-sig', wanted);
+          row.innerHTML = '';
+          if ((s.players||[]).length === 0) {
+            row.innerHTML = '<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>';
+          } else {
+            var colors2 = ['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2'];
+            s.players.forEach(function(p, i){
+              var pct = total > 0 ? (parseFloat(p.bet)/total*100).toFixed(1) : '0';
+              var isMe = String(p.id) === myId;
+              var isWin = String(p.id) === String(s.winnerId);
+              var card = document.createElement('div');
+              card.className = 'pvp-pcard' + (isMe ? ' isMe' : '') + (isWin ? ' winner' : '');
+              card.style.borderColor = colors2[i % colors2.length];
+              var badge = isWin ? '🏆 ' : '';
+              card.innerHTML = '<div class="pvp-pav" style="border-color:' + colors2[i % colors2.length] + '">👤</div><div class="pvp-pname">' + badge + (p.name||'Player') + '</div><div class="pvp-ppct" style="color:' + colors2[i % colors2.length] + '">' + pct + '%</div><div class="pvp-pbet">' + parseFloat(p.bet).toFixed(2) + ' TON</div>';
+              row.appendChild(card);
+            });
+          }
+        }
+      }
+
+      // Join button
+      var jb = document.getElementById('joinBattleBtn');
+      var bi = document.getElementById('pvpBetInput');
+      if (jb) {
+        var joined = (s.players||[]).find(function(p){return String(p.id) === myId;});
+        if (s.phase === 'waiting') {
+          // Always allow add/join during countdown
+          if (joined) {
+            jb.innerText = '➕ Add more (' + parseFloat(joined.bet).toFixed(2) + ')';
+            jb.className = 'join-battle-btn joined';
+            jb.disabled = false;
+            if (bi) bi.disabled = false;
+          } else {
+            jb.innerText = 'Join the Battle';
+            jb.className = 'join-battle-btn';
+            jb.disabled = false;
+            if (bi) bi.disabled = false;
+          }
+        } else {
+          jb.innerText = s.phase === 'spinning' ? '🎡 Spinning...' : '✅ Round ended';
+          jb.disabled = true;
+          if (bi) bi.disabled = true;
+        }
+      }
+
+      // Winner result
+      if (s.phase === 'done' && s.winnerId && lastPhase === 'spinning') {
+        var joined = (s.players||[]).find(function(p){return String(p.id) === myId;});
+        if (String(s.winnerId) === myId && total > 0) {
+          try { resolveWin(total); } catch(e){}
+          try { showToast('🏆 You won ' + total.toFixed(2) + ' TON!', 'win'); } catch(e){}
+        } else if (joined) {
+          try { resolveLoss(); } catch(e){}
+          try { showToast('😔 Lost', 'lose'); } catch(e){}
+        }
+        var winner = (s.players||[]).find(function(p){return String(p.id) === String(s.winnerId);});
+        if (winner) {
+          try { showToast('🏆 Winner: ' + (winner.name||'Player'), ''); } catch(e){}
+        }
+      }
+    }
+    requestAnimationFrame(drawLoop);
+
+    setInterval(sync, 500);
+    sync();
+  }, 500);
+})();
+</script></body>
 </html>
