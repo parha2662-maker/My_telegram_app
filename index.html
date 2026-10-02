@@ -482,12 +482,12 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .gift-bet-btn{background:linear-gradient(135deg,var(--gold),var(--gold-2));border:none;color:#0a0d14;padding:8px 12px;border-radius:10px;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;flex-shrink:0}
 .ref-mile-title{font-size:13px;color:var(--text-dim);font-weight:800;margin:16px 0 10px}
 .ref-miles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.ref-mile{background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.ref-mile{background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px;min-height:100px;overflow:hidden}
 .ref-mile.claimed{border-color:rgba(47,240,104,.35);opacity:.65}
 .ref-mile.locked{opacity:.55}
 .ref-mile.ready{border-color:var(--gold);background:linear-gradient(135deg,#2a2100,#12141f);box-shadow:0 4px 14px rgba(255,204,0,.15)}
-.ref-mile-req{font-size:11px;color:var(--text-dim);font-weight:800}
-.ref-mile-reward{font-size:17px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:5px}
+.ref-mile-req{font-size:11px;color:var(--text-dim);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ref-mile-reward{font-size:16px;font-weight:900;color:var(--gold);display:flex;align-items:center;gap:5px;white-space:nowrap}
 .ref-mile-reward .ton-mini{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#0098ea,#0072ff);display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
 .ref-mile-btn{margin-top:4px;padding:9px;border-radius:10px;border:none;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;background:var(--card-2);color:#8a90a6}
 .ref-mile-btn.ready{background:linear-gradient(135deg,#2ff068,#00a838);color:#0a0d14}
@@ -633,7 +633,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="ref-hero" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);padding:22px 18px;margin-bottom:14px"><div class="ref-emoji" style="font-size:48px">🎁</div><div class="ref-title" style="font-size:22px">Referral Rewards</div><div class="ref-sub">Invite friends · <b>0.04 TON</b> per friend at each milestone</div></div>
 <div style="font-size:12px;color:var(--text-dim);font-weight:700;margin-bottom:8px">YOUR REFERRAL LINK</div>
 <div class="ref-link-box"><input type="text" id="rwRefLink" class="ref-link-input" readonly><button class="ref-copy-btn" onclick="rwCopyLink()">📋 Copy</button></div>
-<div style="background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px"><div style="font-size:30px;font-weight:900;color:#2ff068;margin-bottom:4px" id="rwRefCount">0</div><div style="font-size:11px;color:var(--text-dim);font-weight:800;letter-spacing:1px">REFERRALS</div></div>
+<div style="background:var(--card);border:1.5px solid var(--border-2);border-radius:14px;padding:20px 16px;text-align:center;margin-bottom:14px"><div style="font-size:30px;font-weight:900;color:#2ff068;margin-bottom:4px" id="rwRefCount">0</div><div style="font-size:11px;color:var(--text-dim);font-weight:800;letter-spacing:1px">REFERRALS</div></div>
 <button class="ref-share-btn" onclick="shareRefLink()" style="margin-bottom:14px">📤 Share with Friends</button>
 <div class="ref-mile-title">🎁 MILESTONE REWARDS</div>
 <div class="ref-miles" id="rwMilestones"></div>
