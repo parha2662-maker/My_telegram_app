@@ -1049,5 +1049,45 @@ function dropDraw(){if(!dropCtx)return;const s=dropCW,cx=s/2,cy=s/2;dropCtx.clea
 setTimeout(()=>{if(document.getElementById('wheelCanvas'))initWheelCanvas();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
+<script id="crash-real-players-injector">
+(function(){
+  var _curBet=0;
+  setInterval(function(){
+    if(typeof hasJoined!=='undefined'&&hasJoined&&typeof myBet!=='undefined'&&myBet>0&&myBet!==_curBet){
+      _curBet=myBet;
+      if(typeof TG_USER!=='undefined'&&TG_USER.id&&typeof API_BASE_URL!=='undefined'){
+        fetch(API_BASE_URL+'/crash/join',{method:'POST',headers:{'Content-Type':'application/json','ngrok-skip-browser-warning':'true'},body:JSON.stringify({userId:TG_USER.id,name:TG_USER.name||'Player',bet:myBet,auto:(typeof myAutoCashout!=='undefined'?myAutoCashout:0)})}).catch(function(){});
+      }
+    }
+    if(typeof hasJoined!=='undefined'&&!hasJoined)_curBet=0;
+  },500);
+  function render(list){
+    var row=document.getElementById('crashPlayersRow');
+    if(!row)return;
+    var olds=row.querySelectorAll('.real-player-row');
+    for(var i=0;i<olds.length;i++)olds[i].remove();
+    list.forEach(function(p){
+      var div=document.createElement('div');
+      div.className='crash-p-row real-player-row';
+      div.style.borderColor='#ffcc00';
+      div.style.background='rgba(255,204,0,.08)';
+      div.innerHTML='<div class="crash-p-av" style="border-color:#ffcc00">👤</div><div class="crash-p-name" style="color:#ffcc00">'+(p.name||'Player')+'</div><div class="crash-p-mult" style="color:#fff">'+parseFloat(p.bet).toFixed(2)+'</div><span class="crash-p-coin">◈</span>';
+      row.insertBefore(div,row.firstChild);
+    });
+  }
+  function refresh(){
+    if(typeof API_BASE_URL==='undefined')return;
+    fetch(API_BASE_URL+'/crash/players',{headers:{'ngrok-skip-browser-warning':'true'}})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        var myId=(typeof TG_USER!=='undefined'&&TG_USER.id)?String(TG_USER.id):'';
+        var list=(d.players||[]).filter(function(p){return String(p.id)!==myId;});
+        render(list);
+      }).catch(function(){});
+  }
+  setInterval(refresh,2000);
+  setTimeout(refresh,1500);
+})();
+</script>
 </body>
 </html>
