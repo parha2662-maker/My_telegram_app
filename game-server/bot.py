@@ -5,7 +5,7 @@ import telebot
 import requests
 from telebot.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
 
-BOT_TOKEN = '8990993364:AAGan9c_-YMhxKs-pzYn7DmVaqALGFzuif8'
+BOT_TOKEN = '8990993364:AAGhwgjXSDUwnLS_9HFK7cJWVHiAYZ3nv14'
 API_URL = 'http://127.0.0.1:3001/api'
 WEBAPP_URL = 'https://clanking-slang-undamaged.ngrok-free.dev/play'
 
@@ -348,6 +348,7 @@ def handle_gift_callback(call):
 # ==================== NFT CALLBACK HANDLER ====================
 @bot.callback_query_handler(func=lambda call: call.data.startswith('nft'))
 def handle_nft_callback(call):
+    print(f'DEBUG NFT CALLBACK: data={call.data} from={call.from_user.id}')
     admin_id = str(call.from_user.id)
     if admin_id != ADMIN_CHAT_ID:
         bot.answer_callback_query(call.id, "Access denied")
