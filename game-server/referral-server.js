@@ -9,9 +9,9 @@ const META_FILE = path.join(__dirname, 'leaderboard_meta.json');
 
 const ADMIN_PASSWORD = 'parham1234';
 const ACTIVE_PLAYERS = {}; // ACTIVE_PLAYERS_CASHOUT
-const WITHDRAW_BOT_TOKEN = '8990993364:AAGan9c_-YMhxKs-pzYn7DmVaqALGFzuif8';
+const WITHDRAW_BOT_TOKEN = '8990993364:AAGhwgjXSDUwnLS_9HFK7cJWVHiAYZ3nv14';
 const WITHDRAW_ADMIN_ID = '6151360205';
-const BOT_TOKEN = '8990993364:AAGan9c_-YMhxKs-pzYn7DmVaqALGFzuif8';
+const BOT_TOKEN = '8990993364:AAGhwgjXSDUwnLS_9HFK7cJWVHiAYZ3nv14';
 
 async function sendTelegramMessage(chatId, text) {
     try {
@@ -346,6 +346,19 @@ app.post('/api/withdraw', (req, res) => {
             if (fs.existsSync(rf)) reqs = JSON.parse(fs.readFileSync(rf, 'utf8'));
             reqs[reqId] = { reqId, userId, userName: userName||'User', username: username||'', wallet: wallet||'', amount, giftName: giftName||'', gift: req.body.gift||null, type: type||'gift', status: 'pending', createdAt: Date.now() };
             fs.writeFileSync(rf, JSON.stringify(reqs, null, 2));
+            // Add to user history
+            const db = loadDB();
+            if (!db[userId]) db[userId] = { referrals: [], earned: 0, balance: 0, games: [], name: userName || 'User' };
+            if (!db[userId].history) db[userId].history = [];
+            db[userId].history.push({
+                type: 'withdraw',
+                amount: -parseFloat(amount) || 0,
+                note: 'Gift: ' + (giftName || '-'),
+                balance: db[userId].balance || 0,
+                at: Date.now()
+            });
+            saveDB(db);
+            console.log('[withdraw] History logged for user=' + userId);
         } catch(e) { console.log('save err:', e); }
         const keyboard = { inline_keyboard: [
             [{ text: '✅ Confirm', callback_data: 'wd_confirm_' + reqId }],
