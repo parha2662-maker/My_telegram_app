@@ -31,12 +31,20 @@
   h2 { font-size: 1.8em; color: #1F3A5F; text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 4px dashed #FFD61A; }
   p { font-size: 1.2em; color: #1F3A5F; line-height: 1.8; text-align: right; margin-bottom: 10px; }
   
-  /* عکس‌های واقعی و طبیعت */
-  .slide-img { 
-    width: 100%; height: 160px; object-fit: cover; border-radius: 16px; 
-    margin: 10px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 3px solid white; 
+  /* به جای عکس، از این کادرهای گرافیکی خوشگل استفاده می‌کنیم */
+  .graphic-img { 
+    width: 100%; height: 160px; border-radius: 16px; margin: 10px 0; 
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5em; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 3px solid white; 
     transform: translateZ(20px); 
+    background: linear-gradient(135deg, #a8e6cf, #dcedc1); /* پیش‌فرض */
   }
+  
+  .bg-nature { background: linear-gradient(135deg, #a8e6cf, #1e90ff); }
+  .bg-sun { background: linear-gradient(135deg, #ffe259, #ffa751); }
+  .bg-wind { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+  .bg-house { background: linear-gradient(135deg, #f6d365, #fda085); }
+  .bg-food { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
 
   .box { 
     background: linear-gradient(145deg, #ff9e35, #FF8C1A); color: white; padding: 12px 15px; 
@@ -44,10 +52,10 @@
     box-shadow: 5px 5px 15px rgba(255,140,26,0.4), inset 2px 2px 5px rgba(255,255,255,0.4); 
     transform: translateZ(15px);
   }
-  .box.green { background: linear-gradient(145deg, #5bc05f, #4CAF50); box-shadow: 5px 5px 15px rgba(76,175,80,0.4); }
-  .box.yellow { background: linear-gradient(145deg, #ffe066, #FFD61A); color: #1F3A5F; box-shadow: 5px 5px 15px rgba(255,214,26,0.4); }
-  .box.blue { background: linear-gradient(145deg, #2a5298, #1F3A5F); box-shadow: 5px 5px 15px rgba(31,58,95,0.4); }
-  .box.red { background: linear-gradient(145deg, #f05050, #E53935); box-shadow: 5px 5px 15px rgba(229,57,53,0.4); }
+  .box.green { background: linear-gradient(145deg, #5bc05f, #4CAF50); }
+  .box.yellow { background: linear-gradient(145deg, #ffe066, #FFD61A); color: #1F3A5F; }
+  .box.blue { background: linear-gradient(145deg, #2a5298, #1F3A5F); }
+  .box.red { background: linear-gradient(145deg, #f05050, #E53935); }
 
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
   
@@ -89,7 +97,7 @@
 
 <!-- اسلاید 1 -->
 <div class="slide active">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Windmills_in_sunset.jpg/800px-Windmills_in_sunset.jpg" class="slide-img" alt="انرژی در طبیعت" onerror="this.src='https://images.pexels.com/photos/414837/pexels-photo-414837.jpeg'">
+  <div class="graphic-img bg-nature">🏞️☀️</div>
   <h1>انرژی در زندگی ما</h1>
   <p style="text-align:center; font-weight:bold; color:#4CAF50; font-size:1.5em;">کلاس چهارم دبستان</p>
   <p style="text-align:center; color:#1F3A5F;">آموزش، بازی، کشف! 🌍</p>
@@ -98,7 +106,7 @@
 <!-- اسلاید 2 -->
 <div class="slide">
   <h2>🔋 انرژی یعنی چه؟</h2>
-  <img src="https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg" class="slide-img" alt="آذرخش در طبیعت" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Lightning_over_Lake_Taupo.jpg/800px-Lightning_over_Lake_Taupo.jpg'">
+  <div class="graphic-img bg-sun">⛈️⚡</div>
   <div class="box">انرژی = توانایی انجام کار</div>
   <p>🔹 هر چیزی که حرکت کنه، روشن بشه، صدا بده یا گرم بشه، به انرژی نیاز داره.</p>
   <p>🔹 انرژی نه دیده می‌شه نه بو داره، ولی اثرش (مثل همین آذرخش) رو همه‌جا می‌بینیم!</p>
@@ -107,7 +115,7 @@
 <!-- اسلاید 3 -->
 <div class="slide">
   <h2>☀️ شکل‌های انرژی</h2>
-  <img src="https://images.pexels.com/photos/577514/pexels-photo-577514.jpeg" class="slide-img" alt="لامپ روشن" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Light_bulb_%28yellow%29.jpg/640px-Light_bulb_%28yellow%29.jpg'">
+  <div class="graphic-img bg-sun">💡✨</div>
   <div class="grid2">
     <div class="card y">☀️ <b>نورانی</b><br>نور خورشید، لامپ</div>
     <div class="card r">🔥 <b>گرمایی</b><br>شوفاژ، شعله</div>
@@ -130,7 +138,7 @@
 <!-- اسلاید 5 -->
 <div class="slide">
   <h2>🌍 منابع انرژی</h2>
-  <img src="https://images.pexels.com/photos/356036/pexels-photo-356036.jpeg" class="slide-img" alt="پنل خورشیدی در طبیعت" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Solar_panels_on_a_roof.jpg/800px-Solar_panels_on_a_roof.jpg'">
+  <div class="graphic-img bg-wind">🌬️⚙️</div>
   <div class="grid2">
     <div>
       <div class="box green" style="font-size:1em;">🌱 تجدیدپذیر<br><small>(تمام نمی‌شه)</small></div>
@@ -146,7 +154,7 @@
 <!-- اسلاید 6 -->
 <div class="slide">
   <h2>🏠 انرژی در خانه ما</h2>
-  <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg" class="slide-img" alt="خانه در طبیعت" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Casa_%28house%29.jpg/800px-Casa_%28house%29.jpg'">
+  <div class="graphic-img bg-house">🏠🔌</div>
   <div class="card">🚿 آب گرم ← گرمایی</div>
   <div class="card y">💡 لامپ ← نورانی</div>
   <div class="card b">📺 تلویزیون ← الکتریکی</div>
@@ -156,7 +164,7 @@
 <!-- اسلاید 7 -->
 <div class="slide">
   <h2>🍎 بدن ما و انرژی</h2>
-  <img src="https://images.pexels.com/photos/1610832958506-aa56368176cf/pexels-photo-1610832958506-aa56368176cf.jpeg" class="slide-img" alt="میوه های طبیعی" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/640px-Red_Apple.jpg'">
+  <div class="graphic-img bg-food">🍎🍌</div>
   <p>🍎 غذایی که می‌خوریم = انرژی شیمیایی</p>
   <p>🏃 بدن این انرژی رو به حرکت تبدیل می‌کنه</p>
   <div class="box green">🥗 میوه بخور تا انرژی داشته باشی!</div>
@@ -225,9 +233,9 @@
 
 <!-- اسلاید 12 -->
 <div class="slide">
-  <img src="https://images.pexels.com/photos/1441974231531-c6227db76b6e/pexels-photo-1441974231531-c6227db76b6e.jpeg" class="slide-img" alt="جنگل طبیعی" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/FullMoon2010.jpg/800px-FullMoon2010.jpg'">
+  <div class="graphic-img bg-nature">🌍🌱</div>
   <h1>ممنون که همراه ما بودید!</h1>
-  <p style="text-align:center; font-weight:bold; color:#4CAF50; font-size:1.3em; margin-top:15px;">«انرژی رو هدر نده، آینده رو روشن کن» ⚡🌍</p>
+  <p style="text-align:center; font-weight:bold; color:#4CAF50; font-size:1.3em; margin-top:15px;">«انرژی رو هدر نده، آینده رو روشن کن» ⚡</p>
 </div>
 
 <div class="nav">
