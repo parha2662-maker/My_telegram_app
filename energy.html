@@ -7,17 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@700;900&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: 'Vazirmatn', Tahoma, sans-serif; background: #203a43; height: 100vh; display: flex; align-items: center; justify-content: center; }
+  body { 
+    font-family: 'Vazirmatn', Tahoma, sans-serif; 
+    background: linear-gradient(135deg, #203a43, #2c5364); 
+    height: 100vh; display: flex; align-items: center; justify-content: center; 
+  }
   
   .slide { 
-    width: 92vw; height: 92vh; background: #fff; border-radius: 20px; padding: 25px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; flex-direction: column; 
+    width: 92vw; height: 92vh; background: #fff; border-radius: 25px; padding: 25px; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4); display: none; flex-direction: column; 
     align-items: center; overflow-y: auto; position: relative; 
   }
-  .slide.active { display: flex; }
+  .slide.active { display: flex; animation: zoomIn 0.4s ease-out; }
   
-  /* استایل هدرها (رنگی و کتابی) */
-  .header { padding: 10px 40px; border-radius: 30px; font-size: 1.8em; font-weight: 900; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+  @keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  /* استایل هدرها */
+  .header { padding: 12px 45px; border-radius: 40px; font-size: 1.8em; font-weight: 900; margin-bottom: 20px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.15); border: 3px solid white; }
   .bg-blue { background: #BBDEFB; color: #1F3A5F; }
   .bg-yellow { background: #FFD61A; color: #1F3A5F; }
   .bg-pink { background: #F8BBD0; color: #880E4F; }
@@ -27,48 +36,62 @@
 
   p { font-size: 1.25em; color: #333; text-align: justify; line-height: 1.8; margin-bottom: 15px; font-weight: 500; width: 100%; max-width: 800px; }
   
-  /* استایل عکس‌ها */
-  .real-img { width: 100%; max-width: 600px; height: 250px; object-fit: cover; border-radius: 15px; margin: 10px 0 20px 0; box-shadow: 0 6px 15px rgba(0,0,0,0.2); border: 3px solid #eee; }
+  /* استایل عکس‌ها با قاب رنگی */
+  .real-img { width: 100%; max-width: 600px; height: 250px; object-fit: cover; border-radius: 20px; margin: 10px 0 20px 0; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 5px solid #FFD61A; transition: transform 0.3s; }
+  .real-img:hover { transform: scale(1.02); }
   
-  /* کادرهای جذاب برای بچه‌ها */
-  .fun-fact { background: #FFF9C4; border-right: 8px solid #FFD61A; padding: 15px; border-radius: 10px; width: 100%; max-width: 800px; margin-top: 10px; font-weight: bold; color: #F57F17; font-size: 1.2em; line-height: 1.6; }
-  .question-box { background: #E8F5E9; border-right: 8px solid #4CAF50; padding: 15px; border-radius: 10px; width: 100%; max-width: 800px; margin-top: 15px; font-weight: bold; color: #2E7D32; font-size: 1.2em; }
+  /* کادرهای جذاب */
+  .fun-fact { background: #FFF9C4; border-right: 10px solid #FFD61A; padding: 20px; border-radius: 15px; width: 100%; max-width: 800px; margin-top: 10px; font-weight: bold; color: #F57F17; font-size: 1.2em; line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  .question-box { background: #E8F5E9; border-right: 10px solid #4CAF50; padding: 15px; border-radius: 15px; width: 100%; max-width: 800px; margin-top: 15px; font-weight: bold; color: #2E7D32; font-size: 1.2em; }
 
   .flex-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
-  .icon-box { text-align: center; font-weight: bold; color: #1F3A5F; font-size: 1.1em; background: #f0f0f0; padding: 15px; border-radius: 12px; width: 120px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  .icon-box { text-align: center; font-weight: bold; color: #1F3A5F; font-size: 1.2em; background: #f0f0f0; padding: 15px; border-radius: 15px; width: 130px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.2s; }
+  .icon-box:hover { transform: translateY(-5px); }
+
+  /* استایل کارت‌های مسابقه (سه بعدی) */
+  .flip-card { background-color: transparent; width: 140px; height: 140px; perspective: 1000px; cursor: pointer; margin: 10px; }
+  .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-card-front, .flip-card-back {
+    position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 20px; 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15); font-weight: 900; font-size: 1.2em; border: 4px solid white;
+  }
+  .flip-card-front { background-color: #f0f0f0; color: #1F3A5F; }
+  .flip-card-back { background-color: #4CAF50; color: white; transform: rotateY(180deg); font-size: 1.1em; }
 
   .nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 100; }
-  .nav button { background: #FF8C1A; color: white; border: none; padding: 10px 30px; font-size: 1.1em; border-radius: 30px; cursor: pointer; font-family: inherit; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.2s; }
-  .nav button:hover { background: #E65100; }
+  .nav button { background: #FF8C1A; color: white; border: none; padding: 12px 35px; font-size: 1.2em; border-radius: 30px; cursor: pointer; font-family: inherit; font-weight: bold; box-shadow: 0 6px 15px rgba(0,0,0,0.3); transition: 0.2s; }
+  .nav button:hover { background: #E65100; transform: scale(1.05); }
   
-  .counter { position: fixed; top: 15px; left: 20px; background: white; padding: 5px 15px; border-radius: 20px; font-size: 1em; font-weight: bold; color: #1F3A5F; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  .counter { position: fixed; top: 15px; left: 20px; background: white; padding: 5px 15px; border-radius: 20px; font-size: 1em; font-weight: bold; color: #1F3A5F; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
 
 <div class="counter"><span id="cur">1</span> / <span id="total">17</span></div>
 
-<!-- اسلاید 1: جلد (عکس پنل خورشیدی و طبیعت) -->
+<!-- اسلاید 1: جلد -->
 <div class="slide active">
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1509391366360-12095c48980f" class="real-img" style="height: 300px; margin-top: 30px;" alt="طبیعت و انرژی">
-  <h1 style="color:#FF8C1A; font-size:3em; margin-bottom:10px; margin-top:20px;">درس علوم</h1>
-  <h2 style="color:#1F3A5F; font-size:2em; margin-bottom:20px;">پایه چهارم ابتدایی</h2>
-  <div class="header bg-yellow" style="font-size:3em; color:#E53935; padding: 15px 60px;">انرژی در زندگی ما</div>
-  <p style="text-align:center; margin-top:30px; font-size:1.5em; font-weight:bold;">تهیه‌کننده: پارسا یوسف نژاد</p>
+  <h1 style="color:#FF8C1A; font-size:3em; margin-bottom:10px; margin-top:20px;">درس علوم 🔬</h1>
+  <h2 style="color:#1F3A5F; font-size:2em; margin-bottom:20px;">پایه چهارم ابتدایی 🏫</h2>
+  <div class="header bg-yellow" style="font-size:3em; color:#E53935; padding: 15px 60px;">انرژی در زندگی ما ⚡</div>
+  <p style="text-align:center; margin-top:30px; font-size:1.5em; font-weight:bold; color:#4CAF50;">تهیه‌کننده: پارسا یوسف نژاد 🌟</p>
 </div>
 
-<!-- اسلاید 2: انرژی چیست؟ (عکس لامپ روشن) -->
+<!-- اسلاید 2: انرژی چیست؟ -->
 <div class="slide">
-  <div class="header bg-blue">انرژی چیست؟</div>
+  <div class="header bg-blue">انرژی چیست؟ 🤔</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1558449028-b53a39d100fc" class="real-img" alt="لامپ روشن">
-  <p>به زبان ساده، <b>انرژی یعنی توانایی انجام کار</b>. هر وقت کاری در اطراف ما انجام می‌شود (مثل دویدن، روشن شدن لامپ یا حرکت ماشین)، پای انرژی در میان است.</p>
-  <p>ما انرژی را نمی‌توانیم ببینیم یا لمس کنیم، اما می‌توانیم اثرات آن را ببینیم و حس کنیم. مثلا نور و گرمای خورشید یا صدای زنگ در، همه نشانه‌های وجود انرژی هستند.</p>
-  <div class="question-box">❓ به نظر شما وقتی توپ را پرت می‌کنیم، انرژی از کجا می‌آید؟</div>
+  <p>به زبان ساده، <b>انرژی یعنی توانایی انجام کار</b> 💪. هر وقت کاری در اطراف ما انجام می‌شود (مثل دویدن 🏃، روشن شدن لامپ 💡 یا حرکت ماشین 🚗)، پای انرژی در میان است.</p>
+  <p>ما انرژی را نمی‌توانیم ببینیم یا لمس کنیم، اما می‌توانیم اثرات آن را ببینیم و حس کنیم. مثلا نور و گرمای خورشید ☀️ یا صدای زنگ در 🔔، همه نشانه‌های وجود انرژی هستند.</p>
+  <div class="question-box">❓ به نظر شما وقتی توپ را پرت می‌کنیم ⚽، انرژی از کجا می‌آید؟</div>
 </div>
 
-<!-- اسلاید 3: انواع انرژی (عکس توربین بادی) -->
+<!-- اسلاید 3: انواع انرژی -->
 <div class="slide">
-  <div class="header bg-yellow">انواع انرژی</div>
+  <div class="header bg-yellow">انواع انرژی ⚡</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1466611653911-95081537e5b7" class="real-img" alt="انرژی بادی">
   <p>انرژی در دنیای اطراف ما به شکل‌های مختلفی وجود دارد. مهم‌ترین شکل‌های انرژی که در زندگی روزمره با آن‌ها سر و کار داریم عبارتند از:</p>
   <div class="flex-row">
@@ -81,145 +104,173 @@
   </div>
 </div>
 
-<!-- اسلاید 4: انرژی خورشیدی (عکس خورشید درخشان) -->
+<!-- اسلاید 4: انرژی خورشیدی -->
 <div class="slide">
-  <div class="header bg-pink">انرژی خورشیدی</div>
+  <div class="header bg-pink">انرژی خورشیدی ☀️</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1534447677768-be436bb09401" class="real-img" alt="خورشید">
-  <p>خورشید بزرگ‌ترین و مهم‌ترین منبع انرژی برای زمین است. نور و گرمای خورشید باعث رشد گیاهان می‌شود و به ما کمک می‌کند تا زنده بمانیم.</p>
-  <p>ما می‌توانیم با استفاده از پنل‌های خورشیدی، نور خورشید را به انرژی الکتریکی (برق) تبدیل کنیم تا از آن در خانه‌ها و کارخانه‌ها استفاده کنیم.</p>
+  <p>خورشید بزرگ‌ترین و مهم‌ترین منبع انرژی برای زمین است 🌍. نور و گرمای خورشید باعث رشد گیاهان 🌱 می‌شود و به ما کمک می‌کند تا زنده بمانیم.</p>
+  <p>ما می‌توانیم با استفاده از پنل‌های خورشیدی، نور خورشید را به انرژی الکتریکی (برق) تبدیل کنیم تا از آن در خانه‌ها و کارخانه‌ها استفاده کنیم 🏠🏭.</p>
 </div>
 
-<!-- اسلاید 5: انرژی الکتریکی (عکس دکل برق) -->
+<!-- اسلاید 5: انرژی الکتریکی -->
 <div class="slide">
-  <div class="header bg-purple">انرژی الکتریکی</div>
+  <div class="header bg-purple">انرژی الکتریکی ⚡</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1473341304170-971dccb5ac1e" class="real-img" alt="برق">
-  <p>انرژی الکتریکی همان برقی است که از پریزهای خانه دریافت می‌کنیم. این انرژی بسیار پرکاربرد است و بدون آن زندگی امروزی بسیار سخت می‌شود.</p>
-  <p>تلویزیون، یخچال، لامپ‌های روشنایی، تلفن همراه و حتی اتوبوس‌های برقی، همه با انرژی الکتریکی کار می‌کنند.</p>
+  <p>انرژی الکتریکی همان برقی است که از پریزهای خانه دریافت می‌کنیم 🔌. این انرژی بسیار پرکاربرد است و بدون آن زندگی امروزی بسیار سخت می‌شود.</p>
+  <p>تلویزیون 📺، یخچال 🧊، لامپ‌های روشنایی 💡، تلفن همراه 📱 و حتی اتوبوس‌های برقی 🚌، همه با انرژی الکتریکی کار می‌کنند.</p>
 </div>
 
-<!-- اسلاید 6: انرژی گرمایی (عکس شومینه یا آتش) -->
+<!-- اسلاید 6: انرژی گرمایی -->
 <div class="slide">
-  <div class="header bg-red">انرژی گرمایی</div>
+  <div class="header bg-red">انرژی گرمایی 🔥</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1520250497591-112f2f40a3f4" class="real-img" alt="آتش">
-  <p>گرما نوعی دیگر از انرژی است. هر چیزی که گرم باشد، دارای انرژی گرمایی است. وقتی دست خود را نزدیک شوفاژ یا شعله شمع می‌گیرید، گرما را حس می‌کنید.</p>
-  <p>ما از انرژی گرمایی برای پختن غذا، گرم کردن خانه‌ها در زمستان و خشک کردن لباس‌ها استفاده می‌کنیم. حتی بدن خود ما هم گرما تولید می‌کند.</p>
+  <p>گرما نوعی دیگر از انرژی است 🌡️. هر چیزی که گرم باشد، دارای انرژی گرمایی است. وقتی دست خود را نزدیک شوفاژ یا شعله شمع می‌گیرید، گرما را حس می‌کنید.</p>
+  <p>ما از انرژی گرمایی برای پختن غذا 🍳، گرم کردن خانه‌ها در زمستان ❄️ و خشک کردن لباس‌ها 👕 استفاده می‌کنیم. حتی بدن خود ما هم گرما تولید می‌کند.</p>
 </div>
 
-<!-- اسلاید 7: انرژی حرکتی (عکس ماشین در حال حرکت) -->
+<!-- اسلاید 7: انرژی حرکتی -->
 <div class="slide">
-  <div class="header bg-green">انرژی حرکتی</div>
+  <div class="header bg-green">انرژی حرکتی 🏃</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1494976388531-d1058494cdd8" class="real-img" alt="ماشین در حال حرکت">
-  <p>هر جسمی که در حال حرکت باشد، انرژی حرکتی دارد. هرچه سرعت آن جسم بیشتر باشد یا سنگین‌تر باشد، انرژی حرکتی آن بیشتر است.</p>
-  <p>ما هنگام راه رفتن، دویدن، دوچرخه‌سواری و بازی کردن از انرژی حرکتی استفاده می‌کنیم. حرکت ماشین‌ها، هواپیماها و حتی وزش باد نیز از نوع انرژی حرکتی هستند.</p>
+  <p>هر جسمی که در حال حرکت باشد، انرژی حرکتی دارد 🚀. هرچه سرعت آن جسم بیشتر باشد یا سنگین‌تر باشد، انرژی حرکتی آن بیشتر است.</p>
+  <p>ما هنگام راه رفتن 🚶، دویدن 🏃‍♂️، دوچرخه‌سواری 🚴 و بازی کردن ⚽ از انرژی حرکتی استفاده می‌کنیم. حرکت ماشین‌ها 🚗، هواپیماها ✈️ و حتی وزش باد 💨 نیز از نوع انرژی حرکتی هستند.</p>
 </div>
 
-<!-- اسلاید 8: انرژی صوتی (عکس بلندگو یا موج صدا) -->
+<!-- اسلاید 8: انرژی صوتی -->
 <div class="slide">
-  <div class="header bg-blue">انرژی صوتی</div>
+  <div class="header bg-blue">انرژی صوتی 🔊</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1598488035139-bdbb2231ce04" class="real-img" alt="موسیقی">
-  <p>صدا هم نوعی انرژی است که با لرزش به وجود می‌آید. وقتی صحبت می‌کنیم، تارهای صوتی ما می‌لرزند و صدا تولید می‌شود.</p>
-  <p>وقتی به گیتار یا طبل ضربه می‌زنیم، لرزش ایجاد شده باعث تولید انرژی صوتی می‌شود که به گوش ما می‌رسد و ما آن را می‌شنویم.</p>
+  <p>صدا هم نوعی انرژی است که با لرزش به وجود می‌آید 〰️. وقتی صحبت می‌کنیم 🗣️، تارهای صوتی ما می‌لرزند و صدا تولید می‌شود.</p>
+  <p>وقتی به گیتار 🎸 یا طبل 🥁 ضربه می‌زنیم، لرزش ایجاد شده باعث تولید انرژی صوتی می‌شود که به گوش ما می‌رسد و ما آن را می‌شنویم 👂.</p>
 </div>
 
-<!-- اسلاید 9: انرژی شیمیایی (عکس میوه‌ها) -->
+<!-- اسلاید 9: انرژی شیمیایی -->
 <div class="slide">
-  <div class="header bg-yellow">انرژی شیمیایی</div>
+  <div class="header bg-yellow">انرژی شیمیایی 🍎</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1610832958506-aa56368176cf" class="real-img" alt="میوه">
-  <p>انرژی شیمیایی درون مواد مختلف ذخیره شده است. وقتی این مواد تغییر می‌کنند، انرژی شیمیایی آن‌ها آزاد می‌شود.</p>
-  <p>غذایی که می‌خوریم (مثل سیب، نان و شیر) دارای انرژی شیمیایی است که بدن ما از آن برای حرکت و رشد استفاده می‌کند. باتری‌ها و سوخت ماشین‌ها هم انرژی شیمیایی دارند.</p>
+  <p>انرژی شیمیایی درون مواد مختلف ذخیره شده است 🧪. وقتی این مواد تغییر می‌کنند، انرژی شیمیایی آن‌ها آزاد می‌شود.</p>
+  <p>غذایی که می‌خوریم (مثل سیب 🍎، نان 🍞 و شیر 🥛) دارای انرژی شیمیایی است که بدن ما از آن برای حرکت و رشد استفاده می‌کند. باتری‌ها 🔋 و سوخت ماشین‌ها ⛽ هم انرژی شیمیایی دارند.</p>
 </div>
 
 <!-- اسلاید 10: آیا می‌دانستید 1؟ -->
 <div class="slide" style="justify-content: center;">
   <div class="header bg-purple" style="font-size: 2.5em;">🤩 آیا می‌دانستید؟</div>
   <div class="fun-fact" style="font-size: 1.4em; padding: 30px;">
-    ☀️ آیا می‌دانستید نور خورشید فقط ۸ دقیقه و ۲۰ ثانیه طول می‌کشد تا به زمین برسد؟<br><br>
-    🍌 آیا می‌دانستید انرژی ذخیره شده در یک موز، برای دویدن به مدت ۱۰ دقیقه کافی است؟<br><br>
-    🌩️ آیا می‌دانستید انرژی یک آذرخش، می‌تواند یک لامپ را برای چندین ماه روشن نگه دارد؟
+    ☀️ آیا می‌دانستید نور خورشید فقط ۸ دقیقه و ۲۰ ثانیه طول می‌کشد تا به زمین برسد؟ ⏱️<br><br>
+    🍌 آیا می‌دانستید انرژی ذخیره شده در یک موز، برای دویدن به مدت ۱۰ دقیقه کافی است؟ 🏃<br><br>
+    🌩️ آیا می‌دانستید انرژی یک آذرخش، می‌تواند یک لامپ را برای چندین ماه روشن نگه دارد؟ 💡
   </div>
 </div>
 
 <!-- اسلاید 11: منابع انرژی -->
 <div class="slide">
-  <div class="header bg-yellow">منابع انرژی</div>
+  <div class="header bg-yellow">منابع انرژی 🌍</div>
   <p>ما انرژی مورد نیاز خود را از منابع مختلفی به دست می‌آوریم. این منابع به دو دسته اصلی تقسیم می‌شوند:</p>
   <div class="fun-fact" style="background: #E8F5E9; border-color: #4CAF50; color: #2E7D32;">
-    <b>۱. منابع تجدیدپذیر (پایان‌ناپذیر):</b><br> مثل خورشید، باد و آب. این منابع تمام نمی‌شوند و به طبیعت آسیب نمی‌زنند.
+    <b>۱. منابع تجدیدپذیر (پایان‌ناپذیر) ♻️:</b><br> مثل خورشید ☀️، باد 💨 و آب 🌊. این منابع تمام نمی‌شوند و به طبیعت آسیب نمی‌زنند.
   </div>
   <div class="fun-fact" style="background: #FFEBEE; border-color: #E53935; color: #C62828; margin-top:15px;">
-    <b>۲. منابع تجدیدناپذیر (پایان‌پذیر):</b><br> مثل نفت، گاز و زغال‌سنگ. این منابع در زیر زمین هستند و در صورت تمام شدن، دیگر جایگزین نمی‌شوند.
+    <b>۲. منابع تجدیدناپذیر (پایان‌پذیر) 🛢️:</b><br> مثل نفت 🛢️، گاز 💨 و زغال‌سنگ ⛏️. این منابع در زیر زمین هستند و در صورت تمام شدن، دیگر جایگزین نمی‌شوند.
   </div>
 </div>
 
 <!-- اسلاید 12: چرا انرژی مهم است؟ -->
 <div class="slide">
-  <div class="header bg-blue">چرا انرژی مهم است؟</div>
+  <div class="header bg-blue">چرا انرژی مهم است؟ ❤️</div>
   <img src="https://images.weserv.nl/?url=images.unsplash.com/photo-1614730321146-b6fa6a46bcb4" class="real-img" alt="زمین">
   <p>بدون انرژی، هیچ‌کدام از کارهای روزمره ما انجام نمی‌شد. انرژی به ما کمک می‌کند تا:</p>
-  <p>✅ زندگی کنیم و بدن‌مان حرکت کند.<br>
-  ✅ گیاهان رشد کنند و غذا تولید شود.<br>
-  ✅ خانه‌ها در زمستان گرم و در تابستان خنک باشند.<br>
-  ✅ وسایل نقلیه حرکت کنند و ما به مدرسه برویم.</p>
-  <p style="color:#E53935; font-weight:bold;">در واقع، بدون انرژی، زندگی روی زمین ممکن نیست!</p>
+  <p>✅ زندگی کنیم و بدن‌مان حرکت کند. 🏃<br>
+  ✅ گیاهان رشد کنند و غذا تولید شود. 🌱<br>
+  ✅ خانه‌ها در زمستان گرم و در تابستان خنک باشند. ❄️☀️<br>
+  ✅ وسایل نقلیه حرکت کنند و ما به مدرسه برویم. 🚌</p>
+  <p style="color:#E53935; font-weight:bold;">در واقع، بدون انرژی، زندگی روی زمین ممکن نیست! 🌍</p>
 </div>
 
-<!-- اسلاید 13: آیا می‌دانستید 2؟ (تبدیل انرژی) -->
+<!-- اسلاید 13: تبدیل انرژی -->
 <div class="slide" style="justify-content: center;">
   <div class="header bg-pink" style="font-size: 2.5em;">🔄 تبدیل انرژی</div>
-  <p style="text-align:center; font-size: 1.4em;">انرژی از بین نمی‌رود، بلکه از شکلی به شکل دیگر تبدیل می‌شود.</p>
+  <p style="text-align:center; font-size: 1.4em;">انرژی از بین نمی‌رود، بلکه از شکلی به شکل دیگر تبدیل می‌شود 🔁.</p>
   <div class="fun-fact" style="font-size: 1.3em;">
-    💡 در یک چراغ‌قوه: انرژی شیمیایی (باتری) تبدیل به انرژی الکتریکی می‌شود و سپس به انرژی نورانی و گرمایی تبدیل می‌شود!<br><br>
-    🚗 در یک ماشین: انرژی شیمیایی (بنزین) تبدیل به انرژی حرکتی می‌شود!
+    💡 در یک چراغ‌قوه: انرژی شیمیایی (باتری 🔋) تبدیل به انرژی الکتریکی (⚡) می‌شود و سپس به انرژی نورانی (✨) و گرمایی (♨️) تبدیل می‌شود!<br><br>
+    🚗 در یک ماشین: انرژی شیمیایی (بنزین ⛽) تبدیل به انرژی حرکتی (💨) می‌شود!
   </div>
 </div>
 
 <!-- اسلاید 14: ذخیره انرژی (صرفه‌جویی) -->
 <div class="slide">
-  <div class="header bg-green">چگونه در مصرف انرژی صرفه‌جویی کنیم؟</div>
-  <p>با صرفه‌جویی در مصرف انرژی، هم در هزینه‌ها صرفه‌جویی می‌کنیم و هم از محیط زیست و منابع طبیعی زمین محافظت می‌کنیم.</p>
+  <div class="header bg-green">چگونه در مصرف انرژی صرفه‌جویی کنیم؟ 💚</div>
+  <p>با صرفه‌جویی در مصرف انرژی، هم در هزینه‌ها صرفه‌جویی می‌کنیم و هم از محیط زیست و منابع طبیعی زمین محافظت می‌کنیم 🌳.</p>
   <div class="flex-row" style="margin-top:20px;">
     <div class="icon-box" style="background: #FFF9C4;">💡<br>خاموش کردن<br>چراغ‌های اضافی</div>
     <div class="icon-box" style="background: #BBDEFB;">🚰<br>بستن شیر آب<br>هنگام مسواک</div>
     <div class="icon-box" style="background: #FFCDD2;">🔌<br>کشیدن دوشاخه<br>وسایل برقی</div>
     <div class="icon-box" style="background: #C8E6C9;">🚶<br>پیاده‌روی برای<br>مسیرهای کوتاه</div>
   </div>
-  <div class="question-box" style="margin-top: 30px;">💚 با رعایت این نکات، ما هم به نجات زمین کمک می‌کنیم!</div>
+  <div class="question-box" style="margin-top: 30px;">🏆 با رعایت این نکات، ما هم به نجات زمین کمک می‌کنیم!</div>
 </div>
 
-<!-- اسلاید 15: مسابقه -->
+<!-- اسلاید 15: مسابقه تعاملی (Flip Cards) -->
 <div class="slide">
-  <div class="header bg-purple">🎯 مسابقه! بگو کدام شکل انرژی؟</div>
-  <p>به این وسایل فکر کن و بگو هر کدام از چه نوع انرژی‌ای استفاده می‌کنند؟</p>
-  <div class="flex-row" style="margin-top: 20px;">
-    <div class="icon-box" style="background: #FFD61A;">💡 لامپ</div>
-    <div class="icon-box" style="background: #FFCDD2;">🔥 بخاری</div>
-    <div class="icon-box" style="background: #BBDEFB;">🔊 بلندگو</div>
-    <div class="icon-box" style="background: #C8E6C9;">🍎 سیب</div>
-    <div class="icon-box" style="background: #E1BEE7;">🚴 دوچرخه</div>
-  </div>
-  <div class="question-box" style="margin-top: 30px; font-size: 1.3em;">
-    پاسخ‌ها: <br>لامپ (نورانی) | بخاری (گرمایی) | بلندگو (صوتی) | سیب (شیمیایی) | دوچرخه (حرکتی)
+  <div class="header bg-purple">🎯 مسابقه! روی کارت‌ها کلیک کن</div>
+  <p style="text-align:center; color:#E53935; margin-bottom:10px;">(روی هر کارت ضربه بزن تا بچرخه و جواب رو ببینی!) 👆</p>
+  <div class="flex-row">
+    
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">💡<br>لامپ</div>
+        <div class="flip-card-back">انرژی<br>نورانی ✨</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">🔥<br>بخاری</div>
+        <div class="flip-card-back">انرژی<br>گرمایی ♨️</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">🔊<br>بلندگو</div>
+        <div class="flip-card-back">انرژی<br>صوتی 🎵</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">🍎<br>سیب</div>
+        <div class="flip-card-back">انرژی<br>شیمیایی 🧪</div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">🚴<br>دوچرخه</div>
+        <div class="flip-card-back">انرژی<br>حرکتی 🏃</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <!-- اسلاید 16: جمع‌بندی -->
 <div class="slide">
   <div class="header bg-pink">📚 جمع‌بندی</div>
-  <div class="fun-fact" style="font-size: 1.2em; line-height: 2;">
+  <div class="fun-fact" style="font-size: 1.2em; line-height: 2.2;">
     ✅ انرژی یعنی توانایی انجام کار و در همه‌جا وجود دارد.<br>
     ✅ انرژی شکل‌های مختلفی مثل نورانی، گرمایی، حرکتی، صوتی و شیمیایی دارد.<br>
     ✅ منابع انرژی به دو دسته تجدیدپذیر و تجدیدناپذیر تقسیم می‌شوند.<br>
     ✅ انرژی از بین نمی‌رود، فقط تبدیل می‌شود.<br>
     ✅ با صرفه‌جویی، از زمین محافظت می‌کنیم.
   </div>
-  <h1 style="color:#4CAF50; font-size:2em; margin-top:30px; text-align:center;">ما می‌توانیم با انرژی، دنیای بهتری بسازیم. 🌍</h1>
+  <h1 style="color:#4CAF50; font-size:2em; margin-top:30px; text-align:center;">ما می‌توانیم با انرژی، دنیای بهتری بسازیم 🌍✨</h1>
 </div>
 
 <!-- اسلاید 17: تشکر -->
 <div class="slide" style="justify-content: center;">
-  <h1 style="color:#1F3A5F; font-size:4em; margin-bottom:20px; text-align:center;">با تشکر</h1>
-  <h2 style="color:#1F3A5F; font-size:2.5em; margin-bottom:50px; text-align:center;">از توجه شما</h2>
-  <div class="header bg-yellow" style="font-size:1.8em;">تهیه‌کننده: پارسا یوسف نژاد</div>
+  <h1 style="color:#1F3A5F; font-size:4em; margin-bottom:20px; text-align:center;">با تشکر 🎉</h1>
+  <h2 style="color:#1F3A5F; font-size:2.5em; margin-bottom:50px; text-align:center;">از توجه شما 🙏</h2>
+  <div class="header bg-yellow" style="font-size:1.8em;">تهیه‌کننده: پارسا یوسف نژاد 🌟</div>
 </div>
 
 <div class="nav">
