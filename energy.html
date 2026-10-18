@@ -11,84 +11,84 @@
     font-family: 'Vazirmatn', 'Tahoma', sans-serif; 
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
     height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; 
-    perspective: 1200px;
   }
   
   .slide { 
-    width: 90vw; height: 88vh; background: white; border-radius: 24px; padding: 25px 20px; 
-    box-shadow: 15px 15px 30px rgba(0,0,0,0.6), inset -5px -5px 15px rgba(255,255,255,0.5); 
-    display: none; flex-direction: column; justify-content: flex-start; position: relative; overflow-y: auto; 
-    transform-style: preserve-3d;
+    width: 92vw; height: 90vh; background: white; border-radius: 24px; padding: 30px 25px; 
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.5); 
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+    position: relative; overflow-y: auto; 
   }
-  .slide.active { display: flex; animation: slideIn3D 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .slide.active { display: flex; animation: fadeIn 0.5s ease-out; }
   
-  @keyframes slideIn3D { 
-    from {opacity:0; transform: rotateY(-15deg) translateZ(-100px) scale(0.9);} 
-    to {opacity:1; transform: rotateY(0) translateZ(0) scale(1);} 
+  @keyframes fadeIn { 
+    from {opacity:0; transform: translateY(20px);} 
+    to {opacity:1; transform: translateY(0);} 
   }
 
-  h1 { font-size: 2.3em; color: #FF8C1A; text-align: center; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
-  h2 { font-size: 1.8em; color: #1F3A5F; text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 4px dashed #FFD61A; }
-  p { font-size: 1.2em; color: #1F3A5F; line-height: 1.8; text-align: right; margin-bottom: 10px; }
+  h1 { font-size: 2.5em; color: #FF8C1A; text-align: center; margin-bottom: 20px; }
+  h2 { font-size: 2em; color: #1F3A5F; text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 4px dashed #FFD61A; width: 100%; }
+  p { font-size: 1.3em; color: #1F3A5F; line-height: 1.8; text-align: center; margin-bottom: 10px; }
   
-  /* به جای عکس، از این کادرهای گرافیکی خوشگل استفاده می‌کنیم */
+  /* کادرهای گرافیکی جایگزین عکس */
   .graphic-img { 
-    width: 100%; height: 160px; border-radius: 16px; margin: 10px 0; 
+    width: 100%; height: 130px; border-radius: 16px; margin-bottom: 20px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 5em; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 3px solid white; 
-    transform: translateZ(20px); 
-    background: linear-gradient(135deg, #a8e6cf, #dcedc1); /* پیش‌فرض */
+    font-size: 4em; box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+    border: 3px solid white;
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
   }
   
-  .bg-nature { background: linear-gradient(135deg, #a8e6cf, #1e90ff); }
-  .bg-sun { background: linear-gradient(135deg, #ffe259, #ffa751); }
-  .bg-wind { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
-  .bg-house { background: linear-gradient(135deg, #f6d365, #fda085); }
-  .bg-food { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+  .bg-sun { background: linear-gradient(135deg, #FFF9C4, #FFD61A); border-color: #FF8C1A; }
+  .bg-wind { background: linear-gradient(135deg, #E3F2FD, #90CAF9); border-color: #2196F3; }
+  .bg-house { background: linear-gradient(135deg, #FBE9E7, #FFCCBC); border-color: #FF5722; }
+  .bg-food { background: linear-gradient(135deg, #F1F8E9, #C5E1A5); border-color: #4CAF50; }
+  .bg-nature { background: linear-gradient(135deg, #E8F5E9, #A5D6A7); border-color: #4CAF50; }
 
   .box { 
-    background: linear-gradient(145deg, #ff9e35, #FF8C1A); color: white; padding: 12px 15px; 
-    border-radius: 16px; margin: 8px 0; text-align: center; font-size: 1.3em; font-weight: bold; 
-    box-shadow: 5px 5px 15px rgba(255,140,26,0.4), inset 2px 2px 5px rgba(255,255,255,0.4); 
-    transform: translateZ(15px);
+    background: #FF8C1A; color: white; padding: 15px 20px; 
+    border-radius: 16px; margin: 10px 0; text-align: center; font-size: 1.4em; font-weight: bold; 
+    box-shadow: 0 5px 15px rgba(255,140,26,0.3); width: 100%;
   }
-  .box.green { background: linear-gradient(145deg, #5bc05f, #4CAF50); }
-  .box.yellow { background: linear-gradient(145deg, #ffe066, #FFD61A); color: #1F3A5F; }
-  .box.blue { background: linear-gradient(145deg, #2a5298, #1F3A5F); }
-  .box.red { background: linear-gradient(145deg, #f05050, #E53935); }
+  .box.green { background: #4CAF50; box-shadow: 0 5px 15px rgba(76,175,80,0.3); }
+  .box.yellow { background: #FFD61A; color: #1F3A5F; box-shadow: 0 5px 15px rgba(255,214,26,0.3); }
+  .box.blue { background: #1F3A5F; box-shadow: 0 5px 15px rgba(31,58,95,0.3); }
+  .box.red { background: #E53935; box-shadow: 0 5px 15px rgba(229,57,53,0.3); }
 
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; width: 100%; }
   
   .card { 
-    background: linear-gradient(145deg, #ffffff, #f0f0f0); padding: 12px; border-radius: 14px; 
-    text-align: center; font-size: 1.1em; border-right: 8px solid #FF8C1A; margin: 6px 0; 
-    box-shadow: 3px 3px 10px rgba(0,0,0,0.1); 
+    background: #ffffff; padding: 15px; border-radius: 14px; 
+    text-align: center; font-size: 1.2em; border-right: 8px solid #FF8C1A; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 10px; width: 100%;
+    color: #1F3A5F; font-weight: bold;
   }
-  .card.y { border-color:#FFD61A; background: linear-gradient(145deg, #fffde7, #FFF9C4); }
-  .card.g { border-color:#4CAF50; background: linear-gradient(145deg, #f1f8e9, #DCEDC8); }
-  .card.b { border-color:#1F3A5F; background: linear-gradient(145deg, #e3f2fd, #BBDEFB); }
-  .card.r { border-color:#E53935; background: linear-gradient(145deg, #ffebee, #FFCDD2); }
+  .card.y { border-color:#FFD61A; background: #FFF9C4; }
+  .card.g { border-color:#4CAF50; background: #DCEDC8; }
+  .card.b { border-color:#1F3A5F; background: #BBDEFB; }
+  .card.r { border-color:#E53935; background: #FFCDD2; }
 
-  .flip-card { background-color: transparent; width: 100%; height: 55px; perspective: 1000px; cursor: pointer; margin-bottom: 8px; }
+  /* کارت های مسابقه */
+  .flip-card { background-color: transparent; width: 100%; height: 60px; cursor: pointer; margin-bottom: 10px; }
   .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
   .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
   .flip-front, .flip-back {
     position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
-    display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 1.1em; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 1.2em; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
-  .flip-front { background: #f0f0f0; color: #1F3A5F; border: 2px solid #ccc; }
-  .flip-back { background: linear-gradient(145deg, #5bc05f, #4CAF50); color: white; transform: rotateY(180deg); }
+  .flip-front { background: #ffffff; color: #1F3A5F; border: 2px solid #ccc; }
+  .flip-back { background: #4CAF50; color: white; transform: rotateY(180deg); border: 2px solid #388E3C; }
 
   .nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; z-index: 100; }
   .nav button { 
-    background: linear-gradient(145deg, #ff9e35, #FF8C1A); color: white; border: none; padding: 10px 25px; 
-    font-size: 1em; border-radius: 30px; cursor: pointer; font-family: inherit; font-weight: bold; 
-    box-shadow: 0 6px 10px rgba(0,0,0,0.3), inset 2px 2px 5px rgba(255,255,255,0.4); 
+    background: #FF8C1A; color: white; border: none; padding: 10px 30px; 
+    font-size: 1.1em; border-radius: 30px; cursor: pointer; font-family: inherit; font-weight: bold; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.2s;
   }
-  .nav button:active { transform: scale(0.95); box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+  .nav button:hover { background: #E65100; transform: scale(1.05); }
+  .nav button:active { transform: scale(0.95); }
   
-  .counter { position: fixed; top: 15px; left: 20px; background: rgba(255,255,255,0.9); padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: bold; color: #1F3A5F; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-  .hint { font-size: 0.85em; color: #888; text-align: center; margin-top: 10px; }
+  .counter { position: fixed; top: 15px; left: 20px; background: rgba(255,255,255,0.9); padding: 5px 15px; border-radius: 20px; font-size: 1em; font-weight: bold; color: #1F3A5F; z-index: 100; }
 </style>
 </head>
 <body>
@@ -99,8 +99,8 @@
 <div class="slide active">
   <div class="graphic-img bg-nature">🏞️☀️</div>
   <h1>انرژی در زندگی ما</h1>
-  <p style="text-align:center; font-weight:bold; color:#4CAF50; font-size:1.5em;">کلاس چهارم دبستان</p>
-  <p style="text-align:center; color:#1F3A5F;">آموزش، بازی، کشف! 🌍</p>
+  <p style="font-weight:bold; color:#4CAF50; font-size:1.6em;">کلاس چهارم دبستان</p>
+  <p style="color:#1F3A5F;">آموزش، بازی، کشف! 🌍</p>
 </div>
 
 <!-- اسلاید 2 -->
@@ -109,7 +109,7 @@
   <div class="graphic-img bg-sun">⛈️⚡</div>
   <div class="box">انرژی = توانایی انجام کار</div>
   <p>🔹 هر چیزی که حرکت کنه، روشن بشه، صدا بده یا گرم بشه، به انرژی نیاز داره.</p>
-  <p>🔹 انرژی نه دیده می‌شه نه بو داره، ولی اثرش (مثل همین آذرخش) رو همه‌جا می‌بینیم!</p>
+  <p>🔹 انرژی نه دیده می‌شه نه بو داره، ولی اثرش رو همه‌جا می‌بینیم!</p>
 </div>
 
 <!-- اسلاید 3 -->
@@ -117,10 +117,10 @@
   <h2>☀️ شکل‌های انرژی</h2>
   <div class="graphic-img bg-sun">💡✨</div>
   <div class="grid2">
-    <div class="card y">☀️ <b>نورانی</b><br>نور خورشید، لامپ</div>
-    <div class="card r">🔥 <b>گرمایی</b><br>شوفاژ، شعله</div>
-    <div class="card g">🏃 <b>حرکتی</b><br>دویدن، ماشین</div>
-    <div class="card b">🔊 <b>صوتی</b><br>بلندگو، صدا</div>
+    <div class="card y">☀️ نورانی<br>نور خورشید، لامپ</div>
+    <div class="card r">🔥 گرمایی<br>شوفاژ، شعله</div>
+    <div class="card g">🏃 حرکتی<br>دویدن، ماشین</div>
+    <div class="card b">🔊 صوتی<br>بلندگو، صدا</div>
   </div>
 </div>
 
@@ -128,10 +128,10 @@
 <div class="slide">
   <h2>⚡ شکل‌های دیگر انرژی</h2>
   <div class="grid2">
-    <div class="card">🔋 <b>الکتریکی</b><br>برق، باتری</div>
-    <div class="card g">🍎 <b>شیمیایی</b><br>غذا، بنزین</div>
+    <div class="card">🔋 الکتریکی<br>برق، باتری</div>
+    <div class="card g">🍎 شیمیایی<br>غذا، بنزین</div>
   </div>
-  <div class="card b">🌊 <b>ذخیره‌شده</b><br>توپ روی بلندی، فنر</div>
+  <div class="card b">🌊 ذخیره‌شده<br>توپ روی بلندی، فنر</div>
   <div class="box yellow" style="margin-top:15px;">💡 انرژی از بین نمی‌ره، فقط تبدیل می‌شه!</div>
 </div>
 
@@ -141,12 +141,12 @@
   <div class="graphic-img bg-wind">🌬️⚙️</div>
   <div class="grid2">
     <div>
-      <div class="box green" style="font-size:1em;">🌱 تجدیدپذیر<br><small>(تمام نمی‌شه)</small></div>
-      <p style="text-align:center; font-size:1em;">☀️ خورشید | 💨 باد<br>🌊 آب</p>
+      <div class="box green" style="font-size:1.1em;">🌱 تجدیدپذیر<br><small>(تمام نمی‌شه)</small></div>
+      <p style="font-size:1.1em;">☀️ خورشید | 💨 باد<br>🌊 آب</p>
     </div>
     <div>
-      <div class="box red" style="font-size:1em;">🛢️ تجدیدناپذیر<br><small>(تمام می‌شه)</small></div>
-      <p style="text-align:center; font-size:1em;">🛢️ نفت | 💨 گاز<br>⛏️ زغال‌سنگ</p>
+      <div class="box red" style="font-size:1.1em;">🛢️ تجدیدناپذیر<br><small>(تمام می‌شه)</small></div>
+      <p style="font-size:1.1em;">🛢️ نفت | 💨 گاز<br>⛏️ زغال‌سنگ</p>
     </div>
   </div>
 </div>
@@ -194,7 +194,7 @@
 <!-- اسلاید 10 -->
 <div class="slide">
   <h2>🎯 مسابقه! کارت‌ها رو لمس کن</h2>
-  <p style="text-align:center; font-size:0.9em; color:#888; margin-bottom:10px;">(روی هر کارت بزن تا بچرخه)</p>
+  <p style="font-size:1em; color:#888; margin-bottom:15px;">(روی هر کارت کلیک کن تا بچرخه)</p>
   
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
@@ -235,7 +235,7 @@
 <div class="slide">
   <div class="graphic-img bg-nature">🌍🌱</div>
   <h1>ممنون که همراه ما بودید!</h1>
-  <p style="text-align:center; font-weight:bold; color:#4CAF50; font-size:1.3em; margin-top:15px;">«انرژی رو هدر نده، آینده رو روشن کن» ⚡</p>
+  <p style="font-weight:bold; color:#4CAF50; font-size:1.5em; margin-top:15px;">«انرژی رو هدر نده، آینده رو روشن کن» ⚡</p>
 </div>
 
 <div class="nav">
