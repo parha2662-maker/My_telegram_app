@@ -782,10 +782,11 @@ async function connectWallet(){if(!tonConnectUI){await initTonConnect();}documen
 async function disconnectWallet(){if(tonConnectUI){try{await tonConnectUI.disconnect();showToast('🔌 Disconnected','lose');}catch(e){}}}
 async function sendPayment(){if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect wallet';return;}const amountStr=document.getElementById('depositAmountInput').value.replace(',','.');const amountTon=parseFloat(amountStr);if(isNaN(amountTon)||amountTon<MIN_TON_DEPOSIT){document.getElementById('depositStatus').innerText='❌ Min '+MIN_TON_DEPOSIT+' TON';return;}const btn=document.getElementById('payBtn');btn.disabled=true;document.getElementById('depositStatus').innerText='⏳ Waiting...';try{await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+360,messages:[{address:RECIPIENT_ADDRESS,amount:Math.floor(amountTon*1e9).toString()}]});setTimeout(()=>{const bonus=Math.round(amountTon*0.10*100)/100;const total=Math.round((amountTon+bonus)*100)/100;balance+=total;updateGlobalBalanceUI();showToast('💎 +'+amountTon.toFixed(2)+' + 🎁 '+bonus.toFixed(2)+' bonus = '+total.toFixed(2)+' TON','win');setTimeout(()=>{closeDepositModal();btn.disabled=false;},2000);},1500);}catch(e){document.getElementById('depositStatus').innerText='❌ Failed';btn.disabled=false;}}
 
-// ==================== 🚀 Crash Game (Time-Based 24/7) ====================
-const CRASH_ROUND_TIME = 20000; // 20 seconds per round
-let crashInterval = null;
+// ==================== 🚀 Crash Game (Smooth Animation Time-Based) ====================
+const CRASH_ROUND_TIME = 25000; // 25 seconds per round (5s wait, 17s flight, 3s crash)
+let crashAnimFrame = null;
 let crashChannel = null;
+let lastCrashRound = 0;
 
 function openGame(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
@@ -798,12 +799,11 @@ function getCrashRoundData() {
     const roundId = Math.floor(now / CRASH_ROUND_TIME);
     const timeInRound = now % CRASH_ROUND_TIME;
     
-    // 0-5s: Waiting | 5-15s: Playing | 15-20s: Crashed
     let phase = 'waiting';
-    if (timeInRound > 5000 && timeInRound <= 15000) phase = 'playing';
-    else if (timeInRound > 15000) phase = 'crashed';
+    if (timeInRound > 5000 && timeInRound <= 22000) phase = 'playing';
+    else if (timeInRound > 22000) phase = 'crashed';
     
-    // Deterministic crash point based on roundId
+    // Deterministic crash point
     let crashPoint = 1.00;
     const r = (roundId * 7) % 100;
     if (r < 5) crashPoint = 15 + (r * 2);
@@ -815,13 +815,26 @@ function getCrashRoundData() {
 }
 
 function initCrashTimeBased() {
-    if(crashInterval) clearInterval(crashInterval);
+    if(crashChannel) supabaseClient.removeChannel(crashChannel);
     
-    crashInterval = setInterval(() => {
+    crashChannel = supabaseClient.channel('crash_bets')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'crash_bets' }, payload => {
+        fetchCrashBets();
+    }).subscribe();
+    
+    fetchCrashBets();
+
+    const multDisplay = document.getElementById('multiplierDisplay');
+    const actionBtn = document.getElementById('actionButton');
+    const statusTxt = document.getElementById('statusText');
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    function updateLoop() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        
         const { roundId, phase, timeInRound, crashPoint } = getCrashRoundData();
-        const multDisplay = document.getElementById('multiplierDisplay');
-        const actionBtn = document.getElementById('actionButton');
-        const statusTxt = document.getElementById('statusText');
         
         if (phase === 'waiting') {
             const countdown = Math.ceil((5000 - timeInRound) / 1000);
@@ -833,15 +846,16 @@ function initCrashTimeBased() {
             actionBtn.className = 'crash-action-btn bet';
             actionBtn.disabled = false;
             statusTxt.innerText = 'Next round starting...';
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            lastCrashRound = 0;
         } 
         else if (phase === 'playing') {
             multDisplay.classList.remove('counting');
-            multDisplay.style.color = '#fff';
             actionBtn.innerText = 'Cash Out';
             actionBtn.className = 'crash-action-btn cashout';
             
             const elapsedMs = timeInRound - 5000;
-            let currentMult = Math.pow(1.00015, elapsedMs);
+            let currentMult = Math.pow(1.00012, elapsedMs);
             
             if (currentMult >= crashPoint) {
                 multDisplay.innerText = crashPoint.toFixed(2) + 'x';
@@ -850,27 +864,50 @@ function initCrashTimeBased() {
                 actionBtn.disabled = true;
             } else {
                 multDisplay.innerText = currentMult.toFixed(2) + 'x';
-                drawChart(currentMult, crashPoint);
+                multDisplay.style.color = '#fff';
+                multDisplay.classList.remove('crashed');
+                
+                // Smooth Drawing
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                if(currentMult > 1.01) {
+                    const max = crashPoint || 10;
+                    const cx = canvas.width * (currentMult/max);
+                    const cy = canvas.height - (canvas.height * (currentMult/max));
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, canvas.height);
+                    ctx.quadraticCurveTo(cx/2, canvas.height, cx, cy);
+                    ctx.lineTo(cx, canvas.height);
+                    ctx.fillStyle = 'rgba(255, 204, 0, 0.2)';
+                    ctx.fill();
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, canvas.height);
+                    ctx.quadraticCurveTo(cx/2, canvas.height, cx, cy);
+                    ctx.strokeStyle = '#ffcc00';
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+                }
             }
         } 
         else {
-            multDisplay.innerText = 'Crashed!';
+            if(lastCrashRound !== roundId) {
+                lastCrashRound = roundId;
+            }
+            multDisplay.innerText = crashPoint.toFixed(2) + 'x';
             multDisplay.style.color = '#ff4444';
             multDisplay.classList.add('crashed');
             actionBtn.disabled = true;
             actionBtn.className = 'crash-action-btn bet';
             actionBtn.innerText = 'Wait...';
+            statusTxt.innerText = 'Crashed! Waiting for next round...';
         }
-    }, 100);
+        
+        crashAnimFrame = requestAnimationFrame(updateLoop);
+    }
     
-    // Realtime: Sync bets for the current round
-    if(crashChannel) supabaseClient.removeChannel(crashChannel);
-    crashChannel = supabaseClient.channel('crash_bets')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'crash_bets' }, payload => {
-        fetchCrashBets();
-    }).subscribe();
-    
-    fetchCrashBets();
+    if(crashAnimFrame) cancelAnimationFrame(crashAnimFrame);
+    updateLoop();
 }
 
 async function fetchCrashBets(){
@@ -891,38 +928,12 @@ async function fetchCrashBets(){
     });
 }
 
-function drawChart(m, crashPoint) {
-    const canvas = document.getElementById('chartCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(m <= 1.01) return;
-    
-    const max = crashPoint || 10;
-    const cx = canvas.width * (m/max);
-    const cy = canvas.height - (canvas.height * (m/max));
-    
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height);
-    ctx.quadraticCurveTo(cx/2, canvas.height, cx, cy);
-    ctx.lineTo(cx, canvas.height);
-    ctx.fillStyle = 'rgba(255, 204, 0, 0.2)';
-    ctx.fill();
-    
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height);
-    ctx.quadraticCurveTo(cx/2, canvas.height, cx, cy);
-    ctx.strokeStyle = '#ffcc00';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-}
-
-// ==================== 🎡 Wheel Game (Time-Based 24/7) ====================
-const WHEEL_ROUND_TIME = 30000; // 30 seconds per round
+// ==================== 🎡 Wheel Game (Time-Based) ====================
+const WHEEL_ROUND_TIME = 30000; 
 let whState = 'waiting';
 let whCurrentRound = 1;
 let wheelChannel = null;
+let wheelAnimFrame = null;
 
 function openWheel(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
@@ -935,14 +946,11 @@ function getWheelRoundData() {
     const roundId = Math.floor(now / WHEEL_ROUND_TIME);
     const timeInRound = now % WHEEL_ROUND_TIME;
     
-    // 0-20s: Waiting | 20-25s: Spinning | 25-30s: Cooldown
     let phase = 'waiting';
     if (timeInRound > 20000 && timeInRound <= 25000) phase = 'spinning';
     else if (timeInRound > 25000) phase = 'cooldown';
     
-    // Deterministic winner based on roundId
-    const winnerIndex = (roundId * 7) % 4; // 0=2x, 1=4x, 2=5x, 3=20x
-    
+    const winnerIndex = (roundId * 7) % 4; 
     return { roundId, phase, timeInRound, winnerIndex };
 }
 
@@ -951,7 +959,7 @@ function initWheelTimeBased() {
     
     let lastSpunRound = 0;
     
-    setInterval(() => {
+    function wheelUpdateLoop() {
         const { roundId, phase, timeInRound, winnerIndex } = getWheelRoundData();
         const timerEl = document.getElementById('whTimer');
         const statusEl = document.getElementById('whStatusText');
@@ -980,7 +988,12 @@ function initWheelTimeBased() {
             timerEl.innerText = 'Next round soon...';
             statusEl.innerText = `Landed on x${[2,4,5,20][winnerIndex]}!`;
         }
-    }, 500);
+        
+        wheelAnimFrame = requestAnimationFrame(wheelUpdateLoop);
+    }
+    
+    if(wheelAnimFrame) cancelAnimationFrame(wheelAnimFrame);
+    wheelUpdateLoop();
 
     wheelChannel = supabaseClient.channel('wheel_bets')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'wheel_bets' }, payload => {
@@ -1072,7 +1085,7 @@ function whSpinAnimation(winnerIndex) {
     requestAnimationFrame(animate);
 }
 
-// ==================== PVP, Mines, Plinko, Penalty (Same as before) ====================
+// ==================== PVP, Mines, Plinko, Penalty ====================
 let pvpChannel = null;
 async function openPvp(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
@@ -1192,4 +1205,4 @@ function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn
 
 </script>
 </body>
-</html>
+    </html>
