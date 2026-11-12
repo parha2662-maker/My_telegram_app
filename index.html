@@ -483,6 +483,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .auto-toggle-btn.off{background:#2a2e42;color:#8a90a6}
 .auto-toggle-btn.on{background:linear-gradient(135deg,#00c853,#009624);color:#fff;box-shadow:0 0 12px rgba(0,200,83,.5)}
 </style></head><body>
+
 <div id="homeScreen" class="screen">
 <div class="live-ticker"><div class="live-label"><div class="live-dot"></div>LIVE</div><div class="live-ticker-inner" id="liveTickerInner"></div></div>
 <div class="balance-row"><div class="avatar-wrap"><div class="avatar-ring"></div><div class="avatar" id="userAvatar">M</div></div><div class="balance-info"><div class="balance-label">Your balance</div><div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">0.000</span></div></div><button class="deposit-btn" onclick="openDepositModal()">💳 Deposit</button><button id="adminBtn" class="deposit-btn" style="display:none;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;margin-left:6px;" onclick="openAdminPanel()">👑</button></div>
@@ -545,12 +546,11 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="toast" id="toast"></div>
 
 <div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div><div style="padding:0 16px"><input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;"><div id="adminUsersList"></div></div></div>
-
 <script>
 const BOTS_ENABLED=true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';const GIFT_CODE='parham2010';const GIFT_CODE_REWARD=1000000;
-const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm'; // آدرس ولت مقصد برای دپوزیت
+const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
 const BOT_TOKEN='8644963828:AAExnyqtPbfi3Y7VqeK1ku6rytZbxT4U8DY';
 const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;const REFERRAL_REWARD=0.04;const MIN_GIFT_VALUE=4;
@@ -638,10 +638,9 @@ function resolveWin(winnings){
 function resolveLoss(){betFromGift=false;}
 
 function openGiftPicker(){document.getElementById('giftPickerTitle').innerText='🎁 Pick a Gift to Play';const gifts=getUserGifts();const list=document.getElementById('giftPickerList');list.innerHTML='';if(gifts.length===0){list.innerHTML='<div class="gp-empty" style="grid-column:1/-1;"><div style="font-size:50px;margin-bottom:10px;">🎒</div>No gifts yet!</div>';document.getElementById('giftPickerModal').classList.remove('hidden');return;}gifts.sort((a,b)=>a.value-b.value).forEach(gift=>{const tier=gift.tier||classifyTier(gift.value);const item=document.createElement('div');item.className='gp-item tier-'+tier;item.innerHTML='<div class="gp-item-val">'+gift.value.toFixed(2)+' ◈</div><div class="gp-item-emoji">'+getGiftImg(gift)+'</div><div class="gp-item-name">'+gift.name+'</div>';item.onclick=()=>selectGiftForBet(gift);list.appendChild(item);});document.getElementById('giftPickerModal').classList.remove('hidden');}
-function openArenaGiftPicker(){const gifts=getUserGifts();const list=document.getElementById('giftPickerList');list.innerHTML='';if(gifts.length===0){list.innerHTML='<div class="gp-empty" style="grid-column:1/-1;">No gifts</div>';document.getElementById('giftPickerModal').classList.remove('hidden');return;}gifts.sort((a,b)=>a.value-b.value).forEach(gift=>{const tier=gift.tier||classifyTier(gift.value);const item=document.createElement('div');item.className='gp-item tier-'+tier;item.innerHTML='<div class="gp-item-val">'+gift.value.toFixed(2)+' ◈</div><div class="gp-item-emoji">'+getGiftImg(gift)+'</div><div class="gp-item-name">'+gift.name+'</div>';item.onclick=()=>{if(document.getElementById('dropBetInput'))document.getElementById('dropBetInput').value=gift.value.toFixed(2);betFromGift=true;closeGiftPicker();showToast('🎁 '+gift.name+' ready!','win');};list.appendChild(item);});document.getElementById('giftPickerModal').classList.remove('hidden');}
 function openPvpGiftPicker(){const gifts=getUserGifts();const list=document.getElementById('giftPickerList');list.innerHTML='';if(gifts.length===0){list.innerHTML='<div class="gp-empty" style="grid-column:1/-1;">No gifts</div>';document.getElementById('giftPickerModal').classList.remove('hidden');return;}gifts.sort((a,b)=>a.value-b.value).forEach(gift=>{const tier=gift.tier||classifyTier(gift.value);const item=document.createElement('div');item.className='gp-item tier-'+tier;item.innerHTML='<div class="gp-item-val">'+gift.value.toFixed(2)+' ◈</div><div class="gp-item-emoji">'+getGiftImg(gift)+'</div><div class="gp-item-name">'+gift.name+'</div>';item.onclick=()=>{document.getElementById('pvpBetInput').value=gift.value.toFixed(2);pvpBetFromGift=true;pvpGiftUsed=gift;closeGiftPicker();showToast('🎁 '+gift.name+' ready!','win');};list.appendChild(item);});document.getElementById('giftPickerModal').classList.remove('hidden');}
 function closeGiftPicker(){document.getElementById('giftPickerModal').classList.add('hidden');}
-function selectGiftForBet(gift){removeGiftFromInventory(gift.uid);balance+=gift.value;updateGlobalBalanceUI();betFromGift=true;if(document.getElementById('betInput'))document.getElementById('betInput').value=gift.value.toFixed(2);if(document.getElementById('mnBetInput'))document.getElementById('mnBetInput').value=gift.value.toFixed(2);if(document.getElementById('plBetInput')){document.getElementById('plBetInput').value=gift.value.toFixed(2);plUpdatePlayBtn();}if(document.getElementById('soloBetInput')){document.getElementById('soloBetInput').value=gift.value.toFixed(2);soloBetAmount=gift.value;}if(document.getElementById('penBetInput'))document.getElementById('penBetInput').value=gift.value.toFixed(2);if(document.getElementById('whBetInput'))document.getElementById('whBetInput').value=gift.value.toFixed(2);if(document.getElementById('dropBetInput'))document.getElementById('dropBetInput').value=gift.value.toFixed(2);closeGiftPicker();showToast('🎁 '+gift.name+' in play!','win');}
+function selectGiftForBet(gift){removeGiftFromInventory(gift.uid);balance+=gift.value;updateGlobalBalanceUI();betFromGift=true;if(document.getElementById('betInput'))document.getElementById('betInput').value=gift.value.toFixed(2);if(document.getElementById('mnBetInput'))document.getElementById('mnBetInput').value=gift.value.toFixed(2);if(document.getElementById('plBetInput')){document.getElementById('plBetInput').value=gift.value.toFixed(2);plUpdatePlayBtn();}if(document.getElementById('penBetInput'))document.getElementById('penBetInput').value=gift.value.toFixed(2);if(document.getElementById('whBetInput'))document.getElementById('whBetInput').value=gift.value.toFixed(2);closeGiftPicker();showToast('🎁 '+gift.name+' in play!','win');}
 
 let fbState='idle';
 function openFarmBox(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('farmBoxScreen').classList.remove('hidden');document.getElementById('fbResult').className='fb-result';document.getElementById('fbResult').innerHTML='';document.getElementById('fbBoxEmoji').classList.remove('opening');document.getElementById('fbBoxEmoji').innerText='🎁';document.getElementById('fbOpenBtn').disabled=false;document.getElementById('fbOpenBtn').innerText='🎁 OPEN FARM BOX';fbRenderPrizes();fbUpdateBalance();showBackBtn();}
@@ -932,11 +931,10 @@ function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor((balanc
 betInput.addEventListener('input',()=>{let v=parseFloat(betInput.value);if(!isNaN(v)&&v>0){localStorage.setItem('lastBet',v);}});
 autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
 startNewRound();
-</script>
-<script>
-// ==================== PVP (Online & Spinning) ====================
+
+// ==================== PVP (Online & Proportional) ====================
 const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a'];
-let pvpPlayers=[], pvpPool=0, pvpState='waiting', pvpTimer=20, pvpTimerInterval=null;
+let pvpPlayers=[], pvpPool=0, pvpState='waiting', pvpTimerInterval=null, pvpChannel=null;
 let pvpCanvas=null, pvpCtx=null, pvpSize=320, pvpRotation=0;
 
 async function openPvp(){
@@ -951,7 +949,7 @@ async function openPvp(){
         });
     }
     setTimeout(() => { initPvpCanvas(); }, 50);
-    await startPvpLobby();
+    await initPvpLobby();
     showBackBtn();
 }
 
@@ -969,94 +967,148 @@ function initPvpCanvas(){
     pvpDraw();
 }
 
-async function startPvpLobby(){
-    if(pvpTimerInterval) clearInterval(pvpTimerInterval);
-    pvpState = 'waiting';
-    pvpRotation = 0;
+async function initPvpLobby() {
+    if(pvpChannel) supabaseClient.removeChannel(pvpChannel);
     
+    await fetchPvpPlayers();
+
+    pvpChannel = supabaseClient.channel('pvp_lobby_channel')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'pvp_bets' }, payload => {
+        fetchPvpPlayers();
+    }).subscribe();
+
+    startPvpTimer();
+}
+
+async function fetchPvpPlayers() {
     try {
         const { data: bets } = await supabaseClient.from('pvp_bets').select('*');
-        pvpPlayers = bets ? bets.map(b => ({name: b.name, bet: parseFloat(b.bet), color: b.color, isMe: b.user_id === TG_USER.id})) : [];
+        pvpPlayers = bets ? bets.map(b => ({
+            name: b.name, bet: parseFloat(b.bet), color: b.color, isMe: b.user_id === TG_USER.id
+        })) : [];
+        pvpRecalcPool();
+        pvpRenderPlayers();
+        pvpDraw();
     } catch(e) { console.log(e); }
+}
 
-    pvpRecalcPool();
-    pvpRenderPlayers();
-    pvpDraw();
+async function startPvpTimer() {
+    if(pvpTimerInterval) clearInterval(pvpTimerInterval);
     
-    let now = Date.now();
-    let timeLeft = 20 - (Math.floor(now / 1000) % 20);
-    document.getElementById('pvpTimer').innerText = `00:${timeLeft.toString().padStart(2,'0')}`;
+    let { data: state } = await supabaseClient.from('pvp_state').select('*').eq('id', 1).single();
+    let roundEnd = state.round_end;
+
+    if(Date.now() > roundEnd) {
+        let newEnd = Date.now() + 20000;
+        await supabaseClient.from('pvp_state').update({ status: 'waiting', round_end: newEnd }).eq('id', 1);
+        roundEnd = newEnd;
+    }
+
+    pvpState = state.status;
+    pvpRotation = 0;
+    pvpDraw();
 
     pvpTimerInterval = setInterval(async () => {
-        let now = Date.now();
-        let timeLeft = 20 - (Math.floor(now / 1000) % 20);
+        let timeLeft = Math.max(0, Math.ceil((roundEnd - Date.now()) / 1000));
         document.getElementById('pvpTimer').innerText = `00:${timeLeft.toString().padStart(2,'0')}`;
-        
-        if(timeLeft === 20) {
+
+        if (timeLeft <= 0 && pvpState === 'waiting') {
             clearInterval(pvpTimerInterval);
-            await endPvpRound();
+            trySpinPvp(roundEnd);
         }
     }, 1000);
 }
 
-async function endPvpRound() {
+async function trySpinPvp(roundEnd) {
+    let { data: updated, error } = await supabaseClient.from('pvp_state')
+        .update({ status: 'spinning' })
+        .eq('id', 1)
+        .eq('round_end', roundEnd)
+        .eq('status', 'waiting')
+        .select();
+
+    if (error || !updated || updated.length === 0) {
+        pvpState = 'spinning';
+        return;
+    }
+
     pvpState = 'spinning';
-    if(pvpPlayers.length > 0 && pvpPool > 0) {
-        showToast('🎡 Spinning PVP...', 'win');
-        
-        let r = Math.random() * pvpPool;
-        let cum = 0;
-        let winner = pvpPlayers[0];
-        let winnerAngleCenter = 0;
-        let currentAngle = -Math.PI/2;
+    document.getElementById('pvpTimer').innerText = `00:00`;
 
-        for(let i=0; i<pvpPlayers.length; i++) {
-            let p = pvpPlayers[i];
-            let arc = (p.bet / pvpPool) * Math.PI * 2;
-            cum += p.bet;
-            if(r <= cum) {
-                winner = p;
-                winnerAngleCenter = currentAngle + arc/2;
-                break;
-            }
-            currentAngle += arc;
+    if (pvpPlayers.length === 0 || pvpPool === 0) {
+        setTimeout(() => resetPvpRound(), 2000);
+        return;
+    }
+
+    let r = Math.random() * pvpPool;
+    let cum = 0;
+    let winner = pvpPlayers[0];
+    let winnerAngleCenter = 0;
+    let currentAngle = -Math.PI/2;
+
+    for (let i = 0; i < pvpPlayers.length; i++) {
+        let p = pvpPlayers[i];
+        let arc = (p.bet / pvpPool) * Math.PI * 2;
+        cum += p.bet;
+        if (r <= cum) {
+            winner = p;
+            winnerAngleCenter = currentAngle + arc / 2;
+            break;
         }
+        currentAngle += arc;
+    }
 
-        let targetRot = -Math.PI/2 - winnerAngleCenter + (5 * Math.PI * 2);
-        let startTime = performance.now();
-        let duration = 4000;
-        let startRot = pvpRotation;
+    let targetRot = -Math.PI/2 - winnerAngleCenter + (5 * Math.PI * 2);
+    let startTime = performance.now();
+    let duration = 4000;
+    let startRot = pvpRotation;
 
-        function animate(now) {
-            let elapsed = now - startTime;
-            let progress = Math.min(elapsed / duration, 1);
-            let ease = 1 - Math.pow(1 - progress, 3.5);
-            pvpRotation = startRot + (targetRot - startRot) * ease;
-            pvpDraw();
-            if(progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                if(winner.isMe) {
-                    balance += pvpPool;
-                    updateGlobalBalanceUI();
-                    showToast(`🏆 YOU WON ${pvpPool.toFixed(2)} TON!`, 'win');
-                } else {
-                    showToast(`😔 ${winner.name} won the pool!`, 'lose');
-                }
-                
-                supabaseClient.from('pvp_bets').delete().neq('id', 0).then(() => {
-                    setTimeout(() => { startPvpLobby(); }, 3000);
-                });
-            }
+    function animate(now) {
+        let elapsed = now - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+        let ease = 1 - Math.pow(1 - progress, 3.5);
+        pvpRotation = startRot + (targetRot - startRot) * ease;
+        pvpDraw();
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            payPvpWinner(winner);
         }
-        requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+}
+
+async function payPvpWinner(winner) {
+    if (winner.isMe) {
+        let { data: user } = await supabaseClient.from('users').select('balance').eq('id', TG_USER.id).single();
+        if (user) {
+            let newBal = parseFloat(user.balance) + pvpPool;
+            await supabaseClient.from('users').update({ balance: newBal }).eq('id', TG_USER.id);
+            balance = newBal;
+            updateGlobalBalanceUI();
+        }
+        showToast(`🏆 YOU WON ${pvpPool.toFixed(2)} TON!`, 'win');
     } else {
-        setTimeout(() => { startPvpLobby(); }, 2000);
+        showToast(`😔 ${winner.name} won ${pvpPool.toFixed(2)} TON!`, 'lose');
+    }
+
+    setTimeout(() => resetPvpRound(), 3000);
+}
+
+async function resetPvpRound() {
+    await supabaseClient.from('pvp_bets').delete().neq('id', 0);
+    let newEnd = Date.now() + 20000;
+    await supabaseClient.from('pvp_state').update({ status: 'waiting', round_end: newEnd }).eq('id', 1);
+    
+    if(!document.getElementById('pvpScreen').classList.contains('hidden')) {
+        await initPvpLobby();
     }
 }
 
 async function pvpJoinClick(){
-    if(pvpState !== 'waiting') { showToast('Wait for next round', 'lose'); return; }
+    let { data: state } = await supabaseClient.from('pvp_state').select('*').eq('id', 1).single();
+    if(state.status !== 'waiting') { showToast('Wait for next round', 'lose'); return; }
+    
     const bet = parseFloat(document.getElementById('pvpBetInput').value);
     if(isNaN(bet) || bet < 0.1) { showToast('Min 0.1 TON', 'lose'); return; }
     if(bet > balance) { showToast('Insufficient balance', 'lose'); return; }
@@ -1068,10 +1120,6 @@ async function pvpJoinClick(){
     
     try {
         await supabaseClient.from('pvp_bets').insert([{ user_id: TG_USER.id, name: TG_USER.name, bet: bet, color: color }]);
-        pvpPlayers.push({name: TG_USER.name, bet: bet, color: color, isMe: true});
-        pvpRecalcPool();
-        pvpRenderPlayers();
-        pvpDraw();
         showToast('✅ Joined the PVP pool!', 'win');
     } catch(e) { console.log(e); }
 }
@@ -1266,7 +1314,6 @@ async function initWheelOnline() {
     
     let { data: state } = await supabaseClient.from('wheel_state').select('*').eq('id', 1).single();
     
-    // فیکس تاریخچه
     whHistory = state.history || [];
     const histRow = document.getElementById('whHistory');
     histRow.innerHTML = '';
@@ -1425,9 +1472,9 @@ function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxSho
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
 
-// Initializations
+// Other Initializations
 setTimeout(()=>{if(document.getElementById('wheelCanvas'))whResize();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                          </html>
+    </html>                        
