@@ -734,15 +734,6 @@ async function registerAndSync(){
 
 function showAdminButton(){const btn=document.getElementById('adminBtn');if(btn&&TG_USER.id===ADMIN_ID)btn.style.display='block';}
 
-function openGame(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');showBackBtn();setTimeout(()=>{resizeCanvas();clearChart();},100);}
-function openPlayHub(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('playhubScreen').classList.remove('hidden');showBackBtn();}
-function openUpgrade(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('upgradeScreen').classList.remove('hidden');if(!window.upInitialized){upInit();window.upInitialized=true;}setTimeout(()=>{upResize();upUpdateChance();},100);showBackBtn();}
-function closeUpgrade(){document.getElementById('upgradeScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
-function openPlinko(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('plinkoScreen').classList.remove('hidden');if(!window.plInitialized){plInit();window.plInitialized=true;}setTimeout(plResize,100);showBackBtn();}
-function closePlinko(){document.getElementById('plinkoScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
-function openMines(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('minesScreen').classList.remove('hidden');if(!window.mnInitialized){mnInit();window.mnInitialized=true;}mnResetGrid();showBackBtn();}
-function closeMines(){document.getElementById('minesScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
-
 function goHome(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('homeScreen').classList.remove('hidden');hideBackBtn();}
 
 let storedBalance=localStorage.getItem('crashBalance_home');
@@ -755,7 +746,6 @@ function updateGlobalBalanceUI(){
     
     if(TG_USER.id){
         supabaseClient.from('users').update({ balance: balance }).eq('id', TG_USER.id).then();
-        supabaseClient.from('pvp_lobby').update({ balance: balance }).eq('user_id', TG_USER.id).then();
     }
 }
 updateGlobalBalanceUI();
@@ -792,94 +782,100 @@ async function connectWallet(){if(!tonConnectUI){await initTonConnect();}documen
 async function disconnectWallet(){if(tonConnectUI){try{await tonConnectUI.disconnect();showToast('🔌 Disconnected','lose');}catch(e){}}}
 async function sendPayment(){if(!tonConnectUI||!isWalletConnected){document.getElementById('depositStatus').innerText='❌ Connect wallet';return;}const amountStr=document.getElementById('depositAmountInput').value.replace(',','.');const amountTon=parseFloat(amountStr);if(isNaN(amountTon)||amountTon<MIN_TON_DEPOSIT){document.getElementById('depositStatus').innerText='❌ Min '+MIN_TON_DEPOSIT+' TON';return;}const btn=document.getElementById('payBtn');btn.disabled=true;document.getElementById('depositStatus').innerText='⏳ Waiting...';try{await tonConnectUI.sendTransaction({validUntil:Math.floor(Date.now()/1000)+360,messages:[{address:RECIPIENT_ADDRESS,amount:Math.floor(amountTon*1e9).toString()}]});setTimeout(()=>{const bonus=Math.round(amountTon*0.10*100)/100;const total=Math.round((amountTon+bonus)*100)/100;balance+=total;updateGlobalBalanceUI();showToast('💎 +'+amountTon.toFixed(2)+' + 🎁 '+bonus.toFixed(2)+' bonus = '+total.toFixed(2)+' TON','win');setTimeout(()=>{closeDepositModal();btn.disabled=false;},2000);},1500);}catch(e){document.getElementById('depositStatus').innerText='❌ Failed';btn.disabled=false;}}
 
-const FREE_WEIGHTS=[{v:0.04,w:60},{v:0.1,w:22},{v:0.2,w:10},{v:0.5,w:5},{v:0.8,w:1.5},{v:1,w:1},{v:1.5,w:0.4},{v:2,w:0.1}];
-const VIP_WEIGHTS=[{v:0.1,w:50},{v:0.2,w:25},{v:0.5,w:12},{v:1,w:8},{v:1.5,w:3},{v:2,w:2}];
-const SLOT_COOLDOWN=24*60*60*1000;
-let slotMode='free',slotTimerInterval=null;
-function pickWeighted(w){const total=w.reduce((s,x)=>s+x.w,0);let r=Math.random()*total;for(const item of w){r-=item.w;if(r<=0)return item;}return w[0];}
-function randomFromWeights(w){return w[Math.floor(Math.random()*w.length)];}
-function formatSlotValue(v){if(v>=1)return v.toFixed(v%1===0?0:2);return v.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');}
-function getWeights(){return slotMode==='vip'?VIP_WEIGHTS:FREE_WEIGHTS;}
-function getSlotStorageKey(){return slotMode==='vip'?'slotVipLastSpin':'slotFreeLastSpin';}
-function buildReel(){const reel=document.getElementById('slotReel');reel.innerHTML='';const w=getWeights();const isVip=slotMode==='vip';for(let i=0;i<40;i++){const item=randomFromWeights(w);const div=document.createElement('div');div.className='slot-item'+(isVip?' vip-item':'');div.innerHTML='<div class="slot-value">'+formatSlotValue(item.v)+'</div><div class="slot-ton">TON</div>';reel.appendChild(div);}reel.style.transition='none';reel.style.transform='translateX(0)';}
-function isOnCooldown(){const last=parseInt(localStorage.getItem(getSlotStorageKey())||'0');return(Date.now()-last)<SLOT_COOLDOWN;}
-function updateSlotUI(){const btn=document.getElementById('slotSpinBtn'),t=document.getElementById('slotTimerText');const last=parseInt(localStorage.getItem(getSlotStorageKey())||'0');const rem=SLOT_COOLDOWN-(Date.now()-last);if(rem<=0){btn.disabled=false;btn.innerText='🎰 SPIN';t.innerText='✅ Ready!';t.style.color='#2ff068';}else{btn.disabled=true;const h=Math.floor(rem/3600000),m=Math.floor((rem%3600000)/60000),s=Math.floor((rem%60000)/1000);t.innerText='Wait '+h+'h '+m+'m '+s+'s';t.style.color='#ffcc00';}}
-function openSlotModal(mode){slotMode=mode;document.getElementById('slotModal').classList.remove('hidden');const c=document.getElementById('slotModalContent'),ti=document.getElementById('slotTitle'),su=document.getElementById('slotSub'),b=document.getElementById('slotSpinBtn');if(mode==='vip'){c.classList.add('vip');ti.classList.add('vip');ti.innerText='👑 VIP';su.innerText='VIP rewards';b.classList.add('vip');}else{c.classList.remove('vip');ti.classList.remove('vip');ti.innerText='📅 Daily Box';su.innerText='Spin daily';b.classList.remove('vip');}buildReel();updateSlotUI();if(slotTimerInterval)clearInterval(slotTimerInterval);slotTimerInterval=setInterval(updateSlotUI,1000);}
-function closeSlotModal(){document.getElementById('slotModal').classList.add('hidden');if(slotTimerInterval){clearInterval(slotTimerInterval);slotTimerInterval=null;}}
-function spinSlot(){if(isOnCooldown())return;const btn=document.getElementById('slotSpinBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const w=getWeights();const result=pickWeighted(w);const reel=document.getElementById('slotReel');reel.innerHTML='';const isVip=slotMode==='vip';const RI=30;for(let i=0;i<40;i++){const item=(i===RI)?result:randomFromWeights(w);const div=document.createElement('div');div.className='slot-item'+(isVip?' vip-item':'');if(i===RI)div.style.boxShadow='0 0 25px #2ff068';div.innerHTML='<div class="slot-value">'+formatSlotValue(item.v)+'</div><div class="slot-ton">TON</div>';reel.appendChild(div);}const IW=86;const CW=reel.parentElement.clientWidth;const TX=-(RI*IW)+(CW/2)-40;reel.style.transition='none';reel.style.transform='translateX(0)';reel.offsetHeight;reel.style.transition='transform 4.2s cubic-bezier(0.1,0.9,0.2,1)';reel.style.transform='translateX('+TX+'px)';setTimeout(()=>{balance+=result.v;updateGlobalBalanceUI();localStorage.setItem(getSlotStorageKey(),Date.now());btn.innerText='✅ Claimed!';showToast((isVip?'👑 ':'🎁 ')+'+'+result.v.toFixed(2)+' TON','win');updateSlotUI();},4400);}
-function openVipCodeModal(){document.getElementById('vipCodeModal').classList.remove('hidden');setTimeout(()=>document.getElementById('vipCodeInput').focus(),150);}
-function closeVipCodeModal(){document.getElementById('vipCodeModal').classList.add('hidden');document.getElementById('vipCodeInput').value='';}
-function submitVipCode(){const code=document.getElementById('vipCodeInput').value.trim();if(code===VIP_CODE){closeVipCodeModal();openSlotModal('vip');}else showToast('❌ Wrong code','lose');}
-function openGiftCodeModal(){document.getElementById('giftCodeModal').classList.remove('hidden');setTimeout(()=>document.getElementById('giftCodeInput').focus(),150);}
-function closeGiftCodeModal(){document.getElementById('giftCodeModal').classList.add('hidden');document.getElementById('giftCodeInput').value='';}
-function submitGiftCode(){const code=document.getElementById('giftCodeInput').value.trim().toLowerCase();if(code===GIFT_CODE){balance+=GIFT_CODE_REWARD;updateGlobalBalanceUI();closeGiftCodeModal();showToast('🎉 +1,000,000 TON claimed!','win');}else showToast('❌ Wrong code','lose');}
-
-// ==================== 🚀 Crash Game (Real-time Multiplayer) ====================
+// ==================== 🚀 Crash Game (Time-Based 24/7) ====================
+const CRASH_ROUND_TIME = 20000; // 20 seconds per round
 let crashInterval = null;
 let crashChannel = null;
-let localCrashState = 'waiting';
 
-async function openGame(){
+function openGame(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('gameScreen').classList.remove('hidden');
-    initCrashRealtime();
+    initCrashTimeBased();
 }
 
-async function initCrashRealtime(){
-    if(crashChannel) supabaseClient.removeChannel(crashChannel);
+function getCrashRoundData() {
+    const now = Date.now();
+    const roundId = Math.floor(now / CRASH_ROUND_TIME);
+    const timeInRound = now % CRASH_ROUND_TIME;
     
-    crashChannel = supabaseClient.channel('crash_live')
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'crash_state' }, payload => {
-        const state = payload.new;
-        localCrashState = state.status;
+    // 0-5s: Waiting | 5-15s: Playing | 15-20s: Crashed
+    let phase = 'waiting';
+    if (timeInRound > 5000 && timeInRound <= 15000) phase = 'playing';
+    else if (timeInRound > 15000) phase = 'crashed';
+    
+    // Deterministic crash point based on roundId
+    let crashPoint = 1.00;
+    const r = (roundId * 7) % 100;
+    if (r < 5) crashPoint = 15 + (r * 2);
+    else if (r < 20) crashPoint = 5 + (r / 5);
+    else if (r < 50) crashPoint = 2 + (r / 10);
+    else crashPoint = 1 + (r / 100);
+    
+    return { roundId, phase, timeInRound, crashPoint: parseFloat(crashPoint.toFixed(2)) };
+}
+
+function initCrashTimeBased() {
+    if(crashInterval) clearInterval(crashInterval);
+    
+    crashInterval = setInterval(() => {
+        const { roundId, phase, timeInRound, crashPoint } = getCrashRoundData();
+        const multDisplay = document.getElementById('multiplierDisplay');
+        const actionBtn = document.getElementById('actionButton');
+        const statusTxt = document.getElementById('statusText');
         
-        if(state.status === 'waiting') {
-            document.getElementById('multiplierDisplay').innerText = 'Next round...';
-            document.getElementById('multiplierDisplay').style.color = '#ff9800';
-            document.getElementById('actionButton').innerText = 'Place bet';
-            document.getElementById('actionButton').disabled = false;
-            document.getElementById('actionButton').className = 'crash-action-btn bet';
+        if (phase === 'waiting') {
+            const countdown = Math.ceil((5000 - timeInRound) / 1000);
+            multDisplay.innerText = countdown;
+            multDisplay.style.color = '#ff9800';
+            multDisplay.classList.add('counting');
+            multDisplay.classList.remove('crashed');
+            actionBtn.innerText = 'Place bet';
+            actionBtn.className = 'crash-action-btn bet';
+            actionBtn.disabled = false;
+            statusTxt.innerText = 'Next round starting...';
         } 
-        else if(state.status === 'playing') {
-            document.getElementById('multiplierDisplay').style.color = '#fff';
-            document.getElementById('actionButton').innerText = 'Cash Out';
-            document.getElementById('actionButton').className = 'crash-action-btn cashout';
+        else if (phase === 'playing') {
+            multDisplay.classList.remove('counting');
+            multDisplay.style.color = '#fff';
+            actionBtn.innerText = 'Cash Out';
+            actionBtn.className = 'crash-action-btn cashout';
             
-            const startTime = new Date(state.start_time).getTime();
-            const crashPoint = parseFloat(state.crash_point);
+            const elapsedMs = timeInRound - 5000;
+            let currentMult = Math.pow(1.00015, elapsedMs);
             
-            if(crashInterval) clearInterval(crashInterval);
-            crashInterval = setInterval(() => {
-                let elapsed = Date.now() - startTime;
-                let currentMult = Math.pow(1.0001, elapsed);
-                
-                if(currentMult >= crashPoint) {
-                    clearInterval(crashInterval);
-                    document.getElementById('multiplierDisplay').innerText = crashPoint.toFixed(2) + 'x';
-                    document.getElementById('multiplierDisplay').style.color = '#ff4444';
-                    document.getElementById('multiplierDisplay').classList.add('crashed');
-                } else {
-                    document.getElementById('multiplierDisplay').innerText = currentMult.toFixed(2) + 'x';
-                    drawChart(currentMult, crashPoint);
-                }
-            }, 50);
+            if (currentMult >= crashPoint) {
+                multDisplay.innerText = crashPoint.toFixed(2) + 'x';
+                multDisplay.style.color = '#ff4444';
+                multDisplay.classList.add('crashed');
+                actionBtn.disabled = true;
+            } else {
+                multDisplay.innerText = currentMult.toFixed(2) + 'x';
+                drawChart(currentMult, crashPoint);
+            }
+        } 
+        else {
+            multDisplay.innerText = 'Crashed!';
+            multDisplay.style.color = '#ff4444';
+            multDisplay.classList.add('crashed');
+            actionBtn.disabled = true;
+            actionBtn.className = 'crash-action-btn bet';
+            actionBtn.innerText = 'Wait...';
         }
-        else if(state.status === 'crashed') {
-            if(crashInterval) clearInterval(crashInterval);
-            document.getElementById('multiplierDisplay').classList.add('crashed');
-            document.getElementById('actionButton').disabled = true;
-        }
-    })
+    }, 100);
+    
+    // Realtime: Sync bets for the current round
+    if(crashChannel) supabaseClient.removeChannel(crashChannel);
+    crashChannel = supabaseClient.channel('crash_bets')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'crash_bets' }, payload => {
         fetchCrashBets();
-    })
-    .subscribe();
+    }).subscribe();
     
     fetchCrashBets();
 }
 
 async function fetchCrashBets(){
-    const { data: bets } = await supabaseClient.from('crash_bets').select('*');
+    const { roundId } = getCrashRoundData();
+    const { data: bets } = await supabaseClient.from('crash_bets').select('*').eq('round_id', roundId);
     const row = document.getElementById('crashPlayersRow');
     if(!row) return;
     row.innerHTML = '';
@@ -890,7 +886,7 @@ async function fetchCrashBets(){
     bets.forEach(b => {
         const div = document.createElement('div');
         div.className = 'crash-p-row';
-        div.innerHTML = `<div class="crash-p-av">👤</div><div class="crash-p-name">${b.name}</div><div class="crash-p-bet">${b.bet} TON</div>`;
+        div.innerHTML = `<div class="crash-p-av">👤</div><div class="crash-p-name">${b.name}</div><div class="crash-p-bet">${b.amount} TON</div>`;
         row.appendChild(div);
     });
 }
@@ -922,47 +918,81 @@ function drawChart(m, crashPoint) {
     ctx.stroke();
 }
 
-// ==================== 🎡 Wheel Game (Real-time) ====================
-let wheelChannel = null;
+// ==================== 🎡 Wheel Game (Time-Based 24/7) ====================
+const WHEEL_ROUND_TIME = 30000; // 30 seconds per round
 let whState = 'waiting';
 let whCurrentRound = 1;
+let wheelChannel = null;
 
-async function openWheel(){
+function openWheel(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('wheelScreen').classList.remove('hidden');
-    initWheelRealtime();
-    whDraw();
+    initWheelTimeBased();
 }
 
-async function initWheelRealtime(){
+function getWheelRoundData() {
+    const now = Date.now();
+    const roundId = Math.floor(now / WHEEL_ROUND_TIME);
+    const timeInRound = now % WHEEL_ROUND_TIME;
+    
+    // 0-20s: Waiting | 20-25s: Spinning | 25-30s: Cooldown
+    let phase = 'waiting';
+    if (timeInRound > 20000 && timeInRound <= 25000) phase = 'spinning';
+    else if (timeInRound > 25000) phase = 'cooldown';
+    
+    // Deterministic winner based on roundId
+    const winnerIndex = (roundId * 7) % 4; // 0=2x, 1=4x, 2=5x, 3=20x
+    
+    return { roundId, phase, timeInRound, winnerIndex };
+}
+
+function initWheelTimeBased() {
     if(wheelChannel) supabaseClient.removeChannel(wheelChannel);
     
-    wheelChannel = supabaseClient.channel('wheel_live')
+    let lastSpunRound = 0;
+    
+    setInterval(() => {
+        const { roundId, phase, timeInRound, winnerIndex } = getWheelRoundData();
+        const timerEl = document.getElementById('whTimer');
+        const statusEl = document.getElementById('whStatusText');
+        
+        if (whCurrentRound !== roundId) {
+            whCurrentRound = roundId;
+            fetchWheelPlayers();
+        }
+        
+        if (phase === 'waiting') {
+            const countdown = Math.ceil((20000 - timeInRound) / 1000);
+            timerEl.innerText = `Starts in: 00:${countdown.toString().padStart(2,'0')}`;
+            timerEl.classList.remove('hurry');
+            statusEl.innerText = `Round #${roundId}`;
+            if (lastSpunRound !== roundId) whDraw();
+        } 
+        else if (phase === 'spinning') {
+            timerEl.innerText = 'Spinning...';
+            statusEl.innerText = 'Spinning...';
+            if (lastSpunRound !== roundId) {
+                lastSpunRound = roundId;
+                whSpinAnimation(winnerIndex);
+            }
+        } 
+        else {
+            timerEl.innerText = 'Next round soon...';
+            statusEl.innerText = `Landed on x${[2,4,5,20][winnerIndex]}!`;
+        }
+    }, 500);
+
+    wheelChannel = supabaseClient.channel('wheel_bets')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'wheel_bets' }, payload => {
         fetchWheelPlayers();
-    })
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'wheel_state' }, payload => {
-        const state = payload.new;
-        if(state.status === 'spinning') {
-            whSpinAnimation(state.winner_index);
-        } else if (state.status === 'waiting') {
-            whState = 'waiting';
-            whCurrentRound = state.round_number;
-            document.getElementById('whTimer').innerText = 'Waiting...';
-            document.getElementById('whStatusText').innerText = `Round #${whCurrentRound}`;
-        }
     }).subscribe();
     
     fetchWheelPlayers();
-    const { data: state } = await supabaseClient.from('wheel_state').select('*').eq('id', 1).single();
-    if(state) {
-        whCurrentRound = state.round_number;
-        whState = state.status;
-    }
 }
 
 async function fetchWheelPlayers(){
-    const { data: bets } = await supabaseClient.from('wheel_bets').select('*').eq('round_number', whCurrentRound);
+    const { roundId } = getWheelRoundData();
+    const { data: bets } = await supabaseClient.from('wheel_bets').select('*').eq('round_number', roundId);
     const row = document.getElementById('whPlayers');
     if(!row) return;
     row.innerHTML = '';
@@ -1003,8 +1033,6 @@ function whDraw(){
 }
 
 function whSpinAnimation(winnerIndex) {
-    whState = 'spinning';
-    document.getElementById('whStatusText').innerText = 'Spinning...';
     const canvas = document.getElementById('wheelCanvas');
     const ctx = canvas.getContext('2d');
     
@@ -1040,16 +1068,12 @@ function whSpinAnimation(winnerIndex) {
         ctx.beginPath(); ctx.arc(cx,cy,s*0.25,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
         
         if(progress < 1) requestAnimationFrame(animate);
-        else {
-            document.getElementById('whStatusText').innerText = `Landed on x${[2,4,5,20][winnerIndex]}!`;
-        }
     }
     requestAnimationFrame(animate);
 }
 
-// ==================== ⚔️ PVP Game (Real-time) ====================
+// ==================== PVP, Mines, Plinko, Penalty (Same as before) ====================
 let pvpChannel = null;
-
 async function openPvp(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('pvpScreen').classList.remove('hidden');
@@ -1063,21 +1087,18 @@ async function openPvp(){
     pvpFetchPlayers();
     pvpDrawWheel([]);
 }
-
 async function pvpFetchPlayers(){
     const { data: bets } = await supabaseClient.from('pvp_bets').select('*');
     const row = document.getElementById('pvpPlayersRow');
     const poolEl = document.getElementById('pvpPoolValue');
-    
     if(!row) return;
     row.innerHTML = '';
     let pool = 0;
     const colors = ['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea'];
-    
     if(bets && bets.length > 0) {
         bets.forEach((b, i) => {
             pool += parseFloat(b.bet);
-            const pct = ((parseFloat(b.bet) / pool) * 100).toFixed(0); // rough calc
+            const pct = ((parseFloat(b.bet) / pool) * 100).toFixed(0);
             const div = document.createElement('div');
             div.className = 'pvp-pcard' + (b.user_id === TG_USER.id ? ' isMe' : '');
             div.innerHTML = `<div class="pvp-pav" style="border-color:${colors[i%5]}">👤</div><div class="pvp-pname">${b.name}</div><div class="pvp-ppct" style="color:${colors[i%5]}">${pct}%</div><div class="pvp-pbet">${b.bet} TON</div>`;
@@ -1089,7 +1110,6 @@ async function pvpFetchPlayers(){
     if(poolEl) poolEl.innerText = pool.toFixed(2);
     pvpDrawWheel(bets || []);
 }
-
 function pvpDrawWheel(bets){
     const canvas = document.getElementById('pvpCanvas');
     if(!canvas) return;
@@ -1097,10 +1117,8 @@ function pvpDrawWheel(bets){
     const s = Math.min(canvas.parentElement.clientWidth - 20, 340);
     canvas.width = s; canvas.height = s;
     const cx = s/2, cy = s/2, R = s/2 - 10;
-    
     ctx.clearRect(0,0,s,s);
     const colors = ['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea'];
-    
     if(bets.length === 0) {
         ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
     } else {
@@ -1115,7 +1133,6 @@ function pvpDrawWheel(bets){
     ctx.beginPath(); ctx.arc(cx,cy,s*0.27,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
 }
 
-// ==================== Mines, Plinko, Penalty, Upgrade (Single Player Local) ====================
 function openMines(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('minesScreen').classList.remove('hidden');if(!window.mnInitialized){mnInit();window.mnInitialized=true;}mnResetGrid();showBackBtn();}
 function closeMines(){document.getElementById('minesScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
 window.mnInitialized=false;
@@ -1163,7 +1180,6 @@ function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upC
 function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const res=document.getElementById('upResult');res.className='up-result';res.innerText='';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
 function upFinish(){upState='idle';const btn=document.getElementById('upBtn');btn.disabled=false;btn.innerText='🚀 UPGRADE';const res=document.getElementById('upResult');const ga=(upChance/100)*Math.PI*2;let pl=(-upWheelAngle)%(Math.PI*2);if(pl<0)pl+=Math.PI*2;const aw=pl<=ga;if(aw){resolveWin(upTargetVal);res.className='up-result win show';res.innerText='🏆 +'+upTargetVal.toFixed(2)+' TON';showToast('🏆 +'+upTargetVal.toFixed(2)+' TON','win');}else{res.className='up-result lose show';res.innerText='😔 Lost -'+upBetVal.toFixed(2)+' TON';showToast('😔 Lost','lose');}upWheelAngle=upWheelAngle%(Math.PI*2);}
 
-// ==================== Penalty ====================
 let penState='idle';let penBet=0;let penGoals=0;let penShotsUsed=0;let penMaxShots=10;let penCurrentMult=1.0;let penFromGift=false;
 function openPenalty(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('penaltyScreen').classList.remove('hidden');penState='idle';penBet=0;penGoals=0;penShotsUsed=0;penCurrentMult=1.0;penFromGift=false;document.getElementById('penKeeper').className='pen-keeper';document.getElementById('penBall').className='pen-ball';document.getElementById('penScoreOverlay').className='pen-score-overlay';document.getElementById('penStatus').innerText='Place your bet and shoot!';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const startBtn=document.getElementById('penStartBtn');startBtn.innerText='START';startBtn.disabled=false;startBtn.onclick=penStart;updatePenMultsRow();updatePenBalance();let base=2800+Math.floor(Math.random()*800);document.getElementById('penOnlineCount').innerText=base.toLocaleString()+' online';showBackBtn();}
 function updatePenBalance(){const el=document.getElementById('penBalanceDisplay');if(el)el.innerText=balance.toFixed(2);}
@@ -1174,8 +1190,6 @@ function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxSho
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
 
-setTimeout(()=>{if(document.getElementById('wheelCanvas'))whResize();},500);
-setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
 </html>
