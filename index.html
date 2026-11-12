@@ -1113,15 +1113,46 @@ async function pvpJoinClick(){
     if(isNaN(bet) || bet < 0.1) { showToast('Min 0.1 TON', 'lose'); return; }
     if(bet > balance) { showToast('Insufficient balance', 'lose'); return; }
     
+    // 1. کم کردن موجودی
     balance -= bet;
     updateGlobalBalanceUI();
     
-    let color = PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
-    
-    try {
-        await supabaseClient.from('pvp_bets').insert([{ user_id: TG_USER.id, name: TG_USER.name, bet: bet, color: color }]);
+    // 2. چک کردن اینکه آیا من از قبل توی بازی هستم یا نه
+    let existingPlayer = pvpPlayers.find(p => p.isMe);
+
+    if (existingPlayer) {
+        // --- اگر از قبل هستم، پول رو به همون خونه اضافه کن ---
+        existingPlayer.bet += bet;
+        
+        // آپدیت فوری صفحه (بدون منتظر موندن برای دیتابیس)
+        pvpRecalcPool();
+        pvpRenderPlayers();
+        pvpDraw();
+        showToast('✅ Added to your bet!', 'win');
+
+        // آپدیت دیتابیس در پس‌زمینه
+        supabaseClient.from('pvp_bets')
+            .update({ bet: existingPlayer.bet })
+            .eq('user_id', TG_USER.id)
+            .then();
+
+    } else {
+        // --- اگر کاربر جدید هستم، یه خونه جدید بساز ---
+        let color = PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
+        
+        // آپدیت فوری صفحه
+        let newPlayer = { name: TG_USER.name, bet: bet, color: color, isMe: true };
+        pvpPlayers.push(newPlayer);
+        pvpRecalcPool();
+        pvpRenderPlayers();
+        pvpDraw();
         showToast('✅ Joined the PVP pool!', 'win');
-    } catch(e) { console.log(e); }
+
+        // ثبت در دیتابیس در پس‌زمینه
+        supabaseClient.from('pvp_bets')
+            .insert([{ user_id: TG_USER.id, name: TG_USER.name, bet: bet, color: color }])
+            .then();
+    }
 }
 
 function pvpRecalcPool(){
@@ -1442,6 +1473,14 @@ async function whFinishSpin(winnerMult){
     whState = 'ended';
     document.getElementById('whStatusText').innerText = `Landed on x${winnerMult}!`;
     
+    // فیکس: آپدیت فوری تاریخچه در صفحه
+    const histRow = document.getElementById('whHistory');
+    const seg = document.createElement('div');
+    seg.className = 'wh-history-seg';
+    seg.style.background = getWhColor(winnerMult);
+    histRow.prepend(seg);
+    if(histRow.children.length > 10) histRow.removeChild(histRow.lastChild);
+
     let { data: state } = await supabaseClient.from('wheel_state').select('history').eq('id', 1).single();
     let newHistory = state.history || [];
     newHistory.push(winnerMult);
@@ -1449,7 +1488,8 @@ async function whFinishSpin(winnerMult){
     await supabaseClient.from('wheel_state').update({ history: newHistory }).eq('id', 1);
 
     const me = whPlayers.find(p => p.isMe);
-    if(me && me.pick === winnerMult) {
+    // فیکس: تبدیل به عدد برای مقایسه دقیق
+    if(me && parseFloat(me.pick) === winnerMult) {
         const winAmt = me.bet * winnerMult;
         balance += winAmt;
         updateGlobalBalanceUI();
@@ -1477,4 +1517,4 @@ setTimeout(()=>{if(document.getElementById('wheelCanvas'))whResize();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
-    </html>                        
+    </html>
