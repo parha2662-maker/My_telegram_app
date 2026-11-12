@@ -483,7 +483,6 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .auto-toggle-btn.off{background:#2a2e42;color:#8a90a6}
 .auto-toggle-btn.on{background:linear-gradient(135deg,#00c853,#009624);color:#fff;box-shadow:0 0 12px rgba(0,200,83,.5)}
 </style></head><body>
-
 <div id="homeScreen" class="screen">
 <div class="live-ticker"><div class="live-label"><div class="live-dot"></div>LIVE</div><div class="live-ticker-inner" id="liveTickerInner"></div></div>
 <div class="balance-row"><div class="avatar-wrap"><div class="avatar-ring"></div><div class="avatar" id="userAvatar">M</div></div><div class="balance-info"><div class="balance-label">Your balance</div><div class="balance-value"><span class="ton-icon">◈</span><span id="homeBalance">0.000</span></div></div><button class="deposit-btn" onclick="openDepositModal()">💳 Deposit</button><button id="adminBtn" class="deposit-btn" style="display:none;background:linear-gradient(135deg,#ffcc00,#ff9d00);color:#0a0d14;margin-left:6px;" onclick="openAdminPanel()">👑</button></div>
@@ -546,11 +545,12 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 <div class="toast" id="toast"></div>
 
 <div id="adminScreen" class="screen hidden" style="background:#0a0d14;z-index:500;overflow-y:auto;padding-bottom:100px;padding-top:calc(75px + env(safe-area-inset-top,0px))"><div class="sh-top-bar"><button class="sh-back" onclick="goHome()">⬅ Back</button><div class="sh-title">👑 Admin</div><button class="sh-back" onclick="loadAdminUsers()">🔄</button></div><div style="padding:0 16px"><input type="text" id="adminSearch" placeholder="Search..." oninput="renderAdminUsers()" style="width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#12141f;color:#fff;font-size:14px;margin-bottom:12px;"><div id="adminUsersList"></div></div></div>
+
 <script>
 const BOTS_ENABLED=true;
 const SPEED=1.0001,COUNTDOWN_SECONDS=8,PVP_COUNTDOWN_SECONDS=20,PL_MAX_BALLS=20;
 const VIP_CODE='parham2010';const GIFT_CODE='parham2010';const GIFT_CODE_REWARD=1000000;
-const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm';
+const RECIPIENT_ADDRESS='UQBGa61e8uvvFvobhAduvaOrK87DouS5fVXHHLjE_MocrAVm'; // آدرس ولت مقصد برای دپوزیت
 const BOT_TOKEN='8644963828:AAExnyqtPbfi3Y7VqeK1ku6rytZbxT4U8DY';
 const ADMIN_CHAT_ID='6151360205';
 const MIN_TON_DEPOSIT=0.1;const REFERRAL_REWARD=0.04;const MIN_GIFT_VALUE=4;
@@ -951,7 +951,6 @@ async function openPvp(){
         });
     }
     setTimeout(() => { initPvpCanvas(); }, 50);
-    
     await startPvpLobby();
     showBackBtn();
 }
@@ -1005,13 +1004,11 @@ async function endPvpRound() {
     if(pvpPlayers.length > 0 && pvpPool > 0) {
         showToast('🎡 Spinning PVP...', 'win');
         
-        // انتخاب برنده بر اساس شانس (مبلغ شرط)
         let r = Math.random() * pvpPool;
         let cum = 0;
         let winner = pvpPlayers[0];
         let winnerAngleCenter = 0;
         let currentAngle = -Math.PI/2;
-        let winnerIdx = 0;
 
         for(let i=0; i<pvpPlayers.length; i++) {
             let p = pvpPlayers[i];
@@ -1020,13 +1017,11 @@ async function endPvpRound() {
             if(r <= cum) {
                 winner = p;
                 winnerAngleCenter = currentAngle + arc/2;
-                winnerIdx = i;
                 break;
             }
             currentAngle += arc;
         }
 
-        // محاسبه دقیق زاویه برای توقف روی برنده
         let targetRot = -Math.PI/2 - winnerAngleCenter + (5 * Math.PI * 2);
         let startTime = performance.now();
         let duration = 4000;
@@ -1041,7 +1036,6 @@ async function endPvpRound() {
             if(progress < 1) {
                 requestAnimationFrame(animate);
             } else {
-                // پرداخت جایزه
                 if(winner.isMe) {
                     balance += pvpPool;
                     updateGlobalBalanceUI();
@@ -1050,7 +1044,6 @@ async function endPvpRound() {
                     showToast(`😔 ${winner.name} won the pool!`, 'lose');
                 }
                 
-                // پاک کردن دیتابیس برای دور بعد
                 supabaseClient.from('pvp_bets').delete().neq('id', 0).then(() => {
                     setTimeout(() => { startPvpLobby(); }, 3000);
                 });
@@ -1151,7 +1144,6 @@ function pvpDraw(){
     pvpCtx.fillStyle = '#1a1d2e'; 
     pvpCtx.fill();
 
-    // فلش بالای PVP
     pvpCtx.beginPath();
     pvpCtx.moveTo(cx, cy - R - 10);
     pvpCtx.lineTo(cx - 15, cy - R + 15);
@@ -1165,6 +1157,14 @@ function pvpDraw(){
 let whState='waiting', whTimer=20, whTimerInterval=null, whWheelAngle=0, whHistory=[], whPlayers=[];
 let whCanvas=null, whCtx=null, whSize=320, whUserPicked=null, whUserBet=0;
 let whCurrentRound = 1;
+
+function getWhColor(mult) {
+    if (mult == 2) return '#a855f7';
+    if (mult == 4) return '#2ed573';
+    if (mult == 5) return '#38bdf8';
+    if (mult == 20) return '#f43f5e';
+    return '#fff';
+}
 
 async function openWheel(){
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
@@ -1208,7 +1208,6 @@ function whDraw(){
     const mults = [2,4,5,20];
     const arc = Math.PI*2/4;
     
-    // چرخش چرخ
     whCtx.save();
     whCtx.translate(cx,cy);
     whCtx.rotate(whWheelAngle);
@@ -1236,7 +1235,6 @@ function whDraw(){
     }
     whCtx.restore();
     
-    // دایره وسط
     whCtx.beginPath();
     whCtx.arc(cx,cy,s*0.25,0,Math.PI*2);
     whCtx.fillStyle = '#1a1d2e';
@@ -1245,7 +1243,6 @@ function whDraw(){
     whCtx.lineWidth = 4;
     whCtx.stroke();
     
-    // فلش ثابت بالای چرخ
     whCtx.save();
     whCtx.translate(cx,cy);
     whCtx.beginPath();
@@ -1268,13 +1265,26 @@ async function initWheelOnline() {
     if(whTimerInterval) clearInterval(whTimerInterval);
     
     let { data: state } = await supabaseClient.from('wheel_state').select('*').eq('id', 1).single();
+    
+    // فیکس تاریخچه
+    whHistory = state.history || [];
+    const histRow = document.getElementById('whHistory');
+    histRow.innerHTML = '';
+    whHistory.forEach(m => {
+        const seg = document.createElement('div');
+        seg.className = 'wh-history-seg';
+        seg.style.background = getWhColor(m);
+        histRow.appendChild(seg);
+    });
+
     let endTime = new Date(state.end_time).getTime();
     whCurrentRound = state.round_number;
 
     if (Date.now() > endTime) {
         whCurrentRound++;
         let nextEnd = new Date(Date.now() + 20000).toISOString();
-        await supabaseClient.from('wheel_state').update({ round_number: whCurrentRound, end_time: nextEnd }).eq('id', 1);
+        let newHistory = whHistory.length >= 10 ? whHistory.slice(-9) : whHistory;
+        await supabaseClient.from('wheel_state').update({ round_number: whCurrentRound, end_time: nextEnd, history: newHistory }).eq('id', 1);
         await supabaseClient.from('wheel_bets').delete().neq('round_number', whCurrentRound);
         endTime = new Date(nextEnd).getTime();
     }
@@ -1283,8 +1293,6 @@ async function initWheelOnline() {
     whPlayers = bets ? bets.map(b => ({name: b.name, bet: b.bet, pick: b.pick, color: '#ffcc00', isMe: b.user_id === TG_USER.id})) : [];
     
     whUpdatePlayers();
-    
-    // عقربه/چرخ سر جاش برمی‌گرده
     whWheelAngle = 0; 
     whDraw();
 
@@ -1311,7 +1319,6 @@ async function initWheelOnline() {
             let winnerIndex = (whCurrentRound * 7) % 4; 
             let winnerMult = [2,4,5,20][winnerIndex];
             
-            // فرمول دقیق ریاضی برای توقف روی رنگ درست
             let targetAngle = -(winnerIndex * (Math.PI / 2) + (Math.PI / 4));
             let spins = 5 * Math.PI * 2;
             let finalRot = spins + targetAngle;
@@ -1384,10 +1391,16 @@ function whUpdatePlayers(){
     });
 }
 
-function whFinishSpin(winnerMult){
+async function whFinishSpin(winnerMult){
     whState = 'ended';
     document.getElementById('whStatusText').innerText = `Landed on x${winnerMult}!`;
     
+    let { data: state } = await supabaseClient.from('wheel_state').select('history').eq('id', 1).single();
+    let newHistory = state.history || [];
+    newHistory.push(winnerMult);
+    if(newHistory.length > 10) newHistory.shift();
+    await supabaseClient.from('wheel_state').update({ history: newHistory }).eq('id', 1);
+
     const me = whPlayers.find(p => p.isMe);
     if(me && me.pick === winnerMult) {
         const winAmt = me.bet * winnerMult;
@@ -1397,13 +1410,6 @@ function whFinishSpin(winnerMult){
     } else if (me) {
         showToast(`😔 Lost ${me.bet.toFixed(2)} TON`, 'lose');
     }
-    
-    const hist = document.getElementById('whHistory');
-    const seg = document.createElement('div');
-    seg.className = 'wh-history-seg';
-    seg.style.background = winnerMult >= 10 ? '#f43f5e' : (winnerMult >= 5 ? '#a855f7' : (winnerMult >= 4 ? '#2ed573' : '#38bdf8'));
-    hist.prepend(seg);
-    if(hist.children.length > 10) hist.removeChild(hist.lastChild);
     
     setTimeout(() => { initWheelOnline(); }, 4000);
 }
@@ -1419,9 +1425,9 @@ function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxSho
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
 
-// Other Initializations
+// Initializations
 setTimeout(()=>{if(document.getElementById('wheelCanvas'))whResize();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
-</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                          </html>
