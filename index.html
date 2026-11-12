@@ -382,7 +382,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;background:#05070d;color:#fff
 .wh-balance-chip{display:flex;align-items:center;gap:6px;background:#1a1d2e;padding:8px 14px;border-radius:12px;font-size:14px;font-weight:800}
 .wh-balance-chip .t-coin{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#ffd93d,#fbbf24);display:flex;align-items:center;justify-content:center;font-size:10px;color:#0a0d14;font-weight:900}
 .wh-icon-btn{width:38px;height:38px;border-radius:12px;background:#1a1d2e;border:none;color:#8a90a6;font-size:16px;cursor:pointer;font-family:inherit}
-.wh-history{margin:0 16px 14px;background:#0f0a1a;border-radius:12px;padding:6px;display:flex;gap:4px;overflow-x:auto;min-height:38px}
+.wh-history{margin:0 16px 14px;background:#0f0a1a;border-radius:12px;padding:6px;display:flex;gap:4px;overflow-x:auto;height:38px;min-height:38px;flex-shrink:0;align-items:center}
 .wh-history-seg{min-width:34px;height:26px;border-radius:7px;flex-shrink:0}
 .wh-wheel-wrap{position:relative;display:flex;justify-content:center;align-items:center;margin:0 0 16px;min-height:380px}
 #wheelCanvas{display:block;filter:drop-shadow(0 15px 40px rgba(155,92,255,.5))}
@@ -813,9 +813,311 @@ function submitVipCode(){const code=document.getElementById('vipCodeInput').valu
 function openGiftCodeModal(){document.getElementById('giftCodeModal').classList.remove('hidden');setTimeout(()=>document.getElementById('giftCodeInput').focus(),150);}
 function closeGiftCodeModal(){document.getElementById('giftCodeModal').classList.add('hidden');document.getElementById('giftCodeInput').value='';}
 function submitGiftCode(){const code=document.getElementById('giftCodeInput').value.trim().toLowerCase();if(code===GIFT_CODE){balance+=GIFT_CODE_REWARD;updateGlobalBalanceUI();closeGiftCodeModal();showToast('🎉 +1,000,000 TON claimed!','win');}else showToast('❌ Wrong code','lose');}
-</script>
-<script>
-// ==================== Mines ====================
+
+// ==================== 🚀 Crash Game (Real-time Multiplayer) ====================
+let crashInterval = null;
+let crashChannel = null;
+let localCrashState = 'waiting';
+
+async function openGame(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('gameScreen').classList.remove('hidden');
+    initCrashRealtime();
+}
+
+async function initCrashRealtime(){
+    if(crashChannel) supabaseClient.removeChannel(crashChannel);
+    
+    crashChannel = supabaseClient.channel('crash_live')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'crash_state' }, payload => {
+        const state = payload.new;
+        localCrashState = state.status;
+        
+        if(state.status === 'waiting') {
+            document.getElementById('multiplierDisplay').innerText = 'Next round...';
+            document.getElementById('multiplierDisplay').style.color = '#ff9800';
+            document.getElementById('actionButton').innerText = 'Place bet';
+            document.getElementById('actionButton').disabled = false;
+            document.getElementById('actionButton').className = 'crash-action-btn bet';
+        } 
+        else if(state.status === 'playing') {
+            document.getElementById('multiplierDisplay').style.color = '#fff';
+            document.getElementById('actionButton').innerText = 'Cash Out';
+            document.getElementById('actionButton').className = 'crash-action-btn cashout';
+            
+            const startTime = new Date(state.start_time).getTime();
+            const crashPoint = parseFloat(state.crash_point);
+            
+            if(crashInterval) clearInterval(crashInterval);
+            crashInterval = setInterval(() => {
+                let elapsed = Date.now() - startTime;
+                let currentMult = Math.pow(1.0001, elapsed);
+                
+                if(currentMult >= crashPoint) {
+                    clearInterval(crashInterval);
+                    document.getElementById('multiplierDisplay').innerText = crashPoint.toFixed(2) + 'x';
+                    document.getElementById('multiplierDisplay').style.color = '#ff4444';
+                    document.getElementById('multiplierDisplay').classList.add('crashed');
+                } else {
+                    document.getElementById('multiplierDisplay').innerText = currentMult.toFixed(2) + 'x';
+                    drawChart(currentMult, crashPoint);
+                }
+            }, 50);
+        }
+        else if(state.status === 'crashed') {
+            if(crashInterval) clearInterval(crashInterval);
+            document.getElementById('multiplierDisplay').classList.add('crashed');
+            document.getElementById('actionButton').disabled = true;
+        }
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'crash_bets' }, payload => {
+        fetchCrashBets();
+    })
+    .subscribe();
+    
+    fetchCrashBets();
+}
+
+async function fetchCrashBets(){
+    const { data: bets } = await supabaseClient.from('crash_bets').select('*');
+    const row = document.getElementById('crashPlayersRow');
+    if(!row) return;
+    row.innerHTML = '';
+    if(!bets || bets.length === 0) {
+        row.innerHTML = '<div style="color:#5a6278;text-align:center;padding:20px;">Waiting for players...</div>';
+        return;
+    }
+    bets.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'crash-p-row';
+        div.innerHTML = `<div class="crash-p-av">👤</div><div class="crash-p-name">${b.name}</div><div class="crash-p-bet">${b.bet} TON</div>`;
+        row.appendChild(div);
+    });
+}
+
+function drawChart(m, crashPoint) {
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(m <= 1.01) return;
+    
+    const max = crashPoint || 10;
+    const cx = canvas.width * (m/max);
+    const cy = canvas.height - (canvas.height * (m/max));
+    
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height);
+    ctx.quadraticCurveTo(cx/2, canvas.height, cx, cy);
+    ctx.lineTo(cx, canvas.height);
+    ctx.fillStyle = 'rgba(255, 204, 0, 0.2)';
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height);
+    ctx.quadraticCurveTo(cx/2, canvas.height, cx, cy);
+    ctx.strokeStyle = '#ffcc00';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+}
+
+// ==================== 🎡 Wheel Game (Real-time) ====================
+let wheelChannel = null;
+let whState = 'waiting';
+let whCurrentRound = 1;
+
+async function openWheel(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('wheelScreen').classList.remove('hidden');
+    initWheelRealtime();
+    whDraw();
+}
+
+async function initWheelRealtime(){
+    if(wheelChannel) supabaseClient.removeChannel(wheelChannel);
+    
+    wheelChannel = supabaseClient.channel('wheel_live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'wheel_bets' }, payload => {
+        fetchWheelPlayers();
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'wheel_state' }, payload => {
+        const state = payload.new;
+        if(state.status === 'spinning') {
+            whSpinAnimation(state.winner_index);
+        } else if (state.status === 'waiting') {
+            whState = 'waiting';
+            whCurrentRound = state.round_number;
+            document.getElementById('whTimer').innerText = 'Waiting...';
+            document.getElementById('whStatusText').innerText = `Round #${whCurrentRound}`;
+        }
+    }).subscribe();
+    
+    fetchWheelPlayers();
+    const { data: state } = await supabaseClient.from('wheel_state').select('*').eq('id', 1).single();
+    if(state) {
+        whCurrentRound = state.round_number;
+        whState = state.status;
+    }
+}
+
+async function fetchWheelPlayers(){
+    const { data: bets } = await supabaseClient.from('wheel_bets').select('*').eq('round_number', whCurrentRound);
+    const row = document.getElementById('whPlayers');
+    if(!row) return;
+    row.innerHTML = '';
+    let totalBank = 0;
+    if(bets && bets.length > 0) {
+        bets.forEach(b => {
+            totalBank += parseFloat(b.bet);
+            const div = document.createElement('div');
+            div.className = 'wh-pcard' + (b.user_id === TG_USER.id ? ' isMe' : '');
+            div.innerHTML = `<div class="wh-pcard-av">👤</div><div class="wh-pcard-name">${b.name}</div><div class="wh-pcard-bet">${b.bet} TON</div><div class="wh-pcard-pick">x${b.pick}</div>`;
+            row.appendChild(div);
+        });
+    } else {
+        row.innerHTML = '<div class="wh-empty">No players yet.</div>';
+    }
+    document.getElementById('whBankVal').innerText = totalBank.toFixed(2);
+}
+
+function whDraw(){
+    const canvas = document.getElementById('wheelCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const s = Math.min(canvas.parentElement.clientWidth - 40, 340);
+    canvas.width = s; canvas.height = s;
+    const cx = s/2, cy = s/2, R = s/2 - 10;
+    
+    ctx.clearRect(0,0,s,s);
+    const colors = ['#a855f7','#2ed573','#38bdf8','#f43f5e'];
+    
+    for(let i=0;i<4;i++){
+        ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.arc(cx,cy,R, i*(Math.PI/2), (i+1)*(Math.PI/2));
+        ctx.fillStyle = colors[i];
+        ctx.fill();
+    }
+    ctx.beginPath(); ctx.arc(cx,cy,s*0.25,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
+}
+
+function whSpinAnimation(winnerIndex) {
+    whState = 'spinning';
+    document.getElementById('whStatusText').innerText = 'Spinning...';
+    const canvas = document.getElementById('wheelCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let targetAngle = -(winnerIndex * (Math.PI / 2) + (Math.PI / 4));
+    let finalRot = (5 * Math.PI * 2) + targetAngle;
+    let startTime = performance.now();
+    let duration = 4000;
+    
+    function animate(now) {
+        let elapsed = now - startTime;
+        let progress = Math.min(elapsed / duration, 1);
+        let ease = 1 - Math.pow(1 - progress, 3.5);
+        let currentAngle = finalRot * ease;
+        
+        const s = canvas.width;
+        const cx = s/2, cy = s/2, R = s/2 - 10;
+        ctx.clearRect(0,0,s,s);
+        const colors = ['#a855f7','#2ed573','#38bdf8','#f43f5e'];
+        
+        ctx.save();
+        ctx.translate(cx,cy);
+        ctx.rotate(currentAngle);
+        ctx.translate(-cx,-cy);
+        
+        for(let i=0;i<4;i++){
+            ctx.beginPath();
+            ctx.moveTo(cx,cy);
+            ctx.arc(cx,cy,R, i*(Math.PI/2), (i+1)*(Math.PI/2));
+            ctx.fillStyle = colors[i];
+            ctx.fill();
+        }
+        ctx.restore();
+        ctx.beginPath(); ctx.arc(cx,cy,s*0.25,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
+        
+        if(progress < 1) requestAnimationFrame(animate);
+        else {
+            document.getElementById('whStatusText').innerText = `Landed on x${[2,4,5,20][winnerIndex]}!`;
+        }
+    }
+    requestAnimationFrame(animate);
+}
+
+// ==================== ⚔️ PVP Game (Real-time) ====================
+let pvpChannel = null;
+
+async function openPvp(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('pvpScreen').classList.remove('hidden');
+    
+    if(pvpChannel) supabaseClient.removeChannel(pvpChannel);
+    pvpChannel = supabaseClient.channel('pvp_live')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'pvp_bets' }, payload => {
+        pvpFetchPlayers();
+    }).subscribe();
+    
+    pvpFetchPlayers();
+    pvpDrawWheel([]);
+}
+
+async function pvpFetchPlayers(){
+    const { data: bets } = await supabaseClient.from('pvp_bets').select('*');
+    const row = document.getElementById('pvpPlayersRow');
+    const poolEl = document.getElementById('pvpPoolValue');
+    
+    if(!row) return;
+    row.innerHTML = '';
+    let pool = 0;
+    const colors = ['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea'];
+    
+    if(bets && bets.length > 0) {
+        bets.forEach((b, i) => {
+            pool += parseFloat(b.bet);
+            const pct = ((parseFloat(b.bet) / pool) * 100).toFixed(0); // rough calc
+            const div = document.createElement('div');
+            div.className = 'pvp-pcard' + (b.user_id === TG_USER.id ? ' isMe' : '');
+            div.innerHTML = `<div class="pvp-pav" style="border-color:${colors[i%5]}">👤</div><div class="pvp-pname">${b.name}</div><div class="pvp-ppct" style="color:${colors[i%5]}">${pct}%</div><div class="pvp-pbet">${b.bet} TON</div>`;
+            row.appendChild(div);
+        });
+    } else {
+        row.innerHTML = '<div style="padding:24px;color:#7a8299;text-align:center;">Waiting for players...</div>';
+    }
+    if(poolEl) poolEl.innerText = pool.toFixed(2);
+    pvpDrawWheel(bets || []);
+}
+
+function pvpDrawWheel(bets){
+    const canvas = document.getElementById('pvpCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const s = Math.min(canvas.parentElement.clientWidth - 20, 340);
+    canvas.width = s; canvas.height = s;
+    const cx = s/2, cy = s/2, R = s/2 - 10;
+    
+    ctx.clearRect(0,0,s,s);
+    const colors = ['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea'];
+    
+    if(bets.length === 0) {
+        ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
+    } else {
+        let pool = bets.reduce((sum, b) => sum + parseFloat(b.bet), 0);
+        let startAngle = -Math.PI/2;
+        bets.forEach((b, i) => {
+            let arc = (parseFloat(b.bet) / pool) * Math.PI * 2;
+            ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,R,startAngle, startAngle+arc); ctx.fillStyle = colors[i%5]; ctx.fill();
+            startAngle += arc;
+        });
+    }
+    ctx.beginPath(); ctx.arc(cx,cy,s*0.27,0,Math.PI*2); ctx.fillStyle = '#1a1d2e'; ctx.fill();
+}
+
+// ==================== Mines, Plinko, Penalty, Upgrade (Single Player Local) ====================
+function openMines(){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('minesScreen').classList.remove('hidden');if(!window.mnInitialized){mnInit();window.mnInitialized=true;}mnResetGrid();showBackBtn();}
+function closeMines(){document.getElementById('minesScreen').classList.add('hidden');document.getElementById('playhubScreen').classList.remove('hidden');}
 window.mnInitialized=false;
 let mnState='idle',mnBombCount=3,mnGridSize=6,mnBombs=[],mnRevealed=[],mnCurrentMult=1.04,mnLockedBet=0;
 function mnMaxBombs(){if(mnGridSize===5)return 9;if(mnGridSize===6)return 12;return 20;}
@@ -836,7 +1138,6 @@ function mnResetGrid(){mnBuildGrid();mnRevealed=[];mnCurrentMult=1.04;mnLockedBe
 function mnHalfBet(){if(mnState==='playing')return;const v=parseFloat(document.getElementById('mnBetInput').value)||0;document.getElementById('mnBetInput').value=(v/2).toFixed(2);}
 function mnMaxBet(){if(mnState==='playing')return;document.getElementById('mnBetInput').value=Math.min(MAX_BET,balance).toFixed(2);}
 
-// ==================== Plinko ====================
 window.plInitialized=false;
 let plCanvas,plCtx,plWidth,plHeight,plDifficulty='medium',plPegs=[],plBalls=[],plAnimId=null,plLastRowY=0,plSpacing=0,plTopPad=0;
 const PL_ROWS=12;
@@ -853,7 +1154,6 @@ function plDraw(){if(!plCtx)return;const g=plCtx.createLinearGradient(0,0,0,plHe
 function plDrop(){const bet=parseFloat(document.getElementById('plBetInput').value);if(isNaN(bet)||bet<0.1){showToast('❌ Min 0.1 TON');return;}if(bet>balance){showToast('❌ Insufficient');return;}balance-=bet;updateGlobalBalanceUI();const cx=plWidth/2;const W=[0.3,0.3,1,10,32,14,4,14,32,10,1,0.3,0.3];let r=Math.random()*100,cum=0,tSlot=6;for(let i=0;i<W.length;i++){cum+=W[i];if(r<cum){tSlot=i;break;}}const tx=cx+(tSlot-(W.length-1)/2)*plSpacing;const rows=PL_ROWS;const rowGap=(plLastRowY-plTopPad)/(rows-1);const path=[];path.push({x:cx,y:plTopPad-25});for(let i=0;i<rows;i++){const progress=(i+1)/rows;const baseX=cx+(tx-cx)*progress;const midFactor=Math.sin(progress*Math.PI);const wobble=(Math.random()-0.5)*plSpacing*0.7*midFactor;path.push({x:baseX+wobble,y:plTopPad+i*rowGap});}path.push({x:tx,y:plLastRowY+25});const ms=PL_MULTIPLIERS[plDifficulty],sc=ms.length;const si=Math.max(0,Math.min(sc-1,tSlot));const m=ms[si];const ball={x:path[0].x,y:path[0].y,path:path,startTime:performance.now(),duration:2300+Math.random()*500,bet:bet,multiplier:m,winnings:bet*m,landed:false,done:false};plBalls.push(ball);plUpdateBallCount();if(!plAnimId)plAnimate();}
 function plAnimate(){plAnimId=requestAnimationFrame(plAnimate);const now=performance.now();let any=false;plBalls.forEach(b=>{if(b.done)return;const t=Math.min(1,(now-b.startTime)/b.duration);const ts=b.path.length-1;const sp=t*ts;const si=Math.min(ts-1,Math.floor(sp));const lt=sp-si;const p1=b.path[si],p2=b.path[si+1];b.x=p1.x+(p2.x-p1.x)*lt;b.y=p1.y+(p2.y-p1.y)*lt;if(t>=1&&!b.landed){b.landed=true;b.done=true;resolveWin(b.winnings);}if(!b.done)any=true;});plDraw();plBalls=plBalls.filter(b=>!b.done);plUpdateBallCount();if(!any){cancelAnimationFrame(plAnimId);plAnimId=null;}}
 
-// ==================== Upgrade ====================
 window.upInitialized=false;
 let upCanvas,upCtx,upSize=280,upWheelAngle=0,upState='idle',upChance=20,upBetVal=0,upTargetVal=0;
 function upInit(){upCanvas=document.getElementById('upCanvas');upCtx=upCanvas.getContext('2d');window.addEventListener('resize',()=>{if(upCanvas)upResize();});upResize();upDrawWheel();document.getElementById('upBetInput').addEventListener('input',upUpdateChance);document.getElementById('upTargetInput').addEventListener('input',upUpdateChance);upUpdateChance();}
@@ -862,644 +1162,6 @@ function upUpdateChance(){const b=parseFloat(document.getElementById('upBetInput
 function upDrawWheel(){if(!upCtx)return;const s=upSize,cx=s/2,cy=s/2,R=s/2-8;upCtx.clearRect(0,0,s,s);const ga=(upChance/100)*Math.PI*2;const sa=upWheelAngle-Math.PI/2;if(ga>0){upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,sa,sa+ga);upCtx.closePath();upCtx.fillStyle='#2ff068';upCtx.fill();}if(ga<Math.PI*2){upCtx.beginPath();upCtx.moveTo(cx,cy);upCtx.arc(cx,cy,R,sa+ga,sa+Math.PI*2);upCtx.closePath();upCtx.fillStyle='#ff4444';upCtx.fill();}upCtx.beginPath();upCtx.arc(cx,cy,s*0.22,0,Math.PI*2);upCtx.fillStyle='#1a1d2e';upCtx.fill();}
 function upStart(){if(upState!=='idle')return;const b=parseFloat(document.getElementById('upBetInput').value);const t=parseFloat(document.getElementById('upTargetInput').value);if(isNaN(b)||b<1){showToast('❌ Invalid');return;}if(isNaN(t)||t<=b){showToast('❌ Target > entry');return;}if(b>balance){showToast('❌ Insufficient');return;}upBetVal=b;upTargetVal=t;balance-=b;updateGlobalBalanceUI();const ga=(upChance/100)*Math.PI*2;const isWin=Math.random()*100<upChance;let fla;if(isWin)fla=Math.random()*ga;else fla=ga+Math.random()*(Math.PI*2-ga);let tw=-fla;tw=((tw%(Math.PI*2))+Math.PI*2)%(Math.PI*2);const fs=6+Math.floor(Math.random()*3);let ea=tw;while(ea<upWheelAngle+Math.PI*2*fs)ea+=Math.PI*2;const sa=upWheelAngle;upState='spinning';const btn=document.getElementById('upBtn');btn.disabled=true;btn.innerText='⏳ Spinning...';const res=document.getElementById('upResult');res.className='up-result';res.innerText='';const dur=4000;const st=performance.now();function fr(now){const tt=Math.min(1,(now-st)/dur);const e=1-Math.pow(1-tt,3.2);upWheelAngle=sa+(ea-sa)*e;upDrawWheel();if(tt<1)requestAnimationFrame(fr);else upFinish();}requestAnimationFrame(fr);}
 function upFinish(){upState='idle';const btn=document.getElementById('upBtn');btn.disabled=false;btn.innerText='🚀 UPGRADE';const res=document.getElementById('upResult');const ga=(upChance/100)*Math.PI*2;let pl=(-upWheelAngle)%(Math.PI*2);if(pl<0)pl+=Math.PI*2;const aw=pl<=ga;if(aw){resolveWin(upTargetVal);res.className='up-result win show';res.innerText='🏆 +'+upTargetVal.toFixed(2)+' TON';showToast('🏆 +'+upTargetVal.toFixed(2)+' TON','win');}else{res.className='up-result lose show';res.innerText='😔 Lost -'+upBetVal.toFixed(2)+' TON';showToast('😔 Lost','lose');}upWheelAngle=upWheelAngle%(Math.PI*2);}
-
-// ==================== Crash ====================
-let gameState='waiting',multiplier=1.00,crashPoint=0,myBet=0,myAutoCashout=0,hasJoined=false;let autoCashoutEnabled=false;let queuedBet=0,queuedAuto=0;
-let gameInterval,countdownInterval;
-let roundHistory=JSON.parse(localStorage.getItem('roundHistory')||'[]');
-let crashPlayers=[];
-const multiplierDisplay=document.getElementById('multiplierDisplay');
-const actionButton=document.getElementById('actionButton');
-const statusText=document.getElementById('statusText');
-const betInput=document.getElementById('betInput');
-const autoCashoutInput=document.getElementById('autoCashoutInput');
-const multiplierHistoryContainer=document.getElementById('multiplierHistory');
-const canvas=document.getElementById('chartCanvas');
-const ctx=canvas.getContext('2d');
-const halfBtn=document.getElementById('halfBtn');
-const allBtn=document.getElementById('allBtn');
-function resizeCanvas(){canvas.width=canvas.parentElement.clientWidth;canvas.height=canvas.parentElement.clientHeight;}
-window.addEventListener('resize',resizeCanvas);resizeCanvas();
-function resetBalance(){showToast('❌ No free refill','lose');}
-const CRASH_WEIGHTS={red:20,green:52,blue:20,purple:6,yellow:2};
-function getRandomCrashPoint(){const total=Object.values(CRASH_WEIGHTS).reduce((a,b)=>a+b,0);let r=Math.random()*total;let type='red';for(const k in CRASH_WEIGHTS){r-=CRASH_WEIGHTS[k];if(r<=0){type=k;break;}}let m;if(type==='yellow')m=8+Math.random()*22;else if(type==='purple')m=4+Math.random()*3.99;else if(type==='blue')m=1.7+Math.random()*2.29;else if(type==='green')m=1.15+Math.random()*0.64;else m=1.01+Math.random()*0.13;m=Math.round(m*100)/100;return m;}
-function getBadgeColorClass(m){if(m>=10)return'yellow';if(m>=5)return'purple';if(m>=2)return'blue';if(m>=1.2)return'green';return'red';}
-function addRoundToHistory(c){roundHistory.unshift(c);if(roundHistory.length>30)roundHistory.pop();localStorage.setItem('roundHistory',JSON.stringify(roundHistory));renderRoundHistory();}
-function renderRoundHistory(){multiplierHistoryContainer.innerHTML='';roundHistory.slice(0,15).forEach(m=>{const b=document.createElement('div');b.className='crash-hist-badge '+getBadgeColorClass(m);b.innerText=m.toFixed(2)+'x';multiplierHistoryContainer.appendChild(b);});}
-renderRoundHistory();
-function drawChart(cm){ctx.clearRect(0,0,canvas.width,canvas.height);if(cm<=1.01)return;const max=Math.max(crashPoint,cm,2);const sx=0,sy=canvas.height-30,ex=canvas.width,ey=20;const p=cm/max;const cx=sx+(ex-sx)*p;const cy=sy-(sy-ey)*Math.min(1,cm/max);ctx.beginPath();ctx.moveTo(sx,sy);for(let i=0;i<=30;i++){const t=i/30;const x=sx+(cx-sx)*t;const y=sy-(sy-cy)*(t*t);ctx.lineTo(x,y);}ctx.lineTo(cx,cy);ctx.lineTo(cx,sy);ctx.closePath();const grad=ctx.createLinearGradient(0,0,0,canvas.height);grad.addColorStop(0,'rgba(255,204,0,.35)');grad.addColorStop(1,'rgba(255,204,0,0)');ctx.fillStyle=grad;ctx.fill();ctx.beginPath();ctx.moveTo(sx,sy);for(let i=0;i<=30;i++){const t=i/30;const x=sx+(cx-sx)*t;const y=sy-(sy-cy)*(t*t);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.strokeStyle='#ffcc00';ctx.lineWidth=5;ctx.lineCap='round';ctx.shadowBlur=15;ctx.shadowColor='rgba(255,204,0,.6)';ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fillStyle='#ffcc00';ctx.fill();ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();}
-function clearChart(){ctx.clearRect(0,0,canvas.width,canvas.height);}
-function renderCrashPlayers(){
-    const row=document.getElementById('crashPlayersRow');
-    if(!row)return;
-    if(crashPlayers.length===0&&!hasJoined){
-        row.innerHTML='<div style="color:#5a6278;font-size:12px;padding:14px;font-weight:700;text-align:center;">⏳ Waiting for players...</div>';
-        return;
-    }
-    row.innerHTML='';
-    crashPlayers.forEach(b=>{
-        const c=document.createElement('div');
-        c.className='crash-p-row'+(b.cashed?' cashed':'')+(b.lost?' lost':'');
-        c.innerHTML='<div class="crash-p-av">'+(b.avatar ? '<img src="'+b.avatar+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">' : '👤')+'</div><div class="crash-p-name">'+b.name+'</div>'+(b.cashed?'<div class="crash-p-mult">+'+(b.bet*b.cashedAt).toFixed(2)+'</div><span class="crash-p-coin">◈</span><div class="crash-p-bet" style="color:#2ff068">×'+b.cashedAt.toFixed(2)+'</div>':b.lost?'<div class="crash-p-mult lost">-'+b.bet.toFixed(2)+'</div><span class="crash-p-coin" style="opacity:.5">◈</span>':'<div class="crash-p-mult" style="color:#8a90a6">'+b.bet.toFixed(2)+'×?</div><span class="crash-p-coin">◈</span>');
-        row.appendChild(c);
-    });
-    if(hasJoined){
-        const c=document.createElement('div');
-        c.className='crash-p-row';
-        c.style.borderColor='#ffcc00';
-        c.innerHTML='<div class="crash-p-av" style="border-color:#ffcc00">'+(TG_USER.photo ? '<img src="'+TG_USER.photo+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">' : '👤')+'</div><div class="crash-p-name" style="color:#ffcc00">You</div><div class="crash-p-mult">'+myBet.toFixed(2)+'×'+multiplier.toFixed(2)+'</div><span class="crash-p-coin">◈</span>';
-        row.appendChild(c);
-    }
-}
-function updateActionButton(){
-  if(gameState==='waiting'){
-    if(hasJoined){actionButton.innerText='Waiting...';actionButton.disabled=true;actionButton.className='crash-action-btn bet';}
-    else{actionButton.innerText='Place bet';actionButton.disabled=false;actionButton.className='crash-action-btn bet';}
-  }else if(gameState==='playing'){
-    if(hasJoined){actionButton.innerText='Cash Out';actionButton.disabled=false;actionButton.className='crash-action-btn cashout';}
-    else if(queuedBet>0){actionButton.innerText='⏳ Queued: '+queuedBet.toFixed(2)+' TON';actionButton.disabled=true;actionButton.className='crash-action-btn bet';}
-    else{actionButton.innerText='📌 Queue for next round';actionButton.disabled=false;actionButton.className='crash-action-btn bet';}
-  }
-}
-function startNewRound(){gameState='waiting';hasJoined=false;myBet=0;myAutoCashout=0;multiplier=1.00;crashPoint=getRandomCrashPoint();clearChart();crashPlayers=[];renderCrashPlayers();multiplierDisplay.classList.remove('crashed','counting');multiplierDisplay.style.color='#ff9800';if(queuedBet>0){hasJoined=true;myBet=queuedBet;myAutoCashout=queuedAuto;balance-=myBet;updateGlobalBalanceUI();queuedBet=0;queuedAuto=0;betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined';}else{betInput.disabled=false;autoCashoutInput.disabled=false;halfBtn.disabled=false;allBtn.disabled=false;}betInput.value=localStorage.getItem('lastBet')||0.1;autoCashoutInput.value=localStorage.getItem('lastAuto')||2.00;const _tb=document.getElementById('autoCashoutToggle');if(_tb){_tb.classList.toggle('off',!autoCashoutEnabled);_tb.classList.toggle('on',autoCashoutEnabled);_tb.innerText=autoCashoutEnabled?'ON':'OFF';}actionButton.innerText='Place bet';actionButton.className='crash-action-btn bet';actionButton.disabled=false;statusText.innerText='';let c=COUNTDOWN_SECONDS;multiplierDisplay.classList.add('counting');multiplierDisplay.innerText=c;countdownInterval=setInterval(()=>{c--;if(c>0)multiplierDisplay.innerText=c;else{clearInterval(countdownInterval);multiplierDisplay.classList.remove('counting');multiplierDisplay.style.color='#fff';multiplierDisplay.innerText='1.00x';startGameplay();}},1000);}
-function startGameplay(){gameState='playing';if(hasJoined){betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;}updateActionButton();if(hasJoined){statusText.innerText='✅ Joined with '+myBet+' TON';actionButton.innerText='Cash Out';actionButton.className='crash-action-btn cashout';actionButton.disabled=false;}else{statusText.innerText='';actionButton.innerText='Not joined';actionButton.className='crash-action-btn bet';actionButton.disabled=true;}let el=0;gameInterval=setInterval(()=>{el+=80;multiplier=Math.pow(SPEED,el);multiplierDisplay.innerText=multiplier.toFixed(2)+'x';drawChart(multiplier);if(hasJoined&&myAutoCashout>1&&multiplier>=myAutoCashout)cashOut(true);if(multiplier>=crashPoint){clearInterval(gameInterval);multiplierDisplay.style.color='#ff4444';multiplierDisplay.innerText=crashPoint.toFixed(2)+'x';multiplierDisplay.classList.add('crashed');gameState='crashed';actionButton.disabled=true;actionButton.innerText='Next round...';actionButton.className='crash-action-btn bet';addRoundToHistory(crashPoint);statusText.innerText=hasJoined?'💥 Lost '+myBet+' TON':'💥 Crashed!';if(hasJoined)resolveLoss();setTimeout(startNewRound,2500);}},80);}
-function joinGame(){const amount=parseFloat(betInput.value);if(isNaN(amount)||amount<0.1){statusText.innerText='❌ Min 0.1 TON';return;}if(amount>balance){statusText.innerText='❌ Insufficient';return;}if(gameState==='waiting'&&!hasJoined){hasJoined=true;myBet=amount;if(autoCashoutEnabled){myAutoCashout=parseFloat(autoCashoutInput.value);if(isNaN(myAutoCashout)||myAutoCashout<1.01)myAutoCashout=0;}else{myAutoCashout=0;}balance-=amount;updateGlobalBalanceUI();betInput.disabled=true;autoCashoutInput.disabled=true;halfBtn.disabled=true;allBtn.disabled=true;statusText.innerText=myAutoCashout>0?'✅ Auto at '+myAutoCashout.toFixed(2)+'x':'✅ Joined';updateActionButton();}else if(gameState==='playing'&&!hasJoined&&queuedBet===0){queuedBet=amount;if(autoCashoutEnabled){queuedAuto=parseFloat(autoCashoutInput.value);if(isNaN(queuedAuto)||queuedAuto<1.01)queuedAuto=0;}else{queuedAuto=0;}statusText.innerText='⏳ Queued '+amount.toFixed(2)+' TON for next round'+(queuedAuto>0?' @ '+queuedAuto.toFixed(2)+'x':'');updateActionButton();}}
-function cashOut(isAuto=false){if(!hasJoined||gameState!=='playing')return;const winnings=myBet*multiplier;hasJoined=false;actionButton.disabled=true;actionButton.innerText='Next round...';actionButton.className='crash-action-btn bet';const msg=resolveWin(winnings);statusText.innerText=msg;}
-actionButton.addEventListener('click',()=>{if(gameState==='waiting'){if(!hasJoined)joinGame();}else if(gameState==='playing'){if(hasJoined)cashOut(false);else if(queuedBet===0)joinGame();}});
-function setBetAll(){if(gameState!=='waiting')return;const a=Math.floor(balance*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);}
-function setBetHalf(){if(gameState!=='waiting')return;const a=Math.floor((balance/2)*100)/100;if(a<0.1){showToast('❌ Too low');return;}betInput.value=a.toFixed(2);localStorage.setItem('lastBet',a);}
-betInput.addEventListener('input',()=>{let v=parseFloat(betInput.value);if(!isNaN(v)&&v>0){localStorage.setItem('lastBet',v);}});
-autoCashoutInput.addEventListener('input',()=>{const v=parseFloat(autoCashoutInput.value);if(!isNaN(v)&&v>=1.01)localStorage.setItem('lastAuto',v);});
-startNewRound();
-
-// ==================== PVP (Online & Proportional) ====================
-const PVP_COLORS=['#ff4757','#2e86de','#2ed573','#ffa502','#a55eea','#26de81','#fc5c65','#45aaf2','#fed330','#eb3b5a'];
-let pvpPlayers=[], pvpPool=0, pvpState='waiting', pvpTimerInterval=null, pvpChannel=null;
-let pvpCanvas=null, pvpCtx=null, pvpSize=320, pvpRotation=0;
-
-async function openPvp(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('pvpScreen').classList.remove('hidden');
-    
-    if(!pvpCanvas) {
-        pvpCanvas=document.getElementById('pvpCanvas'); 
-        pvpCtx=pvpCanvas.getContext('2d');
-        window.addEventListener('resize', () => {
-            if(!document.getElementById('pvpScreen').classList.contains('hidden')) initPvpCanvas();
-        });
-    }
-    setTimeout(() => { initPvpCanvas(); }, 50);
-    await initPvpLobby();
-    showBackBtn();
-}
-
-function initPvpCanvas(){
-    if(!pvpCanvas) return;
-    const wrap = pvpCanvas.parentElement;
-    const size = Math.min(wrap.clientWidth - 20, 340);
-    const dpr = window.devicePixelRatio || 1;
-    pvpSize = size;
-    pvpCanvas.width = size * dpr;
-    pvpCanvas.height = size * dpr;
-    pvpCanvas.style.width = size + 'px';
-    pvpCanvas.style.height = size + 'px';
-    pvpCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    pvpDraw();
-}
-
-async function initPvpLobby() {
-    if(pvpChannel) supabaseClient.removeChannel(pvpChannel);
-    
-    await fetchPvpPlayers();
-
-    pvpChannel = supabaseClient.channel('pvp_lobby_channel')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'pvp_bets' }, payload => {
-        fetchPvpPlayers();
-    }).subscribe();
-
-    startPvpTimer();
-}
-
-async function fetchPvpPlayers() {
-    try {
-        const { data: bets } = await supabaseClient.from('pvp_bets').select('*');
-        pvpPlayers = bets ? bets.map(b => ({
-            name: b.name, bet: parseFloat(b.bet), color: b.color, isMe: b.user_id === TG_USER.id
-        })) : [];
-        pvpRecalcPool();
-        pvpRenderPlayers();
-        pvpDraw();
-    } catch(e) { console.log(e); }
-}
-
-async function startPvpTimer() {
-    if(pvpTimerInterval) clearInterval(pvpTimerInterval);
-    
-    let { data: state } = await supabaseClient.from('pvp_state').select('*').eq('id', 1).single();
-    let roundEnd = state.round_end;
-
-    if(Date.now() > roundEnd) {
-        let newEnd = Date.now() + 20000;
-        await supabaseClient.from('pvp_state').update({ status: 'waiting', round_end: newEnd }).eq('id', 1);
-        roundEnd = newEnd;
-    }
-
-    pvpState = state.status;
-    pvpRotation = 0;
-    pvpDraw();
-
-    pvpTimerInterval = setInterval(async () => {
-        let timeLeft = Math.max(0, Math.ceil((roundEnd - Date.now()) / 1000));
-        document.getElementById('pvpTimer').innerText = `00:${timeLeft.toString().padStart(2,'0')}`;
-
-        if (timeLeft <= 0 && pvpState === 'waiting') {
-            clearInterval(pvpTimerInterval);
-            trySpinPvp(roundEnd);
-        }
-    }, 1000);
-}
-
-async function trySpinPvp(roundEnd) {
-    let { data: updated, error } = await supabaseClient.from('pvp_state')
-        .update({ status: 'spinning' })
-        .eq('id', 1)
-        .eq('round_end', roundEnd)
-        .eq('status', 'waiting')
-        .select();
-
-    if (error || !updated || updated.length === 0) {
-        pvpState = 'spinning';
-        return;
-    }
-
-    pvpState = 'spinning';
-    document.getElementById('pvpTimer').innerText = `00:00`;
-
-    if (pvpPlayers.length === 0 || pvpPool === 0) {
-        setTimeout(() => resetPvpRound(), 2000);
-        return;
-    }
-
-    let r = Math.random() * pvpPool;
-    let cum = 0;
-    let winner = pvpPlayers[0];
-    let winnerAngleCenter = 0;
-    let currentAngle = -Math.PI/2;
-
-    for (let i = 0; i < pvpPlayers.length; i++) {
-        let p = pvpPlayers[i];
-        let arc = (p.bet / pvpPool) * Math.PI * 2;
-        cum += p.bet;
-        if (r <= cum) {
-            winner = p;
-            winnerAngleCenter = currentAngle + arc / 2;
-            break;
-        }
-        currentAngle += arc;
-    }
-
-    let targetRot = -Math.PI/2 - winnerAngleCenter + (5 * Math.PI * 2);
-    let startTime = performance.now();
-    let duration = 4000;
-    let startRot = pvpRotation;
-
-    function animate(now) {
-        let elapsed = now - startTime;
-        let progress = Math.min(elapsed / duration, 1);
-        let ease = 1 - Math.pow(1 - progress, 3.5);
-        pvpRotation = startRot + (targetRot - startRot) * ease;
-        pvpDraw();
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else {
-            payPvpWinner(winner);
-        }
-    }
-    requestAnimationFrame(animate);
-}
-
-async function payPvpWinner(winner) {
-    if (winner.isMe) {
-        let { data: user } = await supabaseClient.from('users').select('balance').eq('id', TG_USER.id).single();
-        if (user) {
-            let newBal = parseFloat(user.balance) + pvpPool;
-            await supabaseClient.from('users').update({ balance: newBal }).eq('id', TG_USER.id);
-            balance = newBal;
-            updateGlobalBalanceUI();
-        }
-        showToast(`🏆 YOU WON ${pvpPool.toFixed(2)} TON!`, 'win');
-    } else {
-        showToast(`😔 ${winner.name} won ${pvpPool.toFixed(2)} TON!`, 'lose');
-    }
-
-    setTimeout(() => resetPvpRound(), 3000);
-}
-
-async function resetPvpRound() {
-    await supabaseClient.from('pvp_bets').delete().neq('id', 0);
-    let newEnd = Date.now() + 20000;
-    await supabaseClient.from('pvp_state').update({ status: 'waiting', round_end: newEnd }).eq('id', 1);
-    
-    if(!document.getElementById('pvpScreen').classList.contains('hidden')) {
-        await initPvpLobby();
-    }
-}
-
-async function pvpJoinClick(){
-    let { data: state } = await supabaseClient.from('pvp_state').select('*').eq('id', 1).single();
-    if(state.status !== 'waiting') { showToast('Wait for next round', 'lose'); return; }
-    
-    const bet = parseFloat(document.getElementById('pvpBetInput').value);
-    if(isNaN(bet) || bet < 0.1) { showToast('Min 0.1 TON', 'lose'); return; }
-    if(bet > balance) { showToast('Insufficient balance', 'lose'); return; }
-    
-    // 1. کم کردن موجودی
-    balance -= bet;
-    updateGlobalBalanceUI();
-    
-    // 2. چک کردن اینکه آیا من از قبل توی بازی هستم یا نه
-    let existingPlayer = pvpPlayers.find(p => p.isMe);
-
-    if (existingPlayer) {
-        // --- اگر از قبل هستم، پول رو به همون خونه اضافه کن ---
-        existingPlayer.bet += bet;
-        
-        // آپدیت فوری صفحه (بدون منتظر موندن برای دیتابیس)
-        pvpRecalcPool();
-        pvpRenderPlayers();
-        pvpDraw();
-        showToast('✅ Added to your bet!', 'win');
-
-        // آپدیت دیتابیس در پس‌زمینه
-        supabaseClient.from('pvp_bets')
-            .update({ bet: existingPlayer.bet })
-            .eq('user_id', TG_USER.id)
-            .then();
-
-    } else {
-        // --- اگر کاربر جدید هستم، یه خونه جدید بساز ---
-        let color = PVP_COLORS[Math.floor(Math.random()*PVP_COLORS.length)];
-        
-        // آپدیت فوری صفحه
-        let newPlayer = { name: TG_USER.name, bet: bet, color: color, isMe: true };
-        pvpPlayers.push(newPlayer);
-        pvpRecalcPool();
-        pvpRenderPlayers();
-        pvpDraw();
-        showToast('✅ Joined the PVP pool!', 'win');
-
-        // ثبت در دیتابیس در پس‌زمینه
-        supabaseClient.from('pvp_bets')
-            .insert([{ user_id: TG_USER.id, name: TG_USER.name, bet: bet, color: color }])
-            .then();
-    }
-}
-
-function pvpRecalcPool(){
-    pvpPool = pvpPlayers.reduce((s,p)=>s + (p.bet ? parseFloat(p.bet) : 0), 0);
-    const poolEl = document.getElementById('pvpPoolValue');
-    if(poolEl) poolEl.innerText = pvpPool.toFixed(2);
-    const countEl = document.getElementById('pvpPlayersCount');
-    if(countEl) countEl.innerText = '👥 ' + pvpPlayers.length;
-}
-
-function pvpRenderPlayers(){
-    const r = document.getElementById('pvpPlayersRow');
-    if(!r) return;
-    r.innerHTML = '';
-    if(pvpPlayers.length === 0){
-        r.innerHTML = '<div style="padding:24px;color:#7a8299;font-size:13px;text-align:center;width:100%;font-weight:600;">⏳ Waiting for players...</div>';
-        return;
-    }
-    pvpPlayers.forEach(p => {
-        const pct = pvpPool > 0 ? ((p.bet / pvpPool) * 100).toFixed(1) : 0;
-        const c = document.createElement('div');
-        c.className = 'pvp-pcard' + (p.isMe ? ' isMe' : '');
-        c.innerHTML = `<div class="pvp-pcard-top" style="background:${p.color}"></div>
-                       <div class="pvp-pav" style="border-color:${p.color}">👤</div>
-                       <div class="pvp-pname">${p.name}</div>
-                       <div class="pvp-ppct" style="color:${p.color}">${pct}%</div>
-                       <div class="pvp-pbet">${parseFloat(p.bet).toFixed(2)} TON</div>`;
-        r.appendChild(c);
-    });
-}
-
-function pvpDraw(){
-    if(!pvpCtx) return;
-    const s = pvpSize, cx = s/2, cy = s/2, R = s/2 - 10;
-    pvpCtx.clearRect(0, 0, s, s);
-    
-    if(pvpPlayers.length === 0 || pvpPool === 0){
-        pvpCtx.beginPath(); 
-        pvpCtx.arc(cx, cy, R, 0, Math.PI*2); 
-        pvpCtx.fillStyle = '#1a1d2e'; 
-        pvpCtx.fill();
-    } else {
-        pvpCtx.save();
-        pvpCtx.translate(cx, cy);
-        pvpCtx.rotate(pvpRotation);
-        pvpCtx.translate(-cx, -cy);
-
-        let a = -Math.PI/2;
-        pvpPlayers.forEach(p => {
-            const sh = (parseFloat(p.bet) || 0) / pvpPool;
-            const arc = sh * Math.PI * 2;
-            pvpCtx.beginPath(); 
-            pvpCtx.moveTo(cx, cy); 
-            pvpCtx.arc(cx, cy, R, a, a + arc); 
-            pvpCtx.closePath();
-            pvpCtx.fillStyle = p.color; 
-            pvpCtx.fill();
-            pvpCtx.strokeStyle = '#0a0b10';
-            pvpCtx.lineWidth = 2;
-            pvpCtx.stroke();
-            a += arc;
-        });
-        pvpCtx.restore();
-    }
-    
-    pvpCtx.beginPath(); 
-    pvpCtx.arc(cx, cy, s * 0.27, 0, Math.PI * 2); 
-    pvpCtx.fillStyle = '#1a1d2e'; 
-    pvpCtx.fill();
-
-    pvpCtx.beginPath();
-    pvpCtx.moveTo(cx, cy - R - 10);
-    pvpCtx.lineTo(cx - 15, cy - R + 15);
-    pvpCtx.lineTo(cx + 15, cy - R + 15);
-    pvpCtx.closePath();
-    pvpCtx.fillStyle = '#ffcc00';
-    pvpCtx.fill();
-}
-
-// ==================== Wheel (Online & Synced) ====================
-let whState='waiting', whTimer=20, whTimerInterval=null, whWheelAngle=0, whHistory=[], whPlayers=[];
-let whCanvas=null, whCtx=null, whSize=320, whUserPicked=null, whUserBet=0;
-let whCurrentRound = 1;
-
-function getWhColor(mult) {
-    if (mult == 2) return '#a855f7';
-    if (mult == 4) return '#2ed573';
-    if (mult == 5) return '#38bdf8';
-    if (mult == 20) return '#f43f5e';
-    return '#fff';
-}
-
-async function openWheel(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
-    document.getElementById('wheelScreen').classList.remove('hidden');
-    
-    if(!whCanvas){
-        whCanvas=document.getElementById('wheelCanvas');
-        whCtx=whCanvas.getContext('2d');
-        window.addEventListener('resize',whResize);
-    }
-    setTimeout(()=>{ whResize(); initWheelOnline(); }, 50);
-    showBackBtn();
-}
-
-function closeWheel(){
-    document.getElementById('wheelScreen').classList.add('hidden');
-    document.getElementById('playhubScreen').classList.remove('hidden');
-    if(whTimerInterval) clearInterval(whTimerInterval);
-}
-
-function whResize(){
-    if(!whCanvas) return;
-    const wrap = whCanvas.parentElement;
-    const size = Math.min(wrap.clientWidth - 40, 340);
-    const dpr = window.devicePixelRatio || 1;
-    whSize = size;
-    whCanvas.width = size * dpr;
-    whCanvas.height = size * dpr;
-    whCanvas.style.width = size + 'px';
-    whCanvas.style.height = size + 'px';
-    whCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    whDraw();
-}
-
-function whDraw(){
-    if(!whCtx) return;
-    const s=whSize, cx=s/2, cy=s/2, R=s/2-10;
-    whCtx.clearRect(0,0,s,s);
-    
-    const colors = ['#a855f7','#2ed573','#38bdf8','#f43f5e'];
-    const mults = [2,4,5,20];
-    const arc = Math.PI*2/4;
-    
-    whCtx.save();
-    whCtx.translate(cx,cy);
-    whCtx.rotate(whWheelAngle);
-    whCtx.translate(-cx,-cy);
-
-    for(let i=0;i<4;i++){
-        whCtx.beginPath();
-        whCtx.moveTo(cx,cy);
-        whCtx.arc(cx,cy,R, i*arc, (i+1)*arc);
-        whCtx.closePath();
-        whCtx.fillStyle = colors[i];
-        whCtx.fill();
-        whCtx.strokeStyle = '#0a0b10';
-        whCtx.lineWidth = 2;
-        whCtx.stroke();
-        
-        whCtx.save();
-        whCtx.translate(cx,cy);
-        whCtx.rotate(i*arc + arc/2);
-        whCtx.textAlign = 'right';
-        whCtx.fillStyle = '#fff';
-        whCtx.font = '900 20px sans-serif';
-        whCtx.fillText('x'+mults[i], R-20, 8);
-        whCtx.restore();
-    }
-    whCtx.restore();
-    
-    whCtx.beginPath();
-    whCtx.arc(cx,cy,s*0.25,0,Math.PI*2);
-    whCtx.fillStyle = '#1a1d2e';
-    whCtx.fill();
-    whCtx.strokeStyle = '#3a2e5e';
-    whCtx.lineWidth = 4;
-    whCtx.stroke();
-    
-    whCtx.save();
-    whCtx.translate(cx,cy);
-    whCtx.beginPath();
-    whCtx.moveTo(0, -R-10);
-    whCtx.lineTo(-15, -R+20);
-    whCtx.lineTo(15, -R+20);
-    whCtx.closePath();
-    whCtx.fillStyle = '#ffcc00';
-    whCtx.fill();
-    whCtx.restore();
-}
-
-function whPickMult(mult){
-    if(whState !== 'waiting') return;
-    whUserPicked = mult;
-    document.querySelectorAll('.wh-mult-btn').forEach(b => {b.classList.toggle('active', parseInt(b.dataset.mult) === mult);});
-}
-
-async function initWheelOnline() {
-    if(whTimerInterval) clearInterval(whTimerInterval);
-    
-    let { data: state } = await supabaseClient.from('wheel_state').select('*').eq('id', 1).single();
-    
-    whHistory = state.history || [];
-    const histRow = document.getElementById('whHistory');
-    histRow.innerHTML = '';
-    whHistory.forEach(m => {
-        const seg = document.createElement('div');
-        seg.className = 'wh-history-seg';
-        seg.style.background = getWhColor(m);
-        histRow.appendChild(seg);
-    });
-
-    let endTime = new Date(state.end_time).getTime();
-    whCurrentRound = state.round_number;
-
-    if (Date.now() > endTime) {
-        whCurrentRound++;
-        let nextEnd = new Date(Date.now() + 20000).toISOString();
-        let newHistory = whHistory.length >= 10 ? whHistory.slice(-9) : whHistory;
-        await supabaseClient.from('wheel_state').update({ round_number: whCurrentRound, end_time: nextEnd, history: newHistory }).eq('id', 1);
-        await supabaseClient.from('wheel_bets').delete().neq('round_number', whCurrentRound);
-        endTime = new Date(nextEnd).getTime();
-    }
-
-    let { data: bets } = await supabaseClient.from('wheel_bets').select('*').eq('round_number', whCurrentRound);
-    whPlayers = bets ? bets.map(b => ({name: b.name, bet: b.bet, pick: b.pick, color: '#ffcc00', isMe: b.user_id === TG_USER.id})) : [];
-    
-    whUpdatePlayers();
-    whWheelAngle = 0; 
-    whDraw();
-
-    whState = 'waiting';
-    whUserPicked = null;
-    whUserBet = 0;
-    document.getElementById('whStatusText').innerText = `Round #${whCurrentRound} - Waiting...`;
-    document.querySelectorAll('.wh-mult-btn').forEach(b => b.classList.remove('active'));
-
-    whTimerInterval = setInterval(async () => {
-        let now = Date.now();
-        let timeLeft = Math.max(0, Math.floor((endTime - now) / 1000));
-        
-        let timerEl = document.getElementById('whTimer');
-        timerEl.innerText = `Starts in: 00:${timeLeft.toString().padStart(2,'0')}`;
-        if(timeLeft <= 5) timerEl.classList.add('hurry');
-        else timerEl.classList.remove('hurry');
-
-        if (timeLeft === 0 && whState === 'waiting') {
-            clearInterval(whTimerInterval);
-            whState = 'spinning';
-            document.getElementById('whStatusText').innerText = 'Spinning...';
-            
-            let winnerIndex = (whCurrentRound * 7) % 4; 
-            let winnerMult = [2,4,5,20][winnerIndex];
-            
-            let targetAngle = -(winnerIndex * (Math.PI / 2) + (Math.PI / 4));
-            let spins = 5 * Math.PI * 2;
-            let finalRot = spins + targetAngle;
-            
-            const duration = 4000;
-            const startTime = performance.now();
-            const startAngle = whWheelAngle;
-            
-            function animate(now) {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3.5);
-                whWheelAngle = startAngle + (finalRot - startAngle) * ease;
-                whDraw();
-                if(progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    whWheelAngle = finalRot % (Math.PI * 2); 
-                    whFinishSpin(winnerMult);
-                }
-            }
-            requestAnimationFrame(animate);
-        }
-    }, 500); 
-}
-
-async function whJoin(){
-    if(whState !== 'waiting') { showToast('Wait for next round', 'lose'); return; }
-    if(whUserPicked === null) { showToast('Pick a multiplier first', 'lose'); return; }
-    if(whUserBet > 0) { showToast('Already joined', 'lose'); return; }
-    
-    const bet = parseFloat(document.getElementById('whBetInput').value);
-    if(isNaN(bet) || bet < 0.1) { showToast('Min 0.1 TON', 'lose'); return; }
-    if(bet > balance) { showToast('Insufficient balance', 'lose'); return; }
-    
-    balance -= bet;
-    updateGlobalBalanceUI();
-    whUserBet = bet;
-    
-    try {
-        await supabaseClient.from('wheel_bets').insert([{ 
-            round_number: whCurrentRound, 
-            user_id: TG_USER.id, 
-            name: TG_USER.name || 'You', 
-            bet: bet, 
-            pick: whUserPicked 
-        }]);
-        whPlayers.push({name: TG_USER.name || 'You', bet: bet, pick: whUserPicked, color: '#ffcc00', isMe: true});
-        whUpdatePlayers();
-        showToast('✅ Joined the Wheel!', 'win');
-    } catch(e) {
-        console.log(e);
-        showToast('Error joining', 'lose');
-    }
-}
-
-function whUpdatePlayers(){
-    const row = document.getElementById('whPlayers');
-    row.innerHTML = '';
-    const totalBank = whPlayers.reduce((s,p)=>s+(p.bet||0),0);
-    document.getElementById('whBankVal').innerText = totalBank.toFixed(2);
-    
-    if(whPlayers.length === 0) { row.innerHTML = '<div class="wh-empty">No players yet. Be the first!</div>'; return; }
-    
-    whPlayers.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'wh-pcard' + (p.isMe ? ' isMe' : '');
-        card.innerHTML = `<div class="wh-pcard-color" style="background:${p.color}"></div><div class="wh-pcard-av">👤</div><div class="wh-pcard-name">${p.name}</div><div class="wh-pcard-bet">${(p.bet||0).toFixed(2)} TON</div><div class="wh-pcard-pick">x${p.pick}</div>`;
-        row.appendChild(card);
-    });
-}
-
-async function whFinishSpin(winnerMult){
-    whState = 'ended';
-    document.getElementById('whStatusText').innerText = `Landed on x${winnerMult}!`;
-    
-    // فیکس: آپدیت فوری تاریخچه در صفحه
-    const histRow = document.getElementById('whHistory');
-    const seg = document.createElement('div');
-    seg.className = 'wh-history-seg';
-    seg.style.background = getWhColor(winnerMult);
-    histRow.prepend(seg);
-    if(histRow.children.length > 10) histRow.removeChild(histRow.lastChild);
-
-    let { data: state } = await supabaseClient.from('wheel_state').select('history').eq('id', 1).single();
-    let newHistory = state.history || [];
-    newHistory.push(winnerMult);
-    if(newHistory.length > 10) newHistory.shift();
-    await supabaseClient.from('wheel_state').update({ history: newHistory }).eq('id', 1);
-
-    const me = whPlayers.find(p => p.isMe);
-    // فیکس: تبدیل به عدد برای مقایسه دقیق
-    if(me && parseFloat(me.pick) === winnerMult) {
-        const winAmt = me.bet * winnerMult;
-        balance += winAmt;
-        updateGlobalBalanceUI();
-        showToast(`🏆 YOU WON ${winAmt.toFixed(2)} TON!`, 'win');
-    } else if (me) {
-        showToast(`😔 Lost ${me.bet.toFixed(2)} TON`, 'lose');
-    }
-    
-    setTimeout(() => { initWheelOnline(); }, 4000);
-}
 
 // ==================== Penalty ====================
 let penState='idle';let penBet=0;let penGoals=0;let penShotsUsed=0;let penMaxShots=10;let penCurrentMult=1.0;let penFromGift=false;
@@ -1512,9 +1174,8 @@ function penShoot(dir){if(penState!=='playing')return;if(penShotsUsed>=penMaxSho
 function penCashOut(){if(penState!=='playing'||penGoals===0)return;const win=penBet*penCurrentMult;penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;document.getElementById('penStartBtn').disabled=true;document.getElementById('penStatus').innerHTML='<span style="color:#2ff068">💰 CASHED OUT!</span> Won '+win.toFixed(2)+' TON';betFromGift=penFromGift;resolveWin(win);setTimeout(()=>{const btn=document.getElementById('penStartBtn');btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},1500);}
 function endPenaltyGame(won){penState='done';document.getElementById('penLeftBtn').disabled=true;document.getElementById('penRightBtn').disabled=true;const btn=document.getElementById('penStartBtn');if(won){const win=penBet*penCurrentMult;betFromGift=penFromGift;resolveWin(win);btn.innerText='🏆 WON '+win.toFixed(2)+' TON';}else{btn.innerText='😔 LOST '+penBet.toFixed(2)+' TON';}setTimeout(()=>{btn.innerText='PLAY AGAIN';btn.disabled=false;btn.onclick=()=>openPenalty();},2000);}
 
-// Other Initializations
 setTimeout(()=>{if(document.getElementById('wheelCanvas'))whResize();},500);
 setTimeout(()=>{if(document.getElementById('chartCanvas'))resizeCanvas();},800);
 </script>
 </body>
-    </html>
+</html>
